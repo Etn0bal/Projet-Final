@@ -108,7 +108,7 @@ namespace AtelierXNA
                 for (int colonne = 0; colonne < PtsSommets.GetLength(0); colonne++)
                 {
                     PtsSommets[colonne, rangée] = new Vector3(Origine.X + (rangée * DeltaPoint.X),
-                                                              Étendue.Y,  
+                                                             -10* DataTexture[colonne,rangée].G /255,  
                                                               Origine.Z - (colonne * DeltaPoint.Z));
                 }
             }
