@@ -28,39 +28,38 @@ namespace AtelierXNA
 
             public MainMenu(Game game)
             : base(game)
-        {
-            // TODO: Construct any child components here
-        }
+        { }
 
-        /// <summary>
-        /// Allows the game component to perform any initialization it needs to before starting
-        /// to run.  This is where it can query for any required services and load content.
-        /// </summary>
         public override void Initialize()
         {
             GestionnaireInputs = Game.Services.GetService(typeof(InputManager)) as InputManager;
+            positionSouris = new Point(0,0);
 
             //Arriere plan
-            Sprite fonddÉcran = new Sprite(Game, 0, 0, Game.Window.ClientBounds.Width, Game.Window.ClientBounds.Height, "dragon");
+            Rectangle arrièrePlan = new Rectangle(0, 0, Game.Window.ClientBounds.Width, Game.Window.ClientBounds.Height);
+            SpriteMainMenu fonddÉcran = new SpriteMainMenu(Game, arrièrePlan, "dragon");
             Game.Components.Add(fonddÉcran);
+            
             //Vidéo
 
             //Button
-            Sprite CreateGameButton = new Sprite(Game, Game.Window.ClientBounds.Width / 10, 5 * Game.Window.ClientBounds.Height / 10, 3 * (Game.Window.ClientBounds.Width / 10), Game.Window.ClientBounds.Height / 10, "JoinGame");
             positionCreateGameButton = new Rectangle(Game.Window.ClientBounds.Width / 10, 5 * Game.Window.ClientBounds.Height / 10, 3 * (Game.Window.ClientBounds.Width / 10), Game.Window.ClientBounds.Height / 10);
+            SpriteMainMenu CreateGameButton = new SpriteMainMenu(Game, positionCreateGameButton, "JoinGame");
             Game.Components.Add(CreateGameButton);
+            
 
-            Sprite HostGameButton = new Sprite(Game, Game.Window.ClientBounds.Width/10, 3*Game.Window.ClientBounds.Height/10, 3 * (Game.Window.ClientBounds.Width / 10), Game.Window.ClientBounds.Height/10, "HostGame");
             positionHostGameButton = new Rectangle(Game.Window.ClientBounds.Width / 10, 3 * Game.Window.ClientBounds.Height / 10, 3 * (Game.Window.ClientBounds.Width / 10), Game.Window.ClientBounds.Height / 10);
+            SpriteMainMenu HostGameButton = new SpriteMainMenu(Game,positionHostGameButton, "HostGame");
             Game.Components.Add(HostGameButton);
 
-            Sprite quitButton = new Sprite(Game, Game.Window.ClientBounds.Width / 10, 7 * Game.Window.ClientBounds.Height / 10, 3 * (Game.Window.ClientBounds.Width / 10), Game.Window.ClientBounds.Height / 10, "Quit");
             positionQuitGameButton = new Rectangle(Game.Window.ClientBounds.Width / 10, 7 * Game.Window.ClientBounds.Height / 10, 3 * (Game.Window.ClientBounds.Width / 10), Game.Window.ClientBounds.Height / 10);
+            SpriteMainMenu quitButton = new SpriteMainMenu(Game,positionQuitGameButton, "Quit");
             Game.Components.Add(quitButton);
 
             //Titre
 
-            Sprite TitreMainMenu = new Sprite(Game, Game.Window.ClientBounds.Width/10, Game.Window.ClientBounds.Height / 10, 8 *( Game.Window.ClientBounds.Width / 10),(Game.Window.ClientBounds.Height/ 10), "MLANBA");
+            Rectangle titre = new Rectangle(Game.Window.ClientBounds.Width / 10, Game.Window.ClientBounds.Height / 10, 8 * (Game.Window.ClientBounds.Width / 10), (Game.Window.ClientBounds.Height / 10));
+            SpriteMainMenu TitreMainMenu = new SpriteMainMenu(Game,titre, "MLANBA");
             Game.Components.Add(TitreMainMenu);
 
 
@@ -70,7 +69,6 @@ namespace AtelierXNA
         public override void Update(GameTime gameTime)
         {
             GérerSouris();
-            base.Update(gameTime);
         }
         void GérerSouris()
         {
@@ -83,6 +81,22 @@ namespace AtelierXNA
                     Game.Exit();
                 }
             }
+            if(positionHostGameButton.Contains(positionSouris))
+            {
+                if (GestionnaireInputs.EstNouveauClicGauche())
+                {
+                    ((Game1)Game).ChangerDÉtat(2);
+                }
+            }
+            if (positionCreateGameButton.Contains(positionSouris))
+            {
+                if (GestionnaireInputs.EstNouveauClicGauche())
+                {
+                    ((Game1)Game).ChangerDÉtat(1);
+                }
+            }
+
+
         }
     }
 }

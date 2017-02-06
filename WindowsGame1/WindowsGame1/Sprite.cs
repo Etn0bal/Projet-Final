@@ -21,10 +21,10 @@ namespace AtelierXNA
 
 
 
-        public Sprite(Game game, float posX, float posY, float lenght, float height,string textureName)
+        public Sprite(Game game, Rectangle position,string textureName)
         :base(game)
         {
-            Position = new Rectangle((int)posX, (int)posY, (int)lenght, (int)height);
+            Position = position;
             TextureName = textureName;
         }
         public override void Initialize()
@@ -41,7 +41,7 @@ namespace AtelierXNA
 
         public override void Draw(GameTime gameTime)
         {
-            GestionSprites.Begin();
+            GestionSprites.Begin();          
             GestionSprites.Draw(Image, Position, Color.White);
             GestionSprites.End();
         }

@@ -15,10 +15,10 @@ namespace AtelierXNA
     /// <summary>
     /// This is a game component that implements IUpdateable.
     /// </summary>
-    public class HostMenu : Microsoft.Xna.Framework.DrawableGameComponent
+    public class SpriteJoinMenu : Sprite
     {
-        public HostMenu(Game game)
-            : base(game)
+        public SpriteJoinMenu(Game game,Rectangle position, string textureName)
+            : base(game,position,textureName)
         {
             // TODO: Construct any child components here
         }

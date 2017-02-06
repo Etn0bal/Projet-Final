@@ -11,12 +11,12 @@ using Microsoft.Xna.Framework.Media;
 
 namespace AtelierXNA
 {
-    public enum States { MainMenu, JoinGame, HostGame, Game }
+    public enum States { MainMenu, JoinGame, HostGame, Game ,Waiting}
 
     public class Game1 : Game
     {
 
-        RessourcesManager<Texture2D> GestionnaireDeTexture{ get; set; }
+        RessourcesManager<Texture2D> GestionnaireDeTexture { get; set; }
         InputManager GestionnaireInput { get; set; }
         GraphicsDeviceManager graphics { get; set; }
         SpriteBatch GestionSprites { get; set; }
@@ -34,15 +34,17 @@ namespace AtelierXNA
         {
             GestionInput = new InputManager(this);
             Components.Add(GestionInput);
-            Services.AddService(typeof(SpriteBatch),new SpriteBatch(GraphicsDevice));
+            Services.AddService(typeof(SpriteBatch), new SpriteBatch(GraphicsDevice));
             Services.AddService(typeof(RessourcesManager<Texture2D>), new RessourcesManager<Texture2D>(this, "Textures"));
             Services.AddService(typeof(InputManager), GestionInput);
 
             State = States.MainMenu;
-            ChangingStateButton CreateGameButton = new ChangingStateButton(this, 0, 0, 10, 10, "Nothing", 1);
-            ChangingStateButton HostGameButton = new ChangingStateButton(this, 0, 0, 10, 10, "Nothing", 2);
-            Sprite TitreMainMenu = new Sprite(this, 0, 0, 0, 0, "Nothing");
-
+            JoinMenu joinMenu = new JoinMenu(this);
+            Components.Add(joinMenu);
+            HostMenu hostMenu = new HostMenu(this);
+            Components.Add(hostMenu);
+            MainMenu mainMenu = new MainMenu(this);
+            Components.Add(mainMenu);
 
 
 
@@ -56,28 +58,34 @@ namespace AtelierXNA
         }
         protected override void Update(GameTime gameTime)
         {
-            if(State == States.MainMenu)
+            if (State == States.MainMenu)
             {
-
+                InitialiserMainMenu();
+                State = States.Waiting;
             }
-
-            if (GestionnaireInput.EstEnfoncée(Keys.Escape))
+            if (State==States.HostGame)
             {
-                Exit();
+                InitialiserHostMenu();
+                State = States.Waiting;
+            }
+            if (State == States.JoinGame)
+            {
+                InitialiserJoinMenu();
+                State = States.Waiting;
             }
             base.Update(gameTime);
         }
 
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
             base.Draw(gameTime);
         }
 
 
         public void ChangerDÉtat(int numÉtat)
         {
-            if(numÉtat==(int)States.MainMenu)
+
+            if (numÉtat == (int)States.MainMenu)
             {
                 State = States.MainMenu;
             }
@@ -88,10 +96,95 @@ namespace AtelierXNA
             if (numÉtat == (int)States.HostGame)
             {
                 State = States.HostGame;
+
             }
             if (numÉtat == (int)States.Game)
             {
                 State = States.Game;
+            }
+        }
+
+
+
+        void InitialiserMainMenu()
+        {
+            foreach (GameComponent Mm in Components.Where(x => x is MainMenu))
+            {
+                Mm.Enabled = true;
+            }
+            foreach (GameComponent gc in Components.Where(x => x is SpriteMainMenu))
+            {
+                gc.Enabled = true;               
+            }
+            foreach (GameComponent Hm in Components.Where(x => x is HostMenu))
+            {
+                Hm.Enabled = false;
+            }
+            foreach (GameComponent gc in Components.Where(x => x is SpriteHostMenu))
+            {
+                gc.Enabled = false;
+            }
+            foreach (GameComponent Jm in Components.Where(x => x is JoinMenu))
+            {
+                Jm.Enabled = false;
+            }
+            foreach (GameComponent gc in Components.Where(x => x is SpriteJoinMenu))
+            {
+                gc.Enabled = false;
+            }
+        }
+        void InitialiserHostMenu()
+        {
+            foreach (GameComponent Mm in Components.Where(x => x is MainMenu))
+            {
+                Mm.Enabled = false;
+            }
+            foreach (GameComponent gc in Components.Where(x => x is SpriteMainMenu))
+            {
+                gc.Enabled = false;
+            }
+            foreach (GameComponent Hm in Components.Where(x => x is HostMenu))
+            {
+                Hm.Enabled = true;
+            }
+            foreach (GameComponent gc in Components.Where(x => x is SpriteHostMenu))
+            {
+                gc.Enabled = true;
+            }
+            foreach (GameComponent Jm in Components.Where(x => x is JoinMenu))
+            {
+                Jm.Enabled = false;
+            }
+            foreach (GameComponent gc in Components.Where(x => x is SpriteJoinMenu))
+            {
+                gc.Enabled = false;
+            }
+        }
+        void InitialiserJoinMenu()
+        {
+            foreach (GameComponent Mm in Components.Where(x => x is MainMenu))
+            {
+                Mm.Enabled = false;
+            }
+            foreach (GameComponent gc in Components.Where(x => x is SpriteMainMenu))
+            {
+                gc.Enabled = false;
+            }
+            foreach (GameComponent Hm in Components.Where(x => x is HostMenu))
+            {
+                Hm.Enabled = false;
+            }
+            foreach (GameComponent gc in Components.Where(x => x is SpriteHostMenu))
+            {
+                gc.Enabled = false;
+            }
+            foreach (GameComponent Jm in Components.Where(x => x is JoinMenu))
+            {
+                Jm.Enabled = true;
+            }
+            foreach (GameComponent gc in Components.Where(x => x is SpriteJoinMenu))
+            {
+                gc.Enabled = true;
             }
         }
     }

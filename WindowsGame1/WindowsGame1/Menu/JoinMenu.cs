@@ -17,19 +17,21 @@ namespace AtelierXNA
     /// </summary>
     public class JoinMenu : Microsoft.Xna.Framework.DrawableGameComponent
     {
+        Point positionSouris { get; set; }
+        InputManager GestionnaireInputs { get; set; }
         public JoinMenu(Game game)
             : base(game)
-        {
-            // TODO: Construct any child components here
-        }
+        { }
 
-        /// <summary>
-        /// Allows the game component to perform any initialization it needs to before starting
-        /// to run.  This is where it can query for any required services and load content.
-        /// </summary>
         public override void Initialize()
         {
-            // TODO: Add your initialization code here
+            GestionnaireInputs = Game.Services.GetService(typeof(InputManager)) as InputManager;
+            positionSouris = new Point(0, 0);
+
+            //Arriere plan
+            Rectangle arrièrePlan = new Rectangle(0, 0, Game.Window.ClientBounds.Width, Game.Window.ClientBounds.Height);
+            SpriteMainMenu fonddÉcran = new SpriteMainMenu(Game, arrièrePlan, "dragon");
+            Game.Components.Add(fonddÉcran);
 
             base.Initialize();
         }
