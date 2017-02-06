@@ -69,9 +69,7 @@ namespace AtelierXNA
                 {
                     ((Game1)Game).ChangerDÉtat(0);
                 }
-            }
-          
-
+            }         
         }
     }
 }

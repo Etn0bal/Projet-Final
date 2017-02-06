@@ -19,6 +19,8 @@ namespace AtelierXNA
     {
         Point positionSouris { get; set; }
         InputManager GestionnaireInputs { get; set; }
+
+        Rectangle positionBackButton;
         public JoinMenu(Game game)
             : base(game)
         { }
@@ -30,21 +32,39 @@ namespace AtelierXNA
 
             //Arriere plan
             Rectangle arrièrePlan = new Rectangle(0, 0, Game.Window.ClientBounds.Width, Game.Window.ClientBounds.Height);
-            SpriteMainMenu fonddÉcran = new SpriteMainMenu(Game, arrièrePlan, "dragon");
+            SpriteJoinMenu fonddÉcran = new SpriteJoinMenu(Game, arrièrePlan, "dragon");
             Game.Components.Add(fonddÉcran);
+
+            //Button
+            positionBackButton = new Rectangle(7 * (Game.Window.ClientBounds.Width / 10), 7 * (Game.Window.ClientBounds.Height / 10), 2 * (Game.Window.ClientBounds.Width / 10), (Game.Window.ClientBounds.Height / 10));
+            SpriteJoinMenu BackButton = new SpriteJoinMenu(Game, positionBackButton, "BackButton");
+            Game.Components.Add(BackButton);
+
+            //titre
+            Rectangle titre = new Rectangle((Game.Window.ClientBounds.Width / 10), Game.Window.ClientBounds.Height / 10, 8 * (Game.Window.ClientBounds.Width / 10), (Game.Window.ClientBounds.Height / 10));
+            SpriteJoinMenu titreJoinGame = new SpriteJoinMenu(Game, titre, "JoinGame");
+            Game.Components.Add(titreJoinGame);
+
 
             base.Initialize();
         }
 
-        /// <summary>
-        /// Allows the game component to update itself.
-        /// </summary>
-        /// <param name="gameTime">Provides a snapshot of timing values.</param>
         public override void Update(GameTime gameTime)
         {
-            // TODO: Add your update code here
-
+            GérerSouris();
             base.Update(gameTime);
+        }
+        void GérerSouris()
+        {
+            positionSouris = GestionnaireInputs.GetPositionSouris();
+
+            if (positionBackButton.Contains(positionSouris))
+            {
+                if (GestionnaireInputs.EstNouveauClicGauche())
+                {
+                    ((Game1)Game).ChangerDÉtat(0);
+                }
+            }
         }
     }
 }
