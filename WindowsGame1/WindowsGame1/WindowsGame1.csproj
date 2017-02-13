@@ -76,6 +76,7 @@
     <Reference Include="System.Net" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Entitée.cs" />
     <Compile Include="Menu\SpriteHostMenu.cs" />
     <Compile Include="Menu\SpriteJoinMenu.cs" />
     <Compile Include="Menu\SpriteMainMenu.cs" />
