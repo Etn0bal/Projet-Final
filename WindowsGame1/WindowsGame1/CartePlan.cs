@@ -52,6 +52,7 @@ namespace AtelierXNA
         {
             GestionnaireDeTextures = Game.Services.GetService(typeof(RessourcesManager<Texture2D>)) as RessourcesManager<Texture2D>;
             CartePlanTexture = GestionnaireDeTextures.Find(NomCartePlan);
+            
             InitialiserDonnéesCarte();
             Origine = new Vector3(-Étendue.X / 2, 0, Étendue.Z / 2); //pour centrer la primitive au point (0,0,0)
             AllouerTableaux();

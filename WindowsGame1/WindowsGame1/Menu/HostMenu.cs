@@ -15,8 +15,8 @@ namespace AtelierXNA
     public class HostMenu : Microsoft.Xna.Framework.DrawableGameComponent
     {
         Rectangle positionBackButton { get; set; }
+        Rectangle positionCreateServerButton { get; set; }
         Rectangle positionStartGameButton { get; set; }
-        Rectangle positionSettingsButton { get; set; }
 
         Point positionSouris { get; set; }
         InputManager GestionnaireInputs { get; set; }
@@ -35,13 +35,13 @@ namespace AtelierXNA
             Game.Components.Add(fondd…cran);
 
             //Boutons
-            positionStartGameButton = new Rectangle(7 * (Game.Window.ClientBounds.Width / 10), 3 * (Game.Window.ClientBounds.Height / 10), 2 * (Game.Window.ClientBounds.Width / 10), (Game.Window.ClientBounds.Height / 10));
+            positionCreateServerButton = new Rectangle(7 * (Game.Window.ClientBounds.Width / 10), 3 * (Game.Window.ClientBounds.Height / 10), 2 * (Game.Window.ClientBounds.Width / 10), (Game.Window.ClientBounds.Height / 10));
+            SpriteHostMenu CreateServerButton = new SpriteHostMenu(Game, positionCreateServerButton, "CreateServer");
+            Game.Components.Add(CreateServerButton);
+
+            positionStartGameButton = new Rectangle(7 * (Game.Window.ClientBounds.Width / 10), 5 * (Game.Window.ClientBounds.Height / 10), 2 * (Game.Window.ClientBounds.Width / 10), (Game.Window.ClientBounds.Height / 10));
             SpriteHostMenu StartGameButton = new SpriteHostMenu(Game, positionStartGameButton, "StartGame");
             Game.Components.Add(StartGameButton);
-
-            positionSettingsButton = new Rectangle(7 * (Game.Window.ClientBounds.Width / 10), 5 * (Game.Window.ClientBounds.Height / 10), 2 * (Game.Window.ClientBounds.Width / 10), (Game.Window.ClientBounds.Height / 10));
-            SpriteHostMenu SettingsGameButton = new SpriteHostMenu(Game, positionSettingsButton, "Settings");
-            Game.Components.Add(SettingsGameButton);
             
 
             positionBackButton = new Rectangle(7 * (Game.Window.ClientBounds.Width / 10), 7 * (Game.Window.ClientBounds.Height / 10), 2 * (Game.Window.ClientBounds.Width / 10), (Game.Window.ClientBounds.Height / 10));
@@ -69,7 +69,23 @@ namespace AtelierXNA
                 {
                     ((Game1)Game).ChangerD…tat(0);
                 }
-            }         
+            }  
+            if(positionCreateServerButton.Contains(positionSouris))
+            {
+                if(GestionnaireInputs.EstNouveauClicGauche())
+                {
+
+                }
+            }   
+            if(positionStartGameButton.Contains(positionSouris))
+            {
+                if(GestionnaireInputs.EstNouveauClicGauche())
+                {
+                    TheGame game = new TheGame(Game);
+                    Game.Components.Add(game);
+                    
+                }
+            }  
         }
     }
 }

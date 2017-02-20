@@ -17,7 +17,6 @@ namespace AtelierXNA
     {
 
         RessourcesManager<Texture2D> GestionnaireDeTexture { get; set; }
-        InputManager GestionnaireInput { get; set; }
         GraphicsDeviceManager graphics { get; set; }
         SpriteBatch GestionSprites { get; set; }
         InputManager GestionInput { get; set; }
