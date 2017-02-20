@@ -30,7 +30,7 @@ namespace AtelierXNA
 
         TcpClient Client;
         const int PORT = 5011;
-        string IP = "127.0.0.1";
+        string IP = "172.17.106.102";
         const int BUFFER_SIZE = 2048;
         private byte[] readbuffer;
 

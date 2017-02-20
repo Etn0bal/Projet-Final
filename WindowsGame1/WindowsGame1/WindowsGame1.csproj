@@ -84,6 +84,7 @@
     <Compile Include="Menu\SpriteJoinMenu.cs" />
     <Compile Include="Menu\SpriteMainMenu.cs" />
     <Compile Include="CartePlan.cs" />
+    <Compile Include="Murs.cs" />
     <Compile Include="Sprite.cs" />
     <Compile Include="Menu\HostMenu.cs" />
     <Compile Include="Menu\JoinMenu.cs" />
