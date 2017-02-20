@@ -31,7 +31,7 @@ namespace AtelierXNA
 
             //Arriere plan
             Rectangle arrièrePlan = new Rectangle(0, 0, Game.Window.ClientBounds.Width, Game.Window.ClientBounds.Height);
-            SpriteHostMenu fonddÉcran = new SpriteHostMenu(Game, arrièrePlan, "dragon");
+            SpriteHostMenu fonddÉcran = new SpriteHostMenu(Game, arrièrePlan, "imagedefond");
             Game.Components.Add(fonddÉcran);
 
             //Boutons
@@ -49,7 +49,7 @@ namespace AtelierXNA
             Game.Components.Add(BackButton);
 
             //titre
-            Rectangle titre = new Rectangle((Game.Window.ClientBounds.Width / 10), Game.Window.ClientBounds.Height / 10, 8 * (Game.Window.ClientBounds.Width / 10), (Game.Window.ClientBounds.Height / 10));
+            Rectangle titre = new Rectangle((2*(Game.Window.ClientBounds.Width / 10)), Game.Window.ClientBounds.Height / 10, 6 * (Game.Window.ClientBounds.Width / 10), (Game.Window.ClientBounds.Height / 10));
             SpriteHostMenu titreHostGame = new SpriteHostMenu(Game, titre, "HostGame");
             Game.Components.Add(titreHostGame);
 
@@ -81,8 +81,7 @@ namespace AtelierXNA
             {
                 if(GestionnaireInputs.EstNouveauClicGauche())
                 {
-                    TheGame game = new TheGame(Game);
-                    Game.Components.Add(game);
+                    ((Game1)Game).ChangerDÉtat(3);
                     
                 }
             }  

@@ -32,7 +32,7 @@ namespace AtelierXNA
 
             //Arriere plan
             Rectangle arrièrePlan = new Rectangle(0, 0, Game.Window.ClientBounds.Width, Game.Window.ClientBounds.Height);
-            SpriteJoinMenu fonddÉcran = new SpriteJoinMenu(Game, arrièrePlan, "dragon");
+            SpriteJoinMenu fonddÉcran = new SpriteJoinMenu(Game, arrièrePlan, "imagedefond");
             Game.Components.Add(fonddÉcran);
 
             //Button
@@ -41,7 +41,7 @@ namespace AtelierXNA
             Game.Components.Add(BackButton);
 
             //titre
-            Rectangle titre = new Rectangle((Game.Window.ClientBounds.Width / 10), Game.Window.ClientBounds.Height / 10, 8 * (Game.Window.ClientBounds.Width / 10), (Game.Window.ClientBounds.Height / 10));
+            Rectangle titre = new Rectangle((2 * (Game.Window.ClientBounds.Width / 10)), Game.Window.ClientBounds.Height / 10, 6 * (Game.Window.ClientBounds.Width / 10), (Game.Window.ClientBounds.Height / 10));
             SpriteJoinMenu titreJoinGame = new SpriteJoinMenu(Game, titre, "JoinGame");
             Game.Components.Add(titreJoinGame);
 

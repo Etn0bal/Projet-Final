@@ -31,7 +31,6 @@ namespace AtelierXNA
         {
             GestionnaireTextures = Game.Services.GetService(typeof(RessourcesManager<Texture2D>)) as RessourcesManager<Texture2D>;
             GestionSprites = Game.Services.GetService(typeof(SpriteBatch)) as SpriteBatch;
-
             base.Initialize();
         }
         protected override void LoadContent()
@@ -48,7 +47,5 @@ namespace AtelierXNA
             } 
             GestionSprites.End();
         }
-
-
     }
 }

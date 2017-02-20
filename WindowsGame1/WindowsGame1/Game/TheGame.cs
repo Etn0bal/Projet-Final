@@ -11,6 +11,7 @@ using Microsoft.Xna.Framework.Media;
 using System.Net.Sockets;
 using System.Net;
 using System.Windows.Forms;
+using System.IO;
 
 
 namespace AtelierXNA
@@ -34,6 +35,9 @@ namespace AtelierXNA
         const int BUFFER_SIZE = 2048;
         private byte[] readbuffer;
 
+        MemoryStream readStream;
+        BinaryReader reader;
+
 
         public TheGame(Game game)
             : base(game)
@@ -54,13 +58,19 @@ namespace AtelierXNA
             CaméraJeu = new CaméraSubjective(Game, new Vector3(0, 100, 250), new Vector3(0, 0, -10), Vector3.Up, INTERVALLE_MAJ);
             Game.Services.AddService(typeof(Caméra), CaméraJeu);
             Game.Components.Add(CaméraJeu);
-           // Game.Components.Add(new CartePlan(Game, 1f, Vector3.Zero, Vector3.Zero, new Vector3(225, 0, 400), "CartePlan", INTERVALLE_MAJ));
+            Game.Components.Add(new CartePlan(Game, 1f, Vector3.Zero, Vector3.Zero, new Vector3(225, 0, 400), "CartePlan", INTERVALLE_MAJ));
 
-            Client = new TcpClient();
-            Client.NoDelay = true;
-            Client.Connect(IP, PORT);
-            readbuffer = new byte[BUFFER_SIZE];
-            Client.GetStream().BeginRead(readbuffer, 0, BUFFER_SIZE, StreamReceived, null);
+            //Client = new TcpClient();
+            //Client.NoDelay = true;
+            //Client.Connect(IP, PORT);
+            //readbuffer = new byte[BUFFER_SIZE];
+            //Client.GetStream().BeginRead(readbuffer, 0, BUFFER_SIZE, StreamReceived, null);
+
+
+            //readStream = new MemoryStream();
+            //reader = new BinaryReader(readStream);
+
+
             base.Initialize();
         }
 
@@ -76,13 +86,14 @@ namespace AtelierXNA
         }
         public override void Draw(GameTime gameTime)
         {
+            GraphicsDevice.Clear(Color.CadetBlue);
             base.Draw(gameTime);
         }
 
 
         private void StreamReceived(IAsyncResult ar)
         {
-            MessageBox.Show("MessageReceived.");
+            int bytesRead = 0;
             Client.GetStream().BeginRead(readbuffer, 0, BUFFER_SIZE, StreamReceived, null);
 
         }

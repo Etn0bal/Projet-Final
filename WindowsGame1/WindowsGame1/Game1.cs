@@ -72,6 +72,12 @@ namespace AtelierXNA
                 InitialiserJoinMenu();
                 State = States.Waiting;
             }
+            if(State == States.Game)
+            {
+                TheGame game = new TheGame(this);
+                Components.Add(game);
+                State = States.Waiting;
+            }
             base.Update(gameTime);
         }
 
@@ -185,6 +191,12 @@ namespace AtelierXNA
             {
                 gc.Enabled = true;
             }
+        }
+        void InitialiserGame()
+        {
+            Components.Clear();
+            TheGame game = new TheGame(this);
+            Components.Add(game);
         }
     }
 }

@@ -37,7 +37,7 @@ namespace AtelierXNA
 
             //Arriere plan
             Rectangle arrièrePlan = new Rectangle(0, 0, Game.Window.ClientBounds.Width, Game.Window.ClientBounds.Height);
-            SpriteMainMenu fonddÉcran = new SpriteMainMenu(Game, arrièrePlan, "dragon");
+            SpriteMainMenu fonddÉcran = new SpriteMainMenu(Game, arrièrePlan, "imagedefond");
             Game.Components.Add(fonddÉcran);
             
             //Vidéo
@@ -58,7 +58,7 @@ namespace AtelierXNA
 
             //Titre
 
-            Rectangle titre = new Rectangle(Game.Window.ClientBounds.Width / 10, Game.Window.ClientBounds.Height / 10, 8 * (Game.Window.ClientBounds.Width / 10), (Game.Window.ClientBounds.Height / 10));
+            Rectangle titre = new Rectangle(Game.Window.ClientBounds.Width / 10, Game.Window.ClientBounds.Height / 10, 6 * (Game.Window.ClientBounds.Width / 10), (Game.Window.ClientBounds.Height / 10));
             SpriteMainMenu TitreMainMenu = new SpriteMainMenu(Game,titre, "MLANBA");
             Game.Components.Add(TitreMainMenu);
 
