@@ -74,6 +74,7 @@ namespace AtelierXNA
             }
             if(State == States.Game)
             {
+                GraphicsDevice.Clear(Color.CornflowerBlue);
                 TheGame game = new TheGame(this);
                 Components.Add(game);
                 State = States.Waiting;

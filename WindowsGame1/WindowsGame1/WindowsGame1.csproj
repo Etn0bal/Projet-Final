@@ -13,7 +13,7 @@
     <TargetFrameworkProfile>Client</TargetFrameworkProfile>
     <XnaFrameworkVersion>v4.0</XnaFrameworkVersion>
     <XnaPlatform>Windows</XnaPlatform>
-    <XnaProfile>Reach</XnaProfile>
+    <XnaProfile>HiDef</XnaProfile>
     <XnaCrossPlatformGroupID>6e10700c-af8a-44f4-8885-f3d43312f0a6</XnaCrossPlatformGroupID>
     <XnaOutputType>Game</XnaOutputType>
     <ApplicationIcon>Game.ico</ApplicationIcon>
@@ -78,13 +78,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CaméraTypéMoba.cs" />
+    <Compile Include="CartePlan.cs" />
     <Compile Include="Delegates.cs" />
     <Compile Include="Entitée.cs" />
     <Compile Include="Game\TheGame.cs" />
     <Compile Include="Menu\SpriteHostMenu.cs" />
     <Compile Include="Menu\SpriteJoinMenu.cs" />
     <Compile Include="Menu\SpriteMainMenu.cs" />
-    <Compile Include="CartePlan.cs" />
     <Compile Include="Murs.cs" />
     <Compile Include="Protocoles.cs" />
     <Compile Include="Sprite.cs" />
