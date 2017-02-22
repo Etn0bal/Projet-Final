@@ -8,6 +8,7 @@ using Microsoft.Xna.Framework.GamerServices;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
+using System.Windows.Forms;
 
 namespace AtelierXNA
 {
@@ -82,6 +83,7 @@ namespace AtelierXNA
 
         protected override void Draw(GameTime gameTime)
         {
+            GraphicsDevice.Clear(Color.Black);
             base.Draw(gameTime);
         }
 
@@ -197,8 +199,16 @@ namespace AtelierXNA
             {
                 gc.Enabled = false;
             }
-            TheGame game = new TheGame(this);
-            Components.Add(game);
+            try
+            {
+                TheGame game = new TheGame(this);
+                Components.Add(game);
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show("Pas de Serveur Valide à rejoindre");
+            }
+
         }
     }
 }

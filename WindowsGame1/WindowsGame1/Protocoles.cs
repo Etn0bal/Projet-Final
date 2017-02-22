@@ -10,5 +10,6 @@ namespace AtelierXNA
         Disconnected = 0,
         Connected = 1,
 
+
    }
 }
