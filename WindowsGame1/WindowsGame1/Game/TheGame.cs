@@ -36,7 +36,7 @@ namespace AtelierXNA
 
         TcpClient Client;
         const int PORT = 5011;
-        string IP = "127.0.0.1";
+        string IP = "172.17.106.102";
         const int BUFFER_SIZE = 2048;
         private byte[] readbuffer;
 
@@ -57,7 +57,7 @@ namespace AtelierXNA
             graphics = Game.Services.GetService(typeof(GraphicsDeviceManager)) as GraphicsDeviceManager;
             GestionInput = Game.Services.GetService(typeof(InputManager)) as InputManager;
             GestionSprites = Game.Services.GetService(typeof(SpriteBatch)) as SpriteBatch;
-            CaméraJeu = new CaméraTypéMoba(Game, new Vector3(-85, 30, 115), new Vector3(0, -10, -10), Vector3.Up, INTERVALLE_MAJ);
+            CaméraJeu = new CaméraTypéMoba(Game, new Vector3(-85, 30, 115), new Vector3(0, -1, -1), Vector3.Up, INTERVALLE_MAJ);
 
             Game.Services.AddService(typeof(Caméra), CaméraJeu);
             Game.Components.Add(CaméraJeu);

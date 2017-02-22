@@ -33,7 +33,6 @@ namespace AtelierXNA
         Texture2D MursTexture { get; set; }
         int NbColonnes { get; set; }
         int NbRangées { get; set; }
-        int NbSommets { get; set; }
         int Cpt { get; set; }
 
         public Murs(Game game, float homothétieInitiale, Vector3 rotationInitiale, Vector3 positionInitiale, Vector3 étendue, string nomMurs,
@@ -96,26 +95,11 @@ namespace AtelierXNA
 
         void AllouerTableaux()
         {
-            //NbSommets = NombreDeSommets();
             PtsSommets = new Vector3[NbColonnes, NbRangées];
 
             Sommets = new VertexPositionColor[(18+24)*30];
         }
 
-        //int NombreDeSommets()
-        //{
-        //    int comp = 0;
-
-        //    for (int rangée = 0; rangée < DataTexture.GetLength(1); rangée++)
-        //    {
-        //        for (int colonne = 0; colonne < DataTexture.GetLength(0); colonne++)
-        //        {
-        //            if (DataTexture[colonne, rangée].G <= 50) { ++comp; }
-        //        }
-        //    }
-
-        //    return comp;
-        //}
 
         private void CréerTableauPoints()
         {
@@ -123,19 +107,10 @@ namespace AtelierXNA
             {
                 for (int colonne = 0; colonne < PtsSommets.GetLength(0); colonne++)
                 {
-                    //if (DataTexture[colonne, rangée].G <= 50)
-                    //{
-                    //    PtsSommets[colonne, rangée] = new Vector3(Origine.X + (rangée * DeltaPoint.X),
-                    //                                          Origine.Y +10,
-                    //                                          Origine.Z - (colonne * DeltaPoint.Z));
-                    //}
-                    //else
-                    //{
+
                         PtsSommets[colonne, rangée] = new Vector3(Origine.X + (rangée * DeltaPoint.X),
                                                               Origine.Y ,
                                                               Origine.Z - (colonne * DeltaPoint.Z));
-                    //}
-
                 }
             }
         }
@@ -178,7 +153,7 @@ namespace AtelierXNA
         {
             Vector3 point1 = Vector3.Zero;
             Vector3 point2 = Vector3.Zero;
-            Vector3 hauteur = new Vector3(0, 10, 0);
+            Vector3 hauteur = new Vector3(0, 3, 0);
             Vector3 direction;
             Vector3 latéral;
 
