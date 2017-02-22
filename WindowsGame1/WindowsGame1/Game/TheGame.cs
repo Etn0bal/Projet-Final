@@ -64,11 +64,11 @@ namespace AtelierXNA
             Game.Components.Add(new CartePlan(Game, 1f, Vector3.Zero, Vector3.Zero, new Vector3(225, 0, 400), "Carte Plan4", INTERVALLE_MAJ));
             Game.Components.Add(new Murs(Game, 1f, Vector3.Zero, Vector3.Zero, new Vector3(225, 0, 400), "Carte planMur", INTERVALLE_MAJ));
 
-            //Client = new TcpClient();
-            //Client.NoDelay = true;
-            //Client.Connect(IP, PORT);
-            //readbuffer = new byte[BUFFER_SIZE];
-            //Client.GetStream().BeginRead(readbuffer, 0, BUFFER_SIZE, StreamReceived, null);
+            Client = new TcpClient();
+            Client.NoDelay = true;
+            Client.Connect(IP, PORT);
+            readbuffer = new byte[BUFFER_SIZE];
+            Client.GetStream().BeginRead(readbuffer, 0, BUFFER_SIZE, StreamReceived, null);
 
 
             readStream = new MemoryStream();
