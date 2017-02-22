@@ -16,11 +16,11 @@ using System.IO;
 
 namespace AtelierXNA
 {
-    /// <summary>
-    /// This is a game component that implements IUpdateable.
-    /// </summary>
+    public enum Stade { Menu,Inloading,InGame,EndOfTheGame}
+
     public class TheGame : Microsoft.Xna.Framework.DrawableGameComponent
     {
+
         Caméra CaméraJeu { get; set; }
         const float INTERVALLE_MAJ = 1f / 60f;
 
@@ -29,14 +29,16 @@ namespace AtelierXNA
         SpriteBatch GestionSprites { get; set; }
         InputManager GestionInput { get; set; }
 
+        MemoryStream readStream, writeStream;
+
+        BinaryReader reader;
+        BinaryWriter writer;
+
         TcpClient Client;
         const int PORT = 5011;
         string IP = "127.0.0.1";
         const int BUFFER_SIZE = 2048;
         private byte[] readbuffer;
-
-        MemoryStream readStream;
-        BinaryReader reader;
 
 
         public TheGame(Game game)
@@ -69,16 +71,15 @@ namespace AtelierXNA
 
 
             readStream = new MemoryStream();
+            writeStream = new MemoryStream();
+
             reader = new BinaryReader(readStream);
+            writer = new BinaryWriter(writeStream);
 
 
             base.Initialize();
         }
 
-        /// <summary>
-        /// Allows the game component to update itself.
-        /// </summary>
-        /// <param name="gameTime">Provides a snapshot of timing values.</param>
         public override void Update(GameTime gameTime)
         {
             // TODO: Add your update code here
@@ -100,31 +101,31 @@ namespace AtelierXNA
             {
                 lock (Client.GetStream())
                 {
-                    Client.GetStream().EndRead(ar);
+                    bytesRead = Client.GetStream().EndRead(ar);
                 }
             }
-            catch(Exception ex )
+            catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
             }
-            if(bytesRead == 0)
+
+            if (bytesRead == 0)
             {
                 Client.Close();
                 return;
             }
-            byte[] data = new byte[bytesRead];
-            for (int i = 0; i < bytesRead; i++)
-            {
-                data[i] = readbuffer[i];
-            }
 
-            AnalyseData(data);
+            byte[] data = new byte[bytesRead];
+
+            for (int i = 0; i < bytesRead; i++)
+                data[i] = readbuffer[i];
+
+            ProcessData(data);
 
             Client.GetStream().BeginRead(readbuffer, 0, BUFFER_SIZE, StreamReceived, null);
-
         }
 
-        private void AnalyseData(byte[] data)
+        private void ProcessData(byte[] data)
         {
             readStream.SetLength(0);
             readStream.Position = 0;
@@ -136,21 +137,71 @@ namespace AtelierXNA
 
             try
             {
-                p = (Protocoles)readStream.ReadByte();
+                p = (Protocoles)reader.ReadByte();
 
-                if(p == Protocoles.Connected)
+                if (p == Protocoles.Connected)
                 {
-                    MessageBox.Show("Un joueur a rejoins la partie!");
                 }
-                if (p == Protocoles.Disconnected)
+                else if (p == Protocoles.Disconnected)
                 {
-                    MessageBox.Show("Un joueur a quitté la partie!");
                 }
 
+                else if (p == Protocoles.PlayerMoved)
+                {
+                }
+                else if (p == Protocoles)
+                {
+                }
+                else if (p == Protocoles)
+                {
+                }
+                else if (p == Protocoles)
+                {
+                }
+                else if (p == Protocoles.Validation)
+                {
+                }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
+            }
+        }
+
+
+        private byte[]GetDataFromMemoryStream(MemoryStream ms)
+        {
+            byte[] result;
+    
+            lock (ms)
+            {
+                int bytesWritten = (int)ms.Position;
+                result = new byte[bytesWritten];
+
+                ms.Position = 0;
+                ms.Read(result, 0, bytesWritten);
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Code to actually send the data to the client
+        /// </summary>
+        /// <param name="b">Data to send</param>
+        public void SendData(byte[] b)
+        {
+           
+            try
+            {
+                lock (Client.GetStream())
+                {
+                    Client.GetStream().BeginWrite(b, 0, b.Length, null, null);
+                }
+            }
+            catch (Exception e)
+            {
+
             }
         }
     }
