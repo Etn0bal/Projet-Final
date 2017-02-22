@@ -52,7 +52,6 @@ namespace AtelierXNA
         {
             GestionnaireDeTextures = Game.Services.GetService(typeof(RessourcesManager<Texture2D>)) as RessourcesManager<Texture2D>;
             CartePlanTexture = GestionnaireDeTextures.Find(NomCartePlan);
-            
             InitialiserDonnéesCarte();
             Origine = new Vector3(-Étendue.X / 2, 0, Étendue.Z / 2); //pour centrer la primitive au point (0,0,0)
             AllouerTableaux();
@@ -71,7 +70,7 @@ namespace AtelierXNA
             NbColonnes = CartePlanTexture.Width;
             NbRangées = CartePlanTexture.Height;
 
-            DeltaPoint = new Vector3(Étendue.X / NbColonnes, Étendue.Y, Étendue.Z / NbRangées);
+            DeltaPoint = new Vector3(Étendue.Z / NbRangées, Étendue.Y, Étendue.X / NbColonnes);
 
             Color[] dataTexture = new Color[NbRangées * NbColonnes];
             CartePlanTexture.GetData<Color>(dataTexture);
@@ -108,9 +107,18 @@ namespace AtelierXNA
             {
                 for (int colonne = 0; colonne < PtsSommets.GetLength(0); colonne++)
                 {
-                    PtsSommets[colonne, rangée] = new Vector3(Origine.X + (rangée * DeltaPoint.X),
-                                                             -10* DataTexture[colonne,rangée].G /255,  
-                                                              Origine.Z - (colonne * DeltaPoint.Z));
+                    if (DataTexture[colonne, rangée].G <= 50)
+                    {
+                        PtsSommets[colonne, rangée] = new Vector3(Origine.X + (rangée * DeltaPoint.X),
+                                                                  Origine.Y ,
+                                                                  Origine.Z - (colonne * DeltaPoint.Z));
+                    }
+                    else
+                    {
+                        PtsSommets[colonne, rangée] = new Vector3(Origine.X + (rangée * DeltaPoint.X),
+                                                                  Origine.Y ,
+                                                                  Origine.Z - (colonne * DeltaPoint.Z));
+                    }
                 }
             }
         }
@@ -148,13 +156,14 @@ namespace AtelierXNA
                 for (int i = 0; i < NbColonnes-1; ++i)
                 {
                     Sommets[++NoSommet] = new VertexPositionTexture(PtsSommets[i, j], PtsTexture[i, j]);
-                    Sommets[++NoSommet] = new VertexPositionTexture(PtsSommets[i+1, j], PtsTexture[i+1, j]);
+                    Sommets[++NoSommet] = new VertexPositionTexture(PtsSommets[i + 1, j], PtsTexture[i + 1, j]);
                     Sommets[++NoSommet] = new VertexPositionTexture(PtsSommets[i, j + 1], PtsTexture[i, j + 1]);
-
+                    
 
                     Sommets[++NoSommet] = new VertexPositionTexture(PtsSommets[i, j+1], PtsTexture[i, j+1]);
                     Sommets[++NoSommet] = new VertexPositionTexture(PtsSommets[i + 1, j], PtsTexture[i + 1, j]);
                     Sommets[++NoSommet] = new VertexPositionTexture(PtsSommets[i + 1, j + 1], PtsTexture[i + 1, j + 1]);
+
                 }
             }
         }
