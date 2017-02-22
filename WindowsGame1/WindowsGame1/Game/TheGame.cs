@@ -135,38 +135,38 @@ namespace AtelierXNA
 
         //    Protocoles p;
 
-        //    //try
-        //    //{
-        //    //    p = (Protocoles)reader.ReadByte();
+        //    try
+        //    {
+        //        p = (Protocoles)reader.ReadByte();
 
-        //    //    if (p == Protocoles.Connected)
-        //    //    {
-        //    //    }
-        //    //    else if (p == Protocoles.Disconnected)
-        //    //    {
-        //    //    }
+        //        if (p == Protocoles.Connected)
+        //        {
+        //        }
+        //        else if (p == Protocoles.Disconnected)
+        //        {
+        //        }
 
-        //    //    else if (p == Protocoles.PlayerMoved)
-        //    //    {
-        //    //    }
-        //    //    else if (p == Protocoles)
-        //    //    {
-        //    //    }
-        //    //    else if (p == Protocoles)
-        //    //    {
-        //    //    }
-        //    //    else if (p == Protocoles)
-        //    //    {
-        //    //    }
-        //    //    else if (p == Protocoles.Validation)
-        //    //    {
-        ////    //    }
-        ////    }
-        ////    catch (Exception ex)
-        ////    {
-        ////        MessageBox.Show(ex.Message);
-        ////    }
-        ////}
+        //        else if (p == Protocoles.PlayerMoved)
+        //        {
+        //        }
+        //        else if (p == Protocoles)
+        //        {
+        //        }
+        //        else if (p == Protocoles)
+        //        {
+        //        }
+        //        else if (p == Protocoles)
+        //        {
+        //        }
+        //        else if (p == Protocoles.Validation)
+        //        {
+        //            //    }
+        //        }
+        //        catch (Exception ex)
+        //    {
+        //        MessageBox.Show(ex.Message);
+        //    }
+        //}
 
 
         private byte[]GetDataFromMemoryStream(MemoryStream ms)

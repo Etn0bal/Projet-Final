@@ -74,7 +74,7 @@ namespace AtelierXNA
             }
             if(State == States.Game)
             {
-                GraphicsDevice.Clear(Color.CornflowerBlue);
+                InitialiserGame();
                 TheGame game = new TheGame(this);
                 Components.Add(game);
                 State = States.Waiting;
@@ -195,7 +195,10 @@ namespace AtelierXNA
         }
         void InitialiserGame()
         {
-            Components.Clear();
+            foreach (GameComponent gc in Components.Where(x => x is Sprite))
+            {
+                gc.Enabled = false;
+            }
             TheGame game = new TheGame(this);
             Components.Add(game);
         }
