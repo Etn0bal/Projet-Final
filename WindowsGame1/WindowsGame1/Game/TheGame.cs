@@ -57,11 +57,12 @@ namespace AtelierXNA
             graphics = Game.Services.GetService(typeof(GraphicsDeviceManager)) as GraphicsDeviceManager;
             GestionInput = Game.Services.GetService(typeof(InputManager)) as InputManager;
             GestionSprites = Game.Services.GetService(typeof(SpriteBatch)) as SpriteBatch;
-            CaméraJeu = new CaméraTypéMoba(Game, new Vector3(-90, 30, 100), new Vector3(0, -10, -10), Vector3.Up, INTERVALLE_MAJ);
+            CaméraJeu = new CaméraTypéMoba(Game, new Vector3(-85, 30, 115), new Vector3(0, -10, -10), Vector3.Up, INTERVALLE_MAJ);
 
             Game.Services.AddService(typeof(Caméra), CaméraJeu);
             Game.Components.Add(CaméraJeu);
             Game.Components.Add(new CartePlan(Game, 1f, Vector3.Zero, Vector3.Zero, new Vector3(225, 0, 400), "Carte Plan4", INTERVALLE_MAJ));
+            Game.Components.Add(new Murs(Game, 1f, Vector3.Zero, Vector3.Zero, new Vector3(225, 0, 400), "Carte planMur", INTERVALLE_MAJ));
 
             //Client = new TcpClient();
             //Client.NoDelay = true;
