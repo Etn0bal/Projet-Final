@@ -31,7 +31,7 @@ namespace AtelierXNA
 
         TcpClient Client;
         const int PORT = 5011;
-        string IP = "172.17.106.102";
+        string IP = "127.0.0.1";
         const int BUFFER_SIZE = 2048;
         private byte[] readbuffer;
 
@@ -55,20 +55,21 @@ namespace AtelierXNA
             graphics = Game.Services.GetService(typeof(GraphicsDeviceManager)) as GraphicsDeviceManager;
             GestionInput = Game.Services.GetService(typeof(InputManager)) as InputManager;
             GestionSprites = Game.Services.GetService(typeof(SpriteBatch)) as SpriteBatch;
-            CaméraJeu = new CaméraSubjective(Game, new Vector3(0, 100, 250), new Vector3(0, 0, -10), Vector3.Up, INTERVALLE_MAJ);
-            Game.Services.AddService(typeof(Caméra), CaméraJeu);
-            Game.Components.Add(CaméraJeu);
-            Game.Components.Add(new CartePlan(Game, 1f, Vector3.Zero, Vector3.Zero, new Vector3(225, 0, 400), "CartePlan", INTERVALLE_MAJ));
+            //CaméraJeu = new CaméraSubjective(Game, new Vector3(0, 100, 250), new Vector3(0, 0, -10), Vector3.Up, INTERVALLE_MAJ);
 
-            //Client = new TcpClient();
-            //Client.NoDelay = true;
-            //Client.Connect(IP, PORT);
-            //readbuffer = new byte[BUFFER_SIZE];
-            //Client.GetStream().BeginRead(readbuffer, 0, BUFFER_SIZE, StreamReceived, null);
+            //Game.Services.AddService(typeof(Caméra), CaméraJeu);
+            // Game.Components.Add(CaméraJeu);
+            // Game.Components.Add(new CartePlan(Game, 1f, Vector3.Zero, Vector3.Zero, new Vector3(225, 0, 400), "CartePlan", INTERVALLE_MAJ));
+
+            Client = new TcpClient();
+            Client.NoDelay = true;
+            Client.Connect(IP, PORT);
+            readbuffer = new byte[BUFFER_SIZE];
+            Client.GetStream().BeginRead(readbuffer, 0, BUFFER_SIZE, StreamReceived, null);
 
 
-            //readStream = new MemoryStream();
-            //reader = new BinaryReader(readStream);
+            readStream = new MemoryStream();
+            reader = new BinaryReader(readStream);
 
 
             base.Initialize();
@@ -94,9 +95,63 @@ namespace AtelierXNA
         private void StreamReceived(IAsyncResult ar)
         {
             int bytesRead = 0;
+
+            try
+            {
+                lock (Client.GetStream())
+                {
+                    Client.GetStream().EndRead(ar);
+                }
+            }
+            catch(Exception ex )
+            {
+                MessageBox.Show(ex.Message);
+            }
+            if(bytesRead == 0)
+            {
+                Client.Close();
+                return;
+            }
+            byte[] data = new byte[bytesRead];
+            for (int i = 0; i < bytesRead; i++)
+            {
+                data[i] = readbuffer[i];
+            }
+
+            AnalyseData(data);
+
             Client.GetStream().BeginRead(readbuffer, 0, BUFFER_SIZE, StreamReceived, null);
 
         }
 
+        private void AnalyseData(byte[] data)
+        {
+            readStream.SetLength(0);
+            readStream.Position = 0;
+
+            readStream.Write(data, 0, data.Length);
+            readStream.Position = 0;
+
+            Protocoles p;
+
+            try
+            {
+                p = (Protocoles)readStream.ReadByte();
+
+                if(p == Protocoles.Connected)
+                {
+                    MessageBox.Show("Un joueur a rejoins la partie!");
+                }
+                if (p == Protocoles.Disconnected)
+                {
+                    MessageBox.Show("Un joueur a quitté la partie!");
+                }
+
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
     }
 }
