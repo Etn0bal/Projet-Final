@@ -89,7 +89,6 @@ namespace AtelierXNA
         }
         public override void Draw(GameTime gameTime)
         {
-            //GraphicsDevice.Clear(Color.CadetBlue);
             base.Draw(gameTime);
         }
 

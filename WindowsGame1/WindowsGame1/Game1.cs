@@ -75,8 +75,6 @@ namespace AtelierXNA
             if(State == States.Game)
             {
                 InitialiserGame();
-                TheGame game = new TheGame(this);
-                Components.Add(game);
                 State = States.Waiting;
             }
             base.Update(gameTime);
@@ -195,7 +193,7 @@ namespace AtelierXNA
         }
         void InitialiserGame()
         {
-            foreach (GameComponent gc in Components.Where(x => x is Sprite))
+            foreach (GameComponent gc in Components.Where(x => x is SpriteHostMenu))
             {
                 gc.Enabled = false;
             }
