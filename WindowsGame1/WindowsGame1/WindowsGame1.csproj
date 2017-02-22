@@ -77,6 +77,7 @@
     <Reference Include="System.Net" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CaméraTypéMoba.cs" />
     <Compile Include="Delegates.cs" />
     <Compile Include="Entitée.cs" />
     <Compile Include="Game\TheGame.cs" />
