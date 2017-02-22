@@ -120,53 +120,53 @@ namespace AtelierXNA
             for (int i = 0; i < bytesRead; i++)
                 data[i] = readbuffer[i];
 
-            ProcessData(data);
+            //ProcessData(data);
 
             Client.GetStream().BeginRead(readbuffer, 0, BUFFER_SIZE, StreamReceived, null);
         }
 
-        private void ProcessData(byte[] data)
-        {
-            readStream.SetLength(0);
-            readStream.Position = 0;
+        //private void ProcessData(byte[] data)
+        //{
+        //    readStream.SetLength(0);
+        //    readStream.Position = 0;
 
-            readStream.Write(data, 0, data.Length);
-            readStream.Position = 0;
+        //    readStream.Write(data, 0, data.Length);
+        //    readStream.Position = 0;
 
-            Protocoles p;
+        //    Protocoles p;
 
-            try
-            {
-                p = (Protocoles)reader.ReadByte();
+        //    //try
+        //    //{
+        //    //    p = (Protocoles)reader.ReadByte();
 
-                if (p == Protocoles.Connected)
-                {
-                }
-                else if (p == Protocoles.Disconnected)
-                {
-                }
+        //    //    if (p == Protocoles.Connected)
+        //    //    {
+        //    //    }
+        //    //    else if (p == Protocoles.Disconnected)
+        //    //    {
+        //    //    }
 
-                else if (p == Protocoles.PlayerMoved)
-                {
-                }
-                else if (p == Protocoles)
-                {
-                }
-                else if (p == Protocoles)
-                {
-                }
-                else if (p == Protocoles)
-                {
-                }
-                else if (p == Protocoles.Validation)
-                {
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
-        }
+        //    //    else if (p == Protocoles.PlayerMoved)
+        //    //    {
+        //    //    }
+        //    //    else if (p == Protocoles)
+        //    //    {
+        //    //    }
+        //    //    else if (p == Protocoles)
+        //    //    {
+        //    //    }
+        //    //    else if (p == Protocoles)
+        //    //    {
+        //    //    }
+        //    //    else if (p == Protocoles.Validation)
+        //    //    {
+        ////    //    }
+        ////    }
+        ////    catch (Exception ex)
+        ////    {
+        ////        MessageBox.Show(ex.Message);
+        ////    }
+        ////}
 
 
         private byte[]GetDataFromMemoryStream(MemoryStream ms)
