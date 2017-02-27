@@ -69,9 +69,7 @@ namespace AtelierXNA
             {
                 if (GestionInput.EstEnfoncée(Keys.LeftShift) || GestionInput.EstEnfoncée(Keys.RightShift))
                 {
-                    //GérerAccélération();
                     GérerDéplacement();
-                    //GérerRotation();
                     CréerPointDeVue();
                 }
                 TempsÉcouléDepuisMAJ = 0;
@@ -88,6 +86,11 @@ namespace AtelierXNA
         {
             float déplacementZ = (-GérerTouche(Keys.W) + GérerTouche(Keys.S)) * VitesseTranslation;
             float déplacementX = (-GérerTouche(Keys.A) + GérerTouche(Keys.D)) * VitesseTranslation;
+
+            if (Position.Z + déplacementZ > 205 || Position.Z + déplacementZ < -30)
+            { déplacementZ = 0; }
+            if (Position.X + déplacementX > 290 || Position.X + déplacementX < -120)
+            { déplacementX = 0; }
 
             Position += new Vector3(déplacementX,0,déplacementZ);
         }
