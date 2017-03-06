@@ -35,16 +35,6 @@ namespace AtelierXNA
         SpriteBatch GestionSprites { get; set; }
         InputManager GestionInput { get; set; }
 
-        MemoryStream readStream, writeStream;
-
-        BinaryReader reader;
-        BinaryWriter writer;
-
-        TcpClient Client;
-        const int PORT = 5011;
-        string IP = "172.17.106.102";
-        const int BUFFER_SIZE = 2048;
-        private byte[] readbuffer;
 
 
         public TheGame(Game game)
@@ -70,20 +60,6 @@ namespace AtelierXNA
             Game.Components.Add(CaméraJeu);
             Game.Components.Add(new CartePlan(Game, 1f, Vector3.Zero, Vector3.Zero, new Vector3(225, 0, 400), "Carte Plan4", INTERVALLE_MAJ));
             Game.Components.Add(new Murs(Game, 1f, Vector3.Zero, Vector3.Zero, new Vector3(225, 0, 400), "Carte planMur", INTERVALLE_MAJ));
-            
-
-            //Client = new TcpClient();
-            //Client.NoDelay = true;
-            //Client.Connect(IP, PORT);
-            //readbuffer = new byte[BUFFER_SIZE];
-            //Client.GetStream().BeginRead(readbuffer, 0, BUFFER_SIZE, StreamReceived, null);
-
-
-            //readStream = new MemoryStream();
-            //writeStream = new MemoryStream();
-
-            //reader = new BinaryReader(readStream);
-            //writer = new BinaryWriter(writeStream);
 
             Game.Components.Add(new ObjetDeDémo(Game, "robot", ÉCHELLE_OBJET, rotationObjet, positionObjet,INTERVALLE_MAJ));
             base.Initialize();
@@ -99,119 +75,6 @@ namespace AtelierXNA
         {
             
             base.Draw(gameTime);
-        }
-
-
-        private void StreamReceived(IAsyncResult ar)
-        {
-            int bytesRead = 0;
-
-            try
-            {
-                lock (Client.GetStream())
-                {
-                    bytesRead = Client.GetStream().EndRead(ar);
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
-
-            if (bytesRead == 0)
-            {
-                Client.Close();
-                return;
-            }
-
-            byte[] data = new byte[bytesRead];
-
-            for (int i = 0; i < bytesRead; i++)
-                data[i] = readbuffer[i];
-
-            //ProcessData(data);
-
-            Client.GetStream().BeginRead(readbuffer, 0, BUFFER_SIZE, StreamReceived, null);
-        }
-
-        //private void ProcessData(byte[] data)
-        //{
-        //    readStream.SetLength(0);
-        //    readStream.Position = 0;
-
-        //    readStream.Write(data, 0, data.Length);
-        //    readStream.Position = 0;
-
-        //    Protocoles p;
-
-        //    try
-        //    {
-        //        p = (Protocoles)reader.ReadByte();
-
-        //        if (p == Protocoles.Connected)
-        //        {
-        //        }
-        //        else if (p == Protocoles.Disconnected)
-        //        {
-        //        }
-
-        //        else if (p == Protocoles.PlayerMoved)
-        //        {
-        //        }
-        //        else if (p == Protocoles)
-        //        {
-        //        }
-        //        else if (p == Protocoles)
-        //        {
-        //        }
-        //        else if (p == Protocoles)
-        //        {
-        //        }
-        //        else if (p == Protocoles.Validation)
-        //        {
-        //            //    }
-        //        }
-        //        catch (Exception ex)
-        //    {
-        //        MessageBox.Show(ex.Message);
-        //    }
-        //}
-
-
-        private byte[]GetDataFromMemoryStream(MemoryStream ms)
-        {
-            byte[] result;
-    
-            lock (ms)
-            {
-                int bytesWritten = (int)ms.Position;
-                result = new byte[bytesWritten];
-
-                ms.Position = 0;
-                ms.Read(result, 0, bytesWritten);
-            }
-
-            return result;
-        }
-
-        /// <summary>
-        /// Code to actually send the data to the client
-        /// </summary>
-        /// <param name="b">Data to send</param>
-        public void SendData(byte[] b)
-        {
-           
-            try
-            {
-                lock (Client.GetStream())
-                {
-                    Client.GetStream().BeginWrite(b, 0, b.Length, null, null);
-                }
-            }
-            catch (Exception e)
-            {
-
-            }
         }
     }
 }

@@ -74,13 +74,14 @@ namespace AtelierXNA
             {
                 if(GestionnaireInputs.EstNouveauClicGauche())
                 {
-
+                    new ServerClient(Game, "localip");
                 }
             }   
             if(positionStartGameButton.Contains(positionSouris))
             {
                 if(GestionnaireInputs.EstNouveauClicGauche())
                 {
+                    ((Game1)Game).EnJeu = true;
                     ((Game1)Game).ChangerDÉtat(3);
                     
                 }

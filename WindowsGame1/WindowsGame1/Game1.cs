@@ -23,6 +23,7 @@ namespace AtelierXNA
         SpriteBatch GestionSprites { get; set; }
         InputManager GestionInput { get; set; }
         States State { get; set; }
+        public bool EnJeu { get; set; }
 
         public Game1()
         {
@@ -48,6 +49,7 @@ namespace AtelierXNA
             MainMenu mainMenu = new MainMenu(this);
             Components.Add(mainMenu);
 
+            EnJeu = false;
 
 
             base.Initialize();
