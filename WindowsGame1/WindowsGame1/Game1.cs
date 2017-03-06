@@ -18,6 +18,7 @@ namespace AtelierXNA
     {
 
         RessourcesManager<Texture2D> GestionnaireDeTexture { get; set; }
+        RessourcesManager<Model> GestionnaireDeModels { get; set; }
         GraphicsDeviceManager graphics { get; set; }
         SpriteBatch GestionSprites { get; set; }
         InputManager GestionInput { get; set; }
@@ -37,6 +38,7 @@ namespace AtelierXNA
             Services.AddService(typeof(SpriteBatch), new SpriteBatch(GraphicsDevice));
             Services.AddService(typeof(RessourcesManager<Texture2D>), new RessourcesManager<Texture2D>(this, "Textures"));
             Services.AddService(typeof(InputManager), GestionInput);
+            Services.AddService(typeof(RessourcesManager<Model>), new RessourcesManager<Model>(this, "Models"));
 
             State = States.MainMenu;
             JoinMenu joinMenu = new JoinMenu(this);
@@ -199,15 +201,8 @@ namespace AtelierXNA
             {
                 gc.Enabled = false;
             }
-            try
-            {
-                TheGame game = new TheGame(this);
-                Components.Add(game);
-            }
-            catch(Exception ex)
-            {
-                MessageBox.Show("Pas de Serveur Valide à rejoindre");
-            }
+            TheGame game = new TheGame(this);
+            Components.Add(game);
 
         }
     }

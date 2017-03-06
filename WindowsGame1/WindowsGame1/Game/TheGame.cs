@@ -24,7 +24,13 @@ namespace AtelierXNA
         Caméra CaméraJeu { get; set; }
         const float INTERVALLE_MAJ = 1f / 60f;
 
+
+        const float ÉCHELLE_OBJET = 0.01f;
+        Vector3 positionObjet = new Vector3(-90,1,90);
+        Vector3 rotationObjet = new Vector3(0, MathHelper.PiOver2, 0);
+
         RessourcesManager<Texture2D> GestionnaireDeTexture { get; set; }
+        RessourcesManager<Model> GestionnaireDeModel { get; set; }
         GraphicsDeviceManager graphics { get; set; }
         SpriteBatch GestionSprites { get; set; }
         InputManager GestionInput { get; set; }
@@ -54,30 +60,32 @@ namespace AtelierXNA
         public override void Initialize()
         {
             GestionnaireDeTexture = Game.Services.GetService(typeof(RessourcesManager<Texture2D>)) as RessourcesManager<Texture2D>;
+            GestionnaireDeModel = Game.Services.GetService(typeof(RessourcesManager<Model>)) as RessourcesManager<Model>;
             graphics = Game.Services.GetService(typeof(GraphicsDeviceManager)) as GraphicsDeviceManager;
             GestionInput = Game.Services.GetService(typeof(InputManager)) as InputManager;
             GestionSprites = Game.Services.GetService(typeof(SpriteBatch)) as SpriteBatch;
-            CaméraJeu = new CaméraTypéMoba(Game, new Vector3(-85, 30, 115), new Vector3(0, -1, -1), Vector3.Up, INTERVALLE_MAJ);
+            CaméraJeu = new CaméraSubjective(Game, new Vector3(-85, 30, 115), new Vector3(0, -1, -1), Vector3.Up, INTERVALLE_MAJ);
 
             Game.Services.AddService(typeof(Caméra), CaméraJeu);
             Game.Components.Add(CaméraJeu);
             Game.Components.Add(new CartePlan(Game, 1f, Vector3.Zero, Vector3.Zero, new Vector3(225, 0, 400), "Carte Plan4", INTERVALLE_MAJ));
             Game.Components.Add(new Murs(Game, 1f, Vector3.Zero, Vector3.Zero, new Vector3(225, 0, 400), "Carte planMur", INTERVALLE_MAJ));
+            
 
-            Client = new TcpClient();
-            Client.NoDelay = true;
-            Client.Connect(IP, PORT);
-            readbuffer = new byte[BUFFER_SIZE];
-            Client.GetStream().BeginRead(readbuffer, 0, BUFFER_SIZE, StreamReceived, null);
-
-
-            readStream = new MemoryStream();
-            writeStream = new MemoryStream();
-
-            reader = new BinaryReader(readStream);
-            writer = new BinaryWriter(writeStream);
+            //Client = new TcpClient();
+            //Client.NoDelay = true;
+            //Client.Connect(IP, PORT);
+            //readbuffer = new byte[BUFFER_SIZE];
+            //Client.GetStream().BeginRead(readbuffer, 0, BUFFER_SIZE, StreamReceived, null);
 
 
+            //readStream = new MemoryStream();
+            //writeStream = new MemoryStream();
+
+            //reader = new BinaryReader(readStream);
+            //writer = new BinaryWriter(writeStream);
+
+            Game.Components.Add(new ObjetDeDémo(Game, "robot", ÉCHELLE_OBJET, rotationObjet, positionObjet,INTERVALLE_MAJ));
             base.Initialize();
         }
 
@@ -89,6 +97,7 @@ namespace AtelierXNA
         }
         public override void Draw(GameTime gameTime)
         {
+            
             base.Draw(gameTime);
         }
 

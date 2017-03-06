@@ -80,12 +80,14 @@
     <Compile Include="CaméraTypéMoba.cs" />
     <Compile Include="CartePlan.cs" />
     <Compile Include="Delegates.cs" />
-    <Compile Include="Entitée.cs" />
+    <Compile Include="Entitée\Entitée.cs" />
     <Compile Include="Game\TheGame.cs" />
     <Compile Include="Menu\SpriteHostMenu.cs" />
     <Compile Include="Menu\SpriteJoinMenu.cs" />
     <Compile Include="Menu\SpriteMainMenu.cs" />
     <Compile Include="Murs.cs" />
+    <Compile Include="Entitée\ObjetDeBase.cs" />
+    <Compile Include="Entitée\ObjetDeDémo.cs" />
     <Compile Include="Protocoles.cs" />
     <Compile Include="Sprite.cs" />
     <Compile Include="Menu\HostMenu.cs" />

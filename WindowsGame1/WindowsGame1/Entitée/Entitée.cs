@@ -12,29 +12,29 @@ using Microsoft.Xna.Framework.Media;
 
 namespace AtelierXNA
 {
-    /// <summary>
-    /// This is a game component that implements IUpdateable.
-    /// </summary>
-    public class Entitée : DrawableGameComponent
+
+    public class Entitée : ObjetDeDémo
     {
         int PointDeVie { get; set; }
         Vector2 Position { get; set; }
-        public int Range { get; set; }
+        public int Portée { get; set; }
         int Force { get; set; }
         int Armure { get; set; }
-        public Entitée(Game game,int pointDeVie,Vector2 position,int range,int force,int armure)
-            : base(game)
+        bool EstAttaqué { get; set; }
+        public Entitée(Game jeu, string nomModèle, float échelleInitiale, Vector3 rotationInitiale, Vector3 positionInitiale,
+                           float intervalleMAJ,int pointDeVie,Vector2 position,int portée,int force,int armure)
+            : base(jeu,nomModèle,échelleInitiale,rotationInitiale,positionInitiale,intervalleMAJ)
         {
             PointDeVie = pointDeVie;
             Position = position;
-            Range = range;
+            Portée = portée;
             Force = force;
             Armure = armure;
         }
 
         public override void Initialize()
         {
-
+            EstAttaqué = false;
             base.Initialize();
         }
 
@@ -48,7 +48,7 @@ namespace AtelierXNA
         }
         protected void Défendre(int Attaque)
         {
-            int ptDeDégat = Attaque - Armure;
+            int ptDeDégat = Math.Max(Attaque - Armure, 0);
             PointDeVie -= ptDeDégat;
         }
 
