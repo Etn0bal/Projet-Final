@@ -15,7 +15,7 @@ namespace AtelierXNA
     /// <summary>
     /// This is a game component that implements IUpdateable.
     /// </summary>
-    public class Entitée : ObjetDemo
+    public class Entitée : ObjetDeDémo
     {
         int PointDeVie { get; set; }
         Vector2 Position { get; set; }
