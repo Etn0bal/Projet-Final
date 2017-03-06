@@ -48,7 +48,7 @@ namespace AtelierXNA
         }
         protected void Défendre(int Attaque)
         {
-            int ptDeDégat = Attaque - Armure;
+            int ptDeDégat = Math.Max(Attaque - Armure, 0);
             PointDeVie -= ptDeDégat;
         }
 
