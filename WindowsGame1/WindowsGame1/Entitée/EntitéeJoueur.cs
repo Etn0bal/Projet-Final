@@ -18,6 +18,9 @@ namespace AtelierXNA
     public class EntitéeJoueur : EntitéeMobile, IControlable, ICollisionable
     {
         public BoundingSphere SphèreDeCollision { get; private set; }
+        Vector3 Déplacement { get; set; }
+
+
         public EntitéeJoueur(Game jeu, string nomModèle, float échelleInitiale, Vector3 rotationInitiale, Vector3 positionInitiale,
                            float intervalleMAJ, int pointDeVie, int portée, int force, int armure)
             : base(jeu, nomModèle, échelleInitiale, rotationInitiale, positionInitiale, intervalleMAJ, pointDeVie, portée, force, armure)
@@ -42,7 +45,7 @@ namespace AtelierXNA
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         public override void Update(GameTime gameTime)
         {
-            // TODO: Add your update code here
+            
 
             base.Update(gameTime);
         }
