@@ -16,17 +16,15 @@ namespace AtelierXNA
     public class Entitée : ObjetDeDémo
     {
         int PointDeVie { get; set; }
-        Vector2 Position { get; set; }
         public int Portée { get; set; }
         int Force { get; set; }
         int Armure { get; set; }
         bool EstAttaqué { get; set; }
         public Entitée(Game jeu, string nomModèle, float échelleInitiale, Vector3 rotationInitiale, Vector3 positionInitiale,
-                           float intervalleMAJ,int pointDeVie,Vector2 position,int portée,int force,int armure)
+                           float intervalleMAJ,int pointDeVie,int portée,int force,int armure)
             : base(jeu,nomModèle,échelleInitiale,rotationInitiale,positionInitiale,intervalleMAJ)
         {
             PointDeVie = pointDeVie;
-            Position = position;
             Portée = portée;
             Force = force;
             Armure = armure;
