@@ -19,15 +19,15 @@ namespace AtelierXNA
     {
         int PointDeVie { get; set; }
         Vector2 Position { get; set; }
-        public int Range { get; set; }
+        public int Portée { get; set; }
         int Force { get; set; }
         int Armure { get; set; }
-        public Entitée(Game game,int pointDeVie,Vector2 position,int range,int force,int armure)
+        public Entitée(Game game,int pointDeVie,Vector2 position,int portée,int force,int armure)
             : base(game)
         {
             PointDeVie = pointDeVie;
             Position = position;
-            Range = range;
+            Portée = portée;
             Force = force;
             Armure = armure;
         }

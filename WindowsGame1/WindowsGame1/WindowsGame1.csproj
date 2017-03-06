@@ -80,7 +80,9 @@
     <Compile Include="CaméraTypéMoba.cs" />
     <Compile Include="CartePlan.cs" />
     <Compile Include="Delegates.cs" />
-    <Compile Include="Entitée.cs" />
+    <Compile Include="Architecture Entitée\Entitée.cs" />
+    <Compile Include="Architecture Entitée\EntitéeImmobile.cs" />
+    <Compile Include="Architecture Entitée\EntitéeMobile.cs" />
     <Compile Include="Game\TheGame.cs" />
     <Compile Include="Menu\SpriteHostMenu.cs" />
     <Compile Include="Menu\SpriteJoinMenu.cs" />
