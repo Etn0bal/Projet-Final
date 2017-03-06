@@ -80,8 +80,15 @@
     <Compile Include="CaméraTypéMoba.cs" />
     <Compile Include="CartePlan.cs" />
     <Compile Include="Delegates.cs" />
+    <Compile Include="Entitée\EntitéeJoueur.cs" />
+    <Compile Include="Entitée\EntitéePéon.cs" />
+    <Compile Include="Entitée\EntitéeTour.cs" />
+    <Compile Include="Entitée\EntitéeImmobile.cs" />
+    <Compile Include="Entitée\EntitéeMobile.cs" />
     <Compile Include="Entitée\Entitée.cs" />
     <Compile Include="Game\TheGame.cs" />
+    <Compile Include="Entitée\IControlable.cs" />
+    <Compile Include="Entitée\IControlée.cs" />
     <Compile Include="Menu\SpriteHostMenu.cs" />
     <Compile Include="Menu\SpriteJoinMenu.cs" />
     <Compile Include="Menu\SpriteMainMenu.cs" />
