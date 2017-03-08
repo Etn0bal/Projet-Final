@@ -8,6 +8,8 @@ using Microsoft.Xna.Framework.GamerServices;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
+using System.Windows.Forms;
+
 
 
 namespace AtelierXNA
@@ -22,6 +24,7 @@ namespace AtelierXNA
         RessourcesManager<SpriteFont> Fonts { get; set; }
         string IPÉcrit { get; set; }
         SpriteFont Font { get; set; }
+        string IP { get; set; }
 
         Rectangle positionBackButton;
         public JoinMenu(Game game)
@@ -32,7 +35,7 @@ namespace AtelierXNA
         {
             GestionnaireInputs = Game.Services.GetService(typeof(InputManager)) as InputManager;
             positionSouris = new Point(0, 0);
-            IPÉcrit = "asd";
+            IPÉcrit = "";
 
             //Arriere plan
             Rectangle arrièrePlan = new Rectangle(0, 0, Game.Window.ClientBounds.Width, Game.Window.ClientBounds.Height);
@@ -49,8 +52,10 @@ namespace AtelierXNA
             SpriteJoinMenu titreJoinGame = new SpriteJoinMenu(Game, titre, "JoinGame");
             Game.Components.Add(titreJoinGame);
             //ZoneTexte
-            Rectangle PositionTxt = new Rectangle((4 * (Game.Window.ClientBounds.Width / 10)), Game.Window.ClientBounds.Height / 10, 2 * (Game.Window.ClientBounds.Width / 10), (Game.Window.ClientBounds.Height / 10));
-            Texte txt = new Texte(Game,IPÉcrit,"Arial", PositionTxt, Color.Yellow,0.1f, new Vector2((2 * (Game.Window.ClientBounds.Width / 10)), Game.Window.ClientBounds.Height / 10));
+            Rectangle PositionTxt = new Rectangle((2 * (Game.Window.ClientBounds.Width / 10)),5* Game.Window.ClientBounds.Height / 10, 3 * (Game.Window.ClientBounds.Width / 10), (Game.Window.ClientBounds.Height / 10));
+
+            Texte txt = new Texte(Game,IPÉcrit,"Arial", PositionTxt,new Vector2(3*Game.Window.ClientBounds.Width/10,Game.Window.ClientBounds.Height/2), Color.White,0);
+            Game.Components.Add(txt);
 
 
 
@@ -60,7 +65,7 @@ namespace AtelierXNA
         public override void Update(GameTime gameTime)
         {
             GérerSouris();
-            GérerClavier();
+            GérerClavier(gameTime);
             
             base.Update(gameTime);
         }
@@ -76,49 +81,74 @@ namespace AtelierXNA
                 }
             }
         }
-        void GérerClavier()
+        void GérerClavier(GameTime gameTime)
         {
             if(GestionnaireInputs.EstClavierActivé)
             {
-                if(GestionnaireInputs.EstNouvelleTouche(Keys.D1) || GestionnaireInputs.EstNouvelleTouche(Keys.NumPad1))
+                if (IPÉcrit.Count() < 20)
                 {
-                    IPÉcrit += 1;
+
+                    if (GestionnaireInputs.EstNouvelleTouche(Microsoft.Xna.Framework.Input.Keys.D1) || GestionnaireInputs.EstNouvelleTouche(Microsoft.Xna.Framework.Input.Keys.NumPad1))
+                    {
+                        IPÉcrit += "1";
+                    }
+                    if (GestionnaireInputs.EstNouvelleTouche(Microsoft.Xna.Framework.Input.Keys.D2) || GestionnaireInputs.EstNouvelleTouche(Microsoft.Xna.Framework.Input.Keys.NumPad2))
+                    {
+                        IPÉcrit += "2";
+                    }
+                    if (GestionnaireInputs.EstNouvelleTouche(Microsoft.Xna.Framework.Input.Keys.D3) || GestionnaireInputs.EstNouvelleTouche(Microsoft.Xna.Framework.Input.Keys.NumPad3))
+                    {
+                        IPÉcrit += "3";
+                    }
+                    if (GestionnaireInputs.EstNouvelleTouche(Microsoft.Xna.Framework.Input.Keys.D4) || GestionnaireInputs.EstNouvelleTouche(Microsoft.Xna.Framework.Input.Keys.NumPad4))
+                    {
+                        IPÉcrit += "4";
+                    }
+                    if (GestionnaireInputs.EstNouvelleTouche(Microsoft.Xna.Framework.Input.Keys.D5) || GestionnaireInputs.EstNouvelleTouche(Microsoft.Xna.Framework.Input.Keys.NumPad5))
+                    {
+                        IPÉcrit += "5";
+                    }
+                    if (GestionnaireInputs.EstNouvelleTouche(Microsoft.Xna.Framework.Input.Keys.D6) || GestionnaireInputs.EstNouvelleTouche(Microsoft.Xna.Framework.Input.Keys.NumPad6))
+                    {
+                        IPÉcrit += "6";
+                    }
+                    if (GestionnaireInputs.EstNouvelleTouche(Microsoft.Xna.Framework.Input.Keys.D7) || GestionnaireInputs.EstNouvelleTouche(Microsoft.Xna.Framework.Input.Keys.NumPad7))
+                    {
+                        IPÉcrit += "7";
+                    }
+                    if (GestionnaireInputs.EstNouvelleTouche(Microsoft.Xna.Framework.Input.Keys.D8) || GestionnaireInputs.EstNouvelleTouche(Microsoft.Xna.Framework.Input.Keys.NumPad8))
+                    {
+                        IPÉcrit += "8";
+                    }
+                    if (GestionnaireInputs.EstNouvelleTouche(Microsoft.Xna.Framework.Input.Keys.D9) || GestionnaireInputs.EstNouvelleTouche(Microsoft.Xna.Framework.Input.Keys.NumPad9))
+                    {
+                        IPÉcrit += "9";
+                    }
+                    if (GestionnaireInputs.EstNouvelleTouche(Microsoft.Xna.Framework.Input.Keys.D0) || GestionnaireInputs.EstNouvelleTouche(Microsoft.Xna.Framework.Input.Keys.NumPad0))
+                    {
+                        IPÉcrit += "0";
+                    }
+                    if (GestionnaireInputs.EstNouvelleTouche(Microsoft.Xna.Framework.Input.Keys.OemPeriod))
+                    {
+                        IPÉcrit += ".";
+                    }
                 }
-                if (GestionnaireInputs.EstNouvelleTouche(Keys.D2) || GestionnaireInputs.EstNouvelleTouche(Keys.NumPad2))
+                if(GestionnaireInputs.EstNouvelleTouche(Microsoft.Xna.Framework.Input.Keys.Back))
                 {
-                    IPÉcrit += 2;
+                    if(IPÉcrit.Count()!= 0)
+                    {
+                        IPÉcrit = IPÉcrit.Remove(IPÉcrit.Count() - 1);
+                    }
                 }
-                if (GestionnaireInputs.EstNouvelleTouche(Keys.D3) || GestionnaireInputs.EstNouvelleTouche(Keys.NumPad3))
+                foreach (Texte a in Game.Components.Where(x => x is Texte))
                 {
-                    IPÉcrit += 3;
+                    a.ModifierTexte(IPÉcrit);
+                    a.Draw(gameTime);
                 }
-                if (GestionnaireInputs.EstNouvelleTouche(Keys.D4) || GestionnaireInputs.EstNouvelleTouche(Keys.NumPad4))
+                if(GestionnaireInputs.EstNouvelleTouche(Microsoft.Xna.Framework.Input.Keys.Enter))
                 {
-                    IPÉcrit += 4;
-                }
-                if (GestionnaireInputs.EstNouvelleTouche(Keys.D5) || GestionnaireInputs.EstNouvelleTouche(Keys.NumPad5))
-                {
-                    IPÉcrit += 5;
-                }
-                if (GestionnaireInputs.EstNouvelleTouche(Keys.D6) || GestionnaireInputs.EstNouvelleTouche(Keys.NumPad6))
-                {
-                    IPÉcrit += 6;
-                }
-                if (GestionnaireInputs.EstNouvelleTouche(Keys.D7) || GestionnaireInputs.EstNouvelleTouche(Keys.NumPad7))
-                {
-                    IPÉcrit += 7;
-                }
-                if (GestionnaireInputs.EstNouvelleTouche(Keys.D8) || GestionnaireInputs.EstNouvelleTouche(Keys.NumPad8))
-                {
-                    IPÉcrit += 8;
-                }
-                if (GestionnaireInputs.EstNouvelleTouche(Keys.D9) || GestionnaireInputs.EstNouvelleTouche(Keys.NumPad9))
-                {
-                    IPÉcrit += 9;
-                }
-                if (GestionnaireInputs.EstNouvelleTouche(Keys.D0) || GestionnaireInputs.EstNouvelleTouche(Keys.NumPad0))
-                {
-                    IPÉcrit += 0;
+                    IP = IPÉcrit;
+                    MessageBox.Show("L'Ip que vous avez entré à été enregistré");
                 }
 
             }

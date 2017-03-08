@@ -29,8 +29,8 @@ namespace AtelierXNA
         SpriteBatch GestionSprites { get; set; }
         RessourcesManager<SpriteFont> GestionnaireDeFonts { get; set; }
 
-        public Texte(Game jeu, string texte¿Afficher, string nomFont, Rectangle zoneAffichage,
-                           Color couleurTexte, float marge,Vector2 positionAffichage)
+        public Texte(Game jeu, string texte¿Afficher, string nomFont, Rectangle zoneAffichage,Vector2 positionAffichage,
+                           Color couleurTexte, float marge)
            : base(jeu)
         {
             Texte¿Afficher = texte¿Afficher;
@@ -51,6 +51,7 @@ namespace AtelierXNA
 
         public void ModifierTexte(string texte¿Afficher)
         {
+            Texte¿Afficher = texte¿Afficher;
             Vector2 dimensionTexte = PoliceDeCaractËres.MeasureString(Texte¿Afficher);
             float ÈchelleHorizontale = MathHelper.Max(MathHelper.Min(ZoneAffichage.Width * PourcentageZoneAffichable, dimensionTexte.X), ZoneAffichage.Width * PourcentageZoneAffichable) / dimensionTexte.X;
             float ÈchelleVerticale = MathHelper.Max(MathHelper.Min(ZoneAffichage.Height * PourcentageZoneAffichable, dimensionTexte.Y), ZoneAffichage.Height * PourcentageZoneAffichable) / dimensionTexte.Y;

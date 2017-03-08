@@ -17,8 +17,6 @@ namespace AtelierXNA
     public class Game1 : Game
     {
 
-        RessourcesManager<Texture2D> GestionnaireDeTexture { get; set; }
-        RessourcesManager<Model> GestionnaireDeModels { get; set; }
         GraphicsDeviceManager graphics { get; set; }
         SpriteBatch GestionSprites { get; set; }
         InputManager GestionInput { get; set; }
@@ -40,6 +38,7 @@ namespace AtelierXNA
             Services.AddService(typeof(RessourcesManager<Texture2D>), new RessourcesManager<Texture2D>(this, "Textures"));
             Services.AddService(typeof(InputManager), GestionInput);
             Services.AddService(typeof(RessourcesManager<Model>), new RessourcesManager<Model>(this, "Models"));
+            Services.AddService(typeof(RessourcesManager<SpriteFont>), new RessourcesManager<SpriteFont>(this, "Fonts"));
 
             State = States.MainMenu;
             JoinMenu joinMenu = new JoinMenu(this);
@@ -124,7 +123,8 @@ namespace AtelierXNA
             }
             foreach (GameComponent gc in Components.Where(x => x is SpriteMainMenu))
             {
-                gc.Enabled = true;               
+                gc.Enabled = true;       
+                        
             }
             foreach (GameComponent Hm in Components.Where(x => x is HostMenu))
             {
