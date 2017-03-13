@@ -16,7 +16,7 @@ using System.IO;
 
 namespace AtelierXNA
 {
-    public enum Stade { Menu,Inloading,InGame,EndOfTheGame}
+    public enum Stade { Inloading,InGame,EndOfTheGame}
 
     public class TheGame : Microsoft.Xna.Framework.DrawableGameComponent
     {
@@ -26,7 +26,7 @@ namespace AtelierXNA
 
 
         const float ÉCHELLE_OBJET = 0.01f;
-        Vector3 positionObjet = new Vector3(-90,1,90);
+        Vector3 positionObjet = new Vector3(-90,0,90);
         Vector3 rotationObjet = new Vector3(0, MathHelper.PiOver2, 0);
 
         RessourcesManager<Texture2D> GestionnaireDeTexture { get; set; }

@@ -12,7 +12,7 @@ using System.Windows.Forms;
 
 namespace AtelierXNA
 {
-    public enum States { MainMenu, JoinGame, HostGame, Game ,Waiting}
+    public enum States { MainMenu, JoinGame, HostGame, Game ,Waiting,EnAttenteDeLaPartie}
 
     public class Game1 : Game
     {
@@ -28,6 +28,7 @@ namespace AtelierXNA
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
+
         }
 
         protected override void Initialize()
@@ -61,28 +62,38 @@ namespace AtelierXNA
         }
         protected override void Update(GameTime gameTime)
         {
-            if (State == States.MainMenu)
+            if(State != States.Waiting)
             {
-                InitialiserMainMenu();
-                State = States.Waiting;
-            }
-            if (State==States.HostGame)
-            {
-                InitialiserHostMenu();
-                State = States.Waiting;
-            }
-            if (State == States.JoinGame)
-            {
-                InitialiserJoinMenu();
-                State = States.Waiting;
-            }
-            if(State == States.Game)
-            {
-                InitialiserGame();
-                State = States.Waiting;
+                if (State == States.MainMenu)
+                {
+                    InitialiserMainMenu();
+                    State = States.Waiting;
+                }
+                if (State == States.HostGame)
+                {
+                    InitialiserHostMenu();
+                    State = States.Waiting;
+                }
+                if (State == States.JoinGame)
+                {
+                    InitialiserJoinMenu();
+                    State = States.Waiting;
+                }
+                if (State == States.Game)
+                {
+                    InitialiserGame();
+                    State = States.Waiting;
+                }
+                if (State == States.EnAttenteDeLaPartie)
+                {
+                    InitialiserAttentePartie();
+                    State = States.Waiting;
+                }
             }
             base.Update(gameTime);
         }
+
+
 
         protected override void Draw(GameTime gameTime)
         {
@@ -110,6 +121,10 @@ namespace AtelierXNA
             if (numÉtat == (int)States.Game)
             {
                 State = States.Game;
+            }
+            if(numÉtat == (int)States.EnAttenteDeLaPartie)
+            {
+                State = States.EnAttenteDeLaPartie;
             }
         }
 
@@ -205,7 +220,15 @@ namespace AtelierXNA
             }
             TheGame game = new TheGame(this);
             Components.Add(game);
-
+        }
+        private void InitialiserAttentePartie()
+        {
+            foreach (GameComponent gc in Components.Where(x => x is SpriteHostMenu))
+            {
+                gc.Enabled = false;
+            }
+            Sprite FondDécranDattente = new Sprite(this, new Rectangle(0, 0, Window.ClientBounds.Width, Window.ClientBounds.Height), "imagedattente");
+            Components.Add(FondDécranDattente);
         }
     }
 }

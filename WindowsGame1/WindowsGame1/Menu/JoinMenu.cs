@@ -27,6 +27,8 @@ namespace AtelierXNA
         string IP { get; set; }
 
         Rectangle positionBackButton;
+        Rectangle positionJoinServerButton;
+        bool ServerTrouvé;
         public JoinMenu(Game game)
             : base(game)
         { }
@@ -36,6 +38,7 @@ namespace AtelierXNA
             GestionnaireInputs = Game.Services.GetService(typeof(InputManager)) as InputManager;
             positionSouris = new Point(0, 0);
             IPÉcrit = "";
+            ServerTrouvé = false;
 
             //Arriere plan
             Rectangle arrièrePlan = new Rectangle(0, 0, Game.Window.ClientBounds.Width, Game.Window.ClientBounds.Height);
@@ -46,6 +49,10 @@ namespace AtelierXNA
             positionBackButton = new Rectangle(7 * (Game.Window.ClientBounds.Width / 10), 7 * (Game.Window.ClientBounds.Height / 10), 2 * (Game.Window.ClientBounds.Width / 10), (Game.Window.ClientBounds.Height / 10));
             SpriteJoinMenu BackButton = new SpriteJoinMenu(Game, positionBackButton, "BackButton");
             Game.Components.Add(BackButton);
+
+            positionJoinServerButton = new Rectangle(7 * (Game.Window.ClientBounds.Width / 10), 5 * (Game.Window.ClientBounds.Height / 10), 2 * (Game.Window.ClientBounds.Width / 10), (Game.Window.ClientBounds.Height / 10));
+            SpriteJoinMenu JoinServerButton = new SpriteJoinMenu(Game, positionJoinServerButton, "JoinServer");
+            Game.Components.Add(JoinServerButton);
 
             //titre
             Rectangle titre = new Rectangle((2 * (Game.Window.ClientBounds.Width / 10)), Game.Window.ClientBounds.Height / 10, 6 * (Game.Window.ClientBounds.Width / 10), (Game.Window.ClientBounds.Height / 10));
@@ -78,6 +85,29 @@ namespace AtelierXNA
                 if (GestionnaireInputs.EstNouveauClicGauche())
                 {
                     ((Game1)Game).ChangerDÉtat(0);
+                }
+            }
+            if (positionJoinServerButton.Contains(positionSouris))
+            {
+                if (GestionnaireInputs.EstNouveauClicGauche())
+                {
+                    try
+                    {
+                        ServerClient Invité = new ServerClient(Game, IP);
+                        Game.Components.Add(Invité);
+                        ServerTrouvé = true;                        
+                    }
+                    catch (Exception)
+                    {
+                        MessageBox.Show("Pas de serveur valide à cette IP");
+                    }
+                    if(ServerTrouvé == true)
+                    {
+                        ((Game1)Game).ChangerDÉtat(5);
+                    }
+                    
+
+
                 }
             }
         }

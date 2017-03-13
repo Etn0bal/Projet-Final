@@ -84,7 +84,7 @@
     <Compile Include="Entitée\EntitéeImmobile.cs" />
     <Compile Include="Entitée\EntitéeMobile.cs" />
     <Compile Include="Carte\CartePlan.cs" />
-    <Compile Include="ServerClient.cs" />
+    <Compile Include="Server\ServerClient.cs" />
     <Compile Include="Server\Delegates.cs" />
     <Compile Include="Entitée\Entitée.cs" />
     <Compile Include="Game\TheGame.cs" />
@@ -103,7 +103,7 @@
     <Compile Include="Menu\MainMenu.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Program.cs" />
-    <Compile Include="Carte\Game1.cs" />
+    <Compile Include="Game1.cs" />
     <Compile Include="Texte.cs" />
   </ItemGroup>
   <ItemGroup>
