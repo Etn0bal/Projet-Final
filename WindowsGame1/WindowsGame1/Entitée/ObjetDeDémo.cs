@@ -30,7 +30,7 @@ namespace AtelierXNA
         bool DoYaw { get; set; }
         bool DoPitch { get; set; }
         bool DoRoll { get; set; }
-        bool DoCalculerMonde { get; set; }
+        protected bool DoCalculerMonde { get; set; }
 
 
         public ObjetDeDémo(Game jeu, string nomModèle, float échelleInitiale, Vector3 rotationInitiale, Vector3 positionInitiale,

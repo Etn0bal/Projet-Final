@@ -19,13 +19,14 @@ namespace AtelierXNA
     {
         public BoundingSphere SphèreDeCollision { get; private set; }
         Vector3 Déplacement { get; set; }
+        InputManager GestionInputs { get; set; }
 
 
         public EntitéeJoueur(Game jeu, string nomModèle, float échelleInitiale, Vector3 rotationInitiale, Vector3 positionInitiale,
                            float intervalleMAJ, int pointDeVie, int portée, int force, int armure)
             : base(jeu, nomModèle, échelleInitiale, rotationInitiale, positionInitiale, intervalleMAJ, pointDeVie, portée, force, armure)
         {
-            // TODO: Construct any child components here
+
         }
 
         /// <summary>
@@ -34,25 +35,47 @@ namespace AtelierXNA
         /// </summary>
         public override void Initialize()
         {
-            // TODO: Add your initialization code here
+            GestionInputs = Game.Services.GetService(typeof(InputManager)) as InputManager;
 
             base.Initialize();
         }
 
-        /// <summary>
-        /// Allows the game component to update itself.
-        /// </summary>
-        /// <param name="gameTime">Provides a snapshot of timing values.</param>
         public override void Update(GameTime gameTime)
         {
-            
-
+            GestionDesContrôles();
             base.Update(gameTime);
         }
+        public override void Draw(GameTime gameTime)
+        {
+            base.Draw(gameTime);
+        }
+
 
         public void GestionDesContrôles()
         {
+            GérerDéplacement();
+        }
 
+        private void GérerDéplacement()
+        {
+            if(GestionInputs.EstSourisActive)
+            {
+                Nullable<float> résultat;
+                if (GestionInputs.EstNouveauClicDroit() ) //// Regarder S'il n'y a pas d'autre entitée
+                {
+                    Ray pickRay = GetPickRay();
+
+                    
+                }
+
+                    
+            }
+
+        }
+
+        private Ray GetPickRay()
+        {
+            throw new NotImplementedException();
         }
 
         public bool EstEnCollision(object autreObjet)

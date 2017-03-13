@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Net.Sockets;
 
-namespace AtelierXNA
+namespace AtelierXNA.Server
 {
-    class Client
+    public class Client
     {
         //Encapsulated 
         private TcpClient client;

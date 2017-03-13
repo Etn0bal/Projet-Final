@@ -19,7 +19,7 @@ namespace AtelierXNA
       protected Matrix[] TransformationsModèle { get; private set; }
       protected Matrix Monde { get; set; }
 
-      public ObjetDeBase(Game jeu, String nomModèle, float échelleInitiale, Vector3 rotationInitiale, Vector3 positionInitiale)
+      public ObjetDeBase(Game jeu, string nomModèle, float échelleInitiale, Vector3 rotationInitiale, Vector3 positionInitiale)
          : base(jeu)
       {
          NomModèle = nomModèle;
@@ -34,7 +34,7 @@ namespace AtelierXNA
          CalculerMonde();
       }
 
-      private void CalculerMonde()
+      protected void CalculerMonde()
       {
          Monde = Matrix.Identity;
          Monde *= Matrix.CreateScale(Échelle);

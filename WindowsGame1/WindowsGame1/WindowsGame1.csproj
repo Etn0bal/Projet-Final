@@ -85,8 +85,8 @@
     <Compile Include="Entitée\EntitéeImmobile.cs" />
     <Compile Include="Entitée\EntitéeMobile.cs" />
     <Compile Include="Carte\CartePlan.cs" />
+    <Compile Include="Server\Delegates.cs" />
     <Compile Include="ServeurClients\DelegatesClient.cs" />
-    <Compile Include="ServeurClients\ServerClient.cs" />
     <Compile Include="Entitée\Entitée.cs" />
     <Compile Include="Game\TheGame.cs" />
     <Compile Include="Entitée\IControlable.cs" />
@@ -99,9 +99,9 @@
     <Compile Include="Entitée\ObjetDeDémo.cs" />
     <Compile Include="ServeurClients\Protocoles.cs" />
     <Compile Include="Server\Client.cs" />
-    <Compile Include="Server\Delegates.cs" />
     <Compile Include="Server\Listener.cs" />
     <Compile Include="Server\Server.cs" />
+    <Compile Include="ServeurClients\ServeurClient.cs" />
     <Compile Include="Sprite.cs" />
     <Compile Include="Menu\HostMenu.cs" />
     <Compile Include="Menu\JoinMenu.cs" />

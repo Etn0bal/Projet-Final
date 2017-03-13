@@ -5,7 +5,7 @@ using System.Text;
 using System.Net.Sockets;
 using System.Net;
 
-namespace AtelierXNA
+namespace AtelierXNA.Server
 {
     public class Listener
     {

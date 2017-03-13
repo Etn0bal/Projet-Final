@@ -18,7 +18,7 @@ namespace AtelierXNA
     /// <summary>
     /// This is a game component that implements IUpdateable.
     /// </summary>
-    public class ServerClient : Microsoft.Xna.Framework.GameComponent
+    public class ServeurClient : Microsoft.Xna.Framework.GameComponent
     {
 
         MemoryStream readStream, writeStream;
@@ -32,7 +32,7 @@ namespace AtelierXNA
         const int BUFFER_SIZE = 2048;
         private byte[] readbuffer;
 
-        public ServerClient(Game game, string iP)
+        public ServeurClient(Game game, string iP)
             : base(game)
         {
             IP = iP;

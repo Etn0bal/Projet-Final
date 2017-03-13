@@ -62,7 +62,7 @@ namespace AtelierXNA
         }
         protected override void Update(GameTime gameTime)
         {
-            if(State != States.Waiting)
+            if (State != States.Waiting)
             {
                 if (State == States.MainMenu)
                 {
@@ -122,7 +122,7 @@ namespace AtelierXNA
             {
                 State = States.Game;
             }
-            if(numÉtat == (int)States.EnAttenteDeLaPartie)
+            if (numÉtat == (int)States.EnAttenteDeLaPartie)
             {
                 State = States.EnAttenteDeLaPartie;
             }
@@ -138,8 +138,8 @@ namespace AtelierXNA
             }
             foreach (GameComponent gc in Components.Where(x => x is SpriteMainMenu))
             {
-                gc.Enabled = true;       
-                        
+                gc.Enabled = true;
+
             }
             foreach (GameComponent Hm in Components.Where(x => x is HostMenu))
             {
@@ -214,21 +214,22 @@ namespace AtelierXNA
         }
         void InitialiserGame()
         {
-            foreach (GameComponent gc in Components.Where(x => x is SpriteHostMenu))
-            {
-                gc.Enabled = false;
-            }
+            NettoyerListeComponents();
             TheGame game = new TheGame(this);
             Components.Add(game);
         }
         private void InitialiserAttentePartie()
         {
-            foreach (GameComponent gc in Components.Where(x => x is SpriteHostMenu))
-            {
-                gc.Enabled = false;
-            }
+            NettoyerListeComponents();
             Sprite FondDécranDattente = new Sprite(this, new Rectangle(0, 0, Window.ClientBounds.Width, Window.ClientBounds.Height), "imagedattente");
             Components.Add(FondDécranDattente);
+        }
+        void NettoyerListeComponents()
+        {
+            for (int i = Components.Count - 1; i >= 0; --i)
+            {
+                Components.RemoveAt(i);
+            }
         }
     }
 }

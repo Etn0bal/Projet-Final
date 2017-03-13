@@ -93,7 +93,7 @@ namespace AtelierXNA
                 {
                     try
                     {
-                        ServerClient Invité = new ServerClient(Game, IP);
+                        ServeurClient Invité = new ServeurClient(Game, IP);
                         Game.Components.Add(Invité);
                         ServerTrouvé = true;                        
                     }

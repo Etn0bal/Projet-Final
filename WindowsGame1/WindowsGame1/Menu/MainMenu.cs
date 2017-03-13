@@ -23,7 +23,7 @@ namespace AtelierXNA
         Rectangle positionHostGameButton { get; set; }
         Rectangle positionQuitGameButton { get; set; }
             
-        InputManager GestionnaireInputs { get; set; }
+        InputManager GestionInputs { get; set; }
 
 
             public MainMenu(Game game)
@@ -32,7 +32,7 @@ namespace AtelierXNA
 
         public override void Initialize()
         {
-            GestionnaireInputs = Game.Services.GetService(typeof(InputManager)) as InputManager;
+            GestionInputs = Game.Services.GetService(typeof(InputManager)) as InputManager;
             positionSouris = new Point(0,0);
 
             //Arriere plan
@@ -72,25 +72,25 @@ namespace AtelierXNA
         }
         void GérerSouris()
         {
-            positionSouris = GestionnaireInputs.GetPositionSouris();
+            positionSouris = GestionInputs.GetPositionSouris();
 
             if (positionQuitGameButton.Contains(positionSouris))
             {
-                if (GestionnaireInputs.EstNouveauClicGauche())
+                if (GestionInputs.EstNouveauClicGauche())
                 {
                     Game.Exit();
                 }
             }
             if(positionHostGameButton.Contains(positionSouris))
             {
-                if (GestionnaireInputs.EstNouveauClicGauche())
+                if (GestionInputs.EstNouveauClicGauche())
                 {
                     ((Game1)Game).ChangerDÉtat(2);
                 }
             }
             if (positionCreateGameButton.Contains(positionSouris))
             {
-                if (GestionnaireInputs.EstNouveauClicGauche())
+                if (GestionInputs.EstNouveauClicGauche())
                 {
                     ((Game1)Game).ChangerDÉtat(1);
                 }

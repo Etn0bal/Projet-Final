@@ -26,7 +26,7 @@ namespace AtelierXNA
 
 
         const float ÉCHELLE_OBJET = 0.01f;
-        Vector3 positionObjet = new Vector3(-90,0,90);
+        Vector3 positionObjet = new Vector3(-90, 0, 90);
         Vector3 rotationObjet = new Vector3(0, MathHelper.PiOver2, 0);
 
         RessourcesManager<Texture2D> GestionnaireDeTexture { get; set; }
@@ -34,6 +34,7 @@ namespace AtelierXNA
         GraphicsDeviceManager graphics { get; set; }
         SpriteBatch GestionSprites { get; set; }
         InputManager GestionInput { get; set; }
+        Afficheur3D Afficheur3D { get; set; }
 
 
 
@@ -54,14 +55,23 @@ namespace AtelierXNA
             graphics = Game.Services.GetService(typeof(GraphicsDeviceManager)) as GraphicsDeviceManager;
             GestionInput = Game.Services.GetService(typeof(InputManager)) as InputManager;
             GestionSprites = Game.Services.GetService(typeof(SpriteBatch)) as SpriteBatch;
-            CaméraJeu = new CaméraTypéMoba(Game, new Vector3(-85, 30, 115), new Vector3(0, -1, -1), Vector3.Up, INTERVALLE_MAJ);
 
+            
+
+            CaméraJeu = new CaméraTypéMoba(Game, new Vector3(-85, 30, 115), new Vector3(0, -1, -1), Vector3.Up, INTERVALLE_MAJ);
             Game.Services.AddService(typeof(Caméra), CaméraJeu);
+
+
             Game.Components.Add(CaméraJeu);
             Game.Components.Add(new CartePlan(Game, 1f, Vector3.Zero, Vector3.Zero, new Vector3(225, 0, 400), "Carte Plan4", INTERVALLE_MAJ));
             Game.Components.Add(new Murs(Game, 1f, Vector3.Zero, Vector3.Zero, new Vector3(225, 0, 400), "Carte planMur", INTERVALLE_MAJ));
+            Game.Components.Add(GestionInput);
+            Game.Components.Add(new Afficheur3D(Game));
+            Game.Components.Add(new EntitéeJoueur(Game, "robot", ÉCHELLE_OBJET, rotationObjet, positionObjet,INTERVALLE_MAJ,1,1,1,1));
 
-            Game.Components.Add(new ObjetDeDémo(Game, "robot", ÉCHELLE_OBJET, rotationObjet, positionObjet,INTERVALLE_MAJ));
+
+
+
             base.Initialize();
         }
 
