@@ -18,8 +18,10 @@ namespace AtelierXNA
     public class EntitéeJoueur : EntitéeMobile, IControlable, ICollisionable
     {
         public BoundingSphere SphèreDeCollision { get; private set; }
-        Vector3 Déplacement { get; set; }
+        Vector3 DirectionDéplacement { get; set; }
+        Vector3 Direction { get; set; }
         Vector3 Destination { get; set; }
+        Plane PlanReprésentantCarte { get; set; }
         InputManager GestionInputs { get; set; }
         Caméra CaméraJeu { get; set; }
 
@@ -40,6 +42,9 @@ namespace AtelierXNA
         {
             GestionInputs = Game.Services.GetService(typeof(InputManager)) as InputManager;
             CaméraJeu = Game.Services.GetService(typeof(Caméra)) as Caméra;
+            DoCalculerMonde = false;
+            Direction = new Vector3(1, 0, 0);
+            PlanReprésentantCarte = new Plane(0, 1, 0, 0);
 
             base.Initialize();
         }
@@ -47,7 +52,14 @@ namespace AtelierXNA
         public override void Update(GameTime gameTime)
         {
             GestionDesContrôles();
+
+            if (DoCalculerMonde)
+            {
+                CalculerMonde();
+                DoCalculerMonde = false;
+            }
             base.Update(gameTime);
+            
         }
         public override void Draw(GameTime gameTime)
         {
@@ -64,20 +76,21 @@ namespace AtelierXNA
         {
             if(GestionInputs.EstSourisActive)
             {
-                Nullable<float> résultat;
                 if (GestionInputs.EstNouveauClicDroit() ) //// Regarder S'il n'y a pas d'autre entitée
                 {
-                    Ray pickRay = GetPickRay();
-
-
-                }
-
-                    
+                    GetPickRay();
+                    DirectionDéplacement = Vector3.Normalize(Destination - Position);
+                    GérerRotation();
+                }  
             }
-
+            if((Destination-Position).Length() >= DirectionDéplacement.Length() )
+            {
+                Position += DirectionDéplacement;
+                DoCalculerMonde = true;
+            }
         }
 
-        private Ray GetPickRay()
+        private void GetPickRay()
         {
             Point positionSouris = GestionInputs.GetPositionSouris();
             Vector2 vecteurPosition = new Vector2(positionSouris.X, positionSouris.Y);
@@ -89,7 +102,18 @@ namespace AtelierXNA
             Vector3 direction = farPoint - nearPoint;
             direction = Vector3.Normalize(direction);
 
-            return new Ray(nearPoint, direction);
+            Ray Rayon = new Ray(nearPoint, direction);
+
+            Destination =(Vector3) (nearPoint + direction * Rayon.Intersects(PlanReprésentantCarte));
+        }
+
+        void GérerRotation()
+        {
+
+            float Angle = (float)Math.Acos(Vector3.Dot(DirectionDéplacement, Direction) / (DirectionDéplacement.Length()* Direction.Length()));
+            Rotation += new Vector3(0, Angle, 0);
+            Direction = DirectionDéplacement;
+            DoCalculerMonde = true;
 
         }
 

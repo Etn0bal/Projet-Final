@@ -56,7 +56,7 @@ namespace AtelierXNA
 
             
 
-            CaméraJeu = new CaméraSubjective(Game, new Vector3(-85, 30, 115), new Vector3(0, -1, -1), Vector3.Up, INTERVALLE_MAJ);
+            CaméraJeu = new CaméraTypéMoba(Game, new Vector3(-85, 30, 115), new Vector3(0, -1, -1), Vector3.Up, INTERVALLE_MAJ);
             Game.Services.AddService(typeof(Caméra), CaméraJeu);
 
 
