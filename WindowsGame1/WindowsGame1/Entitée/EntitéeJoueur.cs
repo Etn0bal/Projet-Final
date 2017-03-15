@@ -38,7 +38,7 @@ namespace AtelierXNA
         public override void Initialize()
         {
             GestionInputs = Game.Services.GetService(typeof(InputManager)) as InputManager;
-            CaméraJeu = Game.Services.GetService(typeof(CaméraTypéMoba)) as CaméraTypéMoba;
+            CaméraJeu = Game.Services.GetService(typeof(Caméra)) as Caméra;
 
             base.Initialize();
         }
@@ -59,7 +59,7 @@ namespace AtelierXNA
             GérerDéplacement();
         }
 
-        private void GérerDéplacement()
+        protected override void GérerDéplacement()
         {
             if(GestionInputs.EstSourisActive)
             {
@@ -67,6 +67,7 @@ namespace AtelierXNA
                 if (GestionInputs.EstNouveauClicDroit() ) //// Regarder S'il n'y a pas d'autre entitée
                 {
                     Ray pickRay = GetPickRay();
+                    
 
                 }
 
@@ -77,9 +78,9 @@ namespace AtelierXNA
 
         private Ray GetPickRay()
         {
-            foreach(GameComponent jeu in Game.Components.Where(x=>x is TheGame))
+            foreach (GameComponent jeu in Game.Components.Where(x => x is TheGame))
             {
-               jeu.
+                jeu.
             }
             Point positionSouris = GestionInputs.GetPositionSouris();
             Vector2 vecteurPosition = new Vector2(positionSouris.X, positionSouris.Y);
@@ -90,10 +91,7 @@ namespace AtelierXNA
             Vector3 farPoint = Game.GraphicsDevice.Viewport.Unproject(farSource, CaméraJeu.Projection, CaméraJeu.Vue, Matrix.Identity);  ////World de la caméra????     
             Vector3 direction = farPoint - nearPoint;
             direction = Vector3.Normalize(direction);
-            if (direction.Y != 0)
-            {
-                Vector3 x = nearSource - direction * (nearSource.Y / direction.Y);
-            }
+
             return new Ray(nearPoint, direction);
 
         }
