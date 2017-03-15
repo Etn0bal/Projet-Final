@@ -16,12 +16,11 @@ using System.IO;
 
 namespace AtelierXNA
 {
-    public enum Stade { Inloading,InGame,EndOfTheGame}
 
     public class TheGame : Microsoft.Xna.Framework.DrawableGameComponent
     {
 
-        Caméra CaméraJeu { get; set; }
+        public Caméra CaméraJeu { get; private set; }
         const float INTERVALLE_MAJ = 1f / 60f;
 
 

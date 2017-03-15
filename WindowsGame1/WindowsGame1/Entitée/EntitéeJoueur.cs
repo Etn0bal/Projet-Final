@@ -20,6 +20,8 @@ namespace AtelierXNA
         public BoundingSphere SphèreDeCollision { get; private set; }
         Vector3 Déplacement { get; set; }
         InputManager GestionInputs { get; set; }
+        Caméra CaméraJeu { get; set; }
+
 
 
         public EntitéeJoueur(Game jeu, string nomModèle, float échelleInitiale, Vector3 rotationInitiale, Vector3 positionInitiale,
@@ -36,6 +38,7 @@ namespace AtelierXNA
         public override void Initialize()
         {
             GestionInputs = Game.Services.GetService(typeof(InputManager)) as InputManager;
+            CaméraJeu = Game.Services.GetService(typeof(CaméraTypéMoba)) as CaméraTypéMoba;
 
             base.Initialize();
         }
@@ -65,7 +68,6 @@ namespace AtelierXNA
                 {
                     Ray pickRay = GetPickRay();
 
-                    
                 }
 
                     
@@ -75,7 +77,25 @@ namespace AtelierXNA
 
         private Ray GetPickRay()
         {
-            throw new NotImplementedException();
+            foreach(GameComponent jeu in Game.Components.Where(x=>x is TheGame))
+            {
+               jeu.
+            }
+            Point positionSouris = GestionInputs.GetPositionSouris();
+            Vector2 vecteurPosition = new Vector2(positionSouris.X, positionSouris.Y);
+            Vector3 nearSource = new Vector3(vecteurPosition, 0);
+            Vector3 farSource = new Vector3(vecteurPosition, 1);
+
+            Vector3 nearPoint = Game.GraphicsDevice.Viewport.Unproject(nearSource, CaméraJeu.Projection, CaméraJeu.Vue, Matrix.Identity);  ////World de la caméra????     
+            Vector3 farPoint = Game.GraphicsDevice.Viewport.Unproject(farSource, CaméraJeu.Projection, CaméraJeu.Vue, Matrix.Identity);  ////World de la caméra????     
+            Vector3 direction = farPoint - nearPoint;
+            direction = Vector3.Normalize(direction);
+            if (direction.Y != 0)
+            {
+                Vector3 x = nearSource - direction * (nearSource.Y / direction.Y);
+            }
+            return new Ray(nearPoint, direction);
+
         }
 
         public bool EstEnCollision(object autreObjet)
