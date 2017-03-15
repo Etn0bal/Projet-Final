@@ -33,7 +33,6 @@ namespace AtelierXNA
         GraphicsDeviceManager graphics { get; set; }
         SpriteBatch GestionSprites { get; set; }
         InputManager GestionInput { get; set; }
-        Afficheur3D Afficheur3D { get; set; }
 
 
 
@@ -57,15 +56,16 @@ namespace AtelierXNA
 
             
 
-            CaméraJeu = new CaméraTypéMoba(Game, new Vector3(-85, 30, 115), new Vector3(0, -1, -1), Vector3.Up, INTERVALLE_MAJ);
+            CaméraJeu = new CaméraSubjective(Game, new Vector3(-85, 30, 115), new Vector3(0, -1, -1), Vector3.Up, INTERVALLE_MAJ);
             Game.Services.AddService(typeof(Caméra), CaméraJeu);
 
 
+            Game.Components.Add(new Afficheur3D(Game));
             Game.Components.Add(CaméraJeu);
             Game.Components.Add(new CartePlan(Game, 1f, Vector3.Zero, Vector3.Zero, new Vector3(225, 0, 400), "Carte Plan4", INTERVALLE_MAJ));
             Game.Components.Add(new Murs(Game, 1f, Vector3.Zero, Vector3.Zero, new Vector3(225, 0, 400), "Carte planMur", INTERVALLE_MAJ));
             Game.Components.Add(GestionInput);
-            Game.Components.Add(new Afficheur3D(Game));
+
             Game.Components.Add(new EntitéeJoueur(Game, "robot", ÉCHELLE_OBJET, rotationObjet, positionObjet,INTERVALLE_MAJ,1,1,1,1));
 
 

@@ -32,7 +32,7 @@ namespace AtelierXNA
         RessourcesManager<Texture2D> GestionnaireDeTextures { get; set; }
         Color[,] DataTexture { get; set; }
         Texture2D CartePlanTexture { get; set; }
-        Plane PlanDIntersection { get; set; }
+        public Plane PlanDIntersection { get; private set; }
         int NbColonnes { get; set; }
         int NbRangées { get; set; }
 
@@ -58,6 +58,7 @@ namespace AtelierXNA
             AllouerTableaux();
             CréerTableauPoints();
             CréerTableauPointsTexture();
+            PlanDIntersection = new Plane(0, 1, 0, 0);
 
             base.Initialize();
         }

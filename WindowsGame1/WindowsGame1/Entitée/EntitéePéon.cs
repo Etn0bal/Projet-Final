@@ -47,6 +47,11 @@ namespace AtelierXNA
             base.Update(gameTime);
         }
 
+        protected override void GérerDéplacement()
+        {
+            throw new NotImplementedException();
+        }
+
         public void ControlerLEntitée()
         {
 
