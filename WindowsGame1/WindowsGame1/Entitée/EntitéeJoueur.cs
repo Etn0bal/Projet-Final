@@ -19,6 +19,7 @@ namespace AtelierXNA
     {
         public BoundingSphere SphèreDeCollision { get; private set; }
         Vector3 Déplacement { get; set; }
+        Vector3 Destination { get; set; }
         InputManager GestionInputs { get; set; }
         Caméra CaméraJeu { get; set; }
 
