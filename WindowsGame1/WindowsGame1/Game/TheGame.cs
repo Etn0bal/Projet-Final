@@ -1,4 +1,4 @@
-using System;
+ï»¿using System;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Xna.Framework;
@@ -20,11 +20,11 @@ namespace AtelierXNA
     public class TheGame : Microsoft.Xna.Framework.DrawableGameComponent
     {
 
-        public Caméra CaméraJeu { get; private set; }
+        public CamÃ©ra CamÃ©raJeu { get; private set; }
         const float INTERVALLE_MAJ = 1f / 60f;
 
 
-        const float ÉCHELLE_OBJET = 0.01f;
+        const float Ã‰CHELLE_OBJET = 0.01f;
         Vector3 positionObjet = new Vector3(-90, 0, 90);
         Vector3 rotationObjet = new Vector3(0, MathHelper.PiOver2, 0);
 
@@ -57,17 +57,17 @@ namespace AtelierXNA
 
             
 
-            CaméraJeu = new CaméraTypéMoba(Game, new Vector3(-85, 30, 115), new Vector3(0, -1, -1), Vector3.Up, INTERVALLE_MAJ);
-            Game.Services.AddService(typeof(Caméra), CaméraJeu);
+            CamÃ©raJeu = new CamÃ©raTypÃ©Moba(Game, new Vector3(-85, 30, 115), new Vector3(0, -1, -1), Vector3.Up, INTERVALLE_MAJ);
+            Game.Services.AddService(typeof(CamÃ©ra), CamÃ©raJeu);
 
 
-            Game.Components.Add(CaméraJeu);
+            Game.Components.Add(CamÃ©raJeu);
             Game.Components.Add(new Afficheur3D(Game));
             Game.Components.Add(new CartePlan(Game, 1f, Vector3.Zero, Vector3.Zero, new Vector3(225, 0, 400), "Carte Plan4", INTERVALLE_MAJ));
             Game.Components.Add(new Murs(Game, 1f, Vector3.Zero, Vector3.Zero, new Vector3(225, 0, 400), "Carte planMur", INTERVALLE_MAJ));
             Game.Components.Add(GestionInput);
             Game.Components.Add(new Afficheur3D(Game));
-            Game.Components.Add(new EntitéeJoueur(Game, "robot", ÉCHELLE_OBJET, rotationObjet, positionObjet,INTERVALLE_MAJ,1,1,1,1));
+            Game.Components.Add(new EntitÃ©eJoueur(Game, "Model", Ã‰CHELLE_OBJET, rotationObjet, positionObjet,INTERVALLE_MAJ,1,1,1,1));
 
 
 
