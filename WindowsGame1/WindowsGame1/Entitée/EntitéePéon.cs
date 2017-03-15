@@ -51,5 +51,9 @@ namespace AtelierXNA
         {
 
         }
+        protected override void GérerDéplacement()
+        {
+            throw new NotImplementedException();
+        }
     }
 }
