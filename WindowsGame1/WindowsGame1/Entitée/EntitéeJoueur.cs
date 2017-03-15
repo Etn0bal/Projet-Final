@@ -19,6 +19,7 @@ namespace AtelierXNA
     {
         public BoundingSphere SphèreDeCollision { get; private set; }
         Vector3 Déplacement { get; set; }
+        Vector3 Destination { get; set; }
         InputManager GestionInputs { get; set; }
         Caméra CaméraJeu { get; set; }
 
@@ -67,7 +68,7 @@ namespace AtelierXNA
                 if (GestionInputs.EstNouveauClicDroit() ) //// Regarder S'il n'y a pas d'autre entitée
                 {
                     Ray pickRay = GetPickRay();
-                    
+
 
                 }
 
@@ -78,10 +79,6 @@ namespace AtelierXNA
 
         private Ray GetPickRay()
         {
-            foreach (GameComponent jeu in Game.Components.Where(x => x is TheGame))
-            {
-                jeu.
-            }
             Point positionSouris = GestionInputs.GetPositionSouris();
             Vector2 vecteurPosition = new Vector2(positionSouris.X, positionSouris.Y);
             Vector3 nearSource = new Vector3(vecteurPosition, 0);

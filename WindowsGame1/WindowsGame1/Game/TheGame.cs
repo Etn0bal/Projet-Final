@@ -62,6 +62,7 @@ namespace AtelierXNA
 
 
             Game.Components.Add(CaméraJeu);
+            Game.Components.Add(new Afficheur3D(Game));
             Game.Components.Add(new CartePlan(Game, 1f, Vector3.Zero, Vector3.Zero, new Vector3(225, 0, 400), "Carte Plan4", INTERVALLE_MAJ));
             Game.Components.Add(new Murs(Game, 1f, Vector3.Zero, Vector3.Zero, new Vector3(225, 0, 400), "Carte planMur", INTERVALLE_MAJ));
             Game.Components.Add(GestionInput);

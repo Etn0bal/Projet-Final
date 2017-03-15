@@ -32,6 +32,7 @@ namespace AtelierXNA
         RessourcesManager<Texture2D> GestionnaireDeTextures { get; set; }
         Color[,] DataTexture { get; set; }
         Texture2D CartePlanTexture { get; set; }
+        Plane PlanDIntersection { get; set; }
         int NbColonnes { get; set; }
         int NbRangées { get; set; }
 
