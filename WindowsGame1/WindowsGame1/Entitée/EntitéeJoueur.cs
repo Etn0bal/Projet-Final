@@ -60,7 +60,7 @@ namespace AtelierXNA
             GérerDéplacement();
         }
 
-        private void GérerDéplacement()
+        protected override void GérerDéplacement()
         {
             if(GestionInputs.EstSourisActive)
             {
@@ -78,10 +78,6 @@ namespace AtelierXNA
 
         private Ray GetPickRay()
         {
-            foreach(GameComponent jeu in Game.Components.Where(x=>x is TheGame))
-            {
-               jeu.
-            }
             Point positionSouris = GestionInputs.GetPositionSouris();
             Vector2 vecteurPosition = new Vector2(positionSouris.X, positionSouris.Y);
             Vector3 nearSource = new Vector3(vecteurPosition, 0);
