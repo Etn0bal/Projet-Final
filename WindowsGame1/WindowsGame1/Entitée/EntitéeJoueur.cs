@@ -39,7 +39,7 @@ namespace AtelierXNA
         public override void Initialize()
         {
             GestionInputs = Game.Services.GetService(typeof(InputManager)) as InputManager;
-            CaméraJeu = Game.Services.GetService(typeof(CaméraTypéMoba)) as CaméraTypéMoba;
+            CaméraJeu = Game.Services.GetService(typeof(Caméra)) as Caméra;
 
             base.Initialize();
         }
@@ -69,6 +69,7 @@ namespace AtelierXNA
                 {
                     Ray pickRay = GetPickRay();
 
+
                 }
 
                     
@@ -87,10 +88,7 @@ namespace AtelierXNA
             Vector3 farPoint = Game.GraphicsDevice.Viewport.Unproject(farSource, CaméraJeu.Projection, CaméraJeu.Vue, Matrix.Identity);  ////World de la caméra????     
             Vector3 direction = farPoint - nearPoint;
             direction = Vector3.Normalize(direction);
-            if (direction.Y != 0)
-            {
-                Vector3 x = nearSource - direction * (nearSource.Y / direction.Y);
-            }
+
             return new Ray(nearPoint, direction);
 
         }
