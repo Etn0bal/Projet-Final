@@ -8,6 +8,8 @@ using Microsoft.Xna.Framework.GamerServices;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
+using System.Net;
+using System.Net.Sockets;
 
 
 namespace AtelierXNA
@@ -20,6 +22,7 @@ namespace AtelierXNA
 
         Point positionSouris { get; set; }
         InputManager GestionnaireInputs { get; set; }
+
         public HostMenu(Game game)
             : base(game)
         { }
@@ -74,7 +77,11 @@ namespace AtelierXNA
             {
                 if(GestionnaireInputs.EstNouveauClicGauche())
                 {
-                    new ServeurClient(Game, "localip");
+                    Server serveurDeJeu = new Server(5011);
+                    Dns.GetHostAddresses("serveurDeJeu");
+                    ServeurClient HostClient = new ServeurClient(Game, "localip");
+                    
+
                 }
             }   
             if(positionStartGameButton.Contains(positionSouris))

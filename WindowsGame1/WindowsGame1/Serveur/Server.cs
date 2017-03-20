@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.IO;
 
-namespace AtelierXNA.Server
+namespace AtelierXNA
 {
     class Server
     {
@@ -23,7 +23,7 @@ namespace AtelierXNA.Server
         Client[] client;
 
         //number of connected clients
-        int connectedClients = 0;
+        public int connectedClients = 0;
 
         //Writers and readers to manipulate data
         MemoryStream readStream;

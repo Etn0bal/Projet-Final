@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Net.Sockets;
 
-namespace AtelierXNA.Server
+namespace AtelierXNA
 {
     public class Client
     {

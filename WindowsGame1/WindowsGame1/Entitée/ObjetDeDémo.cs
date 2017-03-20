@@ -143,7 +143,7 @@ namespace AtelierXNA
             return DoSomething ? INCRÉMENTATION_ANGLE : 0;
         }
 
-        void CalculerMonde()
+        public override void CalculerMonde()
         {
             Monde = Matrix.Identity;
             Monde *= Matrix.CreateScale(Échelle);
