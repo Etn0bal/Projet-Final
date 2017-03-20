@@ -22,6 +22,8 @@ namespace AtelierXNA
 
         Point positionSouris { get; set; }
         InputManager GestionnaireInputs { get; set; }
+        Server ServeurDeJeu { get; set; }
+        bool ServeurCréé { get; set; }
 
         public HostMenu(Game game)
             : base(game)
@@ -31,6 +33,7 @@ namespace AtelierXNA
         {
             GestionnaireInputs = Game.Services.GetService(typeof(InputManager)) as InputManager;
             positionSouris = new Point(0, 0);
+            ServeurCréé = false;
 
             //Arriere plan
             Rectangle arrièrePlan = new Rectangle(0, 0, Game.Window.ClientBounds.Width, Game.Window.ClientBounds.Height);
@@ -75,12 +78,15 @@ namespace AtelierXNA
             }  
             if(positionCreateServerButton.Contains(positionSouris))
             {
+                
                 if(GestionnaireInputs.EstNouveauClicGauche())
                 {
-                    Server serveurDeJeu = new Server(5011);
-                    Dns.GetHostAddresses("serveurDeJeu");
-                    ServeurClient HostClient = new ServeurClient(Game, "localip");
-                    
+                    if(ServeurCréé == false)
+                    {
+                        ServeurDeJeu = new Server(5011);
+                        ServeurCréé = true;
+                    }
+                  
 
                 }
             }   
@@ -88,6 +94,11 @@ namespace AtelierXNA
             {
                 if(GestionnaireInputs.EstNouveauClicGauche())
                 {
+                    string sHostName = Dns.GetHostName(); 
+                    IPHostEntry ipE = Dns.GetHostEntry(sHostName);
+                    IPAddress[] IpA = ipE.AddressList;
+                    ServeurClient HostClient = new ServeurClient(Game, IpA[1].ToString());
+                    Game.Services.AddService(typeof(ServeurClient), HostClient);
                     ((Game1)Game).EnJeu = true;
                     ((Game1)Game).ChangerDÉtat(3);
                     

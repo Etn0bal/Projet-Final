@@ -36,15 +36,11 @@ namespace AtelierXNA
             : base(game)
         {
             IP = iP;
+            InializeClient();
         }
 
-        /// <summary>
-        /// Allows the game component to perform any initialization it needs to before starting
-        /// to run.  This is where it can query for any required services and load content.
-        /// </summary>
-        public override void Initialize()
+        private void InializeClient()
         {
-
             Client = new TcpClient();
             Client.NoDelay = true;
             Client.Connect(IP, PORT);
@@ -57,8 +53,12 @@ namespace AtelierXNA
 
             reader = new BinaryReader(readStream);
             writer = new BinaryWriter(writeStream);
-            base.Initialize();
         }
+
+        /// <summary>
+        /// Allows the game component to perform any initialization it needs to before starting
+        /// to run.  This is where it can query for any required services and load content.
+        /// </summary>
         private void StreamReceived(IAsyncResult ar)
         {
             int bytesRead = 0;
@@ -91,48 +91,57 @@ namespace AtelierXNA
             Client.GetStream().BeginRead(readbuffer, 0, BUFFER_SIZE, StreamReceived, null);
         }
 
-        //private void ProcessData(byte[] data)
-        //{
-        //    readStream.SetLength(0);
-        //    readStream.Position = 0;
+        private void ProcessData(byte[] data)
+        {
+            readStream.SetLength(0);
+            readStream.Position = 0;
 
-        //    readStream.Write(data, 0, data.Length);
-        //    readStream.Position = 0;
+            readStream.Write(data, 0, data.Length);
+            readStream.Position = 0;
 
-        //    Protocoles p;
+            Protocoles p;
 
-        //    try
-        //    {
-        //        p = (Protocoles)reader.ReadByte();
+            try
+            {
+                p = (Protocoles)reader.ReadByte();
 
-        //        if (p == Protocoles.Connected)
-        //        {
-        //        }
-        //        else if (p == Protocoles.Disconnected)
-        //        {
-        //        }
+                if (p == Protocoles.Connected)
+                {
+                }
+                else if (p == Protocoles.Disconnected)
+                {
+                }
 
-        //        else if (p == Protocoles.PlayerMoved)
-        //        {
-        //        }
-        //        else if (p == Protocoles)
-        //        {
-        //        }
-        //        else if (p == Protocoles)
-        //        {
-        //        }
-        //        else if (p == Protocoles)
-        //        {
-        //        }
-        //        else if (p == Protocoles.Validation)
-        //        {
-        //            //    }
-        //        }
-        //        catch (Exception ex)
-        //    {
-        //        MessageBox.Show(ex.Message);
-        //    }
-        //}
+                else if (p == Protocoles.PlayerMovement)
+                {
+                    foreach(EntitéeEnnemie EntitéeEnnemie in Game.Components.Where(x => x is EntitéeEnnemie))
+                    {
+                        float px = reader.ReadSingle();
+                        float py = reader.ReadSingle();
+                        float pz = reader.ReadSingle();
+                        Vector3 positionEnnemie = new Vector3(px, py, pz);
+                        EntitéeEnnemie.Position = positionEnnemie;
+                    }
+                }
+            }
+            //        else if (p == Protocoles)
+            //        {
+            //        }
+            //        else if (p == Protocoles)
+            //        {
+            //        }
+            //        else if (p == Protocoles)
+            //        {
+            //        }
+            //        else if (p == Protocoles.Validation)
+            //        {
+            //            //    }
+            //        }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
 
 
         private byte[] GetDataFromMemoryStream(MemoryStream ms)
@@ -170,15 +179,14 @@ namespace AtelierXNA
 
             }
         }
-        /// <summary>
-        /// Allows the game component to update itself.
-        /// </summary>
-        /// <param name="gameTime">Provides a snapshot of timing values.</param>
-        public override void Update(GameTime gameTime)
+        public void EnvoyerDéplacement(Vector3 position)
         {
-            // TODO: Add your update code here
-
-            base.Update(gameTime);
+            writeStream.Position = 0;
+            writer.Write((Byte)Protocoles.PlayerMovement);
+            writer.Write(position.X);
+            writer.Write(position.Y);
+            writer.Write(position.Z);
+            SendData(GetDataFromMemoryStream(writeStream));
         }
     }
 }

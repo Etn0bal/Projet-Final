@@ -79,6 +79,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CaméraTypéMoba.cs" />
+    <Compile Include="Entitée\EntitéeEnnemie.cs" />
     <Compile Include="Entitée\EntitéeJoueur.cs" />
     <Compile Include="Entitée\EntitéePéon.cs" />
     <Compile Include="Entitée\EntitéeTour.cs" />
@@ -86,7 +87,6 @@
     <Compile Include="Entitée\EntitéeMobile.cs" />
     <Compile Include="Carte\CartePlan.cs" />
     <Compile Include="Serveur\Delegates.cs" />
-    <Compile Include="ServeurClients\DelegatesClient.cs" />
     <Compile Include="Entitée\Entitée.cs" />
     <Compile Include="Game\TheGame.cs" />
     <Compile Include="Entitée\IControlable.cs" />
@@ -108,7 +108,7 @@
     <Compile Include="Menu\MainMenu.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Program.cs" />
-    <Compile Include="Game1.cs" />
+    <Compile Include="Game\Game1.cs" />
     <Compile Include="Texte.cs" />
   </ItemGroup>
   <ItemGroup>
