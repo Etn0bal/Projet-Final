@@ -27,6 +27,8 @@ namespace AtelierXNA
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
+            graphics.SynchronizeWithVerticalRetrace = false;
+            IsFixedTimeStep = false;
             IsMouseVisible = true;
 
         }

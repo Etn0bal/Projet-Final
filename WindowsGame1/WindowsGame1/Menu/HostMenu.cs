@@ -94,11 +94,11 @@ namespace AtelierXNA
             {
                 if(GestionnaireInputs.EstNouveauClicGauche())
                 {
-                    string sHostName = Dns.GetHostName(); 
-                    IPHostEntry ipE = Dns.GetHostEntry(sHostName);
-                    IPAddress[] IpA = ipE.AddressList;
-                    ServeurClient HostClient = new ServeurClient(Game, IpA[1].ToString());
-                    Game.Services.AddService(typeof(ServeurClient), HostClient);
+                    //string sHostName = Dns.GetHostName(); 
+                    //IPHostEntry ipE = Dns.GetHostEntry(sHostName);
+                    //IPAddress[] IpA = ipE.AddressList;
+                    //ServeurClient HostClient = new ServeurClient(Game, IpA[1].ToString());
+                    //Game.Services.AddService(typeof(ServeurClient), HostClient);
                     ((Game1)Game).EnJeu = true;
                     ((Game1)Game).ChangerDÉtat(3);
                     

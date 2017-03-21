@@ -80,10 +80,10 @@ namespace AtelierXNA
             {
                 if (GestionInputs.EstNouveauClicDroit()) //// Regarder S'il n'y a pas d'autre entitée
                 {
-                    GetPickRay();
+                    GetDestination();
                     DirectionDéplacement = Vector3.Normalize(Destination - Position);
                     GérerRotation();
-                    EnMouvement = true;
+                    EnMouvement = false;
                 }
             }
             if ((Destination - Position).Length() >= DirectionDéplacement.Length())
@@ -94,7 +94,7 @@ namespace AtelierXNA
 
         }
 
-        private void GetPickRay()
+        private void GetDestination()
         {
             Point positionSouris = GestionInputs.GetPositionSouris();
             Vector2 vecteurPosition = new Vector2(positionSouris.X, positionSouris.Y);
@@ -115,10 +115,10 @@ namespace AtelierXNA
         {
 
             float Angle = (float)Math.Acos(Vector3.Dot(DirectionDéplacement, Direction) / (DirectionDéplacement.Length() * Direction.Length()));
+            if(Vector3.Cross(Direction,DirectionDéplacement).Y < 0) { Angle *= -1; }
             Rotation += new Vector3(0, Angle, 0);
             Direction = DirectionDéplacement;
             DoCalculerMonde = true;
-
         }
 
         public bool EstEnCollision(object autreObjet)
