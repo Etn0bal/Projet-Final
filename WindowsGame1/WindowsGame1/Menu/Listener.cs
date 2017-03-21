@@ -5,7 +5,7 @@ using System.Text;
 using System.Net.Sockets;
 using System.Net;
 
-namespace AtelierXNA.Server
+namespace AtelierXNA
 {
     public class Listener
     {
@@ -77,11 +77,11 @@ namespace AtelierXNA.Server
             }
 
             //If the id is still -1, the client what wants to connect cannot (probably because we have reached the maximum number of clients
-            if (id == -1)
-            {
-                Console.WriteLine("Client " + client.Client.RemoteEndPoint.ToString() + " cannot connect. ");
-                return;
-            }
+            //if (id == -1)
+            //{
+            //    Console.WriteLine("Client " + client.Client.RemoteEndPoint.ToString() + " cannot connect. ");
+            //    return;
+            //}
 
             //ID is valid, so create a new Client object with the server ID and IP
             usedUserID[id] = true;

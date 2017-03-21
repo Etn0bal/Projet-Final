@@ -59,11 +59,13 @@ namespace AtelierXNA
             SpriteJoinMenu titreJoinGame = new SpriteJoinMenu(Game, titre, "JoinGame");
             Game.Components.Add(titreJoinGame);
             //ZoneTexte
-            Rectangle PositionTxt = new Rectangle((2 * (Game.Window.ClientBounds.Width / 10)),5* Game.Window.ClientBounds.Height / 10, 3 * (Game.Window.ClientBounds.Width / 10), (Game.Window.ClientBounds.Height / 10));
-
-            Texte txt = new Texte(Game,IPÉcrit,"Arial", PositionTxt,new Vector2(3*Game.Window.ClientBounds.Width/10,Game.Window.ClientBounds.Height/2), Color.White,0);
+            Rectangle PositionTxtAEcrire = new Rectangle((2 * (Game.Window.ClientBounds.Width / 10)), 5 * Game.Window.ClientBounds.Height / 10, 3 * (Game.Window.ClientBounds.Width / 10), (Game.Window.ClientBounds.Height / 10));
+            TexteModifiable txt = new TexteModifiable(Game, IPÉcrit, "Arial", PositionTxtAEcrire, new Vector2(3 * Game.Window.ClientBounds.Width / 10, Game.Window.ClientBounds.Height / 2), Color.White, 0);
             Game.Components.Add(txt);
 
+            Rectangle PositionTxt = new Rectangle((2 * (Game.Window.ClientBounds.Width / 10)), 5 * Game.Window.ClientBounds.Height / 10, 3 * (Game.Window.ClientBounds.Width / 10), (Game.Window.ClientBounds.Height / 10));
+            TexteJoinMenu txt2 = new TexteJoinMenu(Game, "Entrez l'IP de votre Adversaire : ", "Arial", PositionTxt, new Vector2(3 * Game.Window.ClientBounds.Width / 10, 4*Game.Window.ClientBounds.Height / 10), Color.White, 0);
+            Game.Components.Add(txt2);
 
 
             base.Initialize();
@@ -73,7 +75,8 @@ namespace AtelierXNA
         {
             GérerSouris();
             GérerClavier(gameTime);
-            
+            IP = IPÉcrit;
+
             base.Update(gameTime);
         }
         void GérerSouris()
@@ -170,17 +173,11 @@ namespace AtelierXNA
                         IPÉcrit = IPÉcrit.Remove(IPÉcrit.Count() - 1);
                     }
                 }
-                foreach (Texte a in Game.Components.Where(x => x is Texte))
+                foreach (TexteModifiable a in Game.Components.Where(x => x is TexteModifiable))
                 {
                     a.ModifierTexte(IPÉcrit);
                     a.Draw(gameTime);
                 }
-                if(GestionnaireInputs.EstNouvelleTouche(Microsoft.Xna.Framework.Input.Keys.Enter))
-                {
-                    IP = IPÉcrit;
-                    MessageBox.Show("L'Ip que vous avez entré à été enregistré");
-                }
-
             }
         }
 

@@ -25,7 +25,8 @@ namespace AtelierXNA
 
 
         const float ÉCHELLE_OBJET = 0.01f;
-        Vector3 positionObjet = new Vector3(-90, 0, 90);
+        Vector3 positionJoueur = new Vector3(-90, 0, 90);
+        Vector3 positionEnnemie = new Vector3(-85, 0, 85);
         Vector3 rotationObjet = new Vector3(0, MathHelper.PiOver2, 0);
 
         RessourcesManager<Texture2D> GestionnaireDeTexture { get; set; }
@@ -33,6 +34,9 @@ namespace AtelierXNA
         GraphicsDeviceManager graphics { get; set; }
         SpriteBatch GestionSprites { get; set; }
         InputManager GestionInput { get; set; }
+        EntitéeJoueur joueur { get; set; }
+        EntitéeEnnemie joueurEnnemie { get; set; }
+        ServeurClient joueurClient { get; set; }
 
 
 
@@ -53,6 +57,7 @@ namespace AtelierXNA
             graphics = Game.Services.GetService(typeof(GraphicsDeviceManager)) as GraphicsDeviceManager;
             GestionInput = Game.Services.GetService(typeof(InputManager)) as InputManager;
             GestionSprites = Game.Services.GetService(typeof(SpriteBatch)) as SpriteBatch;
+            joueurClient = Game.Services.GetService(typeof(ServeurClient)) as ServeurClient;
 
             
 
@@ -66,8 +71,10 @@ namespace AtelierXNA
             Game.Components.Add(new CartePlan(Game, 1f, Vector3.Zero, Vector3.Zero, new Vector3(225, 0, 400), "Carte Plan4", INTERVALLE_MAJ));
             Game.Components.Add(new Murs(Game, 1f, Vector3.Zero, Vector3.Zero, new Vector3(225, 0, 400), "Carte planMur", INTERVALLE_MAJ));
             Game.Components.Add(GestionInput);
-
-            Game.Components.Add(new EntitéeJoueur(Game, "robot", ÉCHELLE_OBJET, rotationObjet, positionObjet,INTERVALLE_MAJ,1,1,1,1));
+            joueur = new EntitéeJoueur(Game, "robot", ÉCHELLE_OBJET, rotationObjet, positionJoueur, INTERVALLE_MAJ, 1, 1, 1, 1);
+            Game.Components.Add(joueur);
+            joueurEnnemie = new EntitéeEnnemie(Game, "robot", ÉCHELLE_OBJET, rotationObjet, positionEnnemie, INTERVALLE_MAJ, 1, 1, 1, 1);
+            Game.Components.Add(joueurEnnemie);
 
 
 
@@ -77,8 +84,11 @@ namespace AtelierXNA
 
         public override void Update(GameTime gameTime)
         {
-            // TODO: Add your update code here
-
+            if(joueur.EnMouvement)
+            {
+                joueurClient.EnvoyerDéplacement(joueur.Position);
+                joueur.EnMouvement = false;
+            }
             base.Update(gameTime);
         }
         public override void Draw(GameTime gameTime)

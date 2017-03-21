@@ -116,7 +116,6 @@ namespace AtelierXNA
             if (numÉtat == (int)States.HostGame)
             {
                 State = States.HostGame;
-
             }
             if (numÉtat == (int)States.Game)
             {
@@ -139,7 +138,6 @@ namespace AtelierXNA
             foreach (GameComponent gc in Components.Where(x => x is SpriteMainMenu))
             {
                 gc.Enabled = true;
-
             }
             foreach (GameComponent Hm in Components.Where(x => x is HostMenu))
             {
@@ -157,6 +155,14 @@ namespace AtelierXNA
             {
                 gc.Enabled = false;
             }
+            foreach (GameComponent gc in Components.Where(x => x is Texte))
+            {
+                gc.Enabled = false;
+            }
+
+            
+
+            
         }
         void InitialiserHostMenu()
         {
@@ -176,15 +182,14 @@ namespace AtelierXNA
             {
                 gc.Enabled = true;
             }
-            foreach (GameComponent Jm in Components.Where(x => x is JoinMenu))
+            foreach (GameComponent txt in Components.Where(x => x is TexteHostMenu))
             {
-                Jm.Enabled = false;
+                txt.Enabled = true;
             }
-            foreach (GameComponent gc in Components.Where(x => x is SpriteJoinMenu))
-            {
-                gc.Enabled = false;
-            }
+
+
         }
+
         void InitialiserJoinMenu()
         {
             foreach (GameComponent Mm in Components.Where(x => x is MainMenu))
@@ -192,14 +197,6 @@ namespace AtelierXNA
                 Mm.Enabled = false;
             }
             foreach (GameComponent gc in Components.Where(x => x is SpriteMainMenu))
-            {
-                gc.Enabled = false;
-            }
-            foreach (GameComponent Hm in Components.Where(x => x is HostMenu))
-            {
-                Hm.Enabled = false;
-            }
-            foreach (GameComponent gc in Components.Where(x => x is SpriteHostMenu))
             {
                 gc.Enabled = false;
             }
@@ -211,6 +208,14 @@ namespace AtelierXNA
             {
                 gc.Enabled = true;
             }
+            foreach (GameComponent txt in Components.Where(x => x is TexteJoinMenu))
+            {
+                txt.Enabled = true;
+            }
+
+
+
+
         }
         void InitialiserGame()
         {
@@ -231,5 +236,6 @@ namespace AtelierXNA
                 Components.RemoveAt(i);
             }
         }
+
     }
 }

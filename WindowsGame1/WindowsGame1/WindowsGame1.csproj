@@ -79,14 +79,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CaméraTypéMoba.cs" />
+    <Compile Include="Entitée\EntitéeEnnemie.cs" />
     <Compile Include="Entitée\EntitéeJoueur.cs" />
     <Compile Include="Entitée\EntitéePéon.cs" />
     <Compile Include="Entitée\EntitéeTour.cs" />
     <Compile Include="Entitée\EntitéeImmobile.cs" />
     <Compile Include="Entitée\EntitéeMobile.cs" />
     <Compile Include="Carte\CartePlan.cs" />
-    <Compile Include="Server\Delegates.cs" />
-    <Compile Include="ServeurClients\DelegatesClient.cs" />
+    <Compile Include="Serveur\Delegates.cs" />
     <Compile Include="Entitée\Entitée.cs" />
     <Compile Include="Game\TheGame.cs" />
     <Compile Include="Entitée\IControlable.cs" />
@@ -98,9 +98,9 @@
     <Compile Include="Entitée\ObjetDeBase.cs" />
     <Compile Include="Entitée\ObjetDeDémo.cs" />
     <Compile Include="ServeurClients\Protocoles.cs" />
-    <Compile Include="Server\Client.cs" />
-    <Compile Include="Server\Listener.cs" />
-    <Compile Include="Server\Server.cs" />
+    <Compile Include="Serveur\Client.cs" />
+    <Compile Include="Menu\Listener.cs" />
+    <Compile Include="Serveur\Server.cs" />
     <Compile Include="ServeurClients\ServeurClient.cs" />
     <Compile Include="Sprite.cs" />
     <Compile Include="Menu\HostMenu.cs" />
@@ -108,8 +108,11 @@
     <Compile Include="Menu\MainMenu.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Program.cs" />
-    <Compile Include="Game1.cs" />
-    <Compile Include="Texte.cs" />
+    <Compile Include="Game\Game1.cs" />
+    <Compile Include="Menu\Texte.cs" />
+    <Compile Include="Menu\TexteModifiable.cs" />
+    <Compile Include="TexteHostMenu.cs" />
+    <Compile Include="TexteJoinMenu.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Game.ico" />

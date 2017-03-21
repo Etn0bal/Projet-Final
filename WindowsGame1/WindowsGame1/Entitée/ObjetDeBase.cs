@@ -13,7 +13,7 @@ namespace AtelierXNA
       Caméra CaméraJeu { get; set; }
       protected float Échelle { get; set; }
       protected Vector3 Rotation { get; set; }
-      protected Vector3 Position { get; set; }
+      public Vector3 Position { get; set; }
 
       protected Model Modèle { get; private set; }
       protected Matrix[] TransformationsModèle { get; private set; }
@@ -34,7 +34,7 @@ namespace AtelierXNA
          CalculerMonde();
       }
 
-      protected void CalculerMonde()
+      public virtual void CalculerMonde()
       {
          Monde = Matrix.Identity;
          Monde *= Matrix.CreateScale(Échelle);

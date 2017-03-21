@@ -15,7 +15,7 @@ namespace AtelierXNA
     /// <summary>
     /// This is a game component that implements IUpdateable.
     /// </summary>
-    public class EntitéeJoueur : EntitéeMobile, IControlable, ICollisionable
+    public class EntitéeEnnemie : EntitéeMobile, IControlable, ICollisionable
     {
         public BoundingSphere SphèreDeCollision { get; private set; }
         Vector3 DirectionDéplacement { get; set; }
@@ -28,7 +28,7 @@ namespace AtelierXNA
 
 
 
-        public EntitéeJoueur(Game jeu, string nomModèle, float échelleInitiale, Vector3 rotationInitiale, Vector3 positionInitiale,
+        public EntitéeEnnemie(Game jeu, string nomModèle, float échelleInitiale, Vector3 rotationInitiale, Vector3 positionInitiale,
                            float intervalleMAJ, int pointDeVie, int portée, int force, int armure)
             : base(jeu, nomModèle, échelleInitiale, rotationInitiale, positionInitiale, intervalleMAJ, pointDeVie, portée, force, armure)
         {
@@ -54,7 +54,6 @@ namespace AtelierXNA
         public override void Update(GameTime gameTime)
         {
             GestionDéplacement();
-
             if (DoCalculerMonde)
             {
                 CalculerMonde();
@@ -63,53 +62,21 @@ namespace AtelierXNA
             base.Update(gameTime);
 
         }
+        public void GestionDéplacement()
+        {
+            GérerDéplacement();
+        }
+        protected override void GérerDéplacement()
+        {
+            CalculerMonde();
+        }
         public override void Draw(GameTime gameTime)
         {
             base.Draw(gameTime);
         }
 
 
-        public void GestionDéplacement()
-        {
-            GérerDéplacement();
-        }
 
-        protected override void GérerDéplacement()
-        {
-            if (GestionInputs.EstSourisActive)
-            {
-                if (GestionInputs.EstNouveauClicDroit()) //// Regarder S'il n'y a pas d'autre entitée
-                {
-                    GetPickRay();
-                    DirectionDéplacement = Vector3.Normalize(Destination - Position);
-                    GérerRotation();
-                    EnMouvement = true;
-                }
-            }
-            if ((Destination - Position).Length() >= DirectionDéplacement.Length())
-            {
-                Position += DirectionDéplacement;
-                DoCalculerMonde = true;
-            }
-
-        }
-
-        private void GetPickRay()
-        {
-            Point positionSouris = GestionInputs.GetPositionSouris();
-            Vector2 vecteurPosition = new Vector2(positionSouris.X, positionSouris.Y);
-            Vector3 nearSource = new Vector3(vecteurPosition, 0);
-            Vector3 farSource = new Vector3(vecteurPosition, 1);
-
-            Vector3 nearPoint = Game.GraphicsDevice.Viewport.Unproject(nearSource, CaméraJeu.Projection, CaméraJeu.Vue, Matrix.Identity);  ////World de la caméra????     
-            Vector3 farPoint = Game.GraphicsDevice.Viewport.Unproject(farSource, CaméraJeu.Projection, CaméraJeu.Vue, Matrix.Identity);  ////World de la caméra????     
-            Vector3 direction = farPoint - nearPoint;
-            direction = Vector3.Normalize(direction);
-
-            Ray Rayon = new Ray(nearPoint, direction);
-
-            Destination = (Vector3)(nearPoint + direction * Rayon.Intersects(PlanReprésentantCarte));
-        }
 
         void GérerRotation()
         {
@@ -126,4 +93,5 @@ namespace AtelierXNA
             return false;
         }
     }
+
 }
