@@ -24,6 +24,7 @@ namespace AtelierXNA
         InputManager GestionnaireInputs { get; set; }
         Server ServeurDeJeu { get; set; }
         bool ServeurCréé { get; set; }
+        string IP { get; set; }
 
         public HostMenu(Game game)
             : base(game)
@@ -34,6 +35,7 @@ namespace AtelierXNA
             GestionnaireInputs = Game.Services.GetService(typeof(InputManager)) as InputManager;
             positionSouris = new Point(0, 0);
             ServeurCréé = false;
+
 
             //Arriere plan
             Rectangle arrièrePlan = new Rectangle(0, 0, Game.Window.ClientBounds.Width, Game.Window.ClientBounds.Height);
@@ -59,6 +61,9 @@ namespace AtelierXNA
             SpriteHostMenu titreHostGame = new SpriteHostMenu(Game, titre, "HostGame");
             Game.Components.Add(titreHostGame);
 
+
+
+
             base.Initialize();
         }
         public override void Update(GameTime gameTime)
@@ -73,6 +78,7 @@ namespace AtelierXNA
             {
                 if (GestionnaireInputs.EstNouveauClicGauche())
                 {
+                    EnleverIp();
                     ((Game1)Game).ChangerDÉtat(0);
                 }
             }  
@@ -81,10 +87,19 @@ namespace AtelierXNA
                 
                 if(GestionnaireInputs.EstNouveauClicGauche())
                 {
-                    if(ServeurCréé == false)
+                    string sHostName = Dns.GetHostName();
+                    IPHostEntry ipE = Dns.GetHostEntry(sHostName);
+                    IPAddress[] IpA = ipE.AddressList;
+                    IP = IpA[2].ToString();
+                    Rectangle PositionTxt = new Rectangle((2 * (Game.Window.ClientBounds.Width / 10)), 5 * Game.Window.ClientBounds.Height / 10, 3 * (Game.Window.ClientBounds.Width / 10), (Game.Window.ClientBounds.Height / 10));
+                    TexteHostMenu IpAAfficher = new TexteHostMenu(Game, IP, "Arial", PositionTxt, new Vector2(3 * Game.Window.ClientBounds.Width / 10, Game.Window.ClientBounds.Height / 2), Color.White, 0);
+                    Game.Components.Add(IpAAfficher);
+
+                    if (ServeurCréé == false)
                     {
-                        ServeurDeJeu = new Server(5011);
+                        //ServeurDeJeu = new Server(5011);
                         ServeurCréé = true;
+
                     }
                   
 
@@ -94,16 +109,25 @@ namespace AtelierXNA
             {
                 if(GestionnaireInputs.EstNouveauClicGauche())
                 {
-                    //string sHostName = Dns.GetHostName(); 
-                    //IPHostEntry ipE = Dns.GetHostEntry(sHostName);
-                    //IPAddress[] IpA = ipE.AddressList;
-                    //ServeurClient HostClient = new ServeurClient(Game, IpA[1].ToString());
-                    //Game.Services.AddService(typeof(ServeurClient), HostClient);
+                    ServeurClient HostClient = new ServeurClient(Game, IP);
+                    Game.Services.AddService(typeof(ServeurClient), HostClient);
                     ((Game1)Game).EnJeu = true;
                     ((Game1)Game).ChangerDÉtat(3);
                     
                 }
             }  
+
+        }
+
+        private void EnleverIp()
+        {
+            for (int i = Game.Components.Count - 1; i >= 0; --i)
+            {
+                if(Game.Components[i] is TexteHostMenu)
+                {
+                    Game.Components.RemoveAt(i);
+                }
+            }
         }
     }
 }

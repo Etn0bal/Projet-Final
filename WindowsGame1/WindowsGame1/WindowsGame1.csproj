@@ -99,7 +99,7 @@
     <Compile Include="Entitée\ObjetDeDémo.cs" />
     <Compile Include="ServeurClients\Protocoles.cs" />
     <Compile Include="Serveur\Client.cs" />
-    <Compile Include="Serveur\Listener.cs" />
+    <Compile Include="Menu\Listener.cs" />
     <Compile Include="Serveur\Server.cs" />
     <Compile Include="ServeurClients\ServeurClient.cs" />
     <Compile Include="Sprite.cs" />
@@ -109,7 +109,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Game\Game1.cs" />
-    <Compile Include="Texte.cs" />
+    <Compile Include="Menu\Texte.cs" />
+    <Compile Include="Menu\TexteModifiable.cs" />
+    <Compile Include="TexteHostMenu.cs" />
+    <Compile Include="TexteJoinMenu.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Game.ico" />

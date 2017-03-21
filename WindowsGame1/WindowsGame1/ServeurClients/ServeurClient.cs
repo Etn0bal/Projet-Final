@@ -86,7 +86,7 @@ namespace AtelierXNA
             for (int i = 0; i < bytesRead; i++)
                 data[i] = readbuffer[i];
 
-            //ProcessData(data);
+            ProcessData(data);
 
             Client.GetStream().BeginRead(readbuffer, 0, BUFFER_SIZE, StreamReceived, null);
         }
@@ -119,6 +119,7 @@ namespace AtelierXNA
                         float px = reader.ReadSingle();
                         float py = reader.ReadSingle();
                         float pz = reader.ReadSingle();
+                        
                         Vector3 positionEnnemie = new Vector3(px, py, pz);
                         EntitéeEnnemie.Position = positionEnnemie;
                     }

@@ -93,6 +93,7 @@ namespace AtelierXNA
                 if (GestionInputs.EstNouveauClicGauche())
                 {
                     ((Game1)Game).ChangerDÉtat(1);
+
                 }
             }
 

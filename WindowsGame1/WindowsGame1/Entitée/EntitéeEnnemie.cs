@@ -68,7 +68,7 @@ namespace AtelierXNA
         }
         protected override void GérerDéplacement()
         {
-
+            CalculerMonde();
         }
         public override void Draw(GameTime gameTime)
         {
