@@ -17,6 +17,8 @@ namespace AtelierXNA
     /// </summary>
     public class EntitéeJoueur : EntitéeMobile, IControlable, ICollisionable
     {
+        const float FACTEUR_VITESSE = 0.05f;
+
         public BoundingSphere SphèreDeCollision { get; private set; }
         Vector3 DirectionDéplacement { get; set; }
         Vector3 Direction { get; set; }
@@ -25,6 +27,7 @@ namespace AtelierXNA
         InputManager GestionInputs { get; set; }
         Caméra CaméraJeu { get; set; }
         public bool EnMouvement { get; set; }
+
 
 
 
@@ -47,6 +50,7 @@ namespace AtelierXNA
             Direction = new Vector3(1, 0, 0);
             PlanReprésentantCarte = new Plane(0, 1, 0, 0);
             EnMouvement = false;
+            RayonCollision = 3;
 
             base.Initialize();
         }
@@ -86,9 +90,9 @@ namespace AtelierXNA
                     EnMouvement = false;
                 }
             }
-            if ((Destination - Position).Length() >= DirectionDéplacement.Length())
+            if ((Destination - Position).Length() >= FACTEUR_VITESSE*DirectionDéplacement.Length())
             {
-                Position += DirectionDéplacement;
+                Position += FACTEUR_VITESSE*DirectionDéplacement;
                 DoCalculerMonde = true;
             }
 
