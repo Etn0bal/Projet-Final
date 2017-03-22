@@ -25,6 +25,7 @@ namespace AtelierXNA
         BasicEffect EffetDeBase { get; set; }
         VertexPositionColor[] Sommets { get; set; }
         Vector3[,] PtsSommets { get; set; }
+        Vector3[,] TableauDeDroites { get; set; }
         Vector3 Étendue { get; set; }
         Vector3 Origine { get; set; }
         Vector3 DeltaPoint { get; set; }
@@ -34,6 +35,8 @@ namespace AtelierXNA
         int NbColonnes { get; set; }
         int NbRangées { get; set; }
         int Cpt { get; set; }
+        int PtsDroite { get; set; }
+        int NumDroite { get; set; }
 
         public Murs(Game game, float homothétieInitiale, Vector3 rotationInitiale, Vector3 positionInitiale, Vector3 étendue, string nomMurs,
                          float intervalleMAJ)
@@ -42,6 +45,7 @@ namespace AtelierXNA
         {
             NomMurs = nomMurs;
             Étendue = étendue;
+            
         }
 
         /// <summary>
@@ -51,6 +55,8 @@ namespace AtelierXNA
         public override void Initialize()
         {
             Cpt = 0;
+            PtsDroite = 0;
+            NumDroite = 0;
             GestionnaireDeTextures = Game.Services.GetService(typeof(RessourcesManager<Texture2D>)) as RessourcesManager<Texture2D>;
             MursTexture = GestionnaireDeTextures.Find(NomMurs);
             InitialiserDonnéesCarte();
@@ -98,6 +104,8 @@ namespace AtelierXNA
             PtsSommets = new Vector3[NbColonnes, NbRangées];
 
             Sommets = new VertexPositionColor[(18+24)*30];
+
+            TableauDeDroites = new Vector3[2, 32];
         }
 
 
@@ -164,10 +172,12 @@ namespace AtelierXNA
                     if(DataTexture[colonne,rangée].R == valeurCouleurPoint1)
                     {
                         point1 = PtsSommets[colonne, rangée];
+                        AjoutDonnéTableauDroites(point1);
                     }
                     if(DataTexture[colonne,rangée].R == valeurCouleurPoint2)
                     {
                         point2 = PtsSommets[colonne, rangée];
+                        AjoutDonnéTableauDroites(point2);
                     }
                 }
             }
@@ -175,8 +185,7 @@ namespace AtelierXNA
             direction = point2 - point1;
             latéral = Vector3.Normalize( new Vector3(-direction.Z, 0, direction.X));
 
-            Vector3[] pts = { 
-                              point1 + latéral, point1+latéral+hauteur, point2+latéral, point2+latéral+hauteur,
+            Vector3[] pts = { point1 + latéral, point1+latéral+hauteur, point2+latéral, point2+latéral+hauteur,
                               point1 - latéral, point1-latéral+hauteur, point2-latéral, point2-latéral+hauteur};
 
             Sommets[Cpt++] = new VertexPositionColor(pts[0], Color.Brown);
@@ -218,12 +227,13 @@ namespace AtelierXNA
             Sommets[Cpt++] = new VertexPositionColor(pts[3], Color.Brown);
             Sommets[Cpt++] = new VertexPositionColor(pts[5], Color.Black);
             Sommets[Cpt++] = new VertexPositionColor(pts[7], Color.Red);
-
-
         }
 
-
-
+        void AjoutDonnéTableauDroites(Vector3 point)
+        {
+            TableauDeDroites[PtsDroite++, NumDroite] = point;
+            if(PtsDroite == 2) { PtsDroite = 0; NumDroite++; }   
+        }
 
         public override void Draw(GameTime gameTime)
         {
@@ -236,6 +246,34 @@ namespace AtelierXNA
                 passeEffet.Apply();
                 GraphicsDevice.DrawUserPrimitives(PrimitiveType.TriangleList, Sommets, 0, 10*(18+24));
             }
+        }
+
+        public bool EnCollision(Entitée entité)
+        {
+            Vector3 direction;
+            float a;
+            float b;
+            float c;
+            float distance;
+            float xPointDroite;
+            float zPointDroite;
+            bool enCollision = false;
+
+            for (int i = 0; i < TableauDeDroites.GetLength(1); i++)
+            {
+                direction = TableauDeDroites[1, i] - TableauDeDroites[0, i];
+                a = direction.X; b = direction.Z; c = a * (-TableauDeDroites[1, i].X) + b * (-TableauDeDroites[1, i].Z);
+
+                distance = (float)((Math.Abs(entité.Position.X + entité.Position.Z + c)) / (Math.Sqrt(a * a + b * b)));
+                if (distance > entité.RayonCollision) { return enCollision; }
+
+                
+            
+
+                
+            }
+
+            return enCollision;
         }
     }
 }

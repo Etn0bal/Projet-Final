@@ -1,4 +1,4 @@
-using System;
+Ôªøusing System;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Xna.Framework;
@@ -20,12 +20,13 @@ namespace AtelierXNA
     public class TheGame : Microsoft.Xna.Framework.DrawableGameComponent
     {
 
-        public CamÈra CamÈraJeu { get; private set; }
+        public Cam√©ra Cam√©raJeu { get; private set; }
         const float INTERVALLE_MAJ = 1f / 60f;
 
 
-        const float …CHELLE_OBJET = 0.01f;
-        Vector3 positionObjet = new Vector3(-90, 0, 90);
+        const float √âCHELLE_OBJET = 0.07f;
+        Vector3 positionJoueur = new Vector3(-90, 0, 90);
+        Vector3 positionEnnemie = new Vector3(-85, 0, 85);
         Vector3 rotationObjet = new Vector3(0, MathHelper.PiOver2, 0);
 
         RessourcesManager<Texture2D> GestionnaireDeTexture { get; set; }
@@ -33,6 +34,9 @@ namespace AtelierXNA
         GraphicsDeviceManager graphics { get; set; }
         SpriteBatch GestionSprites { get; set; }
         InputManager GestionInput { get; set; }
+        Entit√©eJoueur joueur { get; set; }
+        Entit√©eEnnemie joueurEnnemie { get; set; }
+        ServeurClient joueurClient { get; set; }
 
 
 
@@ -48,26 +52,31 @@ namespace AtelierXNA
         /// </summary>
         public override void Initialize()
         {
+
+
             GestionnaireDeTexture = Game.Services.GetService(typeof(RessourcesManager<Texture2D>)) as RessourcesManager<Texture2D>;
             GestionnaireDeModel = Game.Services.GetService(typeof(RessourcesManager<Model>)) as RessourcesManager<Model>;
             graphics = Game.Services.GetService(typeof(GraphicsDeviceManager)) as GraphicsDeviceManager;
             GestionInput = Game.Services.GetService(typeof(InputManager)) as InputManager;
             GestionSprites = Game.Services.GetService(typeof(SpriteBatch)) as SpriteBatch;
+            joueurClient = Game.Services.GetService(typeof(ServeurClient)) as ServeurClient;
 
             
 
-            CamÈraJeu = new CamÈraTypÈMoba(Game, new Vector3(-85, 30, 115), new Vector3(0, -1, -1), Vector3.Up, INTERVALLE_MAJ);
-            Game.Services.AddService(typeof(CamÈra), CamÈraJeu);
+            Cam√©raJeu = new Cam√©raTyp√©Moba(Game, new Vector3(-85, 30, 115), new Vector3(0, -1, -1), Vector3.Up, INTERVALLE_MAJ);
+            Game.Services.AddService(typeof(Cam√©ra), Cam√©raJeu);
 
-
+           
             Game.Components.Add(new Afficheur3D(Game));
-            Game.Components.Add(CamÈraJeu);
-            Game.Components.Add(new Afficheur3D(Game));
+            Game.Components.Add(Cam√©raJeu);
             Game.Components.Add(new CartePlan(Game, 1f, Vector3.Zero, Vector3.Zero, new Vector3(225, 0, 400), "Carte Plan4", INTERVALLE_MAJ));
             Game.Components.Add(new Murs(Game, 1f, Vector3.Zero, Vector3.Zero, new Vector3(225, 0, 400), "Carte planMur", INTERVALLE_MAJ));
             Game.Components.Add(GestionInput);
-
-            Game.Components.Add(new EntitÈeJoueur(Game, "robot", …CHELLE_OBJET, rotationObjet, positionObjet,INTERVALLE_MAJ,1,1,1,1));
+            joueur = new Entit√©eJoueur(Game, "robot", √âCHELLE_OBJET, rotationObjet, positionJoueur, INTERVALLE_MAJ, 1, 1, 1, 1);
+            Game.Components.Add(joueur);
+            joueurEnnemie = new Entit√©eEnnemie(Game, "robot", √âCHELLE_OBJET, rotationObjet, positionEnnemie, INTERVALLE_MAJ, 1, 1, 1, 1);
+            Game.Components.Add(joueurEnnemie);
+            Game.Components.Add(new AfficheurFPS(Game, "Arial", Color.AliceBlue, 1f));
 
 
 
@@ -77,8 +86,11 @@ namespace AtelierXNA
 
         public override void Update(GameTime gameTime)
         {
-            // TODO: Add your update code here
-
+            if(joueur.EnMouvement)
+            {
+                joueurClient.EnvoyerD√©placement(joueur.Position);
+                joueur.EnMouvement = false;
+            }
             base.Update(gameTime);
         }
         public override void Draw(GameTime gameTime)

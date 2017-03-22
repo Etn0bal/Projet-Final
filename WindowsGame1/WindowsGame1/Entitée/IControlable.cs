@@ -7,6 +7,6 @@ namespace AtelierXNA
 {
     interface IControlable
     {
-        void GestionDesContrôles();
+        void GestionDéplacement();
     }
 }
