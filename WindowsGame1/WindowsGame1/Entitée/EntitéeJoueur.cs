@@ -109,12 +109,10 @@ namespace AtelierXNA
 
         void GérerRotation()
         {
-
-            float Angle = (float)Math.Acos(Vector3.Dot(DirectionDéplacement, Direction) / (DirectionDéplacement.Length()* Direction.Length()));
+            float Angle = (float)Math.Acos(Vector3.Dot(DirectionDéplacement, Direction) / (DirectionDéplacement.Length() * Direction.Length()));
             Rotation += new Vector3(0, Angle, 0);
             Direction = DirectionDéplacement;
             DoCalculerMonde = true;
-
         }
 
         public bool EstEnCollision(object autreObjet)
