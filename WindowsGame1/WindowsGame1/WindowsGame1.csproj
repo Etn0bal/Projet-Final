@@ -82,6 +82,8 @@
     <Compile Include="Entitée\EntitéeEnnemie.cs" />
     <Compile Include="Entitée\EntitéeJoueur.cs" />
     <Compile Include="Entitée\EntitéePéon.cs" />
+    <Compile Include="Entitée\EntitéePéonAlliée.cs" />
+    <Compile Include="Entitée\EntitéePéonEnnemie.cs" />
     <Compile Include="Entitée\EntitéeTour.cs" />
     <Compile Include="Entitée\EntitéeImmobile.cs" />
     <Compile Include="Entitée\EntitéeMobile.cs" />

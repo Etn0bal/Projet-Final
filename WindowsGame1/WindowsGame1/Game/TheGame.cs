@@ -74,7 +74,7 @@ namespace AtelierXNA
             Game.Components.Add(GestionInput);
             joueur = new EntitéeJoueur(Game, "robot", ÉCHELLE_OBJET, rotationObjet, positionJoueur, INTERVALLE_MAJ, 1, 1, 1, 1);
             Game.Components.Add(joueur);
-            joueurEnnemie = new EntitéeEnnemie(Game, "robot", ÉCHELLE_OBJET, rotationObjet, positionEnnemie, INTERVALLE_MAJ, 1, 1, 1, 1);
+            joueurEnnemie = new EntitéeEnnemie(Game, "Gun Robot", ÉCHELLE_OBJET, rotationObjet, positionEnnemie, INTERVALLE_MAJ, 1, 1, 1, 1);
             Game.Components.Add(joueurEnnemie);
             Game.Components.Add(new AfficheurFPS(Game, "Arial", Color.AliceBlue, 1f));
 

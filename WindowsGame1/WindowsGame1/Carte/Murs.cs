@@ -231,8 +231,8 @@ namespace AtelierXNA
 
         void AjoutDonnéTableauDroites(Vector3 point)
         {
-            TableauDeDroites[PtsDroite++, NumDroite] = point;
-            if(PtsDroite == 2) { PtsDroite = 0; NumDroite++; }   
+            //TableauDeDroites[PtsDroite++, NumDroite] = point;
+            //if(PtsDroite == 2) { PtsDroite = 0; NumDroite++; }   
         }
 
         public override void Draw(GameTime gameTime)
