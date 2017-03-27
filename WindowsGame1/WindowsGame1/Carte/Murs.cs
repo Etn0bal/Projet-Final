@@ -17,6 +17,13 @@ namespace AtelierXNA
     /// </summary>
     public class Murs : PrimitiveDeBaseAnimée
     {
+        //Constante identifiant ce que représente les différentes position dans TableauDeDroites
+        const int POINT1 = 0;
+        const int POINT2 = 1;
+        const int DIRECTION = 2;
+        const int VECTEUR_ÉQUATION_DROITE_ABC = 3;
+
+        //Autres constantes
         const int NB_TRIANGLES_PAR_TUILE = 2;
         const int NB_SOMMETS_PAR_TRIANGLE = 3;
 
@@ -105,7 +112,7 @@ namespace AtelierXNA
 
             Sommets = new VertexPositionColor[(18+24)*30];
 
-            TableauDeDroites = new Vector3[2, 32];
+            TableauDeDroites = new Vector3[4, 42];
         }
 
 
@@ -153,8 +160,6 @@ namespace AtelierXNA
             AjouterPanDeMur(62, 12);
             AjouterPanDeMur(63, 13);
             AjouterPanDeMur(64, 14);
-
-
         }
 
         void AjouterPanDeMur(int valeurCouleurPoint1, int valeurCouleurPoint2)
@@ -169,12 +174,12 @@ namespace AtelierXNA
             {
                 for (int colonne = 0; colonne < PtsSommets.GetLength(0) - 1; ++colonne)
                 {
-                    if(DataTexture[colonne,rangée].R == valeurCouleurPoint1)
+                    if(DataTexture[colonne,rangée].R == valeurCouleurPoint1 && DataTexture[colonne,rangée].G ==0)
                     {
                         point1 = PtsSommets[colonne, rangée];
                         AjoutDonnéTableauDroites(point1);
                     }
-                    if(DataTexture[colonne,rangée].R == valeurCouleurPoint2)
+                    if(DataTexture[colonne,rangée].R == valeurCouleurPoint2 && DataTexture[colonne, rangée].G == 0)
                     {
                         point2 = PtsSommets[colonne, rangée];
                         AjoutDonnéTableauDroites(point2);
@@ -231,8 +236,17 @@ namespace AtelierXNA
 
         void AjoutDonnéTableauDroites(Vector3 point)
         {
-            //TableauDeDroites[PtsDroite++, NumDroite] = point;
-            //if(PtsDroite == 2) { PtsDroite = 0; NumDroite++; }   
+            TableauDeDroites[PtsDroite++, NumDroite] = point;
+            if (PtsDroite == 2)
+            {
+                //Calcul de la direction de la droite
+                TableauDeDroites[PtsDroite++, NumDroite] = TableauDeDroites[1, NumDroite] - TableauDeDroites[0, NumDroite];
+                //Calcul du coefficient a, b et de la constante c de l'équation représentant la droite (sous forme ax+bz+c=0)
+                //Enregistré dans un Vecteur3 soit Vector3(a,b,c)
+                TableauDeDroites[PtsDroite++,NumDroite] = new Vector3(TableauDeDroites[DIRECTION,NumDroite].X, TableauDeDroites[2,NumDroite].Z, 
+                                                                      TableauDeDroites[DIRECTION, NumDroite].X* (-TableauDeDroites[POINT2, NumDroite].X) +
+                                                                      TableauDeDroites[DIRECTION, NumDroite].Z * (-TableauDeDroites[POINT2, NumDroite].Z));
+            }
         }
 
         public override void Draw(GameTime gameTime)
@@ -250,23 +264,28 @@ namespace AtelierXNA
 
         public bool EnCollision(Entité entité)
         {
-            Vector3 direction;
-            float a;
-            float b;
-            float c;
+            //Distance entre la droite et l'entité
             float distance;
-            float xPointDroite;
-            float zPointDroite;
-
+            //Distance entre l'entité et les points représentant la droite
+            float distancePoint1;
+            float distancePoint2;
+            //Distance maximale de l'entité avec les points représentant la droite pour déterminer si l'entité 
+            //se trouve dans l'intervalle de la droite
+            float distanceMax;
             bool enCollision = false;
+
 
             for (int i = 0; i < TableauDeDroites.GetLength(1); i++)
             {
-                direction = TableauDeDroites[1, i] - TableauDeDroites[0, i];
-                a = direction.X; b = direction.Z; c = a * (-TableauDeDroites[1, i].X) + b * (-TableauDeDroites[1, i].Z);
+                distance = (float)((Math.Abs(entité.Position.X + entité.Position.Z + TableauDeDroites[VECTEUR_ÉQUATION_DROITE_ABC, i].Z)) / 
+                           (Math.Sqrt(Math.Pow(TableauDeDroites[VECTEUR_ÉQUATION_DROITE_ABC,i].X, 2)  +
+                                      Math.Pow(TableauDeDroites[VECTEUR_ÉQUATION_DROITE_ABC, i].Y, 2))));
+                if (distance <= entité.RayonCollision + 0.5f) //0.5 étant la moitié de l'épaisseur du mur
+                {
+                    //distancePoint1 = (float)Math.Sqrt();
+                }
 
-                distance = (float)((Math.Abs(entité.Position.X + entité.Position.Z + c)) / (Math.Sqrt(a * a + b * b)));
-                if (distance > entité.RayonCollision) { return enCollision; }
+
 
                 
             

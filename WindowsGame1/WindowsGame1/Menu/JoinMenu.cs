@@ -104,11 +104,11 @@ namespace AtelierXNA
                     {
                         MessageBox.Show("Pas de serveur valide à cette IP");
                     }
-                    if(ServerTrouvé == true)
+                    if (ServerTrouvé == true)
                     {
-                        ((Game1)Game).ChangerDÉtat(5);
+                        ((Game1)Game).ChangerDÉtat(3);
                     }
-                    
+
 
 
                 }
