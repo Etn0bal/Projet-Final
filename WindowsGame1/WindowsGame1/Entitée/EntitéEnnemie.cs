@@ -72,15 +72,16 @@ namespace AtelierXNA
         {
             if (EnMouvement == true)
             {
-                DirectionDéplacement = Vector3.Normalize(Destination - Position);
+                Vector3 BonneDestination = new Vector3(Destination.X, 0, Destination.Z);
+                Vector3 BonnePosition = new Vector3(Position.X, 0, Position.Z);
+                DirectionDéplacement = Vector3.Normalize(BonneDestination - BonnePosition);
                 GérerRotation();
-                if ((Destination - Position).Length() >= FACTEUR_VITESSE * DirectionDéplacement.Length())
+                Position += FACTEUR_VITESSE * DirectionDéplacement;
+                CalculerMonde();
+                if(Position.X == Destination.X && Position.Z == Destination.Z)
                 {
-                    Position += FACTEUR_VITESSE * DirectionDéplacement;
-                    DoCalculerMonde = true;
+                    EnMouvement = false;
                 }
-                EnMouvement = false;
-
             }
         }
         public override void Draw(GameTime gameTime)
