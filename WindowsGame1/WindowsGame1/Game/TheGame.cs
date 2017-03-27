@@ -34,8 +34,8 @@ namespace AtelierXNA
         GraphicsDeviceManager graphics { get; set; }
         SpriteBatch GestionSprites { get; set; }
         InputManager GestionInput { get; set; }
-        EntitéeJoueur joueur { get; set; }
-        EntitéeEnnemie joueurEnnemie { get; set; }
+        EntitéJoueur joueur { get; set; }
+        EntitéEnnemie joueurEnnemie { get; set; }
         ServeurClient joueurClient { get; set; }
 
 
@@ -72,9 +72,9 @@ namespace AtelierXNA
             Game.Components.Add(new CartePlan(Game, 1f, Vector3.Zero, Vector3.Zero, new Vector3(225, 0, 400), "Carte Plan4", INTERVALLE_MAJ));
             Game.Components.Add(new Murs(Game, 1f, Vector3.Zero, Vector3.Zero, new Vector3(225, 0, 400), "Carte planMur", INTERVALLE_MAJ));
             Game.Components.Add(GestionInput);
-            joueur = new EntitéeJoueur(Game, "robot", ÉCHELLE_OBJET, rotationObjet, positionJoueur, INTERVALLE_MAJ, 1, 1, 1, 1);
+            joueur = new EntitéJoueur(Game, "robot", ÉCHELLE_OBJET, rotationObjet, positionJoueur, INTERVALLE_MAJ, 1, 1, 1, 1);
             Game.Components.Add(joueur);
-            joueurEnnemie = new EntitéeEnnemie(Game, "Gun Robot", ÉCHELLE_OBJET, rotationObjet, positionEnnemie, INTERVALLE_MAJ, 1, 1, 1, 1);
+            joueurEnnemie = new EntitéEnnemie(Game, "robot", ÉCHELLE_OBJET, rotationObjet, positionEnnemie, INTERVALLE_MAJ, 1, 1, 1, 1);
             Game.Components.Add(joueurEnnemie);
             Game.Components.Add(new AfficheurFPS(Game, "Arial", Color.AliceBlue, 1f));
 

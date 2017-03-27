@@ -79,17 +79,17 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CaméraTypéMoba.cs" />
-    <Compile Include="Entitée\EntitéeEnnemie.cs" />
-    <Compile Include="Entitée\EntitéeJoueur.cs" />
-    <Compile Include="Entitée\EntitéePéon.cs" />
-    <Compile Include="Entitée\EntitéePéonAlliée.cs" />
-    <Compile Include="Entitée\EntitéePéonEnnemie.cs" />
-    <Compile Include="Entitée\EntitéeTour.cs" />
-    <Compile Include="Entitée\EntitéeImmobile.cs" />
-    <Compile Include="Entitée\EntitéeMobile.cs" />
+    <Compile Include="Entitée\EntitéEnnemie.cs" />
+    <Compile Include="Entitée\EntitéJoueur.cs" />
+    <Compile Include="Entitée\EntitéPéon.cs" />
+    <Compile Include="Entitée\EntitéPéonAlliée.cs" />
+    <Compile Include="Entitée\EntitéPéonEnnemie.cs" />
+    <Compile Include="Entitée\EntitéTour.cs" />
+    <Compile Include="Entitée\EntitéImmobile.cs" />
+    <Compile Include="Entitée\EntitéMobile.cs" />
     <Compile Include="Carte\CartePlan.cs" />
     <Compile Include="Serveur\Delegates.cs" />
-    <Compile Include="Entitée\Entitée.cs" />
+    <Compile Include="Entitée\Entité.cs" />
     <Compile Include="Game\TheGame.cs" />
     <Compile Include="Entitée\IControlable.cs" />
     <Compile Include="Entitée\IControlée.cs" />

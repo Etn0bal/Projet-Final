@@ -8,12 +8,13 @@ using Microsoft.Xna.Framework.GamerServices;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
-namespace AtelierXNA
+
+namespace AtelierXNA.Entitée
 {
-    class EntitéePéonAlliée : EntitéePéon, IControlée, IDestructible
+    class EntitéPéonEnnemie : EntitéPéon, IControlée, IDestructible
     {
         public bool ÀDétruire { get; set; }
-        public EntitéePéonAlliée(Game jeu, string nomModèle, float échelleInitiale, Vector3 rotationInitiale, Vector3 positionInitiale,
+        public EntitéPéonEnnemie(Game jeu, string nomModèle, float échelleInitiale, Vector3 rotationInitiale, Vector3 positionInitiale,
                            float intervalleMAJ, int pointDeVie, int portée, int force, int armure)
             : base(jeu, nomModèle, échelleInitiale, rotationInitiale, positionInitiale, intervalleMAJ, pointDeVie, portée, force, armure)
         {

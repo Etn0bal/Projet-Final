@@ -15,7 +15,7 @@ namespace AtelierXNA
     /// <summary>
     /// This is a game component that implements IUpdateable.
     /// </summary>
-    public class EntitéeJoueur : EntitéeMobile, IControlable, ICollisionable
+    public class EntitéJoueur : EntitéMobile, IControlable, ICollisionable
     {
         const float FACTEUR_VITESSE = 0.05f;
 
@@ -31,7 +31,7 @@ namespace AtelierXNA
 
 
 
-        public EntitéeJoueur(Game jeu, string nomModèle, float échelleInitiale, Vector3 rotationInitiale, Vector3 positionInitiale,
+        public EntitéJoueur(Game jeu, string nomModèle, float échelleInitiale, Vector3 rotationInitiale, Vector3 positionInitiale,
                            float intervalleMAJ, int pointDeVie, int portée, int force, int armure)
             : base(jeu, nomModèle, échelleInitiale, rotationInitiale, positionInitiale, intervalleMAJ, pointDeVie, portée, force, armure)
         {

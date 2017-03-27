@@ -15,7 +15,7 @@ namespace AtelierXNA
     /// <summary>
     /// This is a game component that implements IUpdateable.
     /// </summary>
-    public class EntitéeEnnemie : EntitéeMobile, IControlable, ICollisionable
+    public class EntitéEnnemie : EntitéMobile, IControlable, ICollisionable
     {
         public BoundingSphere SphèreDeCollision { get; private set; }
         Vector3 DirectionDéplacement { get; set; }
@@ -28,7 +28,7 @@ namespace AtelierXNA
 
 
 
-        public EntitéeEnnemie(Game jeu, string nomModèle, float échelleInitiale, Vector3 rotationInitiale, Vector3 positionInitiale,
+        public EntitéEnnemie(Game jeu, string nomModèle, float échelleInitiale, Vector3 rotationInitiale, Vector3 positionInitiale,
                            float intervalleMAJ, int pointDeVie, int portée, int force, int armure)
             : base(jeu, nomModèle, échelleInitiale, rotationInitiale, positionInitiale, intervalleMAJ, pointDeVie, portée, force, armure)
         {

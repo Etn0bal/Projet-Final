@@ -154,13 +154,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Models\Gun Robot %283%29.FBX">
-      <Name>Gun Robot %283%29</Name>
-      <Importer>FbxImporter</Importer>
-      <Processor>ModelProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="Models\ROBOT Texture .bmp">
       <Name>ROBOT Texture</Name>
       <Importer>TextureImporter</Importer>

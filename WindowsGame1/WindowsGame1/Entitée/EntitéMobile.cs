@@ -9,12 +9,15 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 
-namespace AtelierXNA.Entitée
+
+namespace AtelierXNA
 {
-    class EntitéePéonEnnemie : EntitéePéon, IControlée, IDestructible
+    /// <summary>
+    /// This is a game component that implements IUpdateable.
+    /// </summary>
+    public abstract class EntitéMobile : Entité
     {
-        public bool ÀDétruire { get; set; }
-        public EntitéePéonEnnemie(Game jeu, string nomModèle, float échelleInitiale, Vector3 rotationInitiale, Vector3 positionInitiale,
+        public EntitéMobile(Game jeu, string nomModèle, float échelleInitiale, Vector3 rotationInitiale, Vector3 positionInitiale,
                            float intervalleMAJ, int pointDeVie, int portée, int force, int armure)
             : base(jeu, nomModèle, échelleInitiale, rotationInitiale, positionInitiale, intervalleMAJ, pointDeVie, portée, force, armure)
         {
@@ -43,14 +46,6 @@ namespace AtelierXNA.Entitée
             base.Update(gameTime);
         }
 
-        protected override void GérerDéplacement()
-        {
-            throw new NotImplementedException();
-        }
-
-        public void ControlerLEntitée()
-        {
-
-        }
+        protected abstract void GérerDéplacement();
     }
 }

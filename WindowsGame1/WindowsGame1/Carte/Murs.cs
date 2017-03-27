@@ -248,7 +248,7 @@ namespace AtelierXNA
             }
         }
 
-        public bool EnCollision(Entitée entité)
+        public bool EnCollision(Entité entité)
         {
             Vector3 direction;
             float a;
@@ -257,6 +257,7 @@ namespace AtelierXNA
             float distance;
             float xPointDroite;
             float zPointDroite;
+
             bool enCollision = false;
 
             for (int i = 0; i < TableauDeDroites.GetLength(1); i++)

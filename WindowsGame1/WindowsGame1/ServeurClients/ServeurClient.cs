@@ -114,7 +114,7 @@ namespace AtelierXNA
 
                 else if (p == Protocoles.PlayerMovement)
                 {
-                    foreach(EntitéeEnnemie EntitéeEnnemie in Game.Components.Where(x => x is EntitéeEnnemie))
+                    foreach(EntitéEnnemie EntitéeEnnemie in Game.Components.Where(x => x is EntitéEnnemie))
                     {
                         float px = reader.ReadSingle();
                         float py = reader.ReadSingle();

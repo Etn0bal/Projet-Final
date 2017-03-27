@@ -15,12 +15,12 @@ namespace AtelierXNA
     /// <summary>
     /// This is a game component that implements IUpdateable.
     /// </summary>
-    public abstract class EntitéeMobile : Entitée
+    public class EntitéImmobile : Entité
     {
-        public EntitéeMobile(Game jeu, string nomModèle, float échelleInitiale, Vector3 rotationInitiale, Vector3 positionInitiale,
+        public EntitéImmobile(Game jeu, string nomModèle, float échelleInitiale, Vector3 rotationInitiale, Vector3 positionInitiale,
                            float intervalleMAJ, int pointDeVie, int portée, int force, int armure)
             : base(jeu, nomModèle, échelleInitiale, rotationInitiale, positionInitiale, intervalleMAJ, pointDeVie, portée, force, armure)
-        {
+        { 
             // TODO: Construct any child components here
         }
 
@@ -45,7 +45,5 @@ namespace AtelierXNA
 
             base.Update(gameTime);
         }
-
-        protected abstract void GérerDéplacement();
     }
 }

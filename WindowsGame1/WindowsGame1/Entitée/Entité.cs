@@ -13,7 +13,7 @@ using Microsoft.Xna.Framework.Media;
 namespace AtelierXNA
 {
 
-    public class Entitée : ObjetDeDémo
+    public class Entité : ObjetDeDémo
     {
         int PointDeVie { get; set; }
         public int Portée { get; set; }
@@ -23,7 +23,7 @@ namespace AtelierXNA
         public float RayonCollision { get; set; }
 
 
-        public Entitée(Game jeu, string nomModèle, float échelleInitiale, Vector3 rotationInitiale, Vector3 positionInitiale,
+        public Entité(Game jeu, string nomModèle, float échelleInitiale, Vector3 rotationInitiale, Vector3 positionInitiale,
                            float intervalleMAJ,int pointDeVie,int portée,int force,int armure)
             : base(jeu,nomModèle,échelleInitiale,rotationInitiale,positionInitiale,intervalleMAJ)
         {
