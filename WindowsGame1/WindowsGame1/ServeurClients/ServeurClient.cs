@@ -119,9 +119,9 @@ namespace AtelierXNA
                         float px = reader.ReadSingle();
                         float py = reader.ReadSingle();
                         float pz = reader.ReadSingle();
-                        
                         Vector3 positionEnnemie = new Vector3(px, py, pz);
-                        EntitéeEnnemie.Position = positionEnnemie;
+
+                        EntitéeEnnemie.DéplacerEnnemie(positionEnnemie);
                     }
                 }
             }
@@ -180,10 +180,11 @@ namespace AtelierXNA
 
             }
         }
-        public void EnvoyerDéplacement(Vector3 position)
+        public void EnvoyerDéplacement(Vector3 position, Matrix Monde)
         {
             writeStream.Position = 0;
             writer.Write((Byte)Protocoles.PlayerMovement);
+            //Envoie de la position
             writer.Write(position.X);
             writer.Write(position.Y);
             writer.Write(position.Z);

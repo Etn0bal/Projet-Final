@@ -17,6 +17,7 @@ namespace AtelierXNA
     /// </summary>
     public class EntitéEnnemie : EntitéMobile, IControlable, ICollisionable
     {
+        const float FACTEUR_VITESSE = 0.05f;
         public BoundingSphere SphèreDeCollision { get; private set; }
         Vector3 DirectionDéplacement { get; set; }
         Vector3 Direction { get; set; }
@@ -24,7 +25,8 @@ namespace AtelierXNA
         Plane PlanReprésentantCarte { get; set; }
         InputManager GestionInputs { get; set; }
         Caméra CaméraJeu { get; set; }
-        public bool EnMouvement { get; set; }
+        bool EnMouvement { get; set; }
+
 
 
 
@@ -68,17 +70,40 @@ namespace AtelierXNA
         }
         protected override void GérerDéplacement()
         {
-            CalculerMonde();
+            if (EnMouvement == true)
+            {
+                GérerRotation();
+                DirectionDéplacement = Vector3.Normalize(Destination - Position);
+                if ((Destination - Position).Length() >= FACTEUR_VITESSE * DirectionDéplacement.Length())
+                {
+                    Position += FACTEUR_VITESSE * DirectionDéplacement;
+                    DoCalculerMonde = true;
+                }
+            }
         }
         public override void Draw(GameTime gameTime)
         {
             base.Draw(gameTime);
         }
+        public void DéplacerEnnemie(Vector3 destination)
+        {
+            EnMouvement = true;
+            Destination = destination;
+
+        }
+        void GérerRotation()
+        {
+
+            float Angle = (float)Math.Acos(Vector3.Dot(DirectionDéplacement, Direction) / (DirectionDéplacement.Length() * Direction.Length()));
+            if (Vector3.Cross(Direction, DirectionDéplacement).Y < 0) { Angle *= -1; }
+            Rotation += new Vector3(0, Angle, 0);
+            Direction = DirectionDéplacement;
+            DoCalculerMonde = true;
+        }
 
 
 
 
-       
 
         public bool EstEnCollision(object autreObjet)
         {
