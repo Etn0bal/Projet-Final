@@ -243,9 +243,12 @@ namespace AtelierXNA
                 TableauDeDroites[PtsDroite++, NumDroite] = TableauDeDroites[1, NumDroite] - TableauDeDroites[0, NumDroite];
                 //Calcul du coefficient a, b et de la constante c de l'équation représentant la droite (sous forme ax+bz+c=0)
                 //Enregistré dans un Vecteur3 soit Vector3(a,b,c)
-                TableauDeDroites[PtsDroite++,NumDroite] = new Vector3(TableauDeDroites[DIRECTION,NumDroite].X, TableauDeDroites[2,NumDroite].Z, 
-                                                                      TableauDeDroites[DIRECTION, NumDroite].X* (-TableauDeDroites[POINT2, NumDroite].X) +
+                TableauDeDroites[PtsDroite++, NumDroite] = new Vector3(TableauDeDroites[DIRECTION, NumDroite].X, TableauDeDroites[2, NumDroite].Z,
+                                                                      TableauDeDroites[DIRECTION, NumDroite].X * (-TableauDeDroites[POINT2, NumDroite].X) +
                                                                       TableauDeDroites[DIRECTION, NumDroite].Z * (-TableauDeDroites[POINT2, NumDroite].Z));
+
+
+                PtsDroite = 0; NumDroite++;
             }
         }
 
@@ -282,7 +285,15 @@ namespace AtelierXNA
                                       Math.Pow(TableauDeDroites[VECTEUR_ÉQUATION_DROITE_ABC, i].Y, 2))));
                 if (distance <= entité.RayonCollision + 0.5f) //0.5 étant la moitié de l'épaisseur du mur
                 {
-                    //distancePoint1 = (float)Math.Sqrt();
+                    distancePoint1 = (float)Math.Sqrt(Math.Pow(TableauDeDroites[POINT1,i].X - entité.Position.X, 2) + 
+                                                      Math.Pow(TableauDeDroites[POINT1,i].Z - entité.Position.Z, 2));
+                    distancePoint2 = (float)Math.Sqrt(Math.Pow(TableauDeDroites[POINT2, i].X - entité.Position.X, 2) +
+                                                     Math.Pow(TableauDeDroites[POINT2, i].Z - entité.Position.Z, 2));
+
+                    if(!(distancePoint1 > entité.RayonCollision + 0.5f && distancePoint2 > entité.RayonCollision + 0.5f))
+                    {
+                        //distanceMax = 
+                    }
                 }
 
 
