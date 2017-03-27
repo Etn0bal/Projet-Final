@@ -88,7 +88,8 @@ namespace AtelierXNA
         {
             if(joueur.EnMouvement)
             {
-                joueurClient.EnvoyerDéplacement(joueur.Position);
+                Vector3 destination = joueur.AvoirDestination();
+                joueurClient.EnvoyerDestination(destination);
                 joueur.EnMouvement = false;
             }
             base.Update(gameTime);

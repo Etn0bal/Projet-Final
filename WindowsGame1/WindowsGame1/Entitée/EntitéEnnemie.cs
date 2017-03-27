@@ -80,6 +80,7 @@ namespace AtelierXNA
                     DoCalculerMonde = true;
                 }
                 EnMouvement = false;
+
             }
         }
         public override void Draw(GameTime gameTime)
