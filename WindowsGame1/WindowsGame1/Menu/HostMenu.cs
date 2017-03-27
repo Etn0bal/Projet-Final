@@ -90,7 +90,7 @@ namespace AtelierXNA
                     string sHostName = Dns.GetHostName();
                     IPHostEntry ipE = Dns.GetHostEntry(sHostName);
                     IPAddress[] IpA = ipE.AddressList;
-                    IP = IpA[2].ToString();
+                    IP = IpA[1].ToString();
                     Rectangle PositionTxt = new Rectangle((2 * (Game.Window.ClientBounds.Width / 10)), 5 * Game.Window.ClientBounds.Height / 10, 3 * (Game.Window.ClientBounds.Width / 10), (Game.Window.ClientBounds.Height / 10));
                     TexteHostMenu IpAAfficher = new TexteHostMenu(Game, IP, "Arial", PositionTxt, new Vector2(3 * Game.Window.ClientBounds.Width / 10, Game.Window.ClientBounds.Height / 2), Color.White, 0);
                     Game.Components.Add(IpAAfficher);
@@ -109,8 +109,8 @@ namespace AtelierXNA
             {
                 if(GestionnaireInputs.EstNouveauClicGauche())
                 {
-                    //ServeurClient HostClient = new ServeurClient(Game, IP);
-                    //Game.Services.AddService(typeof(ServeurClient), HostClient);
+                    ServeurClient HostClient = new ServeurClient(Game, IP);
+                    Game.Services.AddService(typeof(ServeurClient), HostClient);
                     ((Game1)Game).EnJeu = true;
                     ((Game1)Game).ChangerDÉtat(3);
                     
