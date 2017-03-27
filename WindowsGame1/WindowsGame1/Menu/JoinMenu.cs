@@ -96,8 +96,8 @@ namespace AtelierXNA
                 {
                     try
                     {
-                        ServeurClient joueurClient = new ServeurClient(Game, IP);
-                        Game.Components.Add(joueurClient);
+                        ServeurClient Invité = new ServeurClient(Game, IP);
+                        Game.Services.AddService(typeof(ServeurClient), Invité);
                         ServerTrouvé = true;                        
                     }
                     catch (Exception)

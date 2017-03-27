@@ -87,7 +87,8 @@ namespace AtelierXNA
                     GetDestination();
                     DirectionDéplacement = Vector3.Normalize(Destination - Position);
                     GérerRotation();
-                    EnMouvement = false;
+                    EnMouvement = true;
+                    
                 }
             }
             if ((Destination - Position).Length() >= FACTEUR_VITESSE*DirectionDéplacement.Length())
@@ -129,5 +130,7 @@ namespace AtelierXNA
         {
             return false;
         }
+        public Vector3 AvoirDestination()
+        { return Destination; }
     }
 }

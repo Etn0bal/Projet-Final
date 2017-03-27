@@ -72,13 +72,16 @@ namespace AtelierXNA
         {
             if (EnMouvement == true)
             {
-                GérerRotation();
                 DirectionDéplacement = Vector3.Normalize(Destination - Position);
+                GérerRotation();
+
                 if ((Destination - Position).Length() >= FACTEUR_VITESSE * DirectionDéplacement.Length())
                 {
                     Position += FACTEUR_VITESSE * DirectionDéplacement;
                     DoCalculerMonde = true;
                 }
+                EnMouvement = false;
+
             }
         }
         public override void Draw(GameTime gameTime)

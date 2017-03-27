@@ -180,14 +180,14 @@ namespace AtelierXNA
 
             }
         }
-        public void EnvoyerDéplacement(Vector3 position, Matrix Monde)
+        public void EnvoyerDestination(Vector3 destination)
         {
             writeStream.Position = 0;
             writer.Write((Byte)Protocoles.PlayerMovement);
             //Envoie de la position
-            writer.Write(position.X);
-            writer.Write(position.Y);
-            writer.Write(position.Z);
+            writer.Write(destination.X);
+            writer.Write(destination.Y);
+            writer.Write(destination.Z);
             SendData(GetDataFromMemoryStream(writeStream));
         }
     }

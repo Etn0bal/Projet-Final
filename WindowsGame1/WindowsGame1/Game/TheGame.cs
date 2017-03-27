@@ -26,7 +26,7 @@ namespace AtelierXNA
 
         const float ÉCHELLE_OBJET = 0.07f;
         Vector3 positionJoueur = new Vector3(-90, 0, 90);
-        Vector3 positionEnnemie = new Vector3(-85, 0, 85);
+        Vector3 positionEnnemie = new Vector3(-90, 0, 90);
         Vector3 rotationObjet = new Vector3(0, MathHelper.PiOver2, 0);
 
         RessourcesManager<Texture2D> GestionnaireDeTexture { get; set; }
@@ -88,7 +88,8 @@ namespace AtelierXNA
         {
             if(joueur.EnMouvement)
             {
-                joueurClient.EnvoyerDéplacement(joueur.Position,joueur.GetMonde());
+                Vector3 destination = joueur.AvoirDestination();
+                joueurClient.EnvoyerDestination(destination);
                 joueur.EnMouvement = false;
             }
             base.Update(gameTime);
