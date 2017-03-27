@@ -26,6 +26,7 @@ namespace AtelierXNA
         Plane PlanReprésentantCarte { get; set; }
         InputManager GestionInputs { get; set; }
         Caméra CaméraJeu { get; set; }
+        Murs Murs { get; set; }
         public bool EnMouvement { get; set; }
 
 
@@ -51,6 +52,7 @@ namespace AtelierXNA
             PlanReprésentantCarte = new Plane(0, 1, 0, 0);
             EnMouvement = false;
             RayonCollision = 3;
+            Murs = Game.Services.GetService(typeof(Murs)) as Murs; 
 
             base.Initialize();
         }
@@ -87,14 +89,18 @@ namespace AtelierXNA
                     GetDestination();
                     DirectionDéplacement = Vector3.Normalize(Destination - Position);
                     GérerRotation();
-                    EnMouvement = true;
-                    
+                    //EnMouvement = true;                    
                 }
             }
             if ((Destination - Position).Length() >= FACTEUR_VITESSE*DirectionDéplacement.Length())
             {
-                Position += FACTEUR_VITESSE*DirectionDéplacement;
-                DoCalculerMonde = true;
+                if (Murs.EnCollision(this))
+                { Destination = Position; }
+                else
+                {
+                    Position += FACTEUR_VITESSE * DirectionDéplacement;
+                    DoCalculerMonde = true;
+                }
             }
 
         }

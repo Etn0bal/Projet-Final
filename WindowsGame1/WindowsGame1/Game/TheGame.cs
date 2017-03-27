@@ -37,6 +37,7 @@ namespace AtelierXNA
         EntitéJoueur joueur { get; set; }
         EntitéEnnemie joueurEnnemie { get; set; }
         ServeurClient joueurClient { get; set; }
+        Murs Murs { get; set; }
 
 
 
@@ -70,7 +71,11 @@ namespace AtelierXNA
             Game.Components.Add(new Afficheur3D(Game));
             Game.Components.Add(CaméraJeu);
             Game.Components.Add(new CartePlan(Game, 1f, Vector3.Zero, Vector3.Zero, new Vector3(225, 0, 400), "Carte Plan4", INTERVALLE_MAJ));
-            Game.Components.Add(new Murs(Game, 1f, Vector3.Zero, Vector3.Zero, new Vector3(225, 0, 400), "Carte planMur", INTERVALLE_MAJ));
+
+            Murs = new Murs(Game, 1f, Vector3.Zero, Vector3.Zero, new Vector3(225, 0, 400), "Carte planMur", INTERVALLE_MAJ);
+            Game.Components.Add(Murs);
+            Game.Services.AddService(typeof(Murs), Murs);
+
             Game.Components.Add(GestionInput);
             joueur = new EntitéJoueur(Game, "robot", ÉCHELLE_OBJET, rotationObjet, positionJoueur, INTERVALLE_MAJ, 1, 1, 1, 1);
             Game.Components.Add(joueur);
