@@ -96,13 +96,12 @@ namespace AtelierXNA
                 {
                     try
                     {
-                        ServeurClient Invité = new ServeurClient(Game, IP);
-                        Game.Components.Add(Invité);
+                        ServeurClient joueurClient = new ServeurClient(Game, IP);
+                        Game.Components.Add(joueurClient);
                         ServerTrouvé = true;                        
                     }
                     catch (Exception)
                     {
-                        MessageBox.Show("Pas de serveur valide à cette IP");
                     }
                     if (ServerTrouvé == true)
                     {
