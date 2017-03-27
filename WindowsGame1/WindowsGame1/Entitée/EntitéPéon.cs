@@ -18,11 +18,11 @@ namespace AtelierXNA
     public class EntitéPéon : EntitéMobile, IControlée, IDestructible
     {
         public bool ÀDétruire { get;  set; }
+        public bool EnRechercheDEnnemi { get; set; }
         public EntitéPéon(Game jeu, string nomModèle, float échelleInitiale, Vector3 rotationInitiale, Vector3 positionInitiale,
                            float intervalleMAJ, int pointDeVie, int portée, int force, int armure)
             : base(jeu, nomModèle, échelleInitiale, rotationInitiale, positionInitiale, intervalleMAJ, pointDeVie, portée, force, armure)
         {
-            // TODO: Construct any child components here
         }
 
         /// <summary>

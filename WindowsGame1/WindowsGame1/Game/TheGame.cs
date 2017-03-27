@@ -24,10 +24,14 @@ namespace AtelierXNA
         const float INTERVALLE_MAJ = 1f / 60f;
 
 
-        const float ÉCHELLE_OBJET = 0.07f;
-        Vector3 positionJoueur = new Vector3(-90, 0, 90);
-        Vector3 positionEnnemie = new Vector3(-90, 0, 90);
-        Vector3 rotationObjet = new Vector3(0, MathHelper.PiOver2, 0);
+        const float ÉCHELLE_OBJET_JOUEUR = 0.07f;
+        const float ÉCHELLE_OBJET_PÉON = 0.03f;
+
+        Vector3 positionInitiale = new Vector3(-90, 0, 90);
+        Vector3 positionInitialeEnnemie = new Vector3(180, 0, 90);
+        Vector3 rotationObjetInitiale = new Vector3(0, MathHelper.PiOver2, 0);
+        Vector3 rotationObjetInitialeEnnemie = new Vector3(0,3* MathHelper.PiOver2, 0);
+
 
         RessourcesManager<Texture2D> GestionnaireDeTexture { get; set; }
         RessourcesManager<Model> GestionnaireDeModel { get; set; }
@@ -37,6 +41,12 @@ namespace AtelierXNA
         EntitéJoueur joueur { get; set; }
         EntitéEnnemie joueurEnnemie { get; set; }
         ServeurClient joueurClient { get; set; }
+        EntitéPéonAlliée PéonA1 { get; set; }
+        EntitéPéonAlliée PéonA2 { get; set; }
+        EntitéPéonAlliée PéonA3 { get; set; }
+        EntitéPéonEnnemie PéonE1 { get; set; }
+        EntitéPéonEnnemie PéonE2 { get; set; }
+        EntitéPéonEnnemie PéonE3 { get; set; }
         Murs Murs { get; set; }
 
 
@@ -77,11 +87,31 @@ namespace AtelierXNA
             Game.Services.AddService(typeof(Murs), Murs);
 
             Game.Components.Add(GestionInput);
-            joueur = new EntitéJoueur(Game, "robot", ÉCHELLE_OBJET, rotationObjet, positionJoueur, INTERVALLE_MAJ, 1, 1, 1, 1);
+
+            //Joueurs :
+            joueur = new EntitéJoueur(Game, "robot", ÉCHELLE_OBJET_JOUEUR, rotationObjetInitiale, positionInitiale, INTERVALLE_MAJ, 1, 1, 1, 1);
             Game.Components.Add(joueur);
-            joueurEnnemie = new EntitéEnnemie(Game, "robot", ÉCHELLE_OBJET, rotationObjet, positionEnnemie, INTERVALLE_MAJ, 1, 1, 1, 1);
+            joueurEnnemie = new EntitéEnnemie(Game, "robot", ÉCHELLE_OBJET_JOUEUR, rotationObjetInitiale, positionInitiale, INTERVALLE_MAJ, 1, 1, 1, 1);
             Game.Components.Add(joueurEnnemie);
+            //Péons :
+            PéonA1 = new EntitéPéonAlliée(Game, "robot", ÉCHELLE_OBJET_PÉON, rotationObjetInitiale, positionInitiale - new Vector3(0,0,5), INTERVALLE_MAJ, 1, 1, 1, 1);
+            Game.Components.Add(PéonA1);
+            PéonA2 = new EntitéPéonAlliée(Game, "robot", ÉCHELLE_OBJET_PÉON, rotationObjetInitiale, positionInitiale + new Vector3(5, 0, 0), INTERVALLE_MAJ, 1, 1, 1, 1);
+            Game.Components.Add(PéonA2);
+            PéonA3 = new EntitéPéonAlliée(Game, "robot", ÉCHELLE_OBJET_PÉON, rotationObjetInitiale, positionInitiale+ new Vector3(0, 0, 5), INTERVALLE_MAJ, 1, 1, 1, 1);
+            Game.Components.Add(PéonA3);
+
+            //Péons :
+            PéonE1 = new EntitéPéonEnnemie(Game, "robot", ÉCHELLE_OBJET_PÉON, rotationObjetInitialeEnnemie, positionInitialeEnnemie - new Vector3(0, 0, 5), INTERVALLE_MAJ, 1, 1, 1, 1);
+            Game.Components.Add(PéonE1);
+            PéonE2 = new EntitéPéonEnnemie(Game, "robot", ÉCHELLE_OBJET_PÉON, rotationObjetInitialeEnnemie, positionInitialeEnnemie - new Vector3(5, 0, 0), INTERVALLE_MAJ, 1, 1, 1, 1);
+            Game.Components.Add(PéonE2);
+            PéonE3 = new EntitéPéonEnnemie(Game, "robot", ÉCHELLE_OBJET_PÉON, rotationObjetInitialeEnnemie, positionInitialeEnnemie + new Vector3(0, 0, 5), INTERVALLE_MAJ, 1, 1, 1, 1);
+            Game.Components.Add(PéonE3);
+
+
             Game.Components.Add(new AfficheurFPS(Game, "Arial", Color.AliceBlue, 1f));
+
 
 
 
@@ -91,12 +121,12 @@ namespace AtelierXNA
 
         public override void Update(GameTime gameTime)
         {
-            if(joueur.EnMouvement)
-            {
-                Vector3 destination = joueur.AvoirDestination();
-                joueurClient.EnvoyerDestination(destination);
-                joueur.EnMouvement = false;
-            }
+            //if(joueur.EnMouvement)
+            //{
+            //    Vector3 destination = joueur.AvoirDestination();
+            //    joueurClient.EnvoyerDestination(destination);
+            //    joueur.EnMouvement = false;
+            //}
             base.Update(gameTime);
         }
         public override void Draw(GameTime gameTime)
