@@ -87,7 +87,7 @@ namespace AtelierXNA
                     GérerRotation();
                     EnMouvement = true;
                 }
-            }
+            }           
             if ((Destination - Position).Length() > FACTEUR_VITESSE*DirectionDéplacement.Length())
             {
                 if (Murs.EnCollision(this))
@@ -99,6 +99,13 @@ namespace AtelierXNA
                     DoCalculerMonde = true;
                 }
             }
+            if(GestionInputs.EstNouvelleTouche(Keys.Q))
+            {
+                GetDestination();
+                Position = Destination;
+                CalculerMonde();
+            }
+            
         }
 
 

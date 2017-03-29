@@ -113,8 +113,8 @@
     <Compile Include="Game\Game1.cs" />
     <Compile Include="Menu\Texte.cs" />
     <Compile Include="Menu\TexteModifiable.cs" />
-    <Compile Include="TexteHostMenu.cs" />
-    <Compile Include="TexteJoinMenu.cs" />
+    <Compile Include="Menu\TexteHostMenu.cs" />
+    <Compile Include="Menu\TexteJoinMenu.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Game.ico" />

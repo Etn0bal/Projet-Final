@@ -97,7 +97,7 @@ namespace AtelierXNA
 
                     if (ServeurCréé == false)
                     {
-                        //ServeurDeJeu = new Server(5011);
+                        ServeurDeJeu = new Server(5011);
                         ServeurCréé = true;
 
                     }
