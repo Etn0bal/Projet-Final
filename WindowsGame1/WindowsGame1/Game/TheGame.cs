@@ -91,8 +91,8 @@ namespace AtelierXNA
             //Joueurs :
             joueur = new EntitéJoueur(Game, "robot2", ÉCHELLE_OBJET_JOUEUR, rotationObjetInitiale, positionInitiale, INTERVALLE_MAJ, 1, 1, 1, 1);
             Game.Components.Add(joueur);
-            joueurEnnemie = new EntitéEnnemie(Game, "robot2", ÉCHELLE_OBJET_JOUEUR, rotationObjetInitiale, positionInitiale, INTERVALLE_MAJ, 1, 1, 1, 1);
-            Game.Components.Add(joueurEnnemie);
+            //joueurEnnemie = new EntitéEnnemie(Game, "robot2", ÉCHELLE_OBJET_JOUEUR, rotationObjetInitiale, positionInitiale, INTERVALLE_MAJ, 1, 1, 1, 1);
+            //Game.Components.Add(joueurEnnemie);
             //Péons :
             PéonA1 = new EntitéPéonAlliée(Game, "robot2", ÉCHELLE_OBJET_PÉON, rotationObjetInitiale, positionInitiale - new Vector3(0,0,5), INTERVALLE_MAJ, 1, 3, 1, 1);
             Game.Components.Add(PéonA1);
@@ -121,7 +121,7 @@ namespace AtelierXNA
 
         public override void Update(GameTime gameTime)
         {
-            //if(joueur.EnMouvement)
+            //if (joueur.EnMouvement)
             //{
             //    Vector3 destination = joueur.AvoirDestination();
             //    joueurClient.EnvoyerDestination(destination);

@@ -14,7 +14,6 @@ namespace AtelierXNA
     class EntitéPéonEnnemie : EntitéPéon, IControlée, IDestructible
     {
         const float FACTEUR_VITESSE = 0.01f;
-        public bool ÀDétruire { get; set; }
         protected bool EnMouvement { get; set; }
         Vector3 Direction { get; set; }
         public EntitéPéonEnnemie(Game jeu, string nomModèle, float échelleInitiale, Vector3 rotationInitiale, Vector3 positionInitiale,
@@ -82,11 +81,6 @@ namespace AtelierXNA
             {
                 Cible = null;
             }
-
-        }
-
-        public void ControlerLEntitée()
-        {
 
         }
     }

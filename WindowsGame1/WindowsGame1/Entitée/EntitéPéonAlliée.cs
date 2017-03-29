@@ -12,7 +12,6 @@ namespace AtelierXNA
 {
     class EntitéPéonAlliée : EntitéPéon, IControlée, IDestructible
     {
-        public bool ÀDétruire { get; set; }
         const float FACTEUR_VITESSE = 0.01f;
         protected bool EnMouvement { get; set; }
         Vector3 Direction { get; set; }
@@ -86,12 +85,6 @@ namespace AtelierXNA
 
                 }
             }
-        }
-    
-
-        public void ControlerLEntitée()
-        {
-
         }
     }
 }

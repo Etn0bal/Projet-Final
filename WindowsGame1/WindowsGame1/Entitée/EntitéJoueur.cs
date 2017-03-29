@@ -49,9 +49,10 @@ namespace AtelierXNA
             CaméraJeu = Game.Services.GetService(typeof(Caméra)) as Caméra;
             DoCalculerMonde = false;
             Direction = new Vector3(1, 0, 0);
+            Destination = Position;
             PlanReprésentantCarte = new Plane(0, 1, 0, 0);
             EnMouvement = false;
-            RayonCollision = 3;
+            RayonCollision = 0;
             Murs = Game.Services.GetService(typeof(Murs)) as Murs; 
 
             base.Initialize();
@@ -89,20 +90,20 @@ namespace AtelierXNA
                     GetDestination();
                     DirectionDéplacement = Vector3.Normalize(Destination - Position);
                     GérerRotation();
-                    //EnMouvement = true;                    
+                    EnMouvement = true;
                 }
             }
-            if ((Destination - Position).Length() >= FACTEUR_VITESSE*DirectionDéplacement.Length())
+            if ((Destination - Position).Length() > FACTEUR_VITESSE*DirectionDéplacement.Length())
             {
                 if (Murs.EnCollision(this))
-                { Destination = Position; }
+                { Destination = Position;
+                }
                 else
                 {
                     Position += FACTEUR_VITESSE * DirectionDéplacement;
                     DoCalculerMonde = true;
                 }
             }
-
         }
 
         private void GetDestination()
@@ -124,12 +125,16 @@ namespace AtelierXNA
 
         void GérerRotation()
         {
-
-            float Angle = (float)Math.Acos(Vector3.Dot(DirectionDéplacement, Direction) / (DirectionDéplacement.Length() * Direction.Length()));
-            if(Vector3.Cross(Direction,DirectionDéplacement).Y < 0) { Angle *= -1; }
-            Rotation += new Vector3(0, Angle, 0);
-            Direction = DirectionDéplacement;
-            DoCalculerMonde = true;
+            //Le if est là pour vérifier que les valeur de DirectionDéplacement sont des valeur numérique, car si Destination-Position égale
+            //le vecteur 0 alors le normalize donne un vecteur avec des valeurs non numériques
+            if (DirectionDéplacement.X >= 0 || DirectionDéplacement.X <= 0)
+            {
+                float Angle = (float)Math.Acos(Vector3.Dot(DirectionDéplacement, Direction) / (DirectionDéplacement.Length() * Direction.Length()));
+                if (Vector3.Cross(Direction, DirectionDéplacement).Y < 0) { Angle *= -1; }
+                Rotation += new Vector3(0, Angle, 0);
+                Direction = DirectionDéplacement;
+                DoCalculerMonde = true;
+            }
         }
 
         public bool EstEnCollision(object autreObjet)
