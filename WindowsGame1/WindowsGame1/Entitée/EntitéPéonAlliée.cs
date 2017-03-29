@@ -15,6 +15,8 @@ namespace AtelierXNA
         public bool ÀDétruire { get; set; }
         const float FACTEUR_VITESSE = 0.01f;
         protected bool EnMouvement { get; set; }
+        Vector3 Direction { get; set; }
+        
         public EntitéPéonAlliée(Game jeu, string nomModèle, float échelleInitiale, Vector3 rotationInitiale, Vector3 positionInitiale,
                            float intervalleMAJ, int pointDeVie, int portée, int force, int armure)
             : base(jeu, nomModèle, échelleInitiale, rotationInitiale, positionInitiale, intervalleMAJ, pointDeVie, portée, force, armure)
@@ -28,6 +30,7 @@ namespace AtelierXNA
         /// </summary>
         public override void Initialize()
         {
+            Direction = new Vector3(1, 0, 0);
             EnMouvement = true;
 
             base.Initialize();
@@ -41,26 +44,50 @@ namespace AtelierXNA
         {
             if (EnMouvement)
             {
-                Vector3 direction = new Vector3(1, 0, 0);
-                Position += FACTEUR_VITESSE * direction;
-                CalculerMonde();
-                foreach (EntitéPéonEnnemie péon in Game.Components.Where(x => x is EntitéPéonEnnemie))
-                {
-                    float distanceEntreLesDeux = (float)Math.Sqrt(Math.Pow((péon.Position.X - Position.X), 2) + Math.Pow((péon.Position.Z - Position.Z), 2));
-                    if (distanceEntreLesDeux <= Portée)
-                    {
-                        EnMouvement = false;
-                    }
-                }
+                GérerDéplacement();
+            }
+            if (Cible != null)
+            {
+                AttaquerLaCible();
+                RegarderSiCibleEstMortOuHorsRange();
             }
 
             base.Update(gameTime);
         }
 
+        private void AttaquerLaCible()
+        {
+            Cible.RecevoirAttaque(Force);
+        }
+
+        private void RegarderSiCibleEstMortOuHorsRange()
+        {
+            float distanceEntreLesDeux = (float)Math.Sqrt(Math.Pow((Cible.Position.X - Position.X), 2) + Math.Pow((Cible.Position.Z - Position.Z), 2));
+
+            if (Cible.PointDeVie == 0 || distanceEntreLesDeux > Portée)
+            {
+                Cible = null;
+            }
+    
+        }
+
         protected override void GérerDéplacement()
         {
-            throw new NotImplementedException();
+            Position += Direction * FACTEUR_VITESSE;
+            CalculerMonde();
+            foreach (EntitéPéonEnnemie péon in Game.Components.Where(x => x is EntitéPéonEnnemie))
+            {
+                float distanceEntreLesDeux = (float)Math.Sqrt(Math.Pow((péon.Position.X - Position.X), 2) + Math.Pow((péon.Position.Z - Position.Z), 2));
+                if (distanceEntreLesDeux <= Portée && EnRechercheDEnnemi == true)
+                {
+                    EnMouvement = false;
+                    EnRechercheDEnnemi = false;
+                    Cible = péon;
+
+                }
+            }
         }
+    
 
         public void ControlerLEntitée()
         {

@@ -18,7 +18,8 @@ namespace AtelierXNA
     public class EntitéPéon : EntitéMobile, IControlée, IDestructible
     {
         public bool ÀDétruire { get;  set; }
-        public bool EnRechercheDEnnemi { get; set; }
+        protected bool EnRechercheDEnnemi { get; set; }
+        protected Entité Cible { get; set; }
         public EntitéPéon(Game jeu, string nomModèle, float échelleInitiale, Vector3 rotationInitiale, Vector3 positionInitiale,
                            float intervalleMAJ, int pointDeVie, int portée, int force, int armure)
             : base(jeu, nomModèle, échelleInitiale, rotationInitiale, positionInitiale, intervalleMAJ, pointDeVie, portée, force, armure)
@@ -31,7 +32,8 @@ namespace AtelierXNA
         /// </summary>
         public override void Initialize()
         {
-            // TODO: Add your initialization code here
+            Cible = null;
+            EnRechercheDEnnemi = true;
 
             base.Initialize();
         }
@@ -42,7 +44,10 @@ namespace AtelierXNA
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         public override void Update(GameTime gameTime)
         {
-            // TODO: Add your update code here
+            if(PointDeVie== 0)
+            {
+                ÀDétruire = true;
+            }
 
             base.Update(gameTime);
         }

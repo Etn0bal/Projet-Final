@@ -15,17 +15,17 @@ namespace AtelierXNA
 
     public class Entité : ObjetDeDémo
     {
-        int PointDeVie { get; set; }
+        public int PointDeVie { get; set; }
         public int Portée { get; set; }
-        int Force { get; set; }
-        int Armure { get; set; }
-        bool EstAttaqué { get; set; }
+        protected int Force { get; set; }
+        protected int Armure { get; set; }
+        protected bool EstAttaqué { get; set; }
         public float RayonCollision { get; set; }
 
 
         public Entité(Game jeu, string nomModèle, float échelleInitiale, Vector3 rotationInitiale, Vector3 positionInitiale,
-                           float intervalleMAJ,int pointDeVie,int portée,int force,int armure)
-            : base(jeu,nomModèle,échelleInitiale,rotationInitiale,positionInitiale,intervalleMAJ)
+                           float intervalleMAJ, int pointDeVie, int portée, int force, int armure)
+            : base(jeu, nomModèle, échelleInitiale, rotationInitiale, positionInitiale, intervalleMAJ)
         {
             PointDeVie = pointDeVie;
             Portée = portée;
@@ -47,10 +47,9 @@ namespace AtelierXNA
         {
             base.Draw(gameTime);
         }
-        protected void Défendre(int Attaque)
+        public void RecevoirAttaque(int dégats)
         {
-            int ptDeDégat = Math.Max(Attaque - Armure, 0);
-            PointDeVie -= ptDeDégat;
+            PointDeVie =- (dégats - Armure);
         }
 
     }
