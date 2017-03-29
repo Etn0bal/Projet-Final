@@ -58,7 +58,7 @@ namespace AtelierXNA
         {
             Cible.RecevoirAttaque(Force);
         }
-        protected override void GérerDéplacement()
+        protected void GérerDéplacement()
         {
             Position += Direction * FACTEUR_VITESSE;
             CalculerMonde();

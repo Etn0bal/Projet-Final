@@ -77,11 +77,6 @@ namespace AtelierXNA
 
         public void GestionDéplacement()
         {
-            GérerDéplacement();
-        }
-
-        protected override void GérerDéplacement()
-        {
             if (GestionInputs.EstSourisActive)
             {
                 if (GestionInputs.EstNouveauClicDroit()) //// Regarder S'il n'y a pas d'autre entitée
@@ -89,10 +84,9 @@ namespace AtelierXNA
                     GetDestination();
                     DirectionDéplacement = Vector3.Normalize(Destination - Position);
                     GérerRotation();
-                    //EnMouvement = true;                    
                 }
             }
-            if ((Destination - Position).Length() >= FACTEUR_VITESSE*DirectionDéplacement.Length())
+            if ((Destination - Position).Length() >= FACTEUR_VITESSE * DirectionDéplacement.Length())
             {
                 if (Murs.EnCollision(this))
                 { Destination = Position; }
@@ -102,8 +96,8 @@ namespace AtelierXNA
                     DoCalculerMonde = true;
                 }
             }
-
         }
+
 
         private void GetDestination()
         {
