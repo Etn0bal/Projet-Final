@@ -46,16 +46,20 @@ namespace AtelierXNA
             GestionInputs = Game.Services.GetService(typeof(InputManager)) as InputManager;
             CaméraJeu = Game.Services.GetService(typeof(Caméra)) as Caméra;
             DoCalculerMonde = false;
+            EnMouvement = false;
             Direction = new Vector3(1, 0, 0);
             PlanReprésentantCarte = new Plane(0, 1, 0, 0);
-            EnMouvement = false;
 
             base.Initialize();
         }
 
         public override void Update(GameTime gameTime)
         {
-            GestionDéplacement();
+            if(EnMouvement)
+            {
+                GestionDéplacement();
+            }
+
             if (DoCalculerMonde)
             {
                 CalculerMonde();
@@ -66,22 +70,12 @@ namespace AtelierXNA
         }
         public void GestionDéplacement()
         {
-            GérerDéplacement();
-        }
-        protected override void GérerDéplacement()
-        {
-            if (EnMouvement == true)
+
+
+            if ((Destination - Position).Length() > FACTEUR_VITESSE * DirectionDéplacement.Length())
             {
-                Vector3 BonneDestination = new Vector3(Destination.X, 0, Destination.Z);
-                Vector3 BonnePosition = new Vector3(Position.X, 0, Position.Z);
-                DirectionDéplacement = Vector3.Normalize(BonneDestination - BonnePosition);
-                GérerRotation();
                 Position += FACTEUR_VITESSE * DirectionDéplacement;
-                CalculerMonde();
-                if(Position.X == Destination.X && Position.Z == Destination.Z)
-                {
-                    EnMouvement = false;
-                }
+                DoCalculerMonde = true;     
             }
         }
         public override void Draw(GameTime gameTime)
@@ -92,16 +86,22 @@ namespace AtelierXNA
         {
             EnMouvement = true;
             Destination = destination;
+            DirectionDéplacement = Vector3.Normalize(Destination - Position);
+            GérerRotation();
+
 
         }
         void GérerRotation()
         {
+            if (DirectionDéplacement.X >= 0 || DirectionDéplacement.X <= 0)
+            {
+                float Angle = (float)Math.Acos(Vector3.Dot(DirectionDéplacement, Direction) / (DirectionDéplacement.Length() * Direction.Length()));
+                if (Vector3.Cross(Direction, DirectionDéplacement).Y < 0) { Angle *= -1; }
+                Rotation += new Vector3(0, Angle, 0);
+                Direction = DirectionDéplacement;
+                DoCalculerMonde = true;
+            }
 
-            float Angle = (float)Math.Acos(Vector3.Dot(DirectionDéplacement, Direction) / (DirectionDéplacement.Length() * Direction.Length()));
-            if (Vector3.Cross(Direction, DirectionDéplacement).Y < 0) { Angle *= -1; }
-            Rotation += new Vector3(0, Angle, 0);
-            Direction = DirectionDéplacement;
-            DoCalculerMonde = true;
         }
 
 

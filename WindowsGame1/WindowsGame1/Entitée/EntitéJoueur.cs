@@ -78,11 +78,6 @@ namespace AtelierXNA
 
         public void GestionDéplacement()
         {
-            GérerDéplacement();
-        }
-
-        protected override void GérerDéplacement()
-        {
             if (GestionInputs.EstSourisActive)
             {
                 if (GestionInputs.EstNouveauClicDroit()) //// Regarder S'il n'y a pas d'autre entitée
@@ -105,6 +100,7 @@ namespace AtelierXNA
                 }
             }
         }
+
 
         private void GetDestination()
         {

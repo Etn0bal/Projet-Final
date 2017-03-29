@@ -46,6 +46,5 @@ namespace AtelierXNA
             base.Update(gameTime);
         }
 
-        protected abstract void GérerDéplacement();
     }
 }

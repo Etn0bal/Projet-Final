@@ -70,7 +70,7 @@ namespace AtelierXNA
     
         }
 
-        protected override void GérerDéplacement()
+        protected void GérerDéplacement()
         {
             Position += Direction * FACTEUR_VITESSE;
             CalculerMonde();
