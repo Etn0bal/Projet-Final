@@ -22,7 +22,6 @@ namespace AtelierXNA
         Vector3 DirectionDéplacement { get; set; }
         Vector3 Direction { get; set; }
         Vector3 Destination { get; set; }
-        Plane PlanReprésentantCarte { get; set; }
         InputManager GestionInputs { get; set; }
         Caméra CaméraJeu { get; set; }
         bool EnMouvement { get; set; }
@@ -48,7 +47,6 @@ namespace AtelierXNA
             DoCalculerMonde = false;
             EnMouvement = false;
             Direction = new Vector3(1, 0, 0);
-            PlanReprésentantCarte = new Plane(0, 1, 0, 0);
 
             base.Initialize();
         }
@@ -101,7 +99,6 @@ namespace AtelierXNA
                 Direction = DirectionDéplacement;
                 DoCalculerMonde = true;
             }
-
         }
 
 

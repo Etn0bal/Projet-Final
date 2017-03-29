@@ -121,12 +121,12 @@ namespace AtelierXNA
 
         public override void Update(GameTime gameTime)
         {
-            if (joueur.EnMouvement)
-            {
-                Vector3 destination = joueur.AvoirDestination();
-                joueurClient.EnvoyerDestination(destination);
-                joueur.EnMouvement = false;
-            }
+            //if (joueur.EnMouvement)
+            //{
+            //    Vector3 destination = joueur.AvoirDestination();
+            //    joueurClient.EnvoyerDestination(destination);
+            //    joueur.EnMouvement = false;
+            //}
             base.Update(gameTime);
         }
         public override void Draw(GameTime gameTime)
