@@ -109,8 +109,8 @@ namespace AtelierXNA
             {
                 if(GestionnaireInputs.EstNouveauClicGauche())
                 {
-                    ServeurClient HostClient = new ServeurClient(Game, IP);
-                    Game.Services.AddService(typeof(ServeurClient), HostClient);
+                    //ServeurClient HostClient = new ServeurClient(Game, IP);
+                    //Game.Services.AddService(typeof(ServeurClient), HostClient);
                     ((Game1)Game).EnJeu = true;
                     ((Game1)Game).ChangerDÉtat(3);
                     

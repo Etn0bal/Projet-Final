@@ -90,10 +90,8 @@ namespace AtelierXNA
                     ((Game1)Game).ChangerDÉtat(0);
                 }
             }
-            if (positionJoinServerButton.Contains(positionSouris))
+            if (positionJoinServerButton.Contains(positionSouris)&& GestionnaireInputs.EstNouveauClicGauche() || GestionnaireInputs.EstNouvelleTouche(Microsoft.Xna.Framework.Input.Keys.Enter))
             {
-                if (GestionnaireInputs.EstNouveauClicGauche())
-                {
                     try
                     {
                         ServeurClient Invité = new ServeurClient(Game, IP);
@@ -107,10 +105,6 @@ namespace AtelierXNA
                     {
                         ((Game1)Game).ChangerDÉtat(3);
                     }
-
-
-
-                }
             }
         }
         void GérerClavier(GameTime gameTime)
