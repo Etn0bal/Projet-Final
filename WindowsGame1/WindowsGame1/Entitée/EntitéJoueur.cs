@@ -33,10 +33,10 @@ namespace AtelierXNA
 
 
         public EntitéJoueur(Game jeu, string nomModèle, float échelleInitiale, Vector3 rotationInitiale, Vector3 positionInitiale,
-                           float intervalleMAJ, int pointDeVie, int portée, int force, int armure)
+                           float intervalleMAJ, int pointDeVie, int portée, int force, int armure,Vector3 direction)
             : base(jeu, nomModèle, échelleInitiale, rotationInitiale, positionInitiale, intervalleMAJ, pointDeVie, portée, force, armure)
         {
-
+            Direction = direction;
         }
 
         /// <summary>

@@ -38,7 +38,7 @@ namespace AtelierXNA
             GestionnaireInputs = Game.Services.GetService(typeof(InputManager)) as InputManager;
             positionSouris = new Point(0, 0);
             IPÉcrit = "";
-            ServerTrouvé = false;
+            ServerTrouvé = true;
 
             //Arriere plan
             Rectangle arrièrePlan = new Rectangle(0, 0, Game.Window.ClientBounds.Width, Game.Window.ClientBounds.Height);
@@ -103,7 +103,8 @@ namespace AtelierXNA
                     }
                     if (ServerTrouvé == true)
                     {
-                        ((Game1)Game).ChangerDÉtat(3);
+                       ((Game1)Game).NumClient = 1;
+                       ((Game1)Game).ChangerDÉtat(3);
                     }
             }
         }

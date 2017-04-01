@@ -13,14 +13,16 @@ namespace AtelierXNA
     class EntitéPéonAlliée : EntitéPéon, IControlée, IDestructible
     {
         const float FACTEUR_VITESSE = 0.01f;
-        protected bool EnMouvement { get; set; }
+        public bool EnMouvement { get; set; }
         Vector3 Direction { get; set; }
+        public int NumPéon { get; set; }
         
         public EntitéPéonAlliée(Game jeu, string nomModèle, float échelleInitiale, Vector3 rotationInitiale, Vector3 positionInitiale,
-                           float intervalleMAJ, int pointDeVie, int portée, int force, int armure)
+                           float intervalleMAJ, int pointDeVie, int portée, int force, int armure, Vector3 direction, int numPéon)
             : base(jeu, nomModèle, échelleInitiale, rotationInitiale, positionInitiale, intervalleMAJ, pointDeVie, portée, force, armure)
         {
-            // TODO: Construct any child components here
+            Direction = direction;
+            NumPéon = numPéon;
         }
 
         /// <summary>
@@ -29,7 +31,6 @@ namespace AtelierXNA
         /// </summary>
         public override void Initialize()
         {
-            Direction = new Vector3(1, 0, 0);
             EnMouvement = true;
 
             base.Initialize();
@@ -85,6 +86,10 @@ namespace AtelierXNA
 
                 }
             }
+        }
+        public Vector3 AvoirPosition()
+        {
+            return Position;
         }
     }
 }

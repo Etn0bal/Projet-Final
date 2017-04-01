@@ -112,6 +112,8 @@ namespace AtelierXNA
                     //ServeurClient HostClient = new ServeurClient(Game, IP);
                     //Game.Services.AddService(typeof(ServeurClient), HostClient);
                     ((Game1)Game).EnJeu = true;
+                    ((Game1)Game).NumClient = 0;
+
                     ((Game1)Game).ChangerDÉtat(3);
                     
                 }

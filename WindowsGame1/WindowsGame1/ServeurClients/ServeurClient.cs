@@ -114,7 +114,7 @@ namespace AtelierXNA
 
                 else if (p == Protocoles.PlayerMovement)
                 {
-                    foreach(EntitéEnnemie EntitéeEnnemie in Game.Components.Where(x => x is EntitéEnnemie))
+                    foreach (EntitéEnnemie EntitéeEnnemie in Game.Components.Where(x => x is EntitéEnnemie))
                     {
                         float px = reader.ReadSingle();
                         float py = reader.ReadSingle();
@@ -124,10 +124,23 @@ namespace AtelierXNA
                         EntitéeEnnemie.DéplacerEnnemie(positionEnnemie);
                     }
                 }
+
+                else if (p == Protocoles.MinionMovement)
+                {
+                    foreach (EntitéPéonEnnemie EntitéPéon in Game.Components.Where(x => x is EntitéPéonEnnemie))
+                    {
+                        int NumPéon = reader.ReadInt32();
+                        if (EntitéPéon.NumPéon == NumPéon)
+                        {
+                            float px = reader.ReadSingle();
+                            float py = reader.ReadSingle();
+                            float pz = reader.ReadSingle();
+                            Vector3 positionPéon = new Vector3(px, py, pz);
+                            EntitéPéon.GérerDéplacement(positionPéon);
+                        }
+                    }
+                }
             }
-            //        else if (p == Protocoles)
-            //        {
-            //        }
             //        else if (p == Protocoles)
             //        {
             //        }
@@ -189,6 +202,19 @@ namespace AtelierXNA
             writer.Write(destination.Y);
             writer.Write(destination.Z);
             SendData(GetDataFromMemoryStream(writeStream));
+        }
+        public void EnvoyerPositionPéon(Vector3 position,int numPéon)
+        {
+            writeStream.Position = 0;
+            writer.Write((Byte)Protocoles.MinionMovement);
+            //Envoie du numéro de péon
+            writer.Write(numPéon);
+            //Envoie de la position du péon
+            writer.Write(position.X);
+            writer.Write(position.Y);
+            writer.Write(position.Z);
+            SendData(GetDataFromMemoryStream(writeStream));
+
         }
     }
 }

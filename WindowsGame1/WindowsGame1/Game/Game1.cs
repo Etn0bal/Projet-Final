@@ -22,6 +22,8 @@ namespace AtelierXNA
         InputManager GestionInput { get; set; }
         States State { get; set; }
         public bool EnJeu { get; set; }
+        public int NumClient {get;set;}
+
 
         public Game1()
         {
@@ -222,7 +224,7 @@ namespace AtelierXNA
         void InitialiserGame()
         {
             NettoyerListeComponents();
-            TheGame game = new TheGame(this);
+            TheGame game = new TheGame(this,NumClient);
             Components.Add(game);
         }
         private void InitialiserAttentePartie()
