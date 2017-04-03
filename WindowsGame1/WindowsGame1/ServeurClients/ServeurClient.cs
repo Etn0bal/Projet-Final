@@ -144,7 +144,8 @@ namespace AtelierXNA
 
                 else if (p == Protocoles.StartGame)
                 {
-                    ((Game1)Game).ChangerDÉtat(3);
+                    bool valeur = reader.ReadBoolean();
+                    ((Game1)Game).EnJeu = valeur;
                 }
             }
             //        else if (p == Protocoles)
@@ -222,6 +223,7 @@ namespace AtelierXNA
         {
             writeStream.Position = 0;
             writer.Write((Byte)Protocoles.StartGame);
+            writer.Write(true);
         }
     }
 }
