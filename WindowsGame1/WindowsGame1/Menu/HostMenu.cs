@@ -72,7 +72,28 @@ namespace AtelierXNA
         public override void Update(GameTime gameTime)
         {
             GérerSouris();
+            GestionServeur();
         }
+
+        private void GestionServeur()
+        {
+            if (ServeurDeJeu != null)
+            {
+                if (ServeurDeJeu.connectedClients == 2 && AutreClientConnecté == false)
+                {
+                    AutreClientConnecté = true;
+                    GérerHostTxt();
+                }
+            }
+        }
+        private void GérerHostTxt()
+        {
+            EnleverTxt();
+            Rectangle positionTxt = new Rectangle((2 * (Game.Window.ClientBounds.Width / 10)), 7 * Game.Window.ClientBounds.Height / 10, 4 * (Game.Window.ClientBounds.Width / 10), (Game.Window.ClientBounds.Height / 10));
+            TexteHostMenu txt = new TexteHostMenu(Game, "Nombre de client connecté : 2 / 2", "Arial", positionTxt, new Vector2(4 * Game.Window.ClientBounds.Width / 10, 7 * Game.Window.ClientBounds.Height / 10), Color.White, 0);
+            Game.Components.Add(txt);
+        }
+
         void GérerSouris()
         {
             positionSouris = GestionnaireInputs.GetPositionSouris();
@@ -127,14 +148,6 @@ namespace AtelierXNA
                         ((Game1)Game).ChangerDÉtat(3);
 
                     }
-                    if (ServeurDeJeu != null)
-                    {
-                        if (ServeurDeJeu.connectedClients == 2)
-                        {
-                            AutreClientConnecté = true;
-                            GérerHostTxt();
-                        }
-                    }
                     if (((Game1)Game).EnJeu)
                     {
                         ((Game1)Game).ChangerDÉtat(3);
@@ -145,15 +158,7 @@ namespace AtelierXNA
             }
         }
 
-        private void GérerHostTxt()
-        {
-            EnleverTxt();
-            Rectangle positionTxt = new Rectangle((2 * (Game.Window.ClientBounds.Width / 10)), 7 * Game.Window.ClientBounds.Height / 10, 4 * (Game.Window.ClientBounds.Width / 10), (Game.Window.ClientBounds.Height / 10));
-            TexteHostMenu txt = new TexteHostMenu(Game, "Nombre de client connecté : 2 / 2", "Arial", positionTxt, new Vector2(4 * Game.Window.ClientBounds.Width / 10, 7 * Game.Window.ClientBounds.Height / 10), Color.White, 0);
-            Game.Components.Add(txt);
 
-
-        }
 
         private void EnleverTxt()
         {
