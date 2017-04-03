@@ -188,5 +188,16 @@ namespace AtelierXNA
             
             base.Draw(gameTime);
         }
+        public void GérerDéplacementPéon(Vector3 positionPéon, int numPéon)
+        {
+            foreach (EntitéPéonEnnemie péon in Game.Components.Where(x => x is EntitéPéonEnnemie))
+            {
+                if(péon.NumPéon == numPéon)
+                {
+                    péon.GérerDéplacement(positionPéon);
+                }
+
+            }
+        }
     }
 }
