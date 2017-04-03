@@ -24,6 +24,7 @@ namespace AtelierXNA
         InputManager GestionnaireInputs { get; set; }
         Server ServeurDeJeu { get; set; }
         bool ServeurCréé { get; set; }
+        bool AutreClientConnecté { get; set; }
         string IP { get; set; }
 
         public HostMenu(Game game)
@@ -35,6 +36,7 @@ namespace AtelierXNA
             GestionnaireInputs = Game.Services.GetService(typeof(InputManager)) as InputManager;
             positionSouris = new Point(0, 0);
             ServeurCréé = false;
+            bool AutreClientConnecté = false;
 
 
             //Arriere plan
@@ -99,9 +101,11 @@ namespace AtelierXNA
                     {
                         ServeurDeJeu = new Server(5011);
                         ServeurCréé = true;
+                        ServeurClient HostClient = new ServeurClient(Game, IP);
+                        Game.Services.AddService(typeof(ServeurClient), HostClient);
 
                     }
-                  
+
 
                 }
             }   
@@ -109,8 +113,7 @@ namespace AtelierXNA
             {
                 if(GestionnaireInputs.EstNouveauClicGauche())
                 {
-                    //ServeurClient HostClient = new ServeurClient(Game, IP);
-                    //Game.Services.AddService(typeof(ServeurClient), HostClient);
+                    if(AutreClientConnecté)
                     ((Game1)Game).EnJeu = true;
                     ((Game1)Game).NumClient = 0;
 
@@ -118,6 +121,10 @@ namespace AtelierXNA
                     
                 }
             }  
+            if(ServeurDeJeu.connectedClients ==2)
+            {
+                AutreClientConnecté = true;
+            }
 
         }
 

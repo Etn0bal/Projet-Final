@@ -129,7 +129,7 @@ namespace AtelierXNA
 
 
                 //Joueurs :
-                joueur = new EntitéJoueur(Game, "robot2", ÉCHELLE_OBJET_JOUEUR, rotationObjetInitialeInvite, positionInitialeInvite, INTERVALLE_MAJ, 1, 1, 1, 1, new Vector3(1, 0, 0));
+                joueur = new EntitéJoueur(Game, "robot2", ÉCHELLE_OBJET_JOUEUR, rotationObjetInitialeInvite, positionInitialeInvite, INTERVALLE_MAJ, 1, 1, 1, 1, new Vector3(-1, 0, 0));
                 Game.Components.Add(joueur);
                 joueurEnnemie = new EntitéEnnemie(Game, "robot2", ÉCHELLE_OBJET_JOUEUR, rotationObjetInitialeHost, positionInitialeHost, INTERVALLE_MAJ, 1, 1, 1, 1);
                 Game.Components.Add(joueurEnnemie);
