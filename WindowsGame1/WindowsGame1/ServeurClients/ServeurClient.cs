@@ -107,6 +107,7 @@ namespace AtelierXNA
 
                 if (p == Protocoles.Connected)
                 {
+
                 }
                 else if (p == Protocoles.Disconnected)
                 {
@@ -140,10 +141,12 @@ namespace AtelierXNA
                         }
                     }
                 }
+
+                else if (p == Protocoles.StartGame)
+                {
+                    ((Game1)Game).ChangerDÉtat(3);
+                }
             }
-            //        else if (p == Protocoles)
-            //        {
-            //        }
             //        else if (p == Protocoles)
             //        {
             //        }
@@ -214,7 +217,11 @@ namespace AtelierXNA
             writer.Write(position.Y);
             writer.Write(position.Z);
             SendData(GetDataFromMemoryStream(writeStream));
-
+        }
+        public void StartGame()
+        {
+            writeStream.Position = 0;
+            writer.Write((Byte)Protocoles.StartGame);
         }
     }
 }

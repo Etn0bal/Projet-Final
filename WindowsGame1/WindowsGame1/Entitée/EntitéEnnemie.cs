@@ -30,10 +30,10 @@ namespace AtelierXNA
 
 
         public EntitéEnnemie(Game jeu, string nomModèle, float échelleInitiale, Vector3 rotationInitiale, Vector3 positionInitiale,
-                           float intervalleMAJ, int pointDeVie, int portée, int force, int armure)
+                           float intervalleMAJ, int pointDeVie, int portée, int force, int armure,Vector3 direction)
             : base(jeu, nomModèle, échelleInitiale, rotationInitiale, positionInitiale, intervalleMAJ, pointDeVie, portée, force, armure)
         {
-
+            Direction = direction;
         }
 
         /// <summary>
@@ -46,7 +46,6 @@ namespace AtelierXNA
             CaméraJeu = Game.Services.GetService(typeof(Caméra)) as Caméra;
             DoCalculerMonde = false;
             EnMouvement = false;
-            Direction = new Vector3(1, 0, 0);
 
             base.Initialize();
         }
@@ -68,12 +67,11 @@ namespace AtelierXNA
         }
         public void GestionDéplacement()
         {
-
-
             if ((Destination - Position).Length() > FACTEUR_VITESSE * DirectionDéplacement.Length())
             {
                 Position += FACTEUR_VITESSE * DirectionDéplacement;
-                DoCalculerMonde = true;     
+                DoCalculerMonde = true;
+                EnMouvement = false;  
             }
         }
         public override void Draw(GameTime gameTime)

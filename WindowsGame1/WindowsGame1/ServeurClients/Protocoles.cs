@@ -11,6 +11,7 @@ namespace AtelierXNA
         Connected = 1,
         PlayerMovement = 2,
         MinionMovement = 3,
+        StartGame = 4,
 
 
 

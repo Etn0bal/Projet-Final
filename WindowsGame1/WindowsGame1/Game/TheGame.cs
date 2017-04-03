@@ -98,7 +98,7 @@ namespace AtelierXNA
 
                 joueur = new EntitéJoueur(Game, "robot2", ÉCHELLE_OBJET_JOUEUR, rotationObjetInitialeHost, positionInitialeHost, INTERVALLE_MAJ, 1, 1, 1, 1, new Vector3(1, 0, 0));
                 Game.Components.Add(joueur);
-                joueurEnnemie = new EntitéEnnemie(Game, "robot2", ÉCHELLE_OBJET_JOUEUR, rotationObjetInitialeInvite, positionInitialeInvite, INTERVALLE_MAJ, 1, 1, 1, 1);
+                joueurEnnemie = new EntitéEnnemie(Game, "robot2", ÉCHELLE_OBJET_JOUEUR, rotationObjetInitialeInvite, positionInitialeInvite, INTERVALLE_MAJ, 1, 1, 1, 1, new Vector3(-1, 0, 0));
                 Game.Components.Add(joueurEnnemie);
                 //Péons :
                 PéonA1 = new EntitéPéonAlliée(Game, "robot2", ÉCHELLE_OBJET_PÉON, rotationObjetInitialeHost, positionInitialeHost - new Vector3(0, 0, 5), INTERVALLE_MAJ, 1, 3, 1, 1, new Vector3(1, 0, 0),1);
@@ -131,7 +131,7 @@ namespace AtelierXNA
                 //Joueurs :
                 joueur = new EntitéJoueur(Game, "robot2", ÉCHELLE_OBJET_JOUEUR, rotationObjetInitialeInvite, positionInitialeInvite, INTERVALLE_MAJ, 1, 1, 1, 1, new Vector3(-1, 0, 0));
                 Game.Components.Add(joueur);
-                joueurEnnemie = new EntitéEnnemie(Game, "robot2", ÉCHELLE_OBJET_JOUEUR, rotationObjetInitialeHost, positionInitialeHost, INTERVALLE_MAJ, 1, 1, 1, 1);
+                joueurEnnemie = new EntitéEnnemie(Game, "robot2", ÉCHELLE_OBJET_JOUEUR, rotationObjetInitialeHost, positionInitialeHost, INTERVALLE_MAJ, 1, 1, 1, 1,new Vector3(1, 0, 0));
                 Game.Components.Add(joueurEnnemie);
                 //Péons :
                 PéonA1 = new EntitéPéonAlliée(Game, "robot2", ÉCHELLE_OBJET_PÉON, rotationObjetInitialeInvite, positionInitialeInvite - new Vector3(0, 0, 5), INTERVALLE_MAJ, 1, 3, 1, 1, new Vector3(-1, 0, 0),1);
@@ -163,22 +163,22 @@ namespace AtelierXNA
 
         public override void Update(GameTime gameTime)
         {
-            //if (joueur.EnMouvement)
-            //{
-            //    Vector3 destination = joueur.AvoirDestination();
-            //    joueurClient.EnvoyerDestination(destination);
-            //    joueur.EnMouvement = false;
-            //}
-            //foreach (EntitéPéonAlliée entité in Game.Components.Where(x => x is EntitéPéonAlliée))
-            //{
-            //    if (entité.EnMouvement == true)
-            //    {
-            //        Vector3 position = entité.AvoirPosition();
-            //        int numPéon = entité.NumPéon;
-            //        joueurClient.EnvoyerPositionPéon(position,numPéon);
-                    
-            //    }
-            //}
+            if (joueur.EnMouvement)
+            {
+                Vector3 destination = joueur.AvoirDestination();
+                joueurClient.EnvoyerDestination(destination);
+                joueur.EnMouvement = false;
+            }
+            foreach (EntitéPéonAlliée entité in Game.Components.Where(x => x is EntitéPéonAlliée))
+            {
+                if (entité.EnMouvement == true)
+                {
+                    Vector3 position = entité.AvoirPosition();
+                    int numPéon = entité.NumPéon;
+                    joueurClient.EnvoyerPositionPéon(position, numPéon);
+
+                }
+            }
             base.Update(gameTime);
         }
         public override void Draw(GameTime gameTime)

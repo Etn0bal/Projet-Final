@@ -104,7 +104,6 @@ namespace AtelierXNA
                     if (ServerTrouvé == true)
                     {
                        ((Game1)Game).NumClient = 1;
-                       ((Game1)Game).ChangerDÉtat(3);
                     }
             }
         }
