@@ -48,7 +48,6 @@ namespace AtelierXNA
             GestionInputs = Game.Services.GetService(typeof(InputManager)) as InputManager;
             CaméraJeu = Game.Services.GetService(typeof(Caméra)) as Caméra;
             DoCalculerMonde = false;
-            Direction = new Vector3(1, 0, 0);
             Destination = Position;
             PlanReprésentantCarte = new Plane(0, 1, 0, 0);
             EnMouvement = false;
