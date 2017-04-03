@@ -18,9 +18,12 @@ namespace AtelierXNA
     public class CaméraTypéMoba : Caméra
     {
         const float VITESSE_INITIALE_TRANSLATION = 0.5f;
+        Vector3 VariationEntrePositionCamJoueur = new Vector3(0, 30, 30);
+
 
         Vector3 Direction { get; set; }
         Vector3 Latéral { get; set; }
+        Vector3 PositionJoueur { get; set; }
         float VitesseTranslation { get; set; }
         float IntervalleMAJ { get; set; }
         float TempsÉcouléDepuisMAJ { get; set; }
@@ -67,11 +70,10 @@ namespace AtelierXNA
             TempsÉcouléDepuisMAJ += TempsÉcoulé;
             if (TempsÉcouléDepuisMAJ >= IntervalleMAJ)
             {
-                if (GestionInput.EstEnfoncée(Keys.LeftShift) || GestionInput.EstEnfoncée(Keys.RightShift))
-                {
+                
                     GérerDéplacement();
                     CréerPointDeVue();
-                }
+                
                 TempsÉcouléDepuisMAJ = 0;
             }
             base.Update(gameTime);
@@ -84,15 +86,12 @@ namespace AtelierXNA
 
         private void GérerDéplacement()
         {
-            float déplacementZ = (-GérerTouche(Keys.W) + GérerTouche(Keys.S)) * VitesseTranslation;
-            float déplacementX = (-GérerTouche(Keys.A) + GérerTouche(Keys.D)) * VitesseTranslation;
+            Position = PositionJoueur + VariationEntrePositionCamJoueur;
+        }
 
-            if (Position.Z + déplacementZ > 205 || Position.Z + déplacementZ < -30)
-            { déplacementZ = 0; }
-            if (Position.X + déplacementX > 290 || Position.X + déplacementX < -120)
-            { déplacementX = 0; }
-
-            Position += new Vector3(déplacementX,0,déplacementZ);
+        public void DonnerPositionJoueur(Vector3 positionJoueur)
+        {
+            PositionJoueur = positionJoueur;
         }
     }
 }
