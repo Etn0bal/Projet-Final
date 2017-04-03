@@ -120,11 +120,15 @@ namespace AtelierXNA
                     ((Game1)Game).ChangerDÉtat(3);
                     
                 }
-            }  
-            if(ServeurDeJeu.connectedClients ==2)
-            {
-                AutreClientConnecté = true;
             }
+            if(ServeurDeJeu !=null)
+            {
+                if (ServeurDeJeu.connectedClients == 2)
+                {
+                    AutreClientConnecté = true;
+                }
+            }
+
 
         }
 
