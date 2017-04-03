@@ -129,7 +129,7 @@ namespace AtelierXNA
                 {
                     foreach (EntitéPéonEnnemie EntitéPéon in Game.Components.Where(x => x is EntitéPéonEnnemie))
                     {
-                        int NumPéon = reader.ReadInt32();
+                        int NumPéon = reader.ReadInt16();
                         if (EntitéPéon.NumPéon == NumPéon)
                         {
                             float px = reader.ReadSingle();
