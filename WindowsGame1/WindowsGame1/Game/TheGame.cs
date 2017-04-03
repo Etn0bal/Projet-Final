@@ -98,7 +98,7 @@ namespace AtelierXNA
 
                 Joueur = new EntitéJoueur(Game, "robot2", ÉCHELLE_OBJET_JOUEUR, rotationObjetInitialeHost, positionInitialeHost, INTERVALLE_MAJ, 1, 1, 1, 1, new Vector3(1, 0, 0));
                 Game.Components.Add(Joueur);
-                JoueurEnnemie = new EntitéEnnemie(Game, "robot2", ÉCHELLE_OBJET_JOUEUR, rotationObjetInitialeInvite, positionInitialeInvite, INTERVALLE_MAJ, 1, 1, 1, 1);
+                JoueurEnnemie = new EntitéEnnemie(Game, "robot2", ÉCHELLE_OBJET_JOUEUR, rotationObjetInitialeInvite, positionInitialeInvite, INTERVALLE_MAJ, 1, 1, 1, 1,new Vector3(-1, 0, 0));
                 Game.Components.Add(JoueurEnnemie);
                 //Péons :
                 PéonA1 = new EntitéPéonAlliée(Game, "robot2", ÉCHELLE_OBJET_PÉON, rotationObjetInitialeHost, positionInitialeHost - new Vector3(0, 0, 5), INTERVALLE_MAJ, 1, 3, 1, 1, new Vector3(1, 0, 0),1);
@@ -131,7 +131,7 @@ namespace AtelierXNA
                 //Joueurs :
                 Joueur = new EntitéJoueur(Game, "robot2", ÉCHELLE_OBJET_JOUEUR, rotationObjetInitialeInvite, positionInitialeInvite, INTERVALLE_MAJ, 1, 1, 1, 1, new Vector3(-1, 0, 0));
                 Game.Components.Add(Joueur);
-                JoueurEnnemie = new EntitéEnnemie(Game, "robot2", ÉCHELLE_OBJET_JOUEUR, rotationObjetInitialeHost, positionInitialeHost, INTERVALLE_MAJ, 1, 1, 1, 1);
+                JoueurEnnemie = new EntitéEnnemie(Game, "robot2", ÉCHELLE_OBJET_JOUEUR, rotationObjetInitialeHost, positionInitialeHost, INTERVALLE_MAJ, 1, 1, 1, 1, new Vector3(1, 0, 0));
                 Game.Components.Add(JoueurEnnemie);
                 //Péons :
                 PéonA1 = new EntitéPéonAlliée(Game, "robot2", ÉCHELLE_OBJET_PÉON, rotationObjetInitialeInvite, positionInitialeInvite - new Vector3(0, 0, 5), INTERVALLE_MAJ, 1, 3, 1, 1, new Vector3(-1, 0, 0),1);
