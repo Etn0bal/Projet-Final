@@ -243,9 +243,10 @@ namespace AtelierXNA
                 TableauDeDroites[PtsDroite++, NumDroite] = TableauDeDroites[1, NumDroite] - TableauDeDroites[0, NumDroite];
                 //Calcul du coefficient a, b et de la constante c de l'équation représentant la droite (sous forme ax+bz+c=0)
                 //Enregistré dans un Vecteur3 soit Vector3(a,b,c)
-                TableauDeDroites[PtsDroite++, NumDroite] = new Vector3(TableauDeDroites[DIRECTION, NumDroite].X, TableauDeDroites[2, NumDroite].Z,
-                                                                      TableauDeDroites[DIRECTION, NumDroite].X * (-TableauDeDroites[POINT2, NumDroite].X) +
-                                                                      TableauDeDroites[DIRECTION, NumDroite].Z * (-TableauDeDroites[POINT2, NumDroite].Z));
+                TableauDeDroites[PtsDroite++, NumDroite] = new Vector3(TableauDeDroites[POINT2, NumDroite].Z - TableauDeDroites[POINT1, NumDroite].Z,
+                                                                       TableauDeDroites[POINT1, NumDroite].X - TableauDeDroites[POINT2, NumDroite].X,
+                                                                       -((TableauDeDroites[POINT1, NumDroite].X - TableauDeDroites[POINT2, NumDroite].X) * TableauDeDroites[POINT1, NumDroite].Z +
+                                                                         (TableauDeDroites[POINT2, NumDroite].Z - TableauDeDroites[POINT1, NumDroite].Z) * TableauDeDroites[POINT1, NumDroite].X));
 
 
                 PtsDroite = 0; NumDroite++;
@@ -278,21 +279,23 @@ namespace AtelierXNA
             bool enCollision = false;
 
 
-            for (int i = 0; i < TableauDeDroites.GetLength(1); i++)
+            for (int numDroite = 0; numDroite < TableauDeDroites.GetLength(1); numDroite++)
             {
-                distance = (float)((Math.Abs(entité.Position.X + entité.Position.Z + TableauDeDroites[VECTEUR_ÉQUATION_DROITE_ABC, i].Z)) / 
-                           (Math.Sqrt(Math.Pow(TableauDeDroites[VECTEUR_ÉQUATION_DROITE_ABC,i].X, 2)  +
-                                      Math.Pow(TableauDeDroites[VECTEUR_ÉQUATION_DROITE_ABC, i].Y, 2))));
+                distance = (float)((Math.Abs((TableauDeDroites[VECTEUR_ÉQUATION_DROITE_ABC,numDroite].X * entité.NouvellePosition.X) + 
+                                             (TableauDeDroites[VECTEUR_ÉQUATION_DROITE_ABC,numDroite].Y * entité.NouvellePosition.Z) + 
+                                             TableauDeDroites[VECTEUR_ÉQUATION_DROITE_ABC, numDroite].Z)) / 
+                           (Math.Sqrt(Math.Pow(TableauDeDroites[VECTEUR_ÉQUATION_DROITE_ABC,numDroite].X, 2)  +
+                                      Math.Pow(TableauDeDroites[VECTEUR_ÉQUATION_DROITE_ABC, numDroite].Y, 2))));
                 if (distance <= entité.RayonCollision + 0.5f) //0.5 étant la moitié de l'épaisseur du mur
                 {
 
-                    distancePoint1 = (float)Math.Sqrt(Math.Pow(TableauDeDroites[POINT1, i].X - entité.Position.X, 2) +
-                                                      Math.Pow(TableauDeDroites[POINT1, i].Z - entité.Position.Z, 2));
-                    distancePoint2 = (float)Math.Sqrt(Math.Pow(TableauDeDroites[POINT2, i].X - entité.Position.X, 2) +
-                                                     Math.Pow(TableauDeDroites[POINT2, i].Z - entité.Position.Z, 2));
+                    distancePoint1 = (float)Math.Sqrt(Math.Pow(TableauDeDroites[POINT1, numDroite].X - entité.NouvellePosition.X, 2) +
+                                                      Math.Pow(TableauDeDroites[POINT1, numDroite].Z - entité.NouvellePosition.Z, 2));
+                    distancePoint2 = (float)Math.Sqrt(Math.Pow(TableauDeDroites[POINT2, numDroite].X - entité.NouvellePosition.X, 2) +
+                                                     Math.Pow(TableauDeDroites[POINT2, numDroite].Z - entité.NouvellePosition.Z, 2));
 
 
-                    distanceMax = (float)Math.Sqrt(Math.Pow(TableauDeDroites[DIRECTION, i].Length(), 2) + Math.Pow(distance, 2));
+                    distanceMax = (float)Math.Sqrt(Math.Pow(TableauDeDroites[DIRECTION, numDroite].Length(), 2) + Math.Pow(distance, 2));
 
                     if (!(distanceMax < distancePoint1 || distanceMax < distancePoint2))
                     {

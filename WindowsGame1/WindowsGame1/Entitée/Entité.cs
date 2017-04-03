@@ -20,7 +20,8 @@ namespace AtelierXNA
         protected int Force { get; set; }
         protected int Armure { get; set; }
         protected bool EstAttaqué { get; set; }
-        public float RayonCollision { get; set; }
+        public float RayonCollision { get; protected set; }
+        public Vector3 NouvellePosition { get; protected set; }
 
 
         public Entité(Game jeu, string nomModèle, float échelleInitiale, Vector3 rotationInitiale, Vector3 positionInitiale,
