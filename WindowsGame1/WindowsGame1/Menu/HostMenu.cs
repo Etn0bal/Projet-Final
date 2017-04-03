@@ -113,17 +113,18 @@ namespace AtelierXNA
             {
                 if(GestionnaireInputs.EstNouveauClicGauche())
                 {
-                    Client = new ServeurClient(Game, IP);
-                    Game.Services.AddService(typeof(ServeurClient), Client);
-                    if (AutreClientConnecté && ((Game1)Game).EnJeu == false)
-                    {
+                    //    Client = new ServeurClient(Game, IP);
+                    //    Game.Services.AddService(typeof(ServeurClient), Client);
+                    //    if (AutreClientConnecté && ((Game1)Game).EnJeu == false)
+                    //    {
 
-                        ((Game1)Game).NumClient = 0;
-                        Client.StartGame();
-                        ((Game1)Game).EnJeu = true;
+                    //        ((Game1)Game).NumClient = 0;
+                    //        Client.StartGame();
+                    //        ((Game1)Game).EnJeu = true;
 
-                    }                
-                }
+                    //}
+                    ((Game1)Game).ChangerDÉtat(3);
+            }
             }
             if(ServeurDeJeu !=null)
             {

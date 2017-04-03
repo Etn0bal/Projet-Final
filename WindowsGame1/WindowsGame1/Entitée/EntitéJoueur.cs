@@ -25,7 +25,7 @@ namespace AtelierXNA
         Vector3 Destination { get; set; }
         Plane PlanReprésentantCarte { get; set; }
         InputManager GestionInputs { get; set; }
-        Caméra CaméraJeu { get; set; }
+        CaméraTypéMoba CaméraJeu { get; set; }
         Murs Murs { get; set; }
         public bool EnMouvement { get; set; }
 
@@ -42,7 +42,7 @@ namespace AtelierXNA
         public override void Initialize()
         {
             GestionInputs = Game.Services.GetService(typeof(InputManager)) as InputManager;
-            CaméraJeu = Game.Services.GetService(typeof(Caméra)) as Caméra;
+            CaméraJeu = Game.Services.GetService(typeof(Caméra)) as CaméraTypéMoba;
             DoCalculerMonde = false;
             Destination = Position;
             PlanReprésentantCarte = new Plane(0, 1, 0, 0);
@@ -100,7 +100,8 @@ namespace AtelierXNA
                 Position = Destination;
                 CalculerMonde();
             }
-            
+
+            CaméraJeu.DonnerPositionJoueur(Position);
         }
 
 

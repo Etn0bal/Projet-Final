@@ -180,7 +180,6 @@ namespace AtelierXNA
             //    }
             //}
 
-            CaméraJeu.DonnerPositionJoueur(Joueur.Position);
 
             base.Update(gameTime);
         }

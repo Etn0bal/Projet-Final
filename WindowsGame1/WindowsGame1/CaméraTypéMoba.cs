@@ -70,10 +70,6 @@ namespace AtelierXNA
             TempsÉcouléDepuisMAJ += TempsÉcoulé;
             if (TempsÉcouléDepuisMAJ >= IntervalleMAJ)
             {
-                
-                    GérerDéplacement();
-                    CréerPointDeVue();
-                
                 TempsÉcouléDepuisMAJ = 0;
             }
             base.Update(gameTime);
@@ -92,6 +88,8 @@ namespace AtelierXNA
         public void DonnerPositionJoueur(Vector3 positionJoueur)
         {
             PositionJoueur = positionJoueur;
+            GérerDéplacement();
+            CréerPointDeVue();
         }
     }
 }
