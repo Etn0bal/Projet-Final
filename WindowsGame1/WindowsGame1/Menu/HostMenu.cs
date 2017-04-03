@@ -84,11 +84,11 @@ namespace AtelierXNA
                     EnleverTxt();
                     ((Game1)Game).ChangerDÉtat(0);
                 }
-            }  
-            if(positionCreateServerButton.Contains(positionSouris))
+            }
+            if (positionCreateServerButton.Contains(positionSouris))
             {
-                
-                if(GestionnaireInputs.EstNouveauClicGauche())
+
+                if (GestionnaireInputs.EstNouveauClicGauche())
                 {
                     string sHostName = Dns.GetHostName();
                     IPHostEntry ipE = Dns.GetHostEntry(sHostName);
@@ -97,7 +97,7 @@ namespace AtelierXNA
                     Rectangle PositionTxt = new Rectangle((2 * (Game.Window.ClientBounds.Width / 10)), 5 * Game.Window.ClientBounds.Height / 10, 3 * (Game.Window.ClientBounds.Width / 10), (Game.Window.ClientBounds.Height / 10));
                     TexteHostMenu IpAAfficher = new TexteHostMenu(Game, IP, "Arial", PositionTxt, new Vector2(3 * Game.Window.ClientBounds.Width / 10, Game.Window.ClientBounds.Height / 2), Color.White, 0);
                     Rectangle positionTxt = new Rectangle((2 * (Game.Window.ClientBounds.Width / 10)), 7 * Game.Window.ClientBounds.Height / 10, 4 * (Game.Window.ClientBounds.Width / 10), (Game.Window.ClientBounds.Height / 10));
-                    TexteHostMenu txt = new TexteHostMenu(Game, "Nombre de client connecté : 1 / 2", "Arial", positionTxt, new Vector2(4 * Game.Window.ClientBounds.Width / 10,7* Game.Window.ClientBounds.Height / 10), Color.White, 0);
+                    TexteHostMenu txt = new TexteHostMenu(Game, "Nombre de client connecté : 1 / 2", "Arial", positionTxt, new Vector2(4 * Game.Window.ClientBounds.Width / 10, 7 * Game.Window.ClientBounds.Height / 10), Color.White, 0);
                     Game.Components.Add(IpAAfficher);
                     Game.Components.Add(txt);
 
@@ -109,38 +109,40 @@ namespace AtelierXNA
 
 
                 }
-            }   
-            if(positionStartGameButton.Contains(positionSouris))
+            }
+            if (positionStartGameButton.Contains(positionSouris))
             {
-                if(GestionnaireInputs.EstNouveauClicGauche())
+                if (GestionnaireInputs.EstNouveauClicGauche())
                 {
                     Client = new ServeurClient(Game, IP);
                     Game.Services.AddService(typeof(ServeurClient), Client);
                     if (/*AutreClientConnecté &&*/ ((Game1)Game).EnJeu == false)
                     {
 
-                    //        ((Game1)Game).NumClient = 0;
-                    //        Client.StartGame();
-                    //        ((Game1)Game).EnJeu = true;
+                        //        ((Game1)Game).NumClient = 0;
+                        //        Client.StartGame();
+                        //        ((Game1)Game).EnJeu = true;
 
-                    //}
-                    ((Game1)Game).ChangerDÉtat(3);
-            }
-            }
-            if(ServeurDeJeu !=null)
-            {
-                if (ServeurDeJeu.connectedClients == 2)
-                {
-                    AutreClientConnecté = true;
-                    GérerHostTxt();
+                        //}
+                        ((Game1)Game).ChangerDÉtat(3);
+
+                    }
+                    if (ServeurDeJeu != null)
+                    {
+                        if (ServeurDeJeu.connectedClients == 2)
+                        {
+                            AutreClientConnecté = true;
+                            GérerHostTxt();
+                        }
+                    }
+                    if (((Game1)Game).EnJeu)
+                    {
+                        ((Game1)Game).ChangerDÉtat(3);
+                    }
+
+
                 }
             }
-            if(((Game1)Game).EnJeu)
-            {
-                ((Game1)Game).ChangerDÉtat(3);
-            }
-
-
         }
 
         private void GérerHostTxt()
