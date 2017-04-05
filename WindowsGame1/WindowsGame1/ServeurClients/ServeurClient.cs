@@ -3,6 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.GamerServices;
 using Microsoft.Xna.Framework.Graphics;
@@ -134,7 +139,7 @@ namespace AtelierXNA
                     float py = reader.ReadSingle();
                     float pz = reader.ReadSingle();
                     Vector3 positionPéon = new Vector3(px, py, pz);
-                    foreach(TheGame game in Game.Components.Where(x => x is TheGame))
+                    foreach (TheGame game in Game.Components.Where(x => x is TheGame))
                     {
                         game.GérerDéplacementPéon(positionPéon, NumPéon);
                     }

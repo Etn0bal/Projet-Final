@@ -33,7 +33,7 @@ namespace AtelierXNA
 
 
         public EntitéJoueur(Game jeu, string nomModèle, float échelleInitiale, Vector3 rotationInitiale, Vector3 positionInitiale,
-                           float intervalleMAJ, int pointDeVie, int portée, int force, int armure,Vector3 direction)
+                           float intervalleMAJ, int pointDeVie, int portée, int force, int armure, Vector3 direction)
             : base(jeu, nomModèle, échelleInitiale, rotationInitiale, positionInitiale, intervalleMAJ, pointDeVie, portée, force, armure)
         {
             Direction = direction;
@@ -48,7 +48,7 @@ namespace AtelierXNA
             PlanReprésentantCarte = new Plane(0, 1, 0, 0);
             EnMouvement = false;
             RayonCollision = 3;
-            Murs = Game.Services.GetService(typeof(Murs)) as Murs; 
+            Murs = Game.Services.GetService(typeof(Murs)) as Murs;
 
             base.Initialize();
         }
@@ -82,13 +82,14 @@ namespace AtelierXNA
                     GérerRotation();
                     EnMouvement = true;
                 }
-            }           
-            if ((Destination - Position).Length() > FACTEUR_VITESSE*DirectionDéplacement.Length())
+            }
+            if ((Destination - Position).Length() > FACTEUR_VITESSE * DirectionDéplacement.Length())
             {
                 NouvellePosition = Position + FACTEUR_VITESSE * DirectionDéplacement;
 
                 if (Murs.EnCollision(this))
-                { Destination = Position;
+                {
+                    Destination = Position;
                 }
                 else
                 {
@@ -96,7 +97,7 @@ namespace AtelierXNA
                     DoCalculerMonde = true;
                 }
             }
-            if(GestionInputs.EstNouvelleTouche(Keys.Q))
+            if (GestionInputs.EstNouvelleTouche(Keys.Q))
             {
                 GetDestination();
                 Position = Destination;
