@@ -15,12 +15,15 @@ namespace AtelierXNA.Projectile
     /// <summary>
     /// This is a game component that implements IUpdateable.
     /// </summary>
-    public class GameComponent1 : Microsoft.Xna.Framework.GameComponent
+    public class ProjectileAttaqueDeBase : Projectile
     {
-        public GameComponent1(Game game)
-            : base(game)
+        Entité Cible { get; set; }
+
+        public ProjectileAttaqueDeBase(Game game, string nomModèle, float échelleInitiale, Vector3 rotationInitiale, Vector3 positionInitiale,
+                                       int force, int précision, Entité cible, float intervalleMAJ)
+            : base(game, nomModèle, échelleInitiale, rotationInitiale, positionInitiale, force, précision, intervalleMAJ)
         {
-            // TODO: Construct any child components here
+            Cible = cible;
         }
 
         /// <summary>
@@ -40,7 +43,16 @@ namespace AtelierXNA.Projectile
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         public override void Update(GameTime gameTime)
         {
-            // TODO: Add your update code here
+            DoCalculerMonde = false;
+
+            float tempsÉcoulé = (float)gameTime.ElapsedGameTime.TotalSeconds;
+            TempsÉcouléDepuisMAJ += tempsÉcoulé;
+            if (TempsÉcouléDepuisMAJ >= IntervalleMAJ)
+            {
+                if (DoCalculerMonde) { CalculerMonde(); }
+
+                TempsÉcouléDepuisMAJ = 0;
+            }
 
             base.Update(gameTime);
         }

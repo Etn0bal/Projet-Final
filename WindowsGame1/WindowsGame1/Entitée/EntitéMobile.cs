@@ -18,8 +18,8 @@ namespace AtelierXNA
     public abstract class EntitéMobile : Entité
     {
         public EntitéMobile(Game jeu, string nomModèle, float échelleInitiale, Vector3 rotationInitiale, Vector3 positionInitiale,
-                           float intervalleMAJ, int pointDeVie, int portée, int force, int armure)
-            : base(jeu, nomModèle, échelleInitiale, rotationInitiale, positionInitiale, intervalleMAJ, pointDeVie, portée, force, armure)
+                           float intervalleMAJ, int pointDeVie, int portée, int force, int armure, int précision)
+            : base(jeu, nomModèle, échelleInitiale, rotationInitiale, positionInitiale, intervalleMAJ, pointDeVie, portée, force, armure, précision)
         {
             // TODO: Construct any child components here
         }

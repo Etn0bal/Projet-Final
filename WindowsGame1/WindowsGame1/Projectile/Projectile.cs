@@ -1,4 +1,4 @@
-ï»¿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Xna.Framework;
@@ -10,20 +10,23 @@ using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 
 
-namespace AtelierXNA
+namespace AtelierXNA.Projectile
 {
     /// <summary>
     /// This is a game component that implements IUpdateable.
     /// </summary>
-    public class EntitÃ©Tour : EntitÃ©Immobile, IControlÃ©e, ICollisionable, IDestructible
+    public abstract class Projectile : ObjetDeDémo
     {
-        public bool Ã€DÃ©truire { get; set; }
-        public BoundingSphere SphÃ¨reDeCollision { get; private set; }
-        public EntitÃ©Tour(Game jeu, string nomModÃ¨le, float Ã©chelleInitiale, Vector3 rotationInitiale, Vector3 positionInitiale,
-                           float intervalleMAJ, int pointDeVie, int portÃ©e, int force, int armure, int prÃ©cision)
-            : base(jeu, nomModÃ¨le, Ã©chelleInitiale, rotationInitiale, positionInitiale, intervalleMAJ, pointDeVie, portÃ©e, force, armure, prÃ©cision)
+        int Force { get; set; }
+        int Précision { get; set; }
+        int Dégat { get; set; }
+        Random GénérateurAléatoire { get; set; }
+
+        public Projectile(Game game, string nomModèle, float échelleInitiale, Vector3 rotationInitiale, Vector3 positionInitiale,
+                          int force, int Précision, float intervalleMAJ)
+            : base(game, nomModèle, échelleInitiale, rotationInitiale, positionInitiale, intervalleMAJ)
         {
-            // TODO: Construct any child components here
+            Force = force;
         }
 
         /// <summary>
@@ -32,9 +35,16 @@ namespace AtelierXNA
         /// </summary>
         public override void Initialize()
         {
-            // TODO: Add your initialization code here
+            GénérateurAléatoire = Game.Services.GetService(typeof(Random)) as Random;
+            GénérerDégat();
 
             base.Initialize();
+        }
+
+        protected void GénérerDégat()
+        {
+            int imprécision = 100 - Précision;
+            Dégat = GénérateurAléatoire.Next(Force - Force*(imprécision/100), Force + Force*(Précision/100));
         }
 
         /// <summary>
@@ -46,16 +56,6 @@ namespace AtelierXNA
             // TODO: Add your update code here
 
             base.Update(gameTime);
-        }
-
-        public void ControlerLEntitÃ©e()
-        {
-
-        }
-
-        public bool EstEnCollision(object autreObjet)
-        {
-            return false;
         }
     }
 }

@@ -44,6 +44,7 @@ namespace AtelierXNA
             Services.AddService(typeof(InputManager), GestionInput);
             Services.AddService(typeof(RessourcesManager<Model>), new RessourcesManager<Model>(this, "Models"));
             Services.AddService(typeof(RessourcesManager<SpriteFont>), new RessourcesManager<SpriteFont>(this, "Fonts"));
+            Services.AddService(typeof(Random), new Random());
 
             State = States.MainMenu;
             JoinMenu joinMenu = new JoinMenu(this);

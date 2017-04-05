@@ -15,23 +15,37 @@ namespace AtelierXNA
 
     public class Entité : ObjetDeDémo
     {
+        const int PRÉCISION_MAX = 100;
+        const int PRÉCISION_MIN = 0;
+
         public int PointDeVie { get; set; }
         public int Portée { get; set; }
         protected int Force { get; set; }
         protected int Armure { get; set; }
+        int Précision { get; set; }
+        //{
+        //    get { return Précision; }
+        //    set
+        //    {
+        //        if (value > PRÉCISION_MAX) { Précision = PRÉCISION_MAX; }
+        //        else if (value < PRÉCISION_MIN) { Précision = PRÉCISION_MIN; }
+        //        else { Précision = value; }
+        //    }
+        //}
         protected bool EstAttaqué { get; set; }
         public float RayonCollision { get; protected set; }
         public Vector3 NouvellePosition { get; protected set; }
 
 
         public Entité(Game jeu, string nomModèle, float échelleInitiale, Vector3 rotationInitiale, Vector3 positionInitiale,
-                           float intervalleMAJ, int pointDeVie, int portée, int force, int armure)
+                           float intervalleMAJ, int pointDeVie, int portée, int force, int armure, int précision)
             : base(jeu, nomModèle, échelleInitiale, rotationInitiale, positionInitiale, intervalleMAJ)
         {
             PointDeVie = pointDeVie;
             Portée = portée;
             Force = force;
             Armure = armure;
+            Précision = précision;
         }
 
         public override void Initialize()
