@@ -32,7 +32,7 @@ namespace AtelierXNA
         Vector3 positionInitialeHost = new Vector3(-90, 0, 90);
         Vector3 positionInitialeInvite = new Vector3(270, 0, 90);
         Vector3 rotationObjetInitialeHost = new Vector3(0, MathHelper.PiOver2, 0);
-        Vector3 rotationObjetInitialeInvite = new Vector3(0,3* MathHelper.PiOver2, 0);
+        Vector3 rotationObjetInitialeInvite = new Vector3(0, 3 * MathHelper.PiOver2, 0);
 
 
         RessourcesManager<Texture2D> GestionnaireDeTexture { get; set; }
@@ -56,7 +56,7 @@ namespace AtelierXNA
 
 
 
-        public TheGame(Game game,int numClient)
+        public TheGame(Game game, int numClient)
             : base(game)
         {
             NumClient = numClient;
@@ -185,14 +185,14 @@ namespace AtelierXNA
         }
         public override void Draw(GameTime gameTime)
         {
-            
+
             base.Draw(gameTime);
         }
         public void GérerDéplacementPéon(Vector3 positionPéon, int numPéon)
         {
             foreach (EntitéPéonEnnemie péon in Game.Components.Where(x => x is EntitéPéonEnnemie))
             {
-                if(péon.NumPéon == numPéon)
+                if (péon.NumPéon == numPéon)
                 {
                     péon.GérerDéplacement(positionPéon);
                 }

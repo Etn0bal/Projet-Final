@@ -52,10 +52,8 @@ namespace AtelierXNA
 
         public override void Update(GameTime gameTime)
         {
-            if(EnMouvement)
-            {
-                GestionDéplacement();
-            }
+
+            GestionDéplacement();
 
             if (DoCalculerMonde)
             {
@@ -71,8 +69,8 @@ namespace AtelierXNA
             {
                 Position += FACTEUR_VITESSE * DirectionDéplacement;
                 DoCalculerMonde = true;
-                EnMouvement = false;  
             }
+
         }
         public override void Draw(GameTime gameTime)
         {
@@ -80,7 +78,6 @@ namespace AtelierXNA
         }
         public void DéplacerEnnemie(Vector3 destination)
         {
-            EnMouvement = true;
             Destination = destination;
             DirectionDéplacement = Vector3.Normalize(Destination - Position);
             GérerRotation();
