@@ -223,6 +223,7 @@ namespace AtelierXNA
             writeStream.Position = 0;
             writer.Write((Byte)Protocoles.StartGame);
             writer.Write(true);
+            SendData(GetDataFromMemoryStream(writeStream));
         }
     }
 }

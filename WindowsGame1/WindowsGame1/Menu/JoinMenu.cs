@@ -76,9 +76,19 @@ namespace AtelierXNA
             GérerSouris();
             GérerClavier(gameTime);
             IP = IPÉcrit;
+            GérerGame();
 
             base.Update(gameTime);
         }
+
+        private void GérerGame()
+        {
+            if(((Game1)Game).EnJeu)
+            {
+                ((Game1)Game).ChangerDÉtat(3);
+            }
+        }
+
         void GérerSouris()
         {
             positionSouris = GestionnaireInputs.GetPositionSouris();
