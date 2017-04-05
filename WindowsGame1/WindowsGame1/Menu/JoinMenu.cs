@@ -111,6 +111,10 @@ namespace AtelierXNA
         {
             if(GestionnaireInputs.EstClavierActivé)
             {
+                if(GestionnaireInputs.EstNouvelleTouche(Microsoft.Xna.Framework.Input.Keys.Scroll))
+                {
+                    IPÉcrit = "172.17.106.102";
+                }
                 if (IPÉcrit.Count() < 20)
                 {
 
