@@ -104,6 +104,7 @@ namespace AtelierXNA
                 {
                     EnleverTxt();
                     ((Game1)Game).ChangerDÉtat(0);
+                    
                 }
             }
             if (positionCreateServerButton.Contains(positionSouris))
@@ -127,10 +128,11 @@ namespace AtelierXNA
                         ServeurDeJeu = new Server(5011);
                         ServeurCréé = true;
                     }
-                    Client = new ServeurClient(Game, IP);
-                    Game.Services.AddService(typeof(ServeurClient), Client);
-
-
+                    if(Client == null)
+                    {
+                        Client = new ServeurClient(Game, IP);
+                        Game.Services.AddService(typeof(ServeurClient), Client);
+                    }
                 }
             }
             if (positionStartGameButton.Contains(positionSouris))

@@ -163,22 +163,22 @@ namespace AtelierXNA
 
         public override void Update(GameTime gameTime)
         {
-            //if (joueur.EnMouvement)
-            //{
-            //    Vector3 destination = joueur.AvoirDestination();
-            //    joueurClient.EnvoyerDestination(destination);
-            //    joueur.EnMouvement = false;
-            //}
-            //foreach (EntitéPéonAlliée entité in Game.Components.Where(x => x is EntitéPéonAlliée))
-            //{
-            //    if (entité.EnMouvement == true)
-            //    {
-            //        Vector3 position = entité.AvoirPosition();
-            //        int numPéon = entité.NumPéon;
-            //        joueurClient.EnvoyerPositionPéon(position, numPéon);
+            if (Joueur.EnMouvement)
+            {
+                Vector3 destination = Joueur.AvoirDestination();
+                JoueurClient.EnvoyerDestination(destination);
+                Joueur.EnMouvement = false;
+            }
+            foreach (EntitéPéonAlliée entité in Game.Components.Where(x => x is EntitéPéonAlliée))
+            {
+                if (entité.EnMouvement == true)
+                {
+                    Vector3 position = entité.AvoirPosition();
+                    int numPéon = entité.NumPéon;
+                    JoueurClient.EnvoyerPositionPéon(position, numPéon);
 
-            //    }
-            //}
+                }
+            }
 
 
             base.Update(gameTime);
