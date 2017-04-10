@@ -36,7 +36,6 @@ namespace AtelierXNA
         string IP { get; set; }
         const int BUFFER_SIZE = 2048;
         private byte[] readbuffer;
-        Entité MinionEntité { get; set; }
 
         public ServeurClient(Game game, string iP)
             : base(game)
@@ -59,6 +58,7 @@ namespace AtelierXNA
 
             reader = new BinaryReader(readStream);
             writer = new BinaryWriter(writeStream);
+
         }
 
         /// <summary>
@@ -139,10 +139,12 @@ namespace AtelierXNA
                     float py = reader.ReadSingle();
                     float pz = reader.ReadSingle();
                     Vector3 positionPéon = new Vector3(px, py, pz);
-                    foreach (TheGame game in Game.Components.Where(x => x is TheGame))
+                    foreach(TheGame Jeu in Game.Components.Where(x => x is TheGame))
                     {
-                        game.GérerDéplacementPéon(positionPéon, NumPéon);
+                        Jeu.GérerDéplacementPéon(positionPéon, NumPéon);
                     }
+
+                    
 
                 }
 
