@@ -54,6 +54,8 @@ namespace AtelierXNA
 
         Murs Murs { get; set; }
 
+        const float INTERVALLEMAJ = 1.0f;
+        float TempsÉcouléDepuisMAJ = 0;
 
 
         public TheGame(Game game, int numClient)
@@ -118,7 +120,7 @@ namespace AtelierXNA
             }
             if (NumClient == 1)
             {
-                CaméraJeu = new CaméraTypéMoba(Game, new Vector3(270, 30, 115), new Vector3(0, -1, -1), Vector3.Up, INTERVALLE_MAJ);
+                CaméraJeu = new CaméraTypéMoba(Game, new Vector3(-90, 30, 120), new Vector3(0, -1, -1), Vector3.Up, INTERVALLE_MAJ);
                 Game.Services.AddService(typeof(Caméra), CaméraJeu);
                 Game.Components.Add(CaméraJeu);
 
@@ -163,22 +165,28 @@ namespace AtelierXNA
 
         public override void Update(GameTime gameTime)
         {
+            float tempsÉcoulé = (float)gameTime.ElapsedGameTime.TotalSeconds;
+            TempsÉcouléDepuisMAJ += tempsÉcoulé;
+            if (TempsÉcouléDepuisMAJ >=INTERVALLEMAJ)
+            {
+                foreach (EntitéPéonAlliée entité in Game.Components.Where(x => x is EntitéPéonAlliée))
+                {
+                    if (entité.EnMouvement == true)
+                    {
+                        Vector3 position = entité.AvoirPosition();
+                        int numPéon = entité.NumPéon;
+                        JoueurClient.EnvoyerPositionPéon(position, numPéon);
+
+                    }
+                }
+            }
             if (Joueur.EnMouvement)
             {
                 Vector3 destination = Joueur.AvoirDestination();
                 JoueurClient.EnvoyerDestination(destination);
                 Joueur.EnMouvement = false;
             }
-            foreach (EntitéPéonAlliée entité in Game.Components.Where(x => x is EntitéPéonAlliée))
-            {
-                if (entité.EnMouvement == true)
-                {
-                    Vector3 position = entité.AvoirPosition();
-                    int numPéon = entité.NumPéon;
-                    JoueurClient.EnvoyerPositionPéon(position, numPéon);
 
-                }
-            }
 
 
             base.Update(gameTime);
