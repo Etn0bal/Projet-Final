@@ -120,7 +120,7 @@ namespace AtelierXNA
             }
             if (NumClient == 1)
             {
-                CaméraJeu = new CaméraTypéMoba(Game, new Vector3(270, 30, 115), new Vector3(0, -1, -1), Vector3.Up, INTERVALLE_MAJ);
+                CaméraJeu = new CaméraTypéMoba(Game, new Vector3(-90, 30, 120), new Vector3(0, -1, -1), Vector3.Up, INTERVALLE_MAJ);
                 Game.Services.AddService(typeof(Caméra), CaméraJeu);
                 Game.Components.Add(CaméraJeu);
 
