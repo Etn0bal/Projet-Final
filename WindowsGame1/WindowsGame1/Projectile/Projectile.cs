@@ -18,7 +18,7 @@ namespace AtelierXNA.Projectile
     public abstract class Projectile : ObjetDeDémo
     {
         int Force { get; set; }
-        int Précision { get; set; }
+        protected int Précision { get; private set; }
         int Dégat { get; set; }
         Random GénérateurAléatoire { get; set; }
 
