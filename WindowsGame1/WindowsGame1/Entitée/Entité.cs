@@ -18,20 +18,23 @@ namespace AtelierXNA
         const int PRÉCISION_MAX = 100;
         const int PRÉCISION_MIN = 0;
 
+        int précision;
+
         public int PointDeVie { get; set; }
         public int Portée { get; set; }
         protected int Force { get; set; }
         protected int Armure { get; set; }
-        int Précision { get; set; }
-        //{
-        //    get { return Précision; }
-        //    set
-        //    {
-        //        if (value > PRÉCISION_MAX) { Précision = PRÉCISION_MAX; }
-        //        else if (value < PRÉCISION_MIN) { Précision = PRÉCISION_MIN; }
-        //        else { Précision = value; }
-        //    }
-        //}
+        protected int Précision
+        {
+            get { return précision; }
+            private set
+            {
+                if (value > PRÉCISION_MAX) { précision = value; }
+                else if(value < PRÉCISION_MIN) { précision = value; }
+                else { précision = value; }
+                
+            }
+        }
         protected bool EstAttaqué { get; set; }
         public float RayonCollision { get; protected set; }
         public Vector3 NouvellePosition { get; protected set; }
