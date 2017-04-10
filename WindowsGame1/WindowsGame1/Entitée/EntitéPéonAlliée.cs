@@ -56,7 +56,6 @@ namespace AtelierXNA
             {
                 EnMouvement = !EnMouvement;
             }
-
             base.Update(gameTime);
         }
 
