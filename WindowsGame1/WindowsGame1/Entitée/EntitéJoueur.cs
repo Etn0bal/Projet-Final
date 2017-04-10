@@ -18,6 +18,7 @@ namespace AtelierXNA
     public class EntitéJoueur : EntitéMobile, IControlable, ICollisionable
     {
         const float FACTEUR_VITESSE = 0.05f;
+        const float ÉCHELLE_PROJECTILE_ATTAQUE_DE_BASE = 0.009f;
 
         public BoundingSphere SphèreDeCollision { get; private set; }
         Entité Cible { get; set; }
@@ -80,8 +81,11 @@ namespace AtelierXNA
                 if (GestionInputs.EstNouveauClicDroit()) //// Regarder S'il n'y a pas d'autre entitée
                 {
                     GetDestination();
-
-                    Cible = Game.Components.OfType<Entité>().First(x => (x.Position - Destination).Length() <= x.RayonCollision);
+                    try
+                    {
+                        Cible = Game.Components.OfType<Entité>().First(x => (x.Position - Destination).Length() <= x.RayonCollision);
+                    }
+                    catch { }
 
                     if (Cible == null)
                     {
@@ -92,7 +96,7 @@ namespace AtelierXNA
                     }
                     else
                     {
-                        Game.Components.Add(new ProjectileAttaqueDeBase(Game, "Robot2", 1, Vector3.Zero, Position, Force, Précision, Cible, IntervalleMAJ));
+                        Game.Components.Add(new ProjectileAttaqueDeBase(Game, "Robot2", ÉCHELLE_PROJECTILE_ATTAQUE_DE_BASE, Vector3.Zero, Position, Force, Précision, Cible, IntervalleMAJ));
                     }
                 }
             }

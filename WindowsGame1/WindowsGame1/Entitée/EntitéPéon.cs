@@ -33,6 +33,7 @@ namespace AtelierXNA
         public override void Initialize()
         {
             Cible = null;
+            RayonCollision = 1;
             EnRechercheDEnnemi = true;
 
             base.Initialize();

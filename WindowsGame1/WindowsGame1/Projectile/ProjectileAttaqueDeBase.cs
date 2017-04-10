@@ -35,7 +35,7 @@ namespace AtelierXNA
         /// </summary>
         public override void Initialize()
         {
-            // TODO: Add your initialization code here
+            ÀDétruire = false;
 
             base.Initialize();
         }
@@ -63,16 +63,17 @@ namespace AtelierXNA
 
         void GestionDéplacement()
         {
-            if (!ÀDétruire)
+            if (!(ÀDétruire))
             {
                 Direction = Vector3.Normalize(Cible.Position - Position);
 
-                if (Direction.X >= 0 || Direction.X <= 0) { ÀDétruire = true; }
-                else
+                if (Direction.X >= 0 || Direction.X <= 0) 
                 {
                     Position += Direction * FACTEUR_VITESSE;
                     DoCalculerMonde = true;
                 }
+                else { ÀDétruire = true;  }
+               
             }
         }
 

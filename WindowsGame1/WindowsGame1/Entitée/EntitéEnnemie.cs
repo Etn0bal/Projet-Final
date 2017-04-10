@@ -44,6 +44,7 @@ namespace AtelierXNA
         {
             GestionInputs = Game.Services.GetService(typeof(InputManager)) as InputManager;
             CaméraJeu = Game.Services.GetService(typeof(Caméra)) as Caméra;
+            RayonCollision = 3;
             DoCalculerMonde = false;
             EnMouvement = false;
 

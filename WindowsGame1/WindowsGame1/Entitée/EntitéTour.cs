@@ -32,7 +32,7 @@ namespace AtelierXNA
         /// </summary>
         public override void Initialize()
         {
-            // TODO: Add your initialization code here
+            RayonCollision = 4;
 
             base.Initialize();
         }
