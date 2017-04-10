@@ -10,14 +10,17 @@ using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 
 
-namespace AtelierXNA.Projectile
+namespace AtelierXNA
 {
     /// <summary>
     /// This is a game component that implements IUpdateable.
     /// </summary>
-    public class ProjectileAttaqueDeBase : Projectile
+    public class ProjectileAttaqueDeBase : Projectile, IDestructible
     {
+        const float FACTEUR_VITESSE = 0.5f;
+
         Entité Cible { get; set; }
+        public bool ÀDétruire { get; set; }
 
         public ProjectileAttaqueDeBase(Game game, string nomModèle, float échelleInitiale, Vector3 rotationInitiale, Vector3 positionInitiale,
                                        int force, int précision, Entité cible, float intervalleMAJ)
@@ -49,12 +52,37 @@ namespace AtelierXNA.Projectile
             TempsÉcouléDepuisMAJ += tempsÉcoulé;
             if (TempsÉcouléDepuisMAJ >= IntervalleMAJ)
             {
-                if (DoCalculerMonde) { CalculerMonde(); }
-
+                CibleAtteinte();
+                GestionDéplacement();
+                if (DoCalculerMonde) { CalculerMonde(); DoCalculerMonde = false; }
                 TempsÉcouléDepuisMAJ = 0;
             }
 
             base.Update(gameTime);
+        }
+
+        void GestionDéplacement()
+        {
+            if (!ÀDétruire)
+            {
+                Direction = Vector3.Normalize(Cible.Position - Position);
+
+                if (Direction.X >= 0 || Direction.X <= 0) { ÀDétruire = true; }
+                else
+                {
+                    Position += Direction * FACTEUR_VITESSE;
+                    DoCalculerMonde = true;
+                }
+            }
+        }
+
+        void CibleAtteinte()
+        {
+            if((Cible.Position - Position).Length() <= Cible.RayonCollision)
+            {
+                ÀDétruire = true;
+                Cible.RecevoirAttaque(Dégat);
+            }
         }
     }
 }
