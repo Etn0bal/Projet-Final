@@ -54,6 +54,8 @@ namespace AtelierXNA
 
         Murs Murs { get; set; }
 
+        const float INTERVALLEMAJ = 1.0f;
+        float TempsÉcouléDepuisMAJ = 0;
 
 
         public TheGame(Game game, int numClient)
@@ -163,22 +165,28 @@ namespace AtelierXNA
 
         public override void Update(GameTime gameTime)
         {
+            float tempsÉcoulé = (float)gameTime.ElapsedGameTime.TotalSeconds;
+            TempsÉcouléDepuisMAJ += tempsÉcoulé;
+            if (TempsÉcouléDepuisMAJ >=INTERVALLEMAJ)
+            {
+                foreach (EntitéPéonAlliée entité in Game.Components.Where(x => x is EntitéPéonAlliée))
+                {
+                    if (entité.EnMouvement == true)
+                    {
+                        Vector3 position = entité.AvoirPosition();
+                        int numPéon = entité.NumPéon;
+                        JoueurClient.EnvoyerPositionPéon(position, numPéon);
+
+                    }
+                }
+            }
             if (Joueur.EnMouvement)
             {
                 Vector3 destination = Joueur.AvoirDestination();
                 JoueurClient.EnvoyerDestination(destination);
                 Joueur.EnMouvement = false;
             }
-            foreach (EntitéPéonAlliée entité in Game.Components.Where(x => x is EntitéPéonAlliée))
-            {
-                if (entité.EnMouvement == true)
-                {
-                    Vector3 position = entité.AvoirPosition();
-                    int numPéon = entité.NumPéon;
-                    JoueurClient.EnvoyerPositionPéon(position, numPéon);
 
-                }
-            }
 
 
             base.Update(gameTime);
