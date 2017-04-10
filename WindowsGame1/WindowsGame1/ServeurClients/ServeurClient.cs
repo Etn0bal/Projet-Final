@@ -36,7 +36,6 @@ namespace AtelierXNA
         string IP { get; set; }
         const int BUFFER_SIZE = 2048;
         private byte[] readbuffer;
-        Entité MinionEntité { get; set; }
 
         public ServeurClient(Game game, string iP)
             : base(game)
@@ -59,6 +58,7 @@ namespace AtelierXNA
 
             reader = new BinaryReader(readStream);
             writer = new BinaryWriter(writeStream);
+
         }
 
         /// <summary>
@@ -134,16 +134,18 @@ namespace AtelierXNA
 
                 else if (p == Protocoles.MinionMovement)
                 {
-                    int NumPéon = reader.ReadInt16();
-                    float px = reader.ReadSingle();
-                    float py = reader.ReadSingle();
-                    float pz = reader.ReadSingle();
-                    Vector3 positionPéon = new Vector3(px, py, pz);
-                    foreach (TheGame game in Game.Components.Where(x => x is TheGame))
+                    int numPéon = reader.ReadInt32();
+                    foreach (EntitéPéonEnnemie péon in Game.Components.Where(x => x is EntitéPéonEnnemie))
                     {
-                        game.GérerDéplacementPéon(positionPéon, NumPéon);
+                        if(péon.NumPéon == numPéon)
+                        {
+                            float px = reader.ReadSingle();
+                            float py = reader.ReadSingle();
+                            float pz = reader.ReadSingle();
+                            Vector3 positionEnnemie = new Vector3(px, py, pz);
+                            péon.GérerDéplacement(positionEnnemie);
+                        }                    
                     }
-
                 }
 
                 else if (p == Protocoles.StartGame)
@@ -221,6 +223,7 @@ namespace AtelierXNA
             writer.Write(position.X);
             writer.Write(position.Y);
             writer.Write(position.Z);
+
             SendData(GetDataFromMemoryStream(writeStream));
         }
         public void StartGame()

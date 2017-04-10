@@ -227,6 +227,7 @@ namespace AtelierXNA
             NettoyerListeComponents();
             TheGame game = new TheGame(this,NumClient);
             Components.Add(game);
+            Services.AddService(typeof(TheGame),game);
         }
         private void InitialiserAttentePartie()
         {
