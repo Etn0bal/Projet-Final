@@ -20,6 +20,7 @@ namespace AtelierXNA
         const float FACTEUR_VITESSE = 0.05f;
 
         public BoundingSphere SphèreDeCollision { get; private set; }
+        Entité Cible { get; set; }
         Vector3 DirectionDéplacement { get; set; }
         Vector3 Direction { get; set; }
         Vector3 Destination { get; set; }
@@ -79,11 +80,23 @@ namespace AtelierXNA
                 if (GestionInputs.EstNouveauClicDroit()) //// Regarder S'il n'y a pas d'autre entitée
                 {
                     GetDestination();
-                    DirectionDéplacement = Vector3.Normalize(Destination - Position);
-                    GérerRotation();
-                    EnMouvement = true;
+
+                    Cible = Game.Components.OfType<Entité>().First(x => (x.Position - Destination).Length() <= x.RayonCollision);
+
+                    if (Cible == null)
+                    {
+                        DirectionDéplacement = Vector3.Normalize(Destination - Position);
+                        GérerRotation();
+                        EnMouvement = true;
+
+                    }
+                    else
+                    {
+                        Game.Components.Add(new ProjectileAttaqueDeBase(Game, "Robot2", 1, Vector3.Zero, Position, Force, Précision, Cible, IntervalleMAJ));
+                    }
                 }
             }
+
             if ((Destination - Position).Length() > FACTEUR_VITESSE * DirectionDéplacement.Length())
             {
                 NouvellePosition = Position + FACTEUR_VITESSE * DirectionDéplacement;
@@ -98,6 +111,7 @@ namespace AtelierXNA
                     DoCalculerMonde = true;
                 }
             }
+
             if (GestionInputs.EstNouvelleTouche(Keys.Q))
             {
                 GetDestination();

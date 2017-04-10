@@ -10,7 +10,7 @@ using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 
 
-namespace AtelierXNA.Projectile
+namespace AtelierXNA
 {
     /// <summary>
     /// This is a game component that implements IUpdateable.
@@ -19,8 +19,10 @@ namespace AtelierXNA.Projectile
     {
         int Force { get; set; }
         protected int Précision { get; private set; }
-        int Dégat { get; set; }
+        protected int Dégat { get; set; }
+        protected Vector3 Direction { get; set; }
         Random GénérateurAléatoire { get; set; }
+
 
         public Projectile(Game game, string nomModèle, float échelleInitiale, Vector3 rotationInitiale, Vector3 positionInitiale,
                           int force, int Précision, float intervalleMAJ)

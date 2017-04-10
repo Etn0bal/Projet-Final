@@ -17,6 +17,7 @@ namespace AtelierXNA
     {
         const int PRÉCISION_MAX = 100;
         const int PRÉCISION_MIN = 0;
+        const int DOMMAGE_MIN = 0;
 
         int précision;
 
@@ -67,7 +68,7 @@ namespace AtelierXNA
         }
         public void RecevoirAttaque(int dégats)
         {
-            PointDeVie =- (dégats - Armure);
+            PointDeVie =- Math.Max((dégats - Armure),DOMMAGE_MIN);
         }
 
     }
