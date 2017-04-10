@@ -169,22 +169,21 @@ namespace AtelierXNA
             TempsÉcouléDepuisMAJ += tempsÉcoulé;
             if (TempsÉcouléDepuisMAJ >=INTERVALLEMAJ)
             {
-                foreach (EntitéPéonAlliée entité in Game.Components.Where(x => x is EntitéPéonAlliée))
-                {
-                    if (entité.EnMouvement == true)
-                    {
-                        Vector3 position = entité.AvoirPosition();
-                        int numPéon = entité.NumPéon;
-                        JoueurClient.EnvoyerPositionPéon(position, numPéon);
-
-                    }
-                }
             }
             if (Joueur.EnMouvement)
             {
                 Vector3 destination = Joueur.AvoirDestination();
                 JoueurClient.EnvoyerDestination(destination);
                 Joueur.EnMouvement = false;
+            }
+            foreach(EntitéPéonAlliée péon in Game.Components.Where(x=> x is EntitéPéonAlliée))
+            {
+                if(péon.EnMouvement)
+                {
+                    Vector3 laPosition = péon.Position;
+                    int numPéon = péon.NumPéon;
+                    JoueurClient.EnvoyerPositionPéon(laPosition, numPéon);
+                }
             }
 
 
@@ -195,17 +194,6 @@ namespace AtelierXNA
         {
 
             base.Draw(gameTime);
-        }
-        public void GérerDéplacementPéon(Vector3 positionPéon, int numPéon)
-        {
-            foreach (EntitéPéonEnnemie péon in Game.Components.Where(x => x is EntitéPéonEnnemie))
-            {
-                if (péon.NumPéon == numPéon)
-                {
-                    péon.GérerDéplacement(positionPéon);
-                }
-
-            }
         }
     }
 }

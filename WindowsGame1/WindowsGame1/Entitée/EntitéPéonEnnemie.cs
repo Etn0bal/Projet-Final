@@ -17,7 +17,6 @@ namespace AtelierXNA
         protected bool EnMouvement { get; set; }
         Vector3 Direction { get; set; }
         public int NumPéon { get; set; }
-        InputManager GestionInput { get; set; }
         Vector3 Destination { get; set; }
         Vector3 DirectionDéplacement { get; set; }
         public EntitéPéonEnnemie(Game jeu, string nomModèle, float échelleInitiale, Vector3 rotationInitiale, Vector3 positionInitiale,
@@ -35,7 +34,6 @@ namespace AtelierXNA
         /// </summary>
         public override void Initialize()
         {
-            GestionInput = Game.Services.GetService(typeof(InputManager)) as InputManager;
 
             base.Initialize();
         }
@@ -46,8 +44,10 @@ namespace AtelierXNA
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         public override void Update(GameTime gameTime)
         {
-            GestionDéplacement();
-
+            if(EnMouvement)
+            {
+                GestionDéplacement();
+            }
             if (DoCalculerMonde)
             {
                 CalculerMonde();
@@ -57,18 +57,14 @@ namespace AtelierXNA
         }
         private void GestionDéplacement()
         {
-            if ((Destination - Position).Length() > FACTEUR_VITESSE * DirectionDéplacement.Length())
-            {
-                Position += FACTEUR_VITESSE * DirectionDéplacement;
-                DoCalculerMonde = true;
-            }
-
+            Position += Direction * FACTEUR_VITESSE;
+            CalculerMonde();
+            EnMouvement = false;
         }
         public void GérerDéplacement(Vector3 position)
         {
-            Destination = position;
-            DirectionDéplacement = Vector3.Normalize(Destination - Position);
-            GérerRotation();
+            Position = position;
+            EnMouvement = true;
         }
         void GérerRotation()
         {
