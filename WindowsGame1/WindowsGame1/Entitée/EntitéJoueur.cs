@@ -18,8 +18,10 @@ namespace AtelierXNA
     public class EntitéJoueur : EntitéMobile, IControlable, ICollisionable
     {
         const float FACTEUR_VITESSE = 0.05f;
+        const float ÉCHELLE_PROJECTILE_ATTAQUE_DE_BASE = 0.009f;
 
         public BoundingSphere SphèreDeCollision { get; private set; }
+        Entité Cible { get; set; }
         Vector3 DirectionDéplacement { get; set; }
         Vector3 Direction { get; set; }
         Vector3 Destination { get; set; }
@@ -33,8 +35,8 @@ namespace AtelierXNA
 
 
         public EntitéJoueur(Game jeu, string nomModèle, float échelleInitiale, Vector3 rotationInitiale, Vector3 positionInitiale,
-                           float intervalleMAJ, int pointDeVie, int portée, int force, int armure,Vector3 direction)
-            : base(jeu, nomModèle, échelleInitiale, rotationInitiale, positionInitiale, intervalleMAJ, pointDeVie, portée, force, armure)
+                           float intervalleMAJ, int pointDeVie, int portée, int force, int armure, int précision, Vector3 direction)
+            : base(jeu, nomModèle, échelleInitiale, rotationInitiale, positionInitiale, intervalleMAJ, pointDeVie, portée, force, armure, précision)
         {
             Direction = direction;
         }
@@ -55,6 +57,7 @@ namespace AtelierXNA
 
         public override void Update(GameTime gameTime)
         {
+
             GestionDéplacement();
 
             if (DoCalculerMonde)
@@ -78,12 +81,27 @@ namespace AtelierXNA
                 if (GestionInputs.EstNouveauClicDroit()) //// Regarder S'il n'y a pas d'autre entitée
                 {
                     GetDestination();
+                    try
+                    {
+                        Cible = Game.Components.OfType<Entité>().First(x => (x.Position - Destination).Length() <= x.RayonCollision);
+                    }
+                    catch { }
+
+                    if (Cible == null)
+                    {
                     DirectionDéplacement = Vector3.Normalize(Destination - Position);
                     GérerRotation();
                     EnMouvement = true;
+
+                    }
+                    else
+                    {
+                        Game.Components.Add(new ProjectileAttaqueDeBase(Game, "Robot2", ÉCHELLE_PROJECTILE_ATTAQUE_DE_BASE, Vector3.Zero, Position, Force, Précision, Cible, IntervalleMAJ));
+                    }
                 }
             }           
-            if ((Destination - Position).Length() > FACTEUR_VITESSE*DirectionDéplacement.Length())
+
+            if ((Destination - Position).Length() > FACTEUR_VITESSE * DirectionDéplacement.Length())
             {
                 NouvellePosition = Position + FACTEUR_VITESSE * DirectionDéplacement;
 
@@ -106,9 +124,9 @@ namespace AtelierXNA
                 if (distanceEntreLesDeux <= Portée)
                 {
                     GérerRotation();
-                    Position = Destination;
-                    CalculerMonde();
-                }
+                Position = Destination;
+                CalculerMonde();
+            }
 
             }
 

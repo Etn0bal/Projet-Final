@@ -144,7 +144,7 @@ namespace AtelierXNA
 
         protected override void InitialiserSommets()
         {
-            for (int i = 2; i < 18 ; i++)
+            for (int i = 1; i < 18 ; i++)
             {
                 AjouterPanDeMur(10 * i, 10 * (i + 1));
                 if(i < 6)

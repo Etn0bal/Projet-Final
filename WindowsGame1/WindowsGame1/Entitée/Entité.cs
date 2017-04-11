@@ -15,23 +15,41 @@ namespace AtelierXNA
 
     public class Entité : ObjetDeDémo
     {
+        const int PRÉCISION_MAX = 100;
+        const int PRÉCISION_MIN = 0;
+        const int DOMMAGE_MIN = 0;
+
+        int précision;
+
         public int PointDeVie { get; set; }
         public int Portée { get; set; }
         protected int Force { get; set; }
         protected int Armure { get; set; }
+        protected int Précision
+        {
+            get { return précision; }
+            private set
+            {
+                if (value > PRÉCISION_MAX) { précision = value; }
+                else if(value < PRÉCISION_MIN) { précision = value; }
+                else { précision = value; }
+                
+            }
+        }
         protected bool EstAttaqué { get; set; }
         public float RayonCollision { get; protected set; }
         public Vector3 NouvellePosition { get; protected set; }
 
 
         public Entité(Game jeu, string nomModèle, float échelleInitiale, Vector3 rotationInitiale, Vector3 positionInitiale,
-                           float intervalleMAJ, int pointDeVie, int portée, int force, int armure)
+                           float intervalleMAJ, int pointDeVie, int portée, int force, int armure, int précision)
             : base(jeu, nomModèle, échelleInitiale, rotationInitiale, positionInitiale, intervalleMAJ)
         {
             PointDeVie = pointDeVie;
             Portée = portée;
             Force = force;
             Armure = armure;
+            Précision = précision;
         }
 
         public override void Initialize()
@@ -50,7 +68,7 @@ namespace AtelierXNA
         }
         public void RecevoirAttaque(int dégats)
         {
-            PointDeVie =- (dégats - Armure);
+            PointDeVie =- Math.Max((dégats - Armure),DOMMAGE_MIN);
         }
 
     }

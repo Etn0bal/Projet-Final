@@ -88,6 +88,8 @@
     <Compile Include="Entitée\EntitéImmobile.cs" />
     <Compile Include="Entitée\EntitéMobile.cs" />
     <Compile Include="Carte\CartePlan.cs" />
+    <Compile Include="Projectile\Projectile.cs" />
+    <Compile Include="Projectile\ProjectileAttaqueDeBase.cs" />
     <Compile Include="Serveur\Delegates.cs" />
     <Compile Include="Entitée\Entité.cs" />
     <Compile Include="Game\TheGame.cs" />

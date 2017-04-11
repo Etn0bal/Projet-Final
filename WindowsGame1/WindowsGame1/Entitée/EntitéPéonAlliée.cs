@@ -16,10 +16,11 @@ namespace AtelierXNA
         public bool EnMouvement { get; set; }
         Vector3 Direction { get; set; }
         public int NumPéon { get; set; }
-        
+        InputManager GestionInput { get; set; }
+
         public EntitéPéonAlliée(Game jeu, string nomModèle, float échelleInitiale, Vector3 rotationInitiale, Vector3 positionInitiale,
-                           float intervalleMAJ, int pointDeVie, int portée, int force, int armure, Vector3 direction, int numPéon)
-            : base(jeu, nomModèle, échelleInitiale, rotationInitiale, positionInitiale, intervalleMAJ, pointDeVie, portée, force, armure)
+                           float intervalleMAJ, int pointDeVie, int portée, int force, int armure, int précision,  Vector3 direction, int numPéon)
+            : base(jeu, nomModèle, échelleInitiale, rotationInitiale, positionInitiale, intervalleMAJ, pointDeVie, portée, force, armure, précision)
         {
             Direction = direction;
             NumPéon = numPéon;
@@ -31,8 +32,8 @@ namespace AtelierXNA
         /// </summary>
         public override void Initialize()
         {
-            EnMouvement = true;
-
+            EnMouvement = false;
+            GestionInput = Game.Services.GetService(typeof(InputManager)) as InputManager;
             base.Initialize();
         }
 
@@ -51,7 +52,10 @@ namespace AtelierXNA
                 AttaquerLaCible();
                 RegarderSiCibleEstMortOuHorsRange();
             }
-
+            if(GestionInput.EstNouvelleTouche(Keys.A))
+            {
+                EnMouvement = !EnMouvement;
+            }
             base.Update(gameTime);
         }
 

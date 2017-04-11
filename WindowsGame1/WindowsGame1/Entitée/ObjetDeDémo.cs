@@ -23,8 +23,8 @@ namespace AtelierXNA
         const float HOMOTH…TIE_MIN = 0.005f;
 
         InputManager GestionInput { get; set; }
-        float IntervalleMAJ { get; set; }
-        float Temps…coulÈDepuisMAJ { get; set; }
+        protected float IntervalleMAJ { get; private set; }
+        protected float Temps…coulÈDepuisMAJ { get; set; }
         float Variation…chelle { get; set; }
         Vector3 RotationInitiale;
         bool DoYaw { get; set; }

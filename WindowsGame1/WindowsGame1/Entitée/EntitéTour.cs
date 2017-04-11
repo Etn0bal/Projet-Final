@@ -20,8 +20,8 @@ namespace AtelierXNA
         public bool ÀDétruire { get; set; }
         public BoundingSphere SphèreDeCollision { get; private set; }
         public EntitéTour(Game jeu, string nomModèle, float échelleInitiale, Vector3 rotationInitiale, Vector3 positionInitiale,
-                           float intervalleMAJ, int pointDeVie, int portée, int force, int armure)
-            : base(jeu, nomModèle, échelleInitiale, rotationInitiale, positionInitiale, intervalleMAJ, pointDeVie, portée, force, armure)
+                           float intervalleMAJ, int pointDeVie, int portée, int force, int armure, int précision)
+            : base(jeu, nomModèle, échelleInitiale, rotationInitiale, positionInitiale, intervalleMAJ, pointDeVie, portée, force, armure, précision)
         {
             // TODO: Construct any child components here
         }
@@ -32,7 +32,7 @@ namespace AtelierXNA
         /// </summary>
         public override void Initialize()
         {
-            // TODO: Add your initialization code here
+            RayonCollision = 4;
 
             base.Initialize();
         }

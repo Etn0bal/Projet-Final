@@ -133,15 +133,8 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Models\minion.fbx">
-      <Name>minion</Name>
-      <Importer>FbxImporter</Importer>
-      <Processor>ModelProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Models\minion2.fbx">
-      <Name>minion2</Name>
+    <Compile Include="Models\tank.fbx">
+      <Name>tank</Name>
       <Importer>FbxImporter</Importer>
       <Processor>ModelProcessor</Processor>
     </Compile>

@@ -25,14 +25,14 @@ namespace AtelierXNA
 
 
         const float ÉCHELLE_OBJET_JOUEUR = 0.07f;
-        const float ÉCHELLE_OBJET_PÉON = 0.03f;
+        const float ÉCHELLE_OBJET_PÉON = 0.003f;
 
         int NumClient { get; set; }
 
         Vector3 positionInitialeHost = new Vector3(-90, 0, 90);
         Vector3 positionInitialeInvite = new Vector3(270, 0, 90);
         Vector3 rotationObjetInitialeHost = new Vector3(0, MathHelper.PiOver2, 0);
-        Vector3 rotationObjetInitialeInvite = new Vector3(0,3* MathHelper.PiOver2, 0);
+        Vector3 rotationObjetInitialeInvite = new Vector3(0, 3 * MathHelper.PiOver2, 0);
 
 
         RessourcesManager<Texture2D> GestionnaireDeTexture { get; set; }
@@ -54,9 +54,11 @@ namespace AtelierXNA
 
         Murs Murs { get; set; }
 
+        const float INTERVALLEMAJ = 1.0f;
+        float TempsÉcouléDepuisMAJ = 0;
 
 
-        public TheGame(Game game,int numClient)
+        public TheGame(Game game, int numClient)
             : base(game)
         {
             NumClient = numClient;
@@ -101,24 +103,24 @@ namespace AtelierXNA
                 JoueurEnnemie = new EntitéEnnemie(Game, "robot2", ÉCHELLE_OBJET_JOUEUR, rotationObjetInitialeInvite, positionInitialeInvite, INTERVALLE_MAJ, 1, 5, 1, 1,new Vector3(-1, 0, 0));
                 Game.Components.Add(JoueurEnnemie);
                 //Péons :
-                PéonA1 = new EntitéPéonAlliée(Game, "robot2", ÉCHELLE_OBJET_PÉON, rotationObjetInitialeHost, positionInitialeHost - new Vector3(0, 0, 5), INTERVALLE_MAJ, 1, 3, 1, 1, new Vector3(1, 0, 0),1);
+                PéonA1 = new EntitéPéonAlliée(Game, "tank", ÉCHELLE_OBJET_PÉON, rotationObjetInitialeHost, positionInitialeHost - new Vector3(0, -1.5f, 5), INTERVALLE_MAJ, 1, 3, 1, 1, 1, new Vector3(1, 0, 0),1);
                 Game.Components.Add(PéonA1);
-                PéonA2 = new EntitéPéonAlliée(Game, "robot2", ÉCHELLE_OBJET_PÉON, rotationObjetInitialeHost, positionInitialeHost + new Vector3(5, 0, 0), INTERVALLE_MAJ, 1, 3, 1, 1, new Vector3(1, 0, 0),2);
+                PéonA2 = new EntitéPéonAlliée(Game, "tank", ÉCHELLE_OBJET_PÉON, rotationObjetInitialeHost, positionInitialeHost + new Vector3(5, 1.5f, 0), INTERVALLE_MAJ, 1, 3, 1, 1, 1, new Vector3(1, 0, 0),2);
                 Game.Components.Add(PéonA2);
-                PéonA3 = new EntitéPéonAlliée(Game, "robot2", ÉCHELLE_OBJET_PÉON, rotationObjetInitialeHost, positionInitialeHost + new Vector3(0, 0, 5), INTERVALLE_MAJ, 1, 3, 1, 1, new Vector3(1, 0, 0),3);
+                PéonA3 = new EntitéPéonAlliée(Game, "tank", ÉCHELLE_OBJET_PÉON, rotationObjetInitialeHost, positionInitialeHost + new Vector3(0, 1.5f, 5), INTERVALLE_MAJ, 1, 3, 1, 1, 1, new Vector3(1, 0, 0),3);
                 Game.Components.Add(PéonA3);
 
                 //Péons :
-                PéonE1 = new EntitéPéonEnnemie(Game, "robot2", ÉCHELLE_OBJET_PÉON, rotationObjetInitialeInvite, positionInitialeInvite - new Vector3(0, 0, 5), INTERVALLE_MAJ, 1, 3, 1, 1, new Vector3(-1, 0, 0),1);
+                PéonE1 = new EntitéPéonEnnemie(Game, "tank", ÉCHELLE_OBJET_PÉON, rotationObjetInitialeInvite, positionInitialeInvite - new Vector3(0, -1.5f, 5), INTERVALLE_MAJ, 1, 3, 1, 1, 1, new Vector3(-1, 0, 0),1);
                 Game.Components.Add(PéonE1);
-                PéonE2 = new EntitéPéonEnnemie(Game, "robot2", ÉCHELLE_OBJET_PÉON, rotationObjetInitialeInvite, positionInitialeInvite - new Vector3(5, 0, 0), INTERVALLE_MAJ, 1, 3, 1, 1, new Vector3(-1, 0, 0),2);
+                PéonE2 = new EntitéPéonEnnemie(Game, "tank", ÉCHELLE_OBJET_PÉON, rotationObjetInitialeInvite, positionInitialeInvite - new Vector3(5, -1.5f, 0), INTERVALLE_MAJ, 1, 3, 1, 1, 1, new Vector3(-1, 0, 0),2);
                 Game.Components.Add(PéonE2);
-                PéonE3 = new EntitéPéonEnnemie(Game, "robot2", ÉCHELLE_OBJET_PÉON, rotationObjetInitialeInvite, positionInitialeInvite + new Vector3(0, 0, 5), INTERVALLE_MAJ, 1, 3, 1, 1, new Vector3(-1, 0, 0),3);
+                PéonE3 = new EntitéPéonEnnemie(Game, "tank", ÉCHELLE_OBJET_PÉON, rotationObjetInitialeInvite, positionInitialeInvite + new Vector3(0, 1.5f, 5), INTERVALLE_MAJ, 1, 3, 1, 1, 1, new Vector3(-1, 0, 0),3);
                 Game.Components.Add(PéonE3);
             }
             if (NumClient == 1)
             {
-                CaméraJeu = new CaméraTypéMoba(Game, new Vector3(270, 30, 115), new Vector3(0, -1, -1), Vector3.Up, INTERVALLE_MAJ);
+                CaméraJeu = new CaméraTypéMoba(Game, new Vector3(270, 30, 120), new Vector3(0, -1, -1), Vector3.Up, INTERVALLE_MAJ);
                 Game.Services.AddService(typeof(Caméra), CaméraJeu);
                 Game.Components.Add(CaméraJeu);
 
@@ -134,19 +136,19 @@ namespace AtelierXNA
                 JoueurEnnemie = new EntitéEnnemie(Game, "robot2", ÉCHELLE_OBJET_JOUEUR, rotationObjetInitialeHost, positionInitialeHost, INTERVALLE_MAJ, 1, 5, 1, 1, new Vector3(1, 0, 0));
                 Game.Components.Add(JoueurEnnemie);
                 //Péons :
-                PéonA1 = new EntitéPéonAlliée(Game, "robot2", ÉCHELLE_OBJET_PÉON, rotationObjetInitialeInvite, positionInitialeInvite - new Vector3(0, 0, 5), INTERVALLE_MAJ, 1, 3, 1, 1, new Vector3(-1, 0, 0),1);
+                PéonA1 = new EntitéPéonAlliée(Game, "tank", ÉCHELLE_OBJET_PÉON, rotationObjetInitialeInvite, positionInitialeInvite - new Vector3(0, -1.5f, 5), INTERVALLE_MAJ, 1, 3, 1, 1, 1, new Vector3(-1, 0, 0),1);
                 Game.Components.Add(PéonA1);
-                PéonA2 = new EntitéPéonAlliée(Game, "robot2", ÉCHELLE_OBJET_PÉON, rotationObjetInitialeInvite, positionInitialeInvite - new Vector3(5, 0, 0), INTERVALLE_MAJ, 1, 3, 1, 1, new Vector3(-1, 0, 0),2);
+                PéonA2 = new EntitéPéonAlliée(Game, "tank", ÉCHELLE_OBJET_PÉON, rotationObjetInitialeInvite, positionInitialeInvite - new Vector3(5, 1.5f, 0), INTERVALLE_MAJ, 1, 3, 1, 1, 1, new Vector3(-1, 0, 0),2);
                 Game.Components.Add(PéonA2);
-                PéonA3 = new EntitéPéonAlliée(Game, "robot2", ÉCHELLE_OBJET_PÉON, rotationObjetInitialeInvite, positionInitialeInvite + new Vector3(0, 0, 5), INTERVALLE_MAJ, 1, 3, 1, 1, new Vector3(-1, 0, 0),3);
+                PéonA3 = new EntitéPéonAlliée(Game, "tank", ÉCHELLE_OBJET_PÉON, rotationObjetInitialeInvite, positionInitialeInvite + new Vector3(0, 1.5f, 5), INTERVALLE_MAJ, 1, 3, 1, 1, 1, new Vector3(-1, 0, 0),3);
                 Game.Components.Add(PéonA3);
 
                 //Péons :
-                PéonE1 = new EntitéPéonEnnemie(Game, "robot2", ÉCHELLE_OBJET_PÉON, rotationObjetInitialeHost, positionInitialeHost - new Vector3(0, 0, 5), INTERVALLE_MAJ, 1, 3, 1, 1, new Vector3(1, 0, 0),1);
+                PéonE1 = new EntitéPéonEnnemie(Game, "tank", ÉCHELLE_OBJET_PÉON, rotationObjetInitialeHost, positionInitialeHost - new Vector3(0, -1.5f, 5), INTERVALLE_MAJ, 1, 3, 1, 1, 1, new Vector3(1, 0, 0),1);
                 Game.Components.Add(PéonE1);
-                PéonE2 = new EntitéPéonEnnemie(Game, "robot2", ÉCHELLE_OBJET_PÉON, rotationObjetInitialeHost, positionInitialeHost - new Vector3(5, 0, 0), INTERVALLE_MAJ, 1, 3, 1, 1, new Vector3(1, 0, 0),2);
+                PéonE2 = new EntitéPéonEnnemie(Game, "tank", ÉCHELLE_OBJET_PÉON, rotationObjetInitialeHost, positionInitialeHost - new Vector3(5, -1.5f, 0), INTERVALLE_MAJ, 1, 3, 1, 1, 1, new Vector3(1, 0, 0),2);
                 Game.Components.Add(PéonE2);
-                PéonE3 = new EntitéPéonEnnemie(Game, "robot2", ÉCHELLE_OBJET_PÉON, rotationObjetInitialeHost, positionInitialeHost + new Vector3(0, 0, 5), INTERVALLE_MAJ, 1, 3, 1, 1, new Vector3(1, 0, 0),3);
+                PéonE3 = new EntitéPéonEnnemie(Game, "tank", ÉCHELLE_OBJET_PÉON, rotationObjetInitialeHost, positionInitialeHost + new Vector3(0, 1.5f, 5), INTERVALLE_MAJ, 1, 3, 1, 1, 1, new Vector3(1, 0, 0),3);
                 Game.Components.Add(PéonE3);
             }
 
@@ -163,22 +165,27 @@ namespace AtelierXNA
 
         public override void Update(GameTime gameTime)
         {
-            //if (joueur.EnMouvement)
-            //{
-            //    Vector3 destination = joueur.AvoirDestination();
-            //    joueurClient.EnvoyerDestination(destination);
-            //    joueur.EnMouvement = false;
-            //}
-            //foreach (EntitéPéonAlliée entité in Game.Components.Where(x => x is EntitéPéonAlliée))
-            //{
-            //    if (entité.EnMouvement == true)
-            //    {
-            //        Vector3 position = entité.AvoirPosition();
-            //        int numPéon = entité.NumPéon;
-            //        joueurClient.EnvoyerPositionPéon(position, numPéon);
+            float tempsÉcoulé = (float)gameTime.ElapsedGameTime.TotalSeconds;
+            TempsÉcouléDepuisMAJ += tempsÉcoulé;
+            if (TempsÉcouléDepuisMAJ >=INTERVALLEMAJ)
+            {
+            }
+            if (Joueur.EnMouvement)
+            {
+                Vector3 destination = Joueur.AvoirDestination();
+                JoueurClient.EnvoyerDestination(destination);
+                Joueur.EnMouvement = false;
+            }
+            foreach(EntitéPéonAlliée péon in Game.Components.Where(x=> x is EntitéPéonAlliée))
+            {
+                if(péon.EnMouvement)
+                {
+                    Vector3 laPosition = péon.Position;
+                    int numPéon = péon.NumPéon;
+                    JoueurClient.EnvoyerPositionPéon(laPosition, numPéon);
+                }
+            }
 
-            //    }
-            //}
 
 
             base.Update(gameTime);
@@ -187,17 +194,6 @@ namespace AtelierXNA
         {
             
             base.Draw(gameTime);
-        }
-        public void GérerDéplacementPéon(Vector3 positionPéon, int numPéon)
-        {
-            foreach (EntitéPéonEnnemie péon in Game.Components.Where(x => x is EntitéPéonEnnemie))
-            {
-                if(péon.NumPéon == numPéon)
-                {
-                    péon.GérerDéplacement(positionPéon);
-                }
-
-            }
         }
     }
 }
