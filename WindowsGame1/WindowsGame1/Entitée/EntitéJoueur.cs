@@ -88,7 +88,8 @@ namespace AtelierXNA
                 NouvellePosition = Position + FACTEUR_VITESSE * DirectionDéplacement;
 
                 if (Murs.EnCollision(this))
-                { Destination = Position;
+                {
+                    Destination = Position;
                 }
                 else
                 {
@@ -96,11 +97,19 @@ namespace AtelierXNA
                     DoCalculerMonde = true;
                 }
             }
-            if(GestionInputs.EstNouvelleTouche(Keys.Q))
+            if (GestionInputs.EstNouvelleTouche(Keys.Q))
             {
+
                 GetDestination();
-                Position = Destination;
-                CalculerMonde();
+                float distanceEntreLesDeux = (float)Math.Sqrt(Math.Pow((Destination.X - Position.X), 2) + Math.Pow((Destination.Z - Position.Z), 2));
+                DirectionDéplacement = Vector3.Normalize(Destination - Position);
+                if (distanceEntreLesDeux <= Portée)
+                {
+                    GérerRotation();
+                    Position = Destination;
+                    CalculerMonde();
+                }
+
             }
 
             CaméraJeu.DonnerPositionJoueur(Position);
