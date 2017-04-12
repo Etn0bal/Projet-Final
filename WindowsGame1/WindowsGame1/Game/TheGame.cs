@@ -54,8 +54,8 @@ namespace AtelierXNA
 
         Murs Murs { get; set; }
 
-        const float INTERVALLEMAJ = 1.0f;
-        float TempsÉcouléDepuisMAJ = 0;
+        const float INTERVALLEMAJ = 1/60f;
+        float TempsÉcouléDepuisMAJ = 0  ;
 
 
         public TheGame(Game game, int numClient)
@@ -175,15 +175,15 @@ namespace AtelierXNA
             //    JoueurClient.EnvoyerDestination(destination);
             //    Joueur.EnMouvement = false;
             //}
-            foreach(EntitéPéonAlliée péon in Game.Components.Where(x=> x is EntitéPéonAlliée))
-            {
-                if(péon.EnMouvement)
-                {
-                    Vector3 laPosition = péon.Position;
-                    int numPéon = péon.NumPéon;
-                    JoueurClient.EnvoyerPositionPéon(laPosition, numPéon);
-                }
-            }
+            //foreach(EntitéPéonAlliée péon in Game.Components.Where(x=> x is EntitéPéonAlliée))
+            //{
+            //    if(péon.EnMouvement)
+            //    {
+            //        Vector3 laPosition = péon.Position;
+            //        int numPéon = péon.NumPéon;
+            //        //JoueurClient.EnvoyerPositionPéon(laPosition, numPéon);
+            //    }
+            //}
 
 
 
