@@ -45,16 +45,31 @@ namespace AtelierXNA
         {
             if(Cible!=null)
             {
-                
+                AttaquerLaCible();
             }
             else { RechercherEntité(); }
+        }
+
+        private void AttaquerLaCible()
+        {
         }
 
         private void RechercherEntité()
         {
             foreach(Entité entité in Game.Components.Where(x=> x is Entité))
             {
-                
+                if(Cible ==null)
+                {
+                    if(entité is EntitéPéon)
+                    {
+                        Cible = entité;
+                    }
+                    if (entité is EntitéEnnemie)
+                    {
+                        Cible = entité;
+                    }
+                }
+
             }
         }
 

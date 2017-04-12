@@ -3,11 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.GamerServices;
 using Microsoft.Xna.Framework.Graphics;
@@ -198,7 +193,7 @@ namespace AtelierXNA
                     Client.GetStream().BeginWrite(b, 0, b.Length, null, null);
                 }
             }
-            catch (Exception e)
+            catch (Exception)
             {
 
             }
