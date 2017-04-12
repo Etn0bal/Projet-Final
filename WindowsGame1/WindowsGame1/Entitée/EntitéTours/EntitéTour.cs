@@ -15,7 +15,7 @@ namespace AtelierXNA
     /// <summary>
     /// This is a game component that implements IUpdateable.
     /// </summary>
-    public class EntitéTour : EntitéImmobile, IControlée, ICollisionable, IDestructible
+    public class EntitéTour : Entité, IControlée, ICollisionable, IDestructible
     {
         public bool ÀDétruire { get; set; }
         public BoundingSphere SphèreDeCollision { get; private set; }

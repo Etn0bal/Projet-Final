@@ -15,13 +15,15 @@ namespace AtelierXNA
     /// <summary>
     /// This is a game component that implements IUpdateable.
     /// </summary>
-    public abstract class EntitéMobile : Entité
+    public class EntitéPéon : Entité, IControlée, IDestructible
     {
-        public EntitéMobile(Game jeu, string nomModèle, float échelleInitiale, Vector3 rotationInitiale, Vector3 positionInitiale,
+        public bool ÀDétruire { get;  set; }
+        protected bool EnRechercheDEnnemi { get; set; }
+        protected Entité Cible { get; set; }
+        public EntitéPéon(Game jeu, string nomModèle, float échelleInitiale, Vector3 rotationInitiale, Vector3 positionInitiale,
                            float intervalleMAJ, int pointDeVie, int portée, int force, int armure, int précision)
             : base(jeu, nomModèle, échelleInitiale, rotationInitiale, positionInitiale, intervalleMAJ, pointDeVie, portée, force, armure, précision)
         {
-            // TODO: Construct any child components here
         }
 
         /// <summary>
@@ -30,7 +32,9 @@ namespace AtelierXNA
         /// </summary>
         public override void Initialize()
         {
-            // TODO: Add your initialization code here
+            Cible = null;
+            RayonCollision = 1;
+            EnRechercheDEnnemi = true;
 
             base.Initialize();
         }
@@ -41,10 +45,18 @@ namespace AtelierXNA
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         public override void Update(GameTime gameTime)
         {
-            // TODO: Add your update code here
+            if(PointDeVie== 0)
+            {
+                ÀDétruire = true;
+            }
 
             base.Update(gameTime);
         }
 
+
+        public void ControlerLEntitée()
+        {
+
+        }
     }
 }
