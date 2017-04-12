@@ -97,6 +97,7 @@ namespace AtelierXNA
                     else
                     {
                         Game.Components.Add(new ProjectileAttaqueDeBase(Game, "Robot2", ÉCHELLE_PROJECTILE_ATTAQUE_DE_BASE, Vector3.Zero, Position, Force, Précision, Cible, IntervalleMAJ));
+                        Cible = null;
                     }
                 }
             }           

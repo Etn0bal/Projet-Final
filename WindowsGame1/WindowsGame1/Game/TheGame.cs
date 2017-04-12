@@ -98,9 +98,9 @@ namespace AtelierXNA
                 Game.Components.Add(Murs);
                 Game.Services.AddService(typeof(Murs), Murs);
 
-                Joueur = new EntitéJoueur(Game, "robot2", ÉCHELLE_OBJET_JOUEUR, rotationObjetInitialeHost, positionInitialeHost, INTERVALLE_MAJ, 1, 5, 1, 1, new Vector3(1, 0, 0));
+                Joueur = new EntitéJoueur(Game, "robot2", ÉCHELLE_OBJET_JOUEUR, rotationObjetInitialeHost, positionInitialeHost, INTERVALLE_MAJ, 1, 5, 1, 1,1, new Vector3(1, 0, 0));
                 Game.Components.Add(Joueur);
-                JoueurEnnemie = new EntitéEnnemie(Game, "robot2", ÉCHELLE_OBJET_JOUEUR, rotationObjetInitialeInvite, positionInitialeInvite, INTERVALLE_MAJ, 1, 5, 1, 1,new Vector3(-1, 0, 0));
+                JoueurEnnemie = new EntitéEnnemie(Game, "robot2", ÉCHELLE_OBJET_JOUEUR, rotationObjetInitialeInvite, positionInitialeInvite, INTERVALLE_MAJ, 1, 5, 1, 1,1,new Vector3(-1, 0, 0));
                 Game.Components.Add(JoueurEnnemie);
                 //Péons :
                 PéonA1 = new EntitéPéonAlliée(Game, "tank", ÉCHELLE_OBJET_PÉON, rotationObjetInitialeHost, positionInitialeHost - new Vector3(0, -1.5f, 5), INTERVALLE_MAJ, 1, 3, 1, 1, 1, new Vector3(1, 0, 0),1);
@@ -131,9 +131,9 @@ namespace AtelierXNA
 
 
                 //Joueurs :
-                Joueur = new EntitéJoueur(Game, "robot2", ÉCHELLE_OBJET_JOUEUR, rotationObjetInitialeInvite, positionInitialeInvite, INTERVALLE_MAJ, 1, 5, 1, 1, new Vector3(-1, 0, 0));
+                Joueur = new EntitéJoueur(Game, "robot2", ÉCHELLE_OBJET_JOUEUR, rotationObjetInitialeInvite, positionInitialeInvite, INTERVALLE_MAJ, 1, 5, 1, 1,1, new Vector3(-1, 0, 0));
                 Game.Components.Add(Joueur);
-                JoueurEnnemie = new EntitéEnnemie(Game, "robot2", ÉCHELLE_OBJET_JOUEUR, rotationObjetInitialeHost, positionInitialeHost, INTERVALLE_MAJ, 1, 5, 1, 1, new Vector3(1, 0, 0));
+                JoueurEnnemie = new EntitéEnnemie(Game, "robot2", ÉCHELLE_OBJET_JOUEUR, rotationObjetInitialeHost, positionInitialeHost, INTERVALLE_MAJ, 1, 5, 1, 1,1, new Vector3(1, 0, 0));
                 Game.Components.Add(JoueurEnnemie);
                 //Péons :
                 PéonA1 = new EntitéPéonAlliée(Game, "tank", ÉCHELLE_OBJET_PÉON, rotationObjetInitialeInvite, positionInitialeInvite - new Vector3(0, -1.5f, 5), INTERVALLE_MAJ, 1, 3, 1, 1, 1, new Vector3(-1, 0, 0),1);
@@ -170,12 +170,12 @@ namespace AtelierXNA
             if (TempsÉcouléDepuisMAJ >=INTERVALLEMAJ)
             {
             }
-            if (Joueur.EnMouvement)
-            {
-                Vector3 destination = Joueur.AvoirDestination();
-                JoueurClient.EnvoyerDestination(destination);
-                Joueur.EnMouvement = false;
-            }
+            //if (Joueur.EnMouvement)
+            //{
+            //    Vector3 destination = Joueur.AvoirDestination();
+            //    JoueurClient.EnvoyerDestination(destination);
+            //    Joueur.EnMouvement = false;
+            //}
             foreach(EntitéPéonAlliée péon in Game.Components.Where(x=> x is EntitéPéonAlliée))
             {
                 if(péon.EnMouvement)
