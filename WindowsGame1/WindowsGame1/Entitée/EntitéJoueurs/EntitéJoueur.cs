@@ -19,9 +19,13 @@ namespace AtelierXNA
     {
         const float FACTEUR_VITESSE = 0.05f;
         const float ÉCHELLE_PROJECTILE_ATTAQUE_DE_BASE = 0.009f;
+        Vector3 PointMaxBDC = new Vector3(2, 16.2f, 5f / 2f);
+        Vector3 PointMinBDC = new Vector3(-2, 0, -(5f / 2f));
 
+
+        public BoundingBox BoiteDeCollision { get; private set; }
         public BoundingSphere SphèreDeCollision { get; private set; }
-        Entité Cible { get; set; }
+        Entité Cible { get; set; }      
         Vector3 DirectionDéplacement { get; set; }
         Vector3 Direction { get; set; }
         Vector3 Destination { get; set; }
@@ -50,14 +54,14 @@ namespace AtelierXNA
             PlanReprésentantCarte = new Plane(0, 1, 0, 0);
             EnMouvement = false;
             RayonCollision = 3;
+            BoiteDeCollision = new BoundingBox(Position + PointMinBDC, Position + PointMaxBDC);
             Murs = Game.Services.GetService(typeof(Murs)) as Murs; 
-
             base.Initialize();
         }
 
         public override void Update(GameTime gameTime)
         {
-
+            //Rajouter mécanique gestion du temps
             GestionDéplacement();
 
             if (DoCalculerMonde)
@@ -97,6 +101,7 @@ namespace AtelierXNA
                     else
                     {
                         Game.Components.Add(new ProjectileAttaqueDeBase(Game, "Robot2", ÉCHELLE_PROJECTILE_ATTAQUE_DE_BASE, Vector3.Zero, Position, Force, Précision, Cible, IntervalleMAJ));
+                        Cible = null;
                     }
                 }
             }           
@@ -117,17 +122,15 @@ namespace AtelierXNA
             }
             if (GestionInputs.EstNouvelleTouche(Keys.Q))
             {
-
                 GetDestination();
                 float distanceEntreLesDeux = (float)Math.Sqrt(Math.Pow((Destination.X - Position.X), 2) + Math.Pow((Destination.Z - Position.Z), 2));
                 DirectionDéplacement = Vector3.Normalize(Destination - Position);
                 if (distanceEntreLesDeux <= Portée)
                 {
                     GérerRotation();
-                Position = Destination;
-                CalculerMonde();
-            }
-
+                    Position = Destination;
+                    CalculerMonde();
+                }
             }
 
             CaméraJeu.DonnerPositionJoueur(Position);

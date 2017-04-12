@@ -57,8 +57,8 @@ namespace AtelierXNA
         EntitéTourEnnemie TourE2 { get; set; } Vector3 PositionInitialTourE2 = new Vector3(125, 0, 83);
         Murs Murs { get; set; }
 
-        const float INTERVALLEMAJ = 1.0f;
-        float TempsÉcouléDepuisMAJ = 0;
+        const float INTERVALLEMAJ = 1/60f;
+        float TempsÉcouléDepuisMAJ = 0  ;
 
 
         public TheGame(Game game, int numClient)
@@ -182,22 +182,22 @@ namespace AtelierXNA
             TempsÉcouléDepuisMAJ += tempsÉcoulé;
             if (TempsÉcouléDepuisMAJ >=INTERVALLEMAJ)
             {
-                //if (Joueur.EnMouvement)
-                //{
-                //    Vector3 destination = Joueur.AvoirDestination();
-                //    JoueurClient.EnvoyerDestination(destination);
-                //    Joueur.EnMouvement = false;
-                //}
-                foreach (EntitéPéonAlliée péon in Game.Components.Where(x => x is EntitéPéonAlliée))
-                {
-                    if (péon.EnMouvement)
-                    {
-                        Vector3 laPosition = péon.Position;
-                        int numPéon = péon.NumPéon;
-                        JoueurClient.EnvoyerPositionPéon(laPosition, numPéon);
-                    }
-                }
             }
+            //if (Joueur.EnMouvement)
+            //{
+            //    Vector3 destination = Joueur.AvoirDestination();
+            //    JoueurClient.EnvoyerDestination(destination);
+            //    Joueur.EnMouvement = false;
+            //}
+            //foreach(EntitéPéonAlliée péon in Game.Components.Where(x=> x is EntitéPéonAlliée))
+            //{
+            //    if(péon.EnMouvement)
+            //    {
+            //        Vector3 laPosition = péon.Position;
+            //        int numPéon = péon.NumPéon;
+            //        //JoueurClient.EnvoyerPositionPéon(laPosition, numPéon);
+            //    }
+            //}
 
 
 
