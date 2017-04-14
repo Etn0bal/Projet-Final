@@ -17,6 +17,13 @@ namespace AtelierXNA
     /// </summary>
     public class Murs : PrimitiveDeBaseAnimée
     {
+        //Constante identifiant ce que représente les différentes position dans TableauDeDroites
+        const int POINT1 = 0;
+        const int POINT2 = 1;
+        const int DIRECTION = 2;
+        const int VECTEUR_ÉQUATION_DROITE_ABC = 3;
+
+        //Autres constantes
         const int NB_TRIANGLES_PAR_TUILE = 2;
         const int NB_SOMMETS_PAR_TRIANGLE = 3;
 
@@ -105,7 +112,7 @@ namespace AtelierXNA
 
             Sommets = new VertexPositionColor[(18+24)*30];
 
-            TableauDeDroites = new Vector3[2, 42];
+            TableauDeDroites = new Vector3[4, 42];
         }
 
 
@@ -153,8 +160,6 @@ namespace AtelierXNA
             AjouterPanDeMur(62, 12);
             AjouterPanDeMur(63, 13);
             AjouterPanDeMur(64, 14);
-
-
         }
 
         void AjouterPanDeMur(int valeurCouleurPoint1, int valeurCouleurPoint2)
@@ -169,12 +174,12 @@ namespace AtelierXNA
             {
                 for (int colonne = 0; colonne < PtsSommets.GetLength(0) - 1; ++colonne)
                 {
-                    if(DataTexture[colonne,rangée].R == valeurCouleurPoint1)
+                    if(DataTexture[colonne,rangée].R == valeurCouleurPoint1 && DataTexture[colonne,rangée].G ==0)
                     {
                         point1 = PtsSommets[colonne, rangée];
                         AjoutDonnéTableauDroites(point1);
                     }
-                    if(DataTexture[colonne,rangée].R == valeurCouleurPoint2)
+                    if(DataTexture[colonne,rangée].R == valeurCouleurPoint2 && DataTexture[colonne, rangée].G == 0)
                     {
                         point2 = PtsSommets[colonne, rangée];
                         AjoutDonnéTableauDroites(point2);
@@ -232,7 +237,20 @@ namespace AtelierXNA
         void AjoutDonnéTableauDroites(Vector3 point)
         {
             TableauDeDroites[PtsDroite++, NumDroite] = point;
-            if (PtsDroite == 2) { PtsDroite = 0; NumDroite++; }   
+            if (PtsDroite == 2)
+            {
+                //Calcul de la direction de la droite
+                TableauDeDroites[PtsDroite++, NumDroite] = TableauDeDroites[1, NumDroite] - TableauDeDroites[0, NumDroite];
+                //Calcul du coefficient a, b et de la constante c de l'équation représentant la droite (sous forme ax+bz+c=0)
+                //Enregistré dans un Vecteur3 soit Vector3(a,b,c)
+                TableauDeDroites[PtsDroite++, NumDroite] = new Vector3(TableauDeDroites[POINT2, NumDroite].Z - TableauDeDroites[POINT1, NumDroite].Z,
+                                                                       TableauDeDroites[POINT1, NumDroite].X - TableauDeDroites[POINT2, NumDroite].X,
+                                                                       -((TableauDeDroites[POINT1, NumDroite].X - TableauDeDroites[POINT2, NumDroite].X) * TableauDeDroites[POINT1, NumDroite].Z +
+                                                                         (TableauDeDroites[POINT2, NumDroite].Z - TableauDeDroites[POINT1, NumDroite].Z) * TableauDeDroites[POINT1, NumDroite].X));
+
+
+                PtsDroite = 0; NumDroite++;
+            }
         }
 
         public override void Draw(GameTime gameTime)
@@ -248,31 +266,43 @@ namespace AtelierXNA
             }
         }
 
-        public bool EnCollision(Entitée entité)
+        public bool EnCollision(Entité entité)
         {
-            Vector3 direction;
-            float a;
-            float b;
-            float c;
+            //Distance entre la droite et l'entité
             float distance;
-            float xPointDroite;
-            float zPointDroite;
+            //Distance entre l'entité et les points représentant la droite
+            float distancePoint1;
+            float distancePoint2;
+            //Distance maximale de l'entité avec les points représentant la droite pour déterminer si l'entité 
+            //se trouve dans l'intervalle de la droite
+            float distanceMax;
             bool enCollision = false;
 
-            for (int i = 0; i < TableauDeDroites.GetLength(1); i++)
+
+            for (int numDroite = 0; numDroite < TableauDeDroites.GetLength(1); numDroite++)
             {
-                direction = TableauDeDroites[1, i] - TableauDeDroites[0, i];
-                a = direction.X; b = direction.Z; c = a * (-TableauDeDroites[1, i].X) + b * (-TableauDeDroites[1, i].Z);
+                distance = (float)((Math.Abs((TableauDeDroites[VECTEUR_ÉQUATION_DROITE_ABC,numDroite].X * entité.NouvellePosition.X) + 
+                                             (TableauDeDroites[VECTEUR_ÉQUATION_DROITE_ABC,numDroite].Y * entité.NouvellePosition.Z) + 
+                                             TableauDeDroites[VECTEUR_ÉQUATION_DROITE_ABC, numDroite].Z)) / 
+                           (Math.Sqrt(Math.Pow(TableauDeDroites[VECTEUR_ÉQUATION_DROITE_ABC,numDroite].X, 2)  +
+                                      Math.Pow(TableauDeDroites[VECTEUR_ÉQUATION_DROITE_ABC, numDroite].Y, 2))));
+                if (distance <= entité.RayonCollision + 0.5f) //0.5 étant la moitié de l'épaisseur du mur
+                {
 
-                distance = (float)((Math.Abs(entité.Position.X + entité.Position.Z + c)) / (Math.Sqrt(a * a + b * b)));
-                if (distance > entité.RayonCollision) { return enCollision; }
+                    distancePoint1 = (float)Math.Sqrt(Math.Pow(TableauDeDroites[POINT1, numDroite].X - entité.NouvellePosition.X, 2) +
+                                                      Math.Pow(TableauDeDroites[POINT1, numDroite].Z - entité.NouvellePosition.Z, 2));
+                    distancePoint2 = (float)Math.Sqrt(Math.Pow(TableauDeDroites[POINT2, numDroite].X - entité.NouvellePosition.X, 2) +
+                                                     Math.Pow(TableauDeDroites[POINT2, numDroite].Z - entité.NouvellePosition.Z, 2));
 
-                
-            
 
-                
+                    distanceMax = (float)Math.Sqrt(Math.Pow(TableauDeDroites[DIRECTION, numDroite].Length(), 2) + Math.Pow(distance, 2));
+
+                    if (!(distanceMax < distancePoint1 || distanceMax < distancePoint2))
+                    {
+                        enCollision = true;
+                    }
+                }                       
             }
-
             return enCollision;
         }
     }

@@ -23,7 +23,9 @@ namespace AtelierXNA
         Point positionSouris { get; set; }
         InputManager GestionnaireInputs { get; set; }
         Server ServeurDeJeu { get; set; }
+        ServeurClient Client { get; set; }
         bool ServeurCréé { get; set; }
+        bool AutreClientConnecté { get; set; }
         string IP { get; set; }
 
         public HostMenu(Game game)
@@ -35,6 +37,7 @@ namespace AtelierXNA
             GestionnaireInputs = Game.Services.GetService(typeof(InputManager)) as InputManager;
             positionSouris = new Point(0, 0);
             ServeurCréé = false;
+            bool AutreClientConnecté = false;
 
 
             //Arriere plan
@@ -50,14 +53,14 @@ namespace AtelierXNA
             positionStartGameButton = new Rectangle(7 * (Game.Window.ClientBounds.Width / 10), 5 * (Game.Window.ClientBounds.Height / 10), 2 * (Game.Window.ClientBounds.Width / 10), (Game.Window.ClientBounds.Height / 10));
             SpriteHostMenu StartGameButton = new SpriteHostMenu(Game, positionStartGameButton, "StartGame");
             Game.Components.Add(StartGameButton);
-            
+
 
             positionBackButton = new Rectangle(7 * (Game.Window.ClientBounds.Width / 10), 7 * (Game.Window.ClientBounds.Height / 10), 2 * (Game.Window.ClientBounds.Width / 10), (Game.Window.ClientBounds.Height / 10));
-            SpriteHostMenu BackButton = new SpriteHostMenu(Game,positionBackButton, "BackButton");
+            SpriteHostMenu BackButton = new SpriteHostMenu(Game, positionBackButton, "BackButton");
             Game.Components.Add(BackButton);
 
             //titre
-            Rectangle titre = new Rectangle((2*(Game.Window.ClientBounds.Width / 10)), Game.Window.ClientBounds.Height / 10, 6 * (Game.Window.ClientBounds.Width / 10), (Game.Window.ClientBounds.Height / 10));
+            Rectangle titre = new Rectangle((2 * (Game.Window.ClientBounds.Width / 10)), Game.Window.ClientBounds.Height / 10, 6 * (Game.Window.ClientBounds.Width / 10), (Game.Window.ClientBounds.Height / 10));
             SpriteHostMenu titreHostGame = new SpriteHostMenu(Game, titre, "HostGame");
             Game.Components.Add(titreHostGame);
 
@@ -69,7 +72,28 @@ namespace AtelierXNA
         public override void Update(GameTime gameTime)
         {
             GérerSouris();
+            GestionServeur();
         }
+
+        private void GestionServeur()
+        {
+            if (ServeurDeJeu != null)
+            {
+                if (ServeurDeJeu.connectedClients == 2 && AutreClientConnecté == false)
+                {
+                    AutreClientConnecté = true;
+                    GérerHostTxt();
+                }
+            }
+        }
+        private void GérerHostTxt()
+        {
+            EnleverTxt();
+            Rectangle positionTxt = new Rectangle((2 * (Game.Window.ClientBounds.Width / 10)), 7 * Game.Window.ClientBounds.Height / 10, 4 * (Game.Window.ClientBounds.Width / 10), (Game.Window.ClientBounds.Height / 10));
+            TexteHostMenu txt = new TexteHostMenu(Game, "Nombre de client connecté : 2 / 2", "Arial", positionTxt, new Vector2(4 * Game.Window.ClientBounds.Width / 10, 7 * Game.Window.ClientBounds.Height / 10), Color.White, 0);
+            Game.Components.Add(txt);
+        }
+
         void GérerSouris()
         {
             positionSouris = GestionnaireInputs.GetPositionSouris();
@@ -78,52 +102,71 @@ namespace AtelierXNA
             {
                 if (GestionnaireInputs.EstNouveauClicGauche())
                 {
-                    EnleverIp();
+                    EnleverTxt();
                     ((Game1)Game).ChangerDÉtat(0);
+                    
                 }
-            }  
-            if(positionCreateServerButton.Contains(positionSouris))
+            }
+            if (positionCreateServerButton.Contains(positionSouris))
             {
-                
-                if(GestionnaireInputs.EstNouveauClicGauche())
+
+                if (GestionnaireInputs.EstNouveauClicGauche())
                 {
                     string sHostName = Dns.GetHostName();
                     IPHostEntry ipE = Dns.GetHostEntry(sHostName);
                     IPAddress[] IpA = ipE.AddressList;
-                    IP = IpA[2].ToString();
-                    Rectangle PositionTxt = new Rectangle((2 * (Game.Window.ClientBounds.Width / 10)), 5 * Game.Window.ClientBounds.Height / 10, 3 * (Game.Window.ClientBounds.Width / 10), (Game.Window.ClientBounds.Height / 10));
-                    TexteHostMenu IpAAfficher = new TexteHostMenu(Game, IP, "Arial", PositionTxt, new Vector2(3 * Game.Window.ClientBounds.Width / 10, Game.Window.ClientBounds.Height / 2), Color.White, 0);
+                    IP = IpA[1].ToString();
+                    Rectangle positionIP = new Rectangle((2 * (Game.Window.ClientBounds.Width / 10)), 5 * Game.Window.ClientBounds.Height / 10, 3 * (Game.Window.ClientBounds.Width / 10), (Game.Window.ClientBounds.Height / 10));
+                    TexteHostMenu IpAAfficher = new TexteHostMenu(Game, IP, "Arial", positionIP, new Vector2(3 * Game.Window.ClientBounds.Width / 10, Game.Window.ClientBounds.Height / 2), Color.White, 0);
+                    Rectangle positionTxt = new Rectangle((2 * (Game.Window.ClientBounds.Width / 10)), 7 * Game.Window.ClientBounds.Height / 10, 4 * (Game.Window.ClientBounds.Width / 10), (Game.Window.ClientBounds.Height / 10));
+                    TexteHostMenu txt = new TexteHostMenu(Game, "Nombre de client connecté : 1 / 2", "Arial", positionTxt, new Vector2(4 * Game.Window.ClientBounds.Width / 10, 7 * Game.Window.ClientBounds.Height / 10), Color.White, 0);
                     Game.Components.Add(IpAAfficher);
+                    Game.Components.Add(txt);
 
                     if (ServeurCréé == false)
                     {
-                        //ServeurDeJeu = new Server(5011);
+                        ServeurDeJeu = new Server(5011);
                         ServeurCréé = true;
+                    }
+                    if(Client == null)
+                    {
+                        Client = new ServeurClient(Game, IP);
+                        Game.Services.AddService(typeof(ServeurClient), Client);
+                    }
+                }
+            }
+            if (positionStartGameButton.Contains(positionSouris))
+            {
+                if (GestionnaireInputs.EstNouveauClicGauche())
+                {
+
+                    if (/*AutreClientConnecté &&*/ ((Game1)Game).EnJeu == false)
+                    {
+
+                        ((Game1)Game).NumClient = 0;
+                        Client.StartGame();
+                        ((Game1)Game).EnJeu = true;
 
                     }
-                  
 
                 }
-            }   
-            if(positionStartGameButton.Contains(positionSouris))
-            {
-                if(GestionnaireInputs.EstNouveauClicGauche())
+                if (((Game1)Game).EnJeu)
                 {
-                    //ServeurClient HostClient = new ServeurClient(Game, IP);
-                    //Game.Services.AddService(typeof(ServeurClient), HostClient);
-                    ((Game1)Game).EnJeu = true;
                     ((Game1)Game).ChangerDÉtat(3);
-                    
                 }
-            }  
 
+
+            }
         }
 
-        private void EnleverIp()
+
+
+
+        private void EnleverTxt()
         {
             for (int i = Game.Components.Count - 1; i >= 0; --i)
             {
-                if(Game.Components[i] is TexteHostMenu)
+                if (Game.Components[i] is TexteHostMenu)
                 {
                     Game.Components.RemoveAt(i);
                 }

@@ -68,6 +68,10 @@ namespace AtelierXNA
 
         public override void Update(GameTime gameTime)
         {
+            if(GestionInputs.EstNouvelleTouche(Keys.NumPad0))
+            {
+                ((Game1)Game).ChangerDÉtat(3);
+            }
             GérerSouris();
         }
         void GérerSouris()

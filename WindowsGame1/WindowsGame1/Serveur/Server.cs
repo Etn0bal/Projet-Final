@@ -38,7 +38,7 @@ namespace AtelierXNA
         public Server(int port)
         {
             //Initialize the array with a maximum of the MaxClients from the config file.
-            client = new Client[1];
+            client = new Client[2];
 
             //Create a new Listener object
             listener = new Listener(port);
@@ -64,19 +64,6 @@ namespace AtelierXNA
         {
             connectedClients++;
 
-            ////Send a message to every other client notifying them on a new client, if the setting is set to True
-            //if (false)
-            //{
-            //    writeStream.Position = 0;
-
-            //    //Write in the form {Protocol}{User_ID}{User_IP}
-            //    writer.Write(1);
-            //    writer.Write(user.id);
-            //    writer.Write(user.IP);
-
-            //    SendData(GetDataFromMemoryStream(writeStream), user);
-            //}
-
             //Set up the events
             user.DataReceived += new DataReceivedEvent(user_DataReceived);
             user.UserDisconnected += new ConnectionEvent(user_UserDisconnected);
@@ -94,19 +81,6 @@ namespace AtelierXNA
         {
             connectedClients--;
 
-            ////Send a message to every other client notifying them on a removed client, if the setting is set to True
-            //if (false)
-            //{
-            //    writeStream.Position = 0;
-
-            //    //Write in the form {Protocol}{User_ID}{User_IP}
-            //    writer.Write(0);
-            //    writer.Write(user.id);
-            //    writer.Write(user.IP);
-
-            //    SendData(GetDataFromMemoryStream(writeStream), user);
-            //}
-            //Clear the array's index
             client[user.id] = null;
         }
 
@@ -118,14 +92,6 @@ namespace AtelierXNA
         private void user_DataReceived(Client sender, byte[] data)
         {
             writeStream.Position = 0;
-
-            //if (false)
-            //{
-            //    //Append the id and IP of the original sender to the message, and combine the two data sets.
-            //    writer.Write(sender.id);
-            //    writer.Write(sender.IP);
-            //    data = CombineData(data, writeStream);
-            //}
             SendData(data, sender);
 
         }
@@ -139,7 +105,6 @@ namespace AtelierXNA
         {
             byte[] result;
 
-            //Async method called this, so lets lock the object to make sure other threads/async calls need to wait to use it.
             lock (ms)
             {
                 int bytesWritten = (int)ms.Position;

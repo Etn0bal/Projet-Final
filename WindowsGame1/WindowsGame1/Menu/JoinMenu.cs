@@ -38,7 +38,7 @@ namespace AtelierXNA
             GestionnaireInputs = Game.Services.GetService(typeof(InputManager)) as InputManager;
             positionSouris = new Point(0, 0);
             IPÉcrit = "";
-            ServerTrouvé = false;
+            ServerTrouvé = true;
 
             //Arriere plan
             Rectangle arrièrePlan = new Rectangle(0, 0, Game.Window.ClientBounds.Width, Game.Window.ClientBounds.Height);
@@ -76,9 +76,19 @@ namespace AtelierXNA
             GérerSouris();
             GérerClavier(gameTime);
             IP = IPÉcrit;
+            GérerGame();
 
             base.Update(gameTime);
         }
+
+        private void GérerGame()
+        {
+            if(((Game1)Game).EnJeu)
+            {
+                ((Game1)Game).ChangerDÉtat(3);
+            }
+        }
+
         void GérerSouris()
         {
             positionSouris = GestionnaireInputs.GetPositionSouris();
@@ -90,34 +100,31 @@ namespace AtelierXNA
                     ((Game1)Game).ChangerDÉtat(0);
                 }
             }
-            if (positionJoinServerButton.Contains(positionSouris))
+            if (positionJoinServerButton.Contains(positionSouris)&& GestionnaireInputs.EstNouveauClicGauche() || GestionnaireInputs.EstNouvelleTouche(Microsoft.Xna.Framework.Input.Keys.Enter))
             {
-                if (GestionnaireInputs.EstNouveauClicGauche())
-                {
                     try
                     {
                         ServeurClient Invité = new ServeurClient(Game, IP);
-                        Game.Components.Add(Invité);
+                        Game.Services.AddService(typeof(ServeurClient), Invité);
                         ServerTrouvé = true;                        
                     }
                     catch (Exception)
                     {
-                        MessageBox.Show("Pas de serveur valide à cette IP");
                     }
-                    if(ServerTrouvé == true)
+                    if (ServerTrouvé == true)
                     {
-                        ((Game1)Game).ChangerDÉtat(5);
+                       ((Game1)Game).NumClient = 1;
                     }
-                    
-
-
-                }
             }
         }
         void GérerClavier(GameTime gameTime)
         {
             if(GestionnaireInputs.EstClavierActivé)
             {
+                if(GestionnaireInputs.EstNouvelleTouche(Microsoft.Xna.Framework.Input.Keys.Scroll))
+                {
+                    IPÉcrit = "172.17.106.102";
+                }
                 if (IPÉcrit.Count() < 20)
                 {
 

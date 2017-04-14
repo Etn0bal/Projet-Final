@@ -22,6 +22,8 @@ namespace AtelierXNA
         InputManager GestionInput { get; set; }
         States State { get; set; }
         public bool EnJeu { get; set; }
+        public int NumClient {get;set;}
+
 
         public Game1()
         {
@@ -42,6 +44,7 @@ namespace AtelierXNA
             Services.AddService(typeof(InputManager), GestionInput);
             Services.AddService(typeof(RessourcesManager<Model>), new RessourcesManager<Model>(this, "Models"));
             Services.AddService(typeof(RessourcesManager<SpriteFont>), new RessourcesManager<SpriteFont>(this, "Fonts"));
+            Services.AddService(typeof(Random), new Random());
 
             State = States.MainMenu;
             JoinMenu joinMenu = new JoinMenu(this);
@@ -222,8 +225,9 @@ namespace AtelierXNA
         void InitialiserGame()
         {
             NettoyerListeComponents();
-            TheGame game = new TheGame(this);
+            TheGame game = new TheGame(this,NumClient);
             Components.Add(game);
+            Services.AddService(typeof(TheGame),game);
         }
         private void InitialiserAttentePartie()
         {

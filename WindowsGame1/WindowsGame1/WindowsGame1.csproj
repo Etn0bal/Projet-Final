@@ -79,24 +79,29 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CaméraTypéMoba.cs" />
-    <Compile Include="Entitée\EntitéeEnnemie.cs" />
-    <Compile Include="Entitée\EntitéeJoueur.cs" />
-    <Compile Include="Entitée\EntitéePéon.cs" />
-    <Compile Include="Entitée\EntitéeTour.cs" />
-    <Compile Include="Entitée\EntitéeImmobile.cs" />
-    <Compile Include="Entitée\EntitéeMobile.cs" />
+    <Compile Include="Entitée\EntitéJoueurs\EntitéEnnemie.cs" />
+    <Compile Include="Entitée\EntitéJoueurs\EntitéJoueur.cs" />
+    <Compile Include="Entitée\EntitéPéons\EntitéPéon.cs" />
+    <Compile Include="Entitée\EntitéPéons\EntitéPéonAlliée.cs" />
+    <Compile Include="Entitée\EntitéPéons\EntitéPéonEnnemie.cs" />
+    <Compile Include="Entitée\EntitéTours\EntitéTour.cs" />
     <Compile Include="Carte\CartePlan.cs" />
+    <Compile Include="Entitée\EntitéTours\EntitéTourAlliée.cs" />
+    <Compile Include="Entitée\EntitéTours\EntitéTourEnnemie.cs" />
+    <Compile Include="Minuteur.cs" />
+    <Compile Include="Projectile\Projectile.cs" />
+    <Compile Include="Projectile\ProjectileAttaqueDeBase.cs" />
     <Compile Include="Serveur\Delegates.cs" />
-    <Compile Include="Entitée\Entitée.cs" />
+    <Compile Include="Entitée\ComposantEntité\Entité.cs" />
     <Compile Include="Game\TheGame.cs" />
-    <Compile Include="Entitée\IControlable.cs" />
-    <Compile Include="Entitée\IControlée.cs" />
+    <Compile Include="Entitée\ComposantEntité\IControlable.cs" />
+    <Compile Include="Entitée\ComposantEntité\IControlée.cs" />
     <Compile Include="Menu\SpriteHostMenu.cs" />
     <Compile Include="Menu\SpriteJoinMenu.cs" />
     <Compile Include="Menu\SpriteMainMenu.cs" />
     <Compile Include="Carte\Murs.cs" />
-    <Compile Include="Entitée\ObjetDeBase.cs" />
-    <Compile Include="Entitée\ObjetDeDémo.cs" />
+    <Compile Include="Entitée\ComposantEntité\ObjetDeBase.cs" />
+    <Compile Include="Entitée\ComposantEntité\ObjetDeDémo.cs" />
     <Compile Include="ServeurClients\Protocoles.cs" />
     <Compile Include="Serveur\Client.cs" />
     <Compile Include="Menu\Listener.cs" />
@@ -111,8 +116,8 @@
     <Compile Include="Game\Game1.cs" />
     <Compile Include="Menu\Texte.cs" />
     <Compile Include="Menu\TexteModifiable.cs" />
-    <Compile Include="TexteHostMenu.cs" />
-    <Compile Include="TexteJoinMenu.cs" />
+    <Compile Include="Menu\TexteHostMenu.cs" />
+    <Compile Include="Menu\TexteJoinMenu.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Game.ico" />

@@ -51,8 +51,8 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Models\Robot.FBX">
-      <Name>Robot</Name>
+    <Compile Include="Models\Robot2.FBX">
+      <Name>Robot2</Name>
       <Importer>FbxImporter</Importer>
       <Processor>ModelProcessor</Processor>
     </Compile>
@@ -133,22 +133,8 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Models\drone_diffuse.png">
-      <Name>drone_diffuse</Name>
-      <Importer>TextureImporter</Importer>
-      <Processor>TextureProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Models\Drone_red.FBX">
-      <Name>Drone_red</Name>
-      <Importer>FbxImporter</Importer>
-      <Processor>ModelProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Models\Robot+Dog+export.FBX">
-      <Name>Robot+Dog+export</Name>
+    <Compile Include="Models\tank.fbx">
+      <Name>tank</Name>
       <Importer>FbxImporter</Importer>
       <Processor>ModelProcessor</Processor>
     </Compile>
