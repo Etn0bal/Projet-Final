@@ -103,7 +103,7 @@ namespace AtelierXNA
                     GetDestination();
                     try
                     {
-                        Cible = Game.Components.OfType<Entité>().First(x => (x.Position - Destination).Length() <= x.RayonCollision);
+                        Cible = Game.Components.OfType<Entité>().First(x => (x.Position - Destination).Length() <= x.RayonCollision && x.GetType().);
                     }
                     catch { }
 
