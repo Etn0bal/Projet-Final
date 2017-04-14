@@ -105,7 +105,7 @@ namespace AtelierXNA
 
             Sommets = new VertexPositionColor[(18+24)*30];
 
-            TableauDeDroites = new Vector3[2, 32];
+            TableauDeDroites = new Vector3[2, 42];
         }
 
 
@@ -232,7 +232,7 @@ namespace AtelierXNA
         void AjoutDonnéTableauDroites(Vector3 point)
         {
             TableauDeDroites[PtsDroite++, NumDroite] = point;
-            if(PtsDroite == 2) { PtsDroite = 0; NumDroite++; }   
+            if (PtsDroite == 2) { PtsDroite = 0; NumDroite++; }   
         }
 
         public override void Draw(GameTime gameTime)
