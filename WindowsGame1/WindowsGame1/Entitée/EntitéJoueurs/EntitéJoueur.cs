@@ -23,7 +23,7 @@ namespace AtelierXNA
         Vector3 PointMinBDC = new Vector3(-2, 0, -(5f / 2f));
 
 
-        public BoundingBox BoiteDeCollision { get; private set; }
+
         public BoundingSphere SphèreDeCollision { get; private set; }
         Entité Cible { get; set; }      
         Vector3 DirectionDéplacement { get; set; }
@@ -106,7 +106,7 @@ namespace AtelierXNA
                     GetDestination();
                     try
                     {
-                        Cible = Game.Components.OfType<Entité>().First(x => (x.Position - Destination).Length() <= x.RayonCollision && !x.EstAlliée);
+                        Cible = Game.Components.OfType<Entité>().First(x => x.BoiteDeCollision.Intersects(RayonPicking) != null && !x.EstAlliée);
                     }
                     catch { }
 
@@ -129,13 +129,10 @@ namespace AtelierXNA
             {
                 NouvellePosition = Position + FACTEUR_VITESSE * DirectionDéplacement;
 
-                if (Murs.EnCollision(this))
-                {
-                    Destination = Position;
-                }
-                else
+                if (!Murs.EnCollision(this))
                 {
                     Position = NouvellePosition;
+                    BoiteDeCollision = new BoundingBox(Position + PointMinBDC, Position + PointMaxBDC);
                     DoCalculerMonde = true;
                 }
             }
@@ -148,10 +145,11 @@ namespace AtelierXNA
                 {
                     GérerRotation();
                     Position = Destination;
+                    BoiteDeCollision = new BoundingBox(Position + PointMinBDC, Position + PointMaxBDC);
                     CalculerMonde();
                 }
             }
-
+            
             CaméraJeu.DonnerPositionJoueur(Position);
         }
 
@@ -179,8 +177,9 @@ namespace AtelierXNA
             //le vecteur 0 alors le normalize donne un vecteur avec des valeurs non numériques
             if (DirectionDéplacement.X >= 0 || DirectionDéplacement.X <= 0)
             {
-                float Angle = (float)Math.Acos(Vector3.Dot(DirectionDéplacement, Direction) / (DirectionDéplacement.Length() * Direction.Length()));
+                float Angle = (float)Math.Acos(Math.Min(Math.Max(Vector3.Dot(DirectionDéplacement, Direction) / (DirectionDéplacement.Length() * Direction.Length()),-1),1));
                 if (Vector3.Cross(Direction, DirectionDéplacement).Y < 0) { Angle *= -1; }
+
                 Rotation += new Vector3(0, Angle, 0);
                 Direction = DirectionDéplacement;
                 DoCalculerMonde = true;

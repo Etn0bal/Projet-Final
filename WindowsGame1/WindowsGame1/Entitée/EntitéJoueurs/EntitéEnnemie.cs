@@ -17,6 +17,11 @@ namespace AtelierXNA
     /// </summary>
     public class EntitéEnnemie : Entité, IControlable, ICollisionable, IDestructible
     {
+        Vector3 PointMaxBDC = new Vector3(2, 16.2f, 5f / 2f);
+        Vector3 PointMinBDC = new Vector3(-2, 0, -(5f / 2f));
+
+
+
         const float FACTEUR_VITESSE = 0.05f;
         public BoundingSphere SphèreDeCollision { get; private set; }
         Vector3 DirectionDéplacement { get; set; }
@@ -46,6 +51,7 @@ namespace AtelierXNA
         {
             GestionInputs = Game.Services.GetService(typeof(InputManager)) as InputManager;
             CaméraJeu = Game.Services.GetService(typeof(Caméra)) as Caméra;
+            BoiteDeCollision = new BoundingBox(Position + PointMinBDC, Position + PointMaxBDC);
             RayonCollision = 3;
             DoCalculerMonde = false;
             EnMouvement = false;

@@ -106,7 +106,7 @@ namespace AtelierXNA
                 Game.Services.AddService(typeof(Murs), Murs);
 
                 //Joueurs:
-                Joueur = new EntitéJoueur(Game, "robot2", ÉCHELLE_OBJET_JOUEUR, rotationObjetInitialeHost, positionInitialeHost, INTERVALLEMAJ, 1, 5, 1, 1, 1, new Vector3(1, 0, 0));
+                Joueur = new EntitéJoueur(Game, "robot2", ÉCHELLE_OBJET_JOUEUR, rotationObjetInitialeHost, positionInitialeHost, INTERVALLEMAJ, 1, 999999, 1, 1, 1, new Vector3(1, 0, 0));
                 Game.Components.Add(Joueur);
                 JoueurEnnemie = new EntitéEnnemie(Game, "robot2", ÉCHELLE_OBJET_JOUEUR, rotationObjetInitialeInvite, positionInitialeInvite, INTERVALLEMAJ, 1, 5, 1, 1, 1, new Vector3(-1, 0, 0));
                 Game.Components.Add(JoueurEnnemie);
@@ -194,6 +194,14 @@ namespace AtelierXNA
         {
             float tempsÉcoulé = (float)gameTime.ElapsedGameTime.TotalSeconds;
             TempsÉcouléDepuisMAJ += tempsÉcoulé;
+
+
+            if(GestionInput.EstNouvelleTouche(Microsoft.Xna.Framework.Input.Keys.F))
+            {
+                Game.Components.Add(new Projectile(Game, "rocket", 0.009f, new Vector3(0,0,(float)-Math.PI/4), Joueur.Position, 1, 1, 1f / 60f));
+            }
+
+
             if (TempsÉcouléDepuisMAJ >= INTERVALLEMAJ)
             {
                 NettoyerListeComponentsEtRespawn();

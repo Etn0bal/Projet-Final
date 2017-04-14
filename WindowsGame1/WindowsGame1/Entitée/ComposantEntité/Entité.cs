@@ -20,7 +20,7 @@ namespace AtelierXNA
         const int DOMMAGE_MIN = 0;
 
         int précision;
-
+        public BoundingBox BoiteDeCollision { get; protected set; }
         public int PointDeVie { get; set; }
         public int Portée { get; set; }
         protected int Force { get; set; }

@@ -17,6 +17,10 @@ namespace AtelierXNA
     /// </summary>
     public class EntitéPéon : Entité, IControlée, IDestructible
     {
+        protected Vector3 PointMaxBDC = new Vector3(5f/2f , 3, 3f / 2f);
+        protected Vector3 PointMinBDC = new Vector3(-(5/2f), 0, -(3f / 2f));
+
+
         public bool ÀDétruire { get;  set; }
         protected bool EnRechercheDEnnemi { get; set; }
         protected Entité Cible { get; set; }
@@ -34,6 +38,7 @@ namespace AtelierXNA
         public override void Initialize()
         {
             Cible = null;
+            BoiteDeCollision = new BoundingBox(Position + PointMinBDC, Position + PointMaxBDC);
             RayonCollision = 1;
             EnRechercheDEnnemi = true;
             ÀDétruire = false;
