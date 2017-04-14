@@ -33,6 +33,7 @@ namespace AtelierXNA
         public override void Initialize()
         {
             EnMouvement = false;
+            ÀDétruire = false;
             GestionInput = Game.Services.GetService(typeof(InputManager)) as InputManager;
             base.Initialize();
         }
@@ -45,11 +46,16 @@ namespace AtelierXNA
         {
             if (EnMouvement)
             {
-                GérerDéplacement();
+                float tempsÉcoulé = (float)gameTime.ElapsedGameTime.TotalSeconds;
+                TempsÉcouléDepuisMAJ += tempsÉcoulé;
+                if (TempsÉcouléDepuisMAJ >= IntervalleMAJ)
+                {
+                    GérerDéplacement();
+                    GestionVie();
+                }
             }
             if (Cible != null)
             {
-                AttaquerLaCible();
                 RegarderSiCibleEstMortOuHorsRange();
             }
             if(GestionInput.EstNouvelleTouche(Keys.A))
@@ -58,10 +64,12 @@ namespace AtelierXNA
             }
             base.Update(gameTime);
         }
-
-        private void AttaquerLaCible()
+        private void GestionVie()
         {
-            Cible.RecevoirAttaque(Force);
+            if (PointDeVie == 0)
+            {
+                ÀDétruire = true;
+            }
         }
 
         private void RegarderSiCibleEstMortOuHorsRange()

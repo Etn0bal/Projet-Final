@@ -44,9 +44,12 @@ namespace AtelierXNA
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         public override void Update(GameTime gameTime)
         {
-            if(EnMouvement)
+            float tempsÉcoulé = (float)gameTime.ElapsedGameTime.TotalSeconds;
+            TempsÉcouléDepuisMAJ += tempsÉcoulé;
+            if (TempsÉcouléDepuisMAJ >= IntervalleMAJ)
             {
                 GestionDéplacement();
+                GestionVie();
             }
             if (DoCalculerMonde)
             {
@@ -65,6 +68,13 @@ namespace AtelierXNA
         {
             Position = position;
             EnMouvement = true;
+        }
+        private void GestionVie()
+        {
+            if (PointDeVie == 0)
+            {
+                ÀDétruire = true;
+            }
         }
         void GérerRotation()
         {

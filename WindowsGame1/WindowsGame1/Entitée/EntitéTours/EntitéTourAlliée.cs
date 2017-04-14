@@ -25,7 +25,7 @@ namespace AtelierXNA
         public override void Initialize()
         {
             RayonCollision = 4;
-
+            ÀDétruire = false;
             base.Initialize();
         }
 
@@ -36,7 +36,10 @@ namespace AtelierXNA
             TempsÉcouléDepuisMAJ += tempsÉcoulé;
             if (TempsÉcouléDepuisMAJ >= IntervalleMAJ)
             {
+                RegarderSiCibleEstMortOuHorsRange();
                 ControlerLEntitée();
+                GestionVie();
+
             }
                 base.Update(gameTime);
         }
@@ -45,31 +48,55 @@ namespace AtelierXNA
         {
             if(Cible!=null)
             {
-                AttaquerLaCible();
+                AttaquerCible();
             }
             else { RechercherEntité(); }
         }
 
-        private void AttaquerLaCible()
+        private void RegarderSiCibleEstMortOuHorsRange()
         {
-        }
+            if (Cible != null)
+            {
+                float distanceEntreLesDeux = (float)Math.Sqrt(Math.Pow((Cible.Position.X - Position.X), 2) + Math.Pow((Cible.Position.Z - Position.Z), 2));
 
+                if (Cible.PointDeVie == 0 || distanceEntreLesDeux > Portée)
+                {
+                    Cible = null;
+                }
+            }
+
+        }
         private void RechercherEntité()
         {
             foreach(Entité entité in Game.Components.Where(x=> x is Entité))
             {
                 if(Cible ==null)
                 {
-                    if(entité is EntitéPéon)
+                    float distanceEntreLesDeux = (float)Math.Sqrt(Math.Pow((entité.Position.X - Position.X), 2) + Math.Pow((entité.Position.Z - Position.Z), 2));
+                    if (distanceEntreLesDeux <= Portée)
                     {
-                        Cible = entité;
-                    }
-                    if (entité is EntitéEnnemie)
-                    {
-                        Cible = entité;
+                        if (entité is EntitéPéon)
+                        {
+                            Cible = entité;
+                        }
+                        if (entité is EntitéEnnemie)
+                        {
+                            Cible = entité;
+                        }
                     }
                 }
 
+            }
+        }
+        private void AttaquerCible()
+        {
+          
+        }
+        private void GestionVie()
+        {
+            if (PointDeVie == 0)
+            {
+                ÀDétruire = true;
             }
         }
 

@@ -15,7 +15,7 @@ namespace AtelierXNA
     /// <summary>
     /// This is a game component that implements IUpdateable.
     /// </summary>
-    public class EntitéEnnemie : Entité, IControlable, ICollisionable
+    public class EntitéEnnemie : Entité, IControlable, ICollisionable, IDestructible
     {
         const float FACTEUR_VITESSE = 0.05f;
         public BoundingSphere SphèreDeCollision { get; private set; }
@@ -25,6 +25,7 @@ namespace AtelierXNA
         InputManager GestionInputs { get; set; }
         Caméra CaméraJeu { get; set; }
         bool EnMouvement { get; set; }
+        public bool ÀDétruire { get; set; }
 
 
 
@@ -47,14 +48,20 @@ namespace AtelierXNA
             RayonCollision = 3;
             DoCalculerMonde = false;
             EnMouvement = false;
+            ÀDétruire = false;
 
             base.Initialize();
         }
 
         public override void Update(GameTime gameTime)
         {
-
-            GestionDéplacement();
+            float tempsÉcoulé = (float)gameTime.ElapsedGameTime.TotalSeconds;
+            TempsÉcouléDepuisMAJ += tempsÉcoulé;
+            if (TempsÉcouléDepuisMAJ >= IntervalleMAJ)
+            {
+                GestionDéplacement();
+                GestionVie();
+            }
 
             if (DoCalculerMonde)
             {
@@ -64,6 +71,15 @@ namespace AtelierXNA
             base.Update(gameTime);
 
         }
+
+        private void GestionVie()
+        {
+            if (PointDeVie == 0)
+            {
+                ÀDétruire = true;
+            }
+        }
+
         public void GestionDéplacement()
         {
             if ((Destination - Position).Length() > FACTEUR_VITESSE * DirectionDéplacement.Length())
@@ -96,11 +112,6 @@ namespace AtelierXNA
                 DoCalculerMonde = true;
             }
         }
-
-
-
-
-
         public bool EstEnCollision(object autreObjet)
         {
             return false;

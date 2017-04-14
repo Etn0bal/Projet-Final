@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Xna.Framework;
@@ -15,11 +15,12 @@ namespace AtelierXNA
     /// <summary>
     /// This is a game component that implements IUpdateable.
     /// </summary>
-    public class EntitéTour : Entité
+    public class Minuteur : Microsoft.Xna.Framework.GameComponent
     {
-        public EntitéTour(Game jeu, string nomModèle, float échelleInitiale, Vector3 rotationInitiale, Vector3 positionInitiale,
-                           float intervalleMAJ, int pointDeVie, int portée, int force, int armure, int précision)
-            : base(jeu, nomModèle, échelleInitiale, rotationInitiale, positionInitiale, intervalleMAJ, pointDeVie, portée, force, armure, précision)
+        int Minutes { get; set; }
+        int Secondes { get; set; }
+        public Minuteur(Game game)
+            : base(game)
         {
             // TODO: Construct any child components here
         }
@@ -30,7 +31,7 @@ namespace AtelierXNA
         /// </summary>
         public override void Initialize()
         {
-            RayonCollision = 4;
+            // TODO: Add your initialization code here
 
             base.Initialize();
         }

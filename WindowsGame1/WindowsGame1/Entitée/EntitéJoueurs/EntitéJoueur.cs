@@ -15,7 +15,7 @@ namespace AtelierXNA
     /// <summary>
     /// This is a game component that implements IUpdateable.
     /// </summary>
-    public class EntitéJoueur : Entité, IControlable, ICollisionable
+    public class EntitéJoueur : Entité, IControlable, ICollisionable,IDestructible
     {
         const float FACTEUR_VITESSE = 0.05f;
         const float ÉCHELLE_PROJECTILE_ATTAQUE_DE_BASE = 0.009f;
@@ -34,6 +34,7 @@ namespace AtelierXNA
         CaméraTypéMoba CaméraJeu { get; set; }
         Murs Murs { get; set; }
         public bool EnMouvement { get; set; }
+        public bool ÀDétruire { get; set;}
 
 
 
@@ -53,6 +54,7 @@ namespace AtelierXNA
             Destination = Position;
             PlanReprésentantCarte = new Plane(0, 1, 0, 0);
             EnMouvement = false;
+            ÀDétruire = false;
             RayonCollision = 3;
             BoiteDeCollision = new BoundingBox(Position + PointMinBDC, Position + PointMaxBDC);
             Murs = Game.Services.GetService(typeof(Murs)) as Murs; 
@@ -63,7 +65,12 @@ namespace AtelierXNA
         {
             //Rajouter mécanique gestion du temps
             GestionDéplacement();
-
+            float tempsÉcoulé = (float)gameTime.ElapsedGameTime.TotalSeconds;
+            TempsÉcouléDepuisMAJ += tempsÉcoulé;
+            if (TempsÉcouléDepuisMAJ >= IntervalleMAJ)
+            {
+                GestionVie();
+            }
             if (DoCalculerMonde)
             {
                 CalculerMonde();
@@ -72,11 +79,19 @@ namespace AtelierXNA
             base.Update(gameTime);
 
         }
+
         public override void Draw(GameTime gameTime)
         {
             base.Draw(gameTime);
         }
 
+        private void GestionVie()
+        {
+            if (PointDeVie == 0)
+            {
+                ÀDétruire = true;
+            }
+        }
 
         public void GestionDéplacement()
         {

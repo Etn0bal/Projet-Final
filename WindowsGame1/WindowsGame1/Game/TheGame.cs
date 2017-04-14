@@ -92,6 +92,7 @@ namespace AtelierXNA
                 Game.Components.Add(Murs);
                 Game.Services.AddService(typeof(Murs), Murs);
 
+                //Joueurs:
                 Joueur = new EntitéJoueur(Game, "robot2", ÉCHELLE_OBJET_JOUEUR, rotationObjetInitialeHost, positionInitialeHost, INTERVALLE_MAJ, 1, 5, 1, 1,1, new Vector3(1, 0, 0));
                 Game.Components.Add(Joueur);
                 JoueurEnnemie = new EntitéEnnemie(Game, "robot2", ÉCHELLE_OBJET_JOUEUR, rotationObjetInitialeInvite, positionInitialeInvite, INTERVALLE_MAJ, 1, 5, 1, 1,1,new Vector3(-1, 0, 0));
@@ -182,6 +183,7 @@ namespace AtelierXNA
             TempsÉcouléDepuisMAJ += tempsÉcoulé;
             if (TempsÉcouléDepuisMAJ >=INTERVALLEMAJ)
             {
+                NettoyerListeComponentsEtRespawn();
             }
             //if (Joueur.EnMouvement)
             //{
@@ -209,6 +211,44 @@ namespace AtelierXNA
         {
             
             base.Draw(gameTime);
+        }
+        void NettoyerListeComponentsEtRespawn()
+        {
+            for (int i = Game.Components.Count - 1; i >= 0; --i)
+            {
+                if (Game.Components[i] is IDestructible && ((IDestructible)Game.Components[i]).ÀDétruire)
+                {
+                    Game.Components.RemoveAt(i);
+
+                    if (Game.Components[i] is EntitéJoueur)
+                    {
+                        if(NumClient==0)
+                        {
+                            Joueur = new EntitéJoueur(Game, "robot2", ÉCHELLE_OBJET_JOUEUR, rotationObjetInitialeHost, positionInitialeHost, INTERVALLE_MAJ, 1, 5, 1, 1, 1, new Vector3(1, 0, 0));
+                            Game.Components.Add(Joueur);
+                        }
+                        else
+                        {
+                            Joueur = new EntitéJoueur(Game, "robot2", ÉCHELLE_OBJET_JOUEUR, rotationObjetInitialeInvite, positionInitialeInvite, INTERVALLE_MAJ, 1, 5, 1, 1, 1, new Vector3(-1, 0, 0));
+                            Game.Components.Add(Joueur);
+                        }
+                    }
+                    if(Game.Components[i] is EntitéEnnemie)
+                    {
+                        if (NumClient == 0)
+                        {
+                            JoueurEnnemie = new EntitéEnnemie(Game, "robot2", ÉCHELLE_OBJET_JOUEUR, rotationObjetInitialeInvite, positionInitialeInvite, INTERVALLE_MAJ, 1, 5, 1, 1, 1, new Vector3(-1, 0, 0));
+                            Game.Components.Add(JoueurEnnemie);
+                        }
+                        else
+                        {
+                            JoueurEnnemie = new EntitéEnnemie(Game, "robot2", ÉCHELLE_OBJET_JOUEUR, rotationObjetInitialeHost, positionInitialeHost, INTERVALLE_MAJ, 1, 5, 1, 1, 1, new Vector3(1, 0, 0));
+                            Game.Components.Add(JoueurEnnemie);
+                        }
+                    }
+
+                }
+            }
         }
     }
 }
