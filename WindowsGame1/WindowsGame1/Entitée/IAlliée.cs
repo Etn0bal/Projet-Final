@@ -5,7 +5,8 @@ using System.Text;
 
 namespace AtelierXNA
 {
-    interface IAllié
+    public interface IAlliée
     {
+        bool EstAlliée { get; set; }
     }
 }

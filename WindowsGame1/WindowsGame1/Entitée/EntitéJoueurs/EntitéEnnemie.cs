@@ -15,7 +15,7 @@ namespace AtelierXNA
     /// <summary>
     /// This is a game component that implements IUpdateable.
     /// </summary>
-    public class EntitéEnnemie : Entité, IControlable, ICollisionable, IDestructible
+    public class EntitéEnnemie : Entité, IControlable, ICollisionable, IDestructible, IEnnemie
     {
         const float FACTEUR_VITESSE = 0.05f;
         public BoundingSphere SphèreDeCollision { get; private set; }
@@ -26,6 +26,7 @@ namespace AtelierXNA
         Caméra CaméraJeu { get; set; }
         bool EnMouvement { get; set; }
         public bool ÀDétruire { get; set; }
+        public bool EstAlliée { get; set; }
 
 
 
@@ -49,6 +50,7 @@ namespace AtelierXNA
             DoCalculerMonde = false;
             EnMouvement = false;
             ÀDétruire = false;
+            EstAlliée = false;
 
             base.Initialize();
         }

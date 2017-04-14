@@ -17,7 +17,7 @@ namespace AtelierXNA
     /// </summary>
     public class ProjectileAttaqueDeBase : Projectile, IDestructible
     {
-        const float FACTEUR_VITESSE = 0.5f;
+        const float FACTEUR_VITESSE = 1f;
 
         Entité Cible { get; set; }
         public bool ÀDétruire { get; set; }

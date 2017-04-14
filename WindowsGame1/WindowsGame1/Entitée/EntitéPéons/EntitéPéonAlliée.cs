@@ -10,15 +10,17 @@ using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 namespace AtelierXNA
 {
-    class EntitéPéonAlliée : EntitéPéon, IControlée, IDestructible
+    class EntitéPéonAlliée : EntitéPéon, IControlée, IDestructible, IAlliée
     {
         const float FACTEUR_VITESSE = 0.01f;
         public bool EnMouvement { get; set; }
         bool EstPremierMinion { get; set; }
+        public bool EstAlliée { get; set; }
         Vector3 Direction { get; set; }
         public int NumPéon { get; set; }
         InputManager GestionInput { get; set; }
         Minuteur LeMinuteur;
+
 
         public EntitéPéonAlliée(Game jeu, string nomModèle, float échelleInitiale, Vector3 rotationInitiale, Vector3 positionInitiale,
                            float intervalleMAJ, int pointDeVie, int portée, int force, int armure, int précision,  Vector3 direction, int numPéon,bool estPremierMinion)
@@ -37,7 +39,8 @@ namespace AtelierXNA
         {
             EnMouvement = false;
             EnRechercheDEnnemi = true;
-            ÀDétruire = false;
+            EstAlliée = true;
+
             GestionInput = Game.Services.GetService(typeof(InputManager)) as InputManager;
             LeMinuteur = Game.Services.GetService(typeof(Minuteur)) as Minuteur;
             base.Initialize();

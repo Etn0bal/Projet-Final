@@ -15,7 +15,7 @@ namespace AtelierXNA
     /// <summary>
     /// This is a game component that implements IUpdateable.
     /// </summary>
-    public class EntitéJoueur : Entité, IControlable, ICollisionable,IDestructible
+    public class EntitéJoueur : Entité, IControlable, ICollisionable,IDestructible, IAlliée
     {
         const float FACTEUR_VITESSE = 0.05f;
         const float ÉCHELLE_PROJECTILE_ATTAQUE_DE_BASE = 0.009f;
@@ -35,6 +35,7 @@ namespace AtelierXNA
         Murs Murs { get; set; }
         public bool EnMouvement { get; set; }
         public bool ÀDétruire { get; set;}
+        public bool EstAlliée { get; set; }
 
 
 
@@ -55,6 +56,7 @@ namespace AtelierXNA
             PlanReprésentantCarte = new Plane(0, 1, 0, 0);
             EnMouvement = false;
             ÀDétruire = false;
+            EstAlliée = true;
             RayonCollision = 3;
             BoiteDeCollision = new BoundingBox(Position + PointMinBDC, Position + PointMaxBDC);
             Murs = Game.Services.GetService(typeof(Murs)) as Murs; 
@@ -103,7 +105,7 @@ namespace AtelierXNA
                     GetDestination();
                     try
                     {
-                        Cible = Game.Components.OfType<Entité>().First(x => (x.Position - Destination).Length() <= x.RayonCollision && x.GetType().);
+                        Cible = Game.Components.OfType<Entité>().First(x => (x.Position - Destination).Length() <= x.RayonCollision );
                     }
                     catch { }
 
@@ -116,7 +118,7 @@ namespace AtelierXNA
                     }
                     else
                     {
-                        Game.Components.Add(new ProjectileAttaqueDeBase(Game, "rocket", ÉCHELLE_PROJECTILE_ATTAQUE_DE_BASE, Vector3.Zero, Position, Force, Précision, Cible, IntervalleMAJ));
+                        Game.Components.Add(new ProjectileAttaqueDeBase(Game, "Robot2", ÉCHELLE_PROJECTILE_ATTAQUE_DE_BASE, Vector3.Zero, Position, Force, Précision, Cible, IntervalleMAJ));
                         Cible = null;
                     }
                 }
