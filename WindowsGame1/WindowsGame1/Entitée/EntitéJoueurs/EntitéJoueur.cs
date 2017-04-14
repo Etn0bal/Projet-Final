@@ -18,7 +18,7 @@ namespace AtelierXNA
     public class EntitéJoueur : Entité, IControlable, ICollisionable,IDestructible, IAlliée
     {
         const float FACTEUR_VITESSE = 0.05f;
-        const float ÉCHELLE_PROJECTILE_ATTAQUE_DE_BASE = 0.009f;
+        const float ÉCHELLE_PROJECTILE_ATTAQUE_DE_BASE = 0.000009f;
         Vector3 PointMaxBDC = new Vector3(2, 16.2f, 5f / 2f);
         Vector3 PointMinBDC = new Vector3(-2, 0, -(5f / 2f));
 
@@ -106,6 +106,7 @@ namespace AtelierXNA
                     try
                     {
                         Cible = Game.Components.OfType<Entité>().First(x => (x.Position - Destination).Length() <= x.RayonCollision );
+
                     }
                     catch { }
 
@@ -118,7 +119,7 @@ namespace AtelierXNA
                     }
                     else
                     {
-                        Game.Components.Add(new ProjectileAttaqueDeBase(Game, "rocket", ÉCHELLE_PROJECTILE_ATTAQUE_DE_BASE, Vector3.Zero, Position, Force, Précision, Cible, IntervalleMAJ));
+                        Game.Components.Add(new ProjectileAttaqueDeBase(Game, "rocket", ÉCHELLE_PROJECTILE_ATTAQUE_DE_BASE, DirectionDéplacement, Position, Force, Précision, Cible, IntervalleMAJ));
                         Cible = null;
                     }
                 }
