@@ -112,7 +112,7 @@ namespace AtelierXNA
 
             Sommets = new VertexPositionColor[(18+24)*30];
 
-            TableauDeDroites = new Vector3[4, 42];
+            TableauDeDroites = new Vector3[2, 42];
         }
 
 
@@ -237,20 +237,7 @@ namespace AtelierXNA
         void AjoutDonnéTableauDroites(Vector3 point)
         {
             TableauDeDroites[PtsDroite++, NumDroite] = point;
-            if (PtsDroite == 2)
-            {
-                //Calcul de la direction de la droite
-                TableauDeDroites[PtsDroite++, NumDroite] = TableauDeDroites[1, NumDroite] - TableauDeDroites[0, NumDroite];
-                //Calcul du coefficient a, b et de la constante c de l'équation représentant la droite (sous forme ax+bz+c=0)
-                //Enregistré dans un Vecteur3 soit Vector3(a,b,c)
-                TableauDeDroites[PtsDroite++, NumDroite] = new Vector3(TableauDeDroites[POINT2, NumDroite].Z - TableauDeDroites[POINT1, NumDroite].Z,
-                                                                       TableauDeDroites[POINT1, NumDroite].X - TableauDeDroites[POINT2, NumDroite].X,
-                                                                       -((TableauDeDroites[POINT1, NumDroite].X - TableauDeDroites[POINT2, NumDroite].X) * TableauDeDroites[POINT1, NumDroite].Z +
-                                                                         (TableauDeDroites[POINT2, NumDroite].Z - TableauDeDroites[POINT1, NumDroite].Z) * TableauDeDroites[POINT1, NumDroite].X));
-
-
-                PtsDroite = 0; NumDroite++;
-            }
+            if(PtsDroite == 2) { PtsDroite = 0; NumDroite++; }   
         }
 
         public override void Draw(GameTime gameTime)
