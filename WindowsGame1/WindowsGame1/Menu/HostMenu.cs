@@ -116,8 +116,8 @@ namespace AtelierXNA
                     IPHostEntry ipE = Dns.GetHostEntry(sHostName);
                     IPAddress[] IpA = ipE.AddressList;
                     IP = IpA[1].ToString();
-                    Rectangle PositionTxt = new Rectangle((2 * (Game.Window.ClientBounds.Width / 10)), 5 * Game.Window.ClientBounds.Height / 10, 3 * (Game.Window.ClientBounds.Width / 10), (Game.Window.ClientBounds.Height / 10));
-                    TexteHostMenu IpAAfficher = new TexteHostMenu(Game, IP, "Arial", PositionTxt, new Vector2(3 * Game.Window.ClientBounds.Width / 10, Game.Window.ClientBounds.Height / 2), Color.White, 0);
+                    Rectangle positionIP = new Rectangle((2 * (Game.Window.ClientBounds.Width / 10)), 5 * Game.Window.ClientBounds.Height / 10, 3 * (Game.Window.ClientBounds.Width / 10), (Game.Window.ClientBounds.Height / 10));
+                    TexteHostMenu IpAAfficher = new TexteHostMenu(Game, IP, "Arial", positionIP, new Vector2(3 * Game.Window.ClientBounds.Width / 10, Game.Window.ClientBounds.Height / 2), Color.White, 0);
                     Rectangle positionTxt = new Rectangle((2 * (Game.Window.ClientBounds.Width / 10)), 7 * Game.Window.ClientBounds.Height / 10, 4 * (Game.Window.ClientBounds.Width / 10), (Game.Window.ClientBounds.Height / 10));
                     TexteHostMenu txt = new TexteHostMenu(Game, "Nombre de client connecté : 1 / 2", "Arial", positionTxt, new Vector2(4 * Game.Window.ClientBounds.Width / 10, 7 * Game.Window.ClientBounds.Height / 10), Color.White, 0);
                     Game.Components.Add(IpAAfficher);

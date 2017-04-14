@@ -50,6 +50,8 @@ namespace AtelierXNA
             {
                 GestionDéplacement();
                 GestionVie();
+                TempsÉcouléDepuisMAJ = 0;
+
             }
             if (DoCalculerMonde)
             {

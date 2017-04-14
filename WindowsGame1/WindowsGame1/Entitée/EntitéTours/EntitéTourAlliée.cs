@@ -39,9 +39,11 @@ namespace AtelierXNA
                 RegarderSiCibleEstMortOuHorsRange();
                 ControlerLEntitée();
                 GestionVie();
+                TempsÉcouléDepuisMAJ = 0;
+
 
             }
-                base.Update(gameTime);
+            base.Update(gameTime);
         }
 
         public void ControlerLEntitée()

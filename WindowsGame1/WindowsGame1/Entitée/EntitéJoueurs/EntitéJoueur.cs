@@ -70,6 +70,7 @@ namespace AtelierXNA
             if (TempsÉcouléDepuisMAJ >= IntervalleMAJ)
             {
                 GestionVie();
+                TempsÉcouléDepuisMAJ = 0;
             }
             if (DoCalculerMonde)
             {
