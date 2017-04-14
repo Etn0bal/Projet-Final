@@ -11,10 +11,11 @@ using Microsoft.Xna.Framework.Media;
 
 namespace AtelierXNA
 {
-    class EntitéPéonEnnemie : EntitéPéon, IControlée, IDestructible
+    class EntitéPéonEnnemie : EntitéPéon, IControlée, IDestructible, IEnnemie
     {
         const float FACTEUR_VITESSE = 0.01f;
         protected bool EnMouvement { get; set; }
+        public bool EstAlliée { get; set; }
         Vector3 Direction { get; set; }
         public int NumPéon { get; set; }
         Vector3 Destination { get; set; }
@@ -34,7 +35,7 @@ namespace AtelierXNA
         /// </summary>
         public override void Initialize()
         {
-
+            EstAlliée = false;
             base.Initialize();
         }
 

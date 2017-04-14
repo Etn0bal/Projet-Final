@@ -140,13 +140,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Models\rocket.fbx">
-      <Name>rocket</Name>
-      <Importer>FbxImporter</Importer>
-      <Processor>ModelProcessor</Processor>
-    </Compile>
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="Models\10038.jpg">
       <Name>10038</Name>
       <Importer>TextureImporter</Importer>

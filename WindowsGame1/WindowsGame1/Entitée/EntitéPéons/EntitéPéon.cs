@@ -20,6 +20,7 @@ namespace AtelierXNA
         public bool ÀDétruire { get;  set; }
         protected bool EnRechercheDEnnemi { get; set; }
         protected Entité Cible { get; set; }
+
         public EntitéPéon(Game jeu, string nomModèle, float échelleInitiale, Vector3 rotationInitiale, Vector3 positionInitiale,
                            float intervalleMAJ, int pointDeVie, int portée, int force, int armure, int précision)
             : base(jeu, nomModèle, échelleInitiale, rotationInitiale, positionInitiale, intervalleMAJ, pointDeVie, portée, force, armure, précision)
@@ -35,6 +36,7 @@ namespace AtelierXNA
             Cible = null;
             RayonCollision = 1;
             EnRechercheDEnnemi = true;
+            ÀDétruire = false;
 
             base.Initialize();
         }

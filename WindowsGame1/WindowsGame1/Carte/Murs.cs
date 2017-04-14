@@ -52,7 +52,7 @@ namespace AtelierXNA
         {
             NomMurs = nomMurs;
             Étendue = étendue;
-            
+
         }
 
         /// <summary>
@@ -110,7 +110,7 @@ namespace AtelierXNA
         {
             PtsSommets = new Vector3[NbColonnes, NbRangées];
 
-            Sommets = new VertexPositionColor[(18+24)*30];
+            Sommets = new VertexPositionColor[(18 + 24) * 30];
 
             TableauDeDroites = new Vector3[4, 42];
         }
@@ -123,14 +123,14 @@ namespace AtelierXNA
                 for (int colonne = 0; colonne < PtsSommets.GetLength(0); colonne++)
                 {
 
-                        PtsSommets[colonne, rangée] = new Vector3(Origine.X + (rangée * DeltaPoint.X),
-                                                              Origine.Y ,
-                                                              Origine.Z - (colonne * DeltaPoint.Z));
+                    PtsSommets[colonne, rangée] = new Vector3(Origine.X + (rangée * DeltaPoint.X),
+                                                          Origine.Y,
+                                                          Origine.Z - (colonne * DeltaPoint.Z));
                 }
             }
         }
 
-       
+
 
         protected override void LoadContent()
         {
@@ -144,10 +144,10 @@ namespace AtelierXNA
 
         protected override void InitialiserSommets()
         {
-            for (int i = 1; i < 18 ; i++)
+            for (int i = 1; i < 18; i++)
             {
                 AjouterPanDeMur(10 * i, 10 * (i + 1));
-                if(i < 6)
+                if (i < 6)
                 {
                     AjouterPanDeMur((10 * i) + 1, (10 * (i + 1)) + 1);
                     AjouterPanDeMur((10 * i) + 2, (10 * (i + 1)) + 2);
@@ -174,12 +174,12 @@ namespace AtelierXNA
             {
                 for (int colonne = 0; colonne < PtsSommets.GetLength(0) - 1; ++colonne)
                 {
-                    if(DataTexture[colonne,rangée].R == valeurCouleurPoint1 && DataTexture[colonne,rangée].G ==0)
+                    if (DataTexture[colonne, rangée].R == valeurCouleurPoint1 && DataTexture[colonne, rangée].G == 0)
                     {
                         point1 = PtsSommets[colonne, rangée];
                         AjoutDonnéTableauDroites(point1);
                     }
-                    if(DataTexture[colonne,rangée].R == valeurCouleurPoint2 && DataTexture[colonne, rangée].G == 0)
+                    if (DataTexture[colonne, rangée].R == valeurCouleurPoint2 && DataTexture[colonne, rangée].G == 0)
                     {
                         point2 = PtsSommets[colonne, rangée];
                         AjoutDonnéTableauDroites(point2);
@@ -188,7 +188,7 @@ namespace AtelierXNA
             }
 
             direction = point2 - point1;
-            latéral = Vector3.Normalize( new Vector3(-direction.Z, 0, direction.X));
+            latéral = Vector3.Normalize(new Vector3(-direction.Z, 0, direction.X));
 
             Vector3[] pts = { point1 + latéral, point1+latéral+hauteur, point2+latéral, point2+latéral+hauteur,
                               point1 - latéral, point1-latéral+hauteur, point2-latéral, point2-latéral+hauteur};
@@ -262,7 +262,7 @@ namespace AtelierXNA
             foreach (EffectPass passeEffet in EffetDeBase.CurrentTechnique.Passes)
             {
                 passeEffet.Apply();
-                GraphicsDevice.DrawUserPrimitives(PrimitiveType.TriangleList, Sommets, 0, 10*(18+24));
+                GraphicsDevice.DrawUserPrimitives(PrimitiveType.TriangleList, Sommets, 0, 10 * (18 + 24));
             }
         }
 
@@ -281,10 +281,10 @@ namespace AtelierXNA
 
             for (int numDroite = 0; numDroite < TableauDeDroites.GetLength(1); numDroite++)
             {
-                distance = (float)((Math.Abs((TableauDeDroites[VECTEUR_ÉQUATION_DROITE_ABC,numDroite].X * entité.NouvellePosition.X) + 
-                                             (TableauDeDroites[VECTEUR_ÉQUATION_DROITE_ABC,numDroite].Y * entité.NouvellePosition.Z) + 
-                                             TableauDeDroites[VECTEUR_ÉQUATION_DROITE_ABC, numDroite].Z)) / 
-                           (Math.Sqrt(Math.Pow(TableauDeDroites[VECTEUR_ÉQUATION_DROITE_ABC,numDroite].X, 2)  +
+                distance = (float)((Math.Abs((TableauDeDroites[VECTEUR_ÉQUATION_DROITE_ABC, numDroite].X * entité.NouvellePosition.X) +
+                                             (TableauDeDroites[VECTEUR_ÉQUATION_DROITE_ABC, numDroite].Y * entité.NouvellePosition.Z) +
+                                             TableauDeDroites[VECTEUR_ÉQUATION_DROITE_ABC, numDroite].Z)) /
+                           (Math.Sqrt(Math.Pow(TableauDeDroites[VECTEUR_ÉQUATION_DROITE_ABC, numDroite].X, 2) +
                                       Math.Pow(TableauDeDroites[VECTEUR_ÉQUATION_DROITE_ABC, numDroite].Y, 2))));
                 if (distance <= entité.RayonCollision + 0.5f) //0.5 étant la moitié de l'épaisseur du mur
                 {
@@ -301,7 +301,7 @@ namespace AtelierXNA
                     {
                         enCollision = true;
                     }
-                }                       
+                }
             }
             return enCollision;
         }
