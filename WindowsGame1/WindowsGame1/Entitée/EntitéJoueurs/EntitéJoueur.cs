@@ -15,7 +15,7 @@ namespace AtelierXNA
     /// <summary>
     /// This is a game component that implements IUpdateable.
     /// </summary>
-    public class EntitéJoueur : Entité, IControlable, ICollisionable,IDestructible, IAlliée
+    public class EntitéJoueur : Entité, IControlable, ICollisionable,IDestructible
     {
         const float FACTEUR_VITESSE = 0.05f;
         const float ÉCHELLE_PROJECTILE_ATTAQUE_DE_BASE = 0.000009f;
@@ -33,9 +33,10 @@ namespace AtelierXNA
         InputManager GestionInputs { get; set; }
         CaméraTypéMoba CaméraJeu { get; set; }
         Murs Murs { get; set; }
+        Ray RayonPicking { get; set; }
         public bool EnMouvement { get; set; }
         public bool ÀDétruire { get; set;}
-        public bool EstAlliée { get; set; }
+
 
 
 
@@ -105,8 +106,7 @@ namespace AtelierXNA
                     GetDestination();
                     try
                     {
-                        Cible = Game.Components.OfType<Entité>().First(x => (x.Position - Destination).Length() <= x.RayonCollision );
-
+                        Cible = Game.Components.OfType<Entité>().First(x => (x.Position - Destination).Length() <= x.RayonCollision && !x.EstAlliée);
                     }
                     catch { }
 
@@ -168,9 +168,9 @@ namespace AtelierXNA
             Vector3 direction = farPoint - nearPoint;
             direction = Vector3.Normalize(direction);
 
-            Ray Rayon = new Ray(nearPoint, direction);
+            RayonPicking = new Ray(nearPoint, direction);
 
-            Destination = (Vector3)(nearPoint + direction * Rayon.Intersects(PlanReprésentantCarte));
+            Destination = (Vector3)(nearPoint + direction * RayonPicking.Intersects(PlanReprésentantCarte));
         }
 
         void GérerRotation()

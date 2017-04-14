@@ -88,8 +88,6 @@
     <Compile Include="Carte\CartePlan.cs" />
     <Compile Include="Entitée\EntitéTours\EntitéTourAlliée.cs" />
     <Compile Include="Entitée\EntitéTours\EntitéTourEnnemie.cs" />
-    <Compile Include="Entitée\IAlliée.cs" />
-    <Compile Include="Entitée\IEnnemie.cs" />
     <Compile Include="Minuteur.cs" />
     <Compile Include="Projectile\Projectile.cs" />
     <Compile Include="Projectile\ProjectileAttaqueDeBase.cs" />

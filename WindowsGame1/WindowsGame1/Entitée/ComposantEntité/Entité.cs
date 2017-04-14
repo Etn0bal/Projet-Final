@@ -37,6 +37,7 @@ namespace AtelierXNA
             }
         }
         protected bool EstAttaqué { get; set; }
+        public bool EstAlliée { get; set; }
         public float RayonCollision { get; protected set; }
         public Vector3 NouvellePosition { get; protected set; }
 

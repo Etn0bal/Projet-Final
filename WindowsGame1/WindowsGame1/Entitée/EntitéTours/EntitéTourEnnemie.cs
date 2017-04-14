@@ -25,6 +25,7 @@ namespace AtelierXNA
         {
             RayonCollision = 4;
             ÀDétruire = false;
+            EstAlliée = false;
             base.Initialize();
         }
 

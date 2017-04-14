@@ -10,12 +10,12 @@ using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 namespace AtelierXNA
 {
-    class EntitéPéonAlliée : EntitéPéon, IControlée, IDestructible, IAlliée
+    class EntitéPéonAlliée : EntitéPéon, IControlée, IDestructible
     {
         const float FACTEUR_VITESSE = 0.01f;
         public bool EnMouvement { get; set; }
         bool EstPremierMinion { get; set; }
-        public bool EstAlliée { get; set; }
+
         Vector3 Direction { get; set; }
         public int NumPéon { get; set; }
         InputManager GestionInput { get; set; }
