@@ -116,13 +116,16 @@ namespace AtelierXNA
 
                 else if (p == Protocoles.PlayerMovement)
                 {
-                    EntitéEnnemie entité = Game.Components.OfType<EntitéEnnemie>() as EntitéEnnemie;
-                    float px = reader.ReadSingle();
-                    float py = reader.ReadSingle();
-                    float pz = reader.ReadSingle();
-                    Vector3 positionEnnemie = new Vector3(px, py, pz);
+                    foreach(EntitéEnnemie entité in Game.Components.Where(x => x is EntitéEnnemie))
+                    {
+                        float px = reader.ReadSingle();
+                        float py = reader.ReadSingle();
+                        float pz = reader.ReadSingle();
+                        Vector3 positionEnnemie = new Vector3(px, py, pz);
 
-                    entité.DéplacerEnnemie(positionEnnemie);
+                        entité.DéplacerEnnemie(positionEnnemie);
+                    }
+
                 }
 
                 else if (p == Protocoles.MinionMovement)

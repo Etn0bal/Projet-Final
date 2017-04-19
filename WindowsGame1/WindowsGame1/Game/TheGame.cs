@@ -91,7 +91,7 @@ namespace AtelierXNA
             numPéonA = 1;
             numPéonE = 1;
             numTourA = 1;
-            numTourA = 1;
+            numTourE = 1;
 
             LeMinuteur = new Minuteur(Game);
             Game.Services.AddService(typeof(Minuteur), LeMinuteur);
