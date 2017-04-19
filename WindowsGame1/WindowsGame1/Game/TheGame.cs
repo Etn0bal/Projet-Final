@@ -183,21 +183,21 @@ namespace AtelierXNA
             if (TempsÉcouléDepuisMAJ >=INTERVALLEMAJ)
             {
             }
-            //if (Joueur.EnMouvement)
-            //{
-            //    Vector3 destination = Joueur.AvoirDestination();
-            //    JoueurClient.EnvoyerDestination(destination);
-            //    Joueur.EnMouvement = false;
-            //}
-            //foreach(EntitéPéonAlliée péon in Game.Components.Where(x=> x is EntitéPéonAlliée))
-            //{
-            //    if(péon.EnMouvement)
-            //    {
-            //        Vector3 laPosition = péon.Position;
-            //        int numPéon = péon.NumPéon;
-            //        //JoueurClient.EnvoyerPositionPéon(laPosition, numPéon);
-            //    }
-            //}
+            if (Joueur.EnMouvement)
+            {
+                Vector3 destination = Joueur.AvoirDestination();
+                JoueurClient.EnvoyerDestination(destination);
+                Joueur.EnMouvement = false;
+            }
+            foreach (EntitéPéonAlliée péon in Game.Components.Where(x => x is EntitéPéonAlliée))
+            {
+                if (péon.EnMouvement)
+                {
+                    Vector3 laPosition = péon.Position;
+                    int numPéon = péon.NumPéon;
+                    //JoueurClient.EnvoyerPositionPéon(laPosition, numPéon);
+                }
+            }
 
 
 
