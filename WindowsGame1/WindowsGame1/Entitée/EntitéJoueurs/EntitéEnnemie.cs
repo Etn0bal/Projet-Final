@@ -95,6 +95,7 @@ namespace AtelierXNA
             if ((Destination - Position).Length() > FACTEUR_VITESSE * DirectionDéplacement.Length())
             {
                 Position += FACTEUR_VITESSE * DirectionDéplacement;
+                BoiteDeCollision = new BoundingBox(Position + PointMinBDC, Position + PointMaxBDC);
                 DoCalculerMonde = true;
             }
 
