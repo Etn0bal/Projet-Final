@@ -198,7 +198,7 @@ namespace AtelierXNA
 
             if(GestionInput.EstNouvelleTouche(Microsoft.Xna.Framework.Input.Keys.F))
             {
-                Game.Components.Add(new Projectile(Game, "rocket", 0.009f, new Vector3(0,0,(float)-Math.PI/4), Joueur.Position, 1, 1, 1f / 60f));
+                //Game.Components.Add(new Projectile(Game, "rocket", 0.009f, new Vector3(0,0,(float)-Math.PI/4), Joueur.Position, 1, 1, 1f / 60f));
             }
 
 
