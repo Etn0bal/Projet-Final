@@ -15,8 +15,13 @@ namespace AtelierXNA
     /// <summary>
     /// This is a game component that implements IUpdateable.
     /// </summary>
-    public class EntitéEnnemie : Entité, IControlable, ICollisionable
+    public class EntitéEnnemie : Entité, IControlable, ICollisionable, IDestructible
     {
+        Vector3 PointMaxBDC = new Vector3(2, 16.2f, 5f / 2f);
+        Vector3 PointMinBDC = new Vector3(-2, 0, -(5f / 2f));
+
+
+
         const float FACTEUR_VITESSE = 0.05f;
         public BoundingSphere SphèreDeCollision { get; private set; }
         Vector3 DirectionDéplacement { get; set; }
@@ -25,6 +30,8 @@ namespace AtelierXNA
         InputManager GestionInputs { get; set; }
         Caméra CaméraJeu { get; set; }
         bool EnMouvement { get; set; }
+        public bool ÀDétruire { get; set; }
+
 
 
 
@@ -44,17 +51,27 @@ namespace AtelierXNA
         {
             GestionInputs = Game.Services.GetService(typeof(InputManager)) as InputManager;
             CaméraJeu = Game.Services.GetService(typeof(Caméra)) as Caméra;
+            BoiteDeCollision = new BoundingBox(Position + PointMinBDC, Position + PointMaxBDC);
             RayonCollision = 3;
             DoCalculerMonde = false;
             EnMouvement = false;
+            ÀDétruire = false;
+            EstAlliée = false;
 
             base.Initialize();
         }
 
         public override void Update(GameTime gameTime)
         {
+            float tempsÉcoulé = (float)gameTime.ElapsedGameTime.TotalSeconds;
+            TempsÉcouléDepuisMAJ += tempsÉcoulé;
+            if (TempsÉcouléDepuisMAJ >= IntervalleMAJ)
+            {
+                GestionDéplacement();
+                GestionVie();
+                TempsÉcouléDepuisMAJ = 0;
 
-            GestionDéplacement();
+            }
 
             if (DoCalculerMonde)
             {
@@ -64,6 +81,15 @@ namespace AtelierXNA
             base.Update(gameTime);
 
         }
+
+        private void GestionVie()
+        {
+            if (PointDeVie == 0)
+            {
+                ÀDétruire = true;
+            }
+        }
+
         public void GestionDéplacement()
         {
             if ((Destination - Position).Length() > FACTEUR_VITESSE * DirectionDéplacement.Length())
@@ -96,11 +122,6 @@ namespace AtelierXNA
                 DoCalculerMonde = true;
             }
         }
-
-
-
-
-
         public bool EstEnCollision(object autreObjet)
         {
             return false;

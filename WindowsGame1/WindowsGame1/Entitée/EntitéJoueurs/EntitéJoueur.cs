@@ -15,15 +15,15 @@ namespace AtelierXNA
     /// <summary>
     /// This is a game component that implements IUpdateable.
     /// </summary>
-    public class EntitéJoueur : Entité, IControlable, ICollisionable
+    public class EntitéJoueur : Entité, IControlable, ICollisionable,IDestructible
     {
         const float FACTEUR_VITESSE = 0.05f;
-        const float ÉCHELLE_PROJECTILE_ATTAQUE_DE_BASE = 0.009f;
+        const float ÉCHELLE_PROJECTILE_ATTAQUE_DE_BASE = 0.000009f;
         Vector3 PointMaxBDC = new Vector3(2, 16.2f, 5f / 2f);
         Vector3 PointMinBDC = new Vector3(-2, 0, -(5f / 2f));
 
 
-        public BoundingBox BoiteDeCollision { get; private set; }
+
         public BoundingSphere SphèreDeCollision { get; private set; }
         Entité Cible { get; set; }      
         Vector3 DirectionDéplacement { get; set; }
@@ -33,7 +33,10 @@ namespace AtelierXNA
         InputManager GestionInputs { get; set; }
         CaméraTypéMoba CaméraJeu { get; set; }
         Murs Murs { get; set; }
+        Ray RayonPicking { get; set; }
         public bool EnMouvement { get; set; }
+        public bool ÀDétruire { get; set;}
+
 
 
 
@@ -53,6 +56,8 @@ namespace AtelierXNA
             Destination = Position;
             PlanReprésentantCarte = new Plane(0, 1, 0, 0);
             EnMouvement = false;
+            ÀDétruire = false;
+            EstAlliée = true;
             RayonCollision = 3;
             BoiteDeCollision = new BoundingBox(Position + PointMinBDC, Position + PointMaxBDC);
             Murs = Game.Services.GetService(typeof(Murs)) as Murs; 
@@ -63,7 +68,13 @@ namespace AtelierXNA
         {
             //Rajouter mécanique gestion du temps
             GestionDéplacement();
-
+            float tempsÉcoulé = (float)gameTime.ElapsedGameTime.TotalSeconds;
+            TempsÉcouléDepuisMAJ += tempsÉcoulé;
+            if (TempsÉcouléDepuisMAJ >= IntervalleMAJ)
+            {
+                GestionVie();
+                TempsÉcouléDepuisMAJ = 0;
+            }
             if (DoCalculerMonde)
             {
                 CalculerMonde();
@@ -72,11 +83,19 @@ namespace AtelierXNA
             base.Update(gameTime);
 
         }
+
         public override void Draw(GameTime gameTime)
         {
             base.Draw(gameTime);
         }
 
+        private void GestionVie()
+        {
+            if (PointDeVie == 0)
+            {
+                ÀDétruire = true;
+            }
+        }
 
         public void GestionDéplacement()
         {
@@ -87,7 +106,7 @@ namespace AtelierXNA
                     GetDestination();
                     try
                     {
-                        Cible = Game.Components.OfType<Entité>().First(x => (x.Position - Destination).Length() <= x.RayonCollision);
+                        Cible = Game.Components.OfType<Entité>().First(x => x.BoiteDeCollision.Intersects(RayonPicking) != null && !x.EstAlliée);
                     }
                     catch { }
 
@@ -100,7 +119,7 @@ namespace AtelierXNA
                     }
                     else
                     {
-                        Game.Components.Add(new ProjectileAttaqueDeBase(Game, "Robot2", ÉCHELLE_PROJECTILE_ATTAQUE_DE_BASE, Vector3.Zero, Position, Force, Précision, Cible, IntervalleMAJ));
+                        Game.Components.Add(new ProjectileAttaqueDeBase(Game, "rocket", ÉCHELLE_PROJECTILE_ATTAQUE_DE_BASE, DirectionDéplacement, Position, Force, Précision, Cible, IntervalleMAJ));
                         Cible = null;
                     }
                 }
@@ -110,13 +129,10 @@ namespace AtelierXNA
             {
                 NouvellePosition = Position + FACTEUR_VITESSE * DirectionDéplacement;
 
-                if (Murs.EnCollision(this))
-                {
-                    Destination = Position;
-                }
-                else
+                if (!Murs.EnCollision(this))
                 {
                     Position = NouvellePosition;
+                    BoiteDeCollision = new BoundingBox(Position + PointMinBDC, Position + PointMaxBDC);
                     DoCalculerMonde = true;
                 }
             }
@@ -129,10 +145,11 @@ namespace AtelierXNA
                 {
                     GérerRotation();
                     Position = Destination;
+                    BoiteDeCollision = new BoundingBox(Position + PointMinBDC, Position + PointMaxBDC);
                     CalculerMonde();
                 }
             }
-
+            
             CaméraJeu.DonnerPositionJoueur(Position);
         }
 
@@ -149,9 +166,9 @@ namespace AtelierXNA
             Vector3 direction = farPoint - nearPoint;
             direction = Vector3.Normalize(direction);
 
-            Ray Rayon = new Ray(nearPoint, direction);
+            RayonPicking = new Ray(nearPoint, direction);
 
-            Destination = (Vector3)(nearPoint + direction * Rayon.Intersects(PlanReprésentantCarte));
+            Destination = (Vector3)(nearPoint + direction * RayonPicking.Intersects(PlanReprésentantCarte));
         }
 
         void GérerRotation()
@@ -160,8 +177,9 @@ namespace AtelierXNA
             //le vecteur 0 alors le normalize donne un vecteur avec des valeurs non numériques
             if (DirectionDéplacement.X >= 0 || DirectionDéplacement.X <= 0)
             {
-                float Angle = (float)Math.Acos(Vector3.Dot(DirectionDéplacement, Direction) / (DirectionDéplacement.Length() * Direction.Length()));
+                float Angle = (float)Math.Acos(Math.Min(Math.Max(Vector3.Dot(DirectionDéplacement, Direction) / (DirectionDéplacement.Length() * Direction.Length()),-1),1));
                 if (Vector3.Cross(Direction, DirectionDéplacement).Y < 0) { Angle *= -1; }
+
                 Rotation += new Vector3(0, Angle, 0);
                 Direction = DirectionDéplacement;
                 DoCalculerMonde = true;

@@ -34,7 +34,7 @@ namespace AtelierXNA
         /// </summary>
         public override void Initialize()
         {
-
+            EstAlliée = false;
             base.Initialize();
         }
 
@@ -44,9 +44,14 @@ namespace AtelierXNA
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         public override void Update(GameTime gameTime)
         {
-            if(EnMouvement)
+            float tempsÉcoulé = (float)gameTime.ElapsedGameTime.TotalSeconds;
+            TempsÉcouléDepuisMAJ += tempsÉcoulé;
+            if (TempsÉcouléDepuisMAJ >= IntervalleMAJ)
             {
                 GestionDéplacement();
+                GestionVie();
+                TempsÉcouléDepuisMAJ = 0;
+
             }
             if (DoCalculerMonde)
             {
@@ -58,13 +63,22 @@ namespace AtelierXNA
         private void GestionDéplacement()
         {
             Position += Direction * FACTEUR_VITESSE;
+            BoiteDeCollision = new BoundingBox(Position + PointMinBDC, Position + PointMaxBDC);
             CalculerMonde();
             EnMouvement = false;
         }
         public void GérerDéplacement(Vector3 position)
         {
             Position = position;
+            BoiteDeCollision = new BoundingBox(Position + PointMinBDC, Position + PointMaxBDC);
             EnMouvement = true;
+        }
+        private void GestionVie()
+        {
+            if (PointDeVie == 0)
+            {
+                ÀDétruire = true;
+            }
         }
         void GérerRotation()
         {

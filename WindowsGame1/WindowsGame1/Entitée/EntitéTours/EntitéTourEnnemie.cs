@@ -24,7 +24,8 @@ namespace AtelierXNA
         public override void Initialize()
         {
             RayonCollision = 4;
-
+            ÀDétruire = false;
+            EstAlliée = false;
             base.Initialize();
         }
 
@@ -34,11 +35,24 @@ namespace AtelierXNA
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         public override void Update(GameTime gameTime)
         {
-            // TODO: Add your update code here
+            float tempsÉcoulé = (float)gameTime.ElapsedGameTime.TotalSeconds;
+            TempsÉcouléDepuisMAJ += tempsÉcoulé;
+            if (TempsÉcouléDepuisMAJ >= IntervalleMAJ)
+            {
+                GestionVie();
+                TempsÉcouléDepuisMAJ = 0;
 
+            }
             base.Update(gameTime);
         }
 
+        private void GestionVie()
+        {
+            if (PointDeVie == 0)
+            {
+                ÀDétruire = true;
+            }
+        }
         public void ControlerLEntitée()
         {
 

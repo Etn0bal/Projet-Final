@@ -15,10 +15,8 @@ namespace AtelierXNA
     /// <summary>
     /// This is a game component that implements IUpdateable.
     /// </summary>
-    public class EntitéTour : Entité, IControlée, ICollisionable, IDestructible
+    public class EntitéTour : Entité
     {
-        public bool ÀDétruire { get; set; }
-        public BoundingSphere SphèreDeCollision { get; private set; }
         public EntitéTour(Game jeu, string nomModèle, float échelleInitiale, Vector3 rotationInitiale, Vector3 positionInitiale,
                            float intervalleMAJ, int pointDeVie, int portée, int force, int armure, int précision)
             : base(jeu, nomModèle, échelleInitiale, rotationInitiale, positionInitiale, intervalleMAJ, pointDeVie, portée, force, armure, précision)
@@ -46,16 +44,6 @@ namespace AtelierXNA
             // TODO: Add your update code here
 
             base.Update(gameTime);
-        }
-
-        public void ControlerLEntitée()
-        {
-
-        }
-
-        public bool EstEnCollision(object autreObjet)
-        {
-            return false;
         }
     }
 }
