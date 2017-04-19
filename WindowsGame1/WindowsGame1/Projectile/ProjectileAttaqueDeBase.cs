@@ -23,8 +23,8 @@ namespace AtelierXNA
         public bool ÀDétruire { get; set; }
 
         public ProjectileAttaqueDeBase(Game game, string nomModèle, float échelleInitiale, Vector3 rotationInitiale, Vector3 positionInitiale,
-                                       int force, int précision, Entité cible, float intervalleMAJ)
-            : base(game, nomModèle, échelleInitiale, rotationInitiale, positionInitiale, force, précision, intervalleMAJ)
+                                       Vector3 direction, int force, int précision, Entité cible, float intervalleMAJ)
+            : base(game, nomModèle, échelleInitiale, rotationInitiale, positionInitiale, direction, force, précision, intervalleMAJ)
         {
             Cible = cible;
         }
@@ -54,6 +54,7 @@ namespace AtelierXNA
             {
                 CibleAtteinte();
                 GestionDéplacement();
+                GérerRotation();
                 if (DoCalculerMonde) { CalculerMonde(); DoCalculerMonde = false; }
                 TempsÉcouléDepuisMAJ = 0;
             }
@@ -65,15 +66,30 @@ namespace AtelierXNA
         {
             if (!(ÀDétruire))
             {
-                Direction = Vector3.Normalize(Cible.Position - Position);
+                DirectionDéplacement = Vector3.Normalize(Cible.Position - Position);
 
-                if (Direction.X >= 0 || Direction.X <= 0) 
+                if (DirectionDéplacement.X >= 0 || DirectionDéplacement.X <= 0) 
                 {
-                    Position += Direction * FACTEUR_VITESSE;
+                    Position += DirectionDéplacement * FACTEUR_VITESSE;
                     DoCalculerMonde = true;
                 }
                 else { ÀDétruire = true;  }
                
+            }
+        }
+
+        void GérerRotation()
+        {
+            //Le if est là pour vérifier que les valeur de DirectionDéplacement sont des valeur numérique, car si Destination-Position égale
+            //le vecteur 0 alors le normalize donne un vecteur avec des valeurs non numériques
+            if (DirectionDéplacement.X >= 0 || DirectionDéplacement.X <= 0)
+            {
+                float Angle = (float)Math.Acos(Math.Min(Math.Max(Vector3.Dot(DirectionDéplacement, Direction) / (DirectionDéplacement.Length() * Direction.Length()), -1), 1));
+                if (Vector3.Cross(Direction, DirectionDéplacement).Y < 0) { Angle *= -1; }
+
+                Rotation += new Vector3(0, Angle, 0);
+                Direction = DirectionDéplacement;
+                DoCalculerMonde = true;
             }
         }
 
