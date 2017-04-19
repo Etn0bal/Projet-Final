@@ -21,6 +21,8 @@ namespace AtelierXNA
         const float ÉCHELLE_PROJECTILE_ATTAQUE_DE_BASE = 0.000009f;
         Vector3 PointMaxBDC = new Vector3(2, 16.2f, 5f / 2f);
         Vector3 PointMinBDC = new Vector3(-2, 0, -(5f / 2f));
+        Vector3 RotationInitialeProjectielADB = new Vector3(0, 0, (float)-Math.PI / 4);
+        Vector3 DirectionInitialeProjectileADB = new Vector3(1, 0, 0);
 
 
 
@@ -104,6 +106,7 @@ namespace AtelierXNA
                 if (GestionInputs.EstNouveauClicDroit()) //// Regarder S'il n'y a pas d'autre entitée
                 {
                     GetDestination();
+
                     try
                     {
                         Cible = Game.Components.OfType<Entité>().First(x => x.BoiteDeCollision.Intersects(RayonPicking) != null && !x.EstAlliée);
@@ -112,14 +115,34 @@ namespace AtelierXNA
 
                     if (Cible == null)
                     {
-                    DirectionDéplacement = Vector3.Normalize(Destination - Position);
-                    GérerRotation();
-                    EnMouvement = true;
+                        DirectionDéplacement = Vector3.Normalize(Destination - Position);
+                        GérerRotation();
+                        EnMouvement = true;
 
                     }
                     else
                     {
-                        Game.Components.Add(new ProjectileAttaqueDeBase(Game, "rocket", ÉCHELLE_PROJECTILE_ATTAQUE_DE_BASE, DirectionDéplacement, Position, Force, Précision, Cible, IntervalleMAJ));
+                        ProjectileAttaqueDeBase attaque = new ProjectileAttaqueDeBase(Game, "rocket", ÉCHELLE_PROJECTILE_ATTAQUE_DE_BASE,
+                                                                                      RotationInitialeProjectielADB, Position, DirectionInitialeProjectileADB,
+                                                                                      Force, Précision, Cible, IntervalleMAJ);
+                        Game.Components.Add(attaque);
+                        foreach(TheGame thegame in Game.Components.Where(x => x is TheGame))
+                        {
+                            int typeEnnemie = 3;
+                            int numEnnemie = 0;
+                            if (Cible is EntitéPéonEnnemie)
+                            {
+                                numEnnemie = (Cible as EntitéPéonEnnemie).NumPéon;
+                                typeEnnemie = 1;
+                            }
+                            if (Cible is EntitéTourEnnemie)
+                            {
+                                numEnnemie = (Cible as EntitéTourEnnemie).NumTour;
+                                typeEnnemie = 2;
+                            }
+                            thegame.EnvoyerAttaqueAuServeur(Position, Force, Précision, typeEnnemie, numEnnemie, attaque.Dégat);
+
+                        }
                         Cible = null;
                     }
                 }

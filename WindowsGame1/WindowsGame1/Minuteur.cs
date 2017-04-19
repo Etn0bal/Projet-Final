@@ -26,7 +26,6 @@ namespace AtelierXNA
         public Minuteur(Game game)
             : base(game)
         {
-
         }
 
         public override void Initialize()

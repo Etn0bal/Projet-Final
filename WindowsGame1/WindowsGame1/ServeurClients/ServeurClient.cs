@@ -116,15 +116,16 @@ namespace AtelierXNA
 
                 else if (p == Protocoles.PlayerMovement)
                 {
-                    foreach (EntitéEnnemie EntitéeEnnemie in Game.Components.Where(x => x is EntitéEnnemie))
+                    foreach(EntitéEnnemie entité in Game.Components.Where(x => x is EntitéEnnemie))
                     {
                         float px = reader.ReadSingle();
                         float py = reader.ReadSingle();
                         float pz = reader.ReadSingle();
                         Vector3 positionEnnemie = new Vector3(px, py, pz);
 
-                        EntitéeEnnemie.DéplacerEnnemie(positionEnnemie);
+                        entité.DéplacerEnnemie(positionEnnemie);
                     }
+
                 }
 
                 else if (p == Protocoles.MinionMovement)
@@ -132,26 +133,52 @@ namespace AtelierXNA
                     int numPéon = reader.ReadInt32();
                     foreach (EntitéPéonEnnemie péon in Game.Components.Where(x => x is EntitéPéonEnnemie))
                     {
-                        if(péon.NumPéon == numPéon)
+                        if (péon.NumPéon == numPéon)
                         {
                             float px = reader.ReadSingle();
                             float py = reader.ReadSingle();
                             float pz = reader.ReadSingle();
                             Vector3 positionEnnemie = new Vector3(px, py, pz);
                             péon.GérerDéplacement(positionEnnemie);
-                        }                    
+                        }
                     }
                 }
-
                 else if (p == Protocoles.StartGame)
                 {
                     bool valeur = reader.ReadBoolean();
                     ((Game1)Game).EnJeu = valeur;
                 }
+
+                else if (p == Protocoles.BasicAttaque)
+                {
+                    Entité theEntité;
+                    TheGame game = Game.Components.OfType<TheGame>() as TheGame;
+                    float px = reader.ReadSingle();
+                    float py = reader.ReadSingle();
+                    float pz = reader.ReadSingle();
+                    int force = reader.ReadInt32();
+                    int précision = reader.ReadInt32();
+                    int typeEnemmie = reader.ReadInt32();
+                    int numEnnemie = reader.ReadInt32();
+                    int dégat = reader.ReadInt32();
+
+                    if(typeEnemmie == 1)
+                    {
+                        theEntité = Game.Components.OfType<EntitéPéonAlliée>().First(x => x.NumPéon == numEnnemie);
+                    }
+                    else if(typeEnemmie == 2)
+                    {
+                        theEntité = Game.Components.OfType<EntitéTourAlliée>().First(x => x.NumTour == numEnnemie);
+                    }
+                    else
+                    {
+                        theEntité = Game.Components.OfType<EntitéJoueur>() as EntitéJoueur;
+                    }
+                    ProjectileAttaqueDeBase projectile = new ProjectileAttaqueDeBase(Game, "rocket", game.ÉCHELLE_PROJECTILE_ATTAQUE_DE_BASE, game.RotationInitialeProjectielADB, new Vector3(px, py, pz), game.DirectionInitialeProjectileADB, force, précision, theEntité,dégat, game.INTERVALLEMAJ);
+                    Game.Components.Add(projectile);
+                    
+                }
             }
-            //        else if (p == Protocoles)
-            //        {
-            //        }
             //        else if (p == Protocoles.Validation)
             //        {
             //            //    }
@@ -198,11 +225,18 @@ namespace AtelierXNA
 
             }
         }
+        public void StartGame()
+        {
+            writeStream.Position = 0;
+            writer.Write((Byte)Protocoles.StartGame);
+            writer.Write(true);
+            SendData(GetDataFromMemoryStream(writeStream));
+        }
         public void EnvoyerDestination(Vector3 destination)
         {
             writeStream.Position = 0;
             writer.Write((Byte)Protocoles.PlayerMovement);
-            //Envoie de la position
+            //Envoi de la position
             writer.Write(destination.X);
             writer.Write(destination.Y);
             writer.Write(destination.Z);
@@ -212,21 +246,33 @@ namespace AtelierXNA
         {
             writeStream.Position = 0;
             writer.Write((Byte)Protocoles.MinionMovement);
-            //Envoie du numéro de péon
+            //Envoi du numéro de péon
             writer.Write(numPéon);
-            //Envoie de la position du péon
+            //Envoi de la position du péon
             writer.Write(position.X);
             writer.Write(position.Y);
             writer.Write(position.Z);
 
             SendData(GetDataFromMemoryStream(writeStream));
         }
-        public void StartGame()
+        public void EnvoyerAttaque(Vector3 position, int force, int précision, int typeEnnemie, int numEnnemie, int dégat)
         {
             writeStream.Position = 0;
-            writer.Write((Byte)Protocoles.StartGame);
-            writer.Write(true);
-            SendData(GetDataFromMemoryStream(writeStream));
+            writer.Write((Byte)Protocoles.BasicAttaque);
+            //Envoi position joueurA
+            writer.Write(position.X);
+            writer.Write(position.Y);
+            writer.Write(position.Z);
+            //Envoi de la force 
+            writer.Write(force);
+            //Envoi de la précision 
+            writer.Write(précision);
+            //Envoi du type de l'ennemie
+            writer.Write(typeEnnemie);
+            //Envoi du numéro de l'ennemie
+            writer.Write(numEnnemie);
+            //Envoie du dégat
+            writer.Write(dégat);
         }
     }
 }

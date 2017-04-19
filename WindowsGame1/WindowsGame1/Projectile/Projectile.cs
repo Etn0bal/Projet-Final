@@ -19,16 +19,29 @@ namespace AtelierXNA
     {
         int Force { get; set; }
         protected int Précision { get; private set; }
-        protected int Dégat { get; set; }
+        public int Dégat { get; protected set; }
+        protected Vector3 DirectionDéplacement { get; set; }
         protected Vector3 Direction { get; set; }
         Random GénérateurAléatoire { get; set; }
 
 
-        public Projectile(Game game, string nomModèle, float échelleInitiale, Vector3 rotationInitiale, Vector3 positionInitiale,
+        public Projectile(Game game, string nomModèle, float échelleInitiale, Vector3 rotationInitiale, Vector3 positionInitiale, Vector3 direction,
                           int force, int Précision, float intervalleMAJ)
             : base(game, nomModèle, échelleInitiale, rotationInitiale, positionInitiale, intervalleMAJ)
         {
             Force = force;
+            Direction = direction;
+            GénérateurAléatoire = Game.Services.GetService(typeof(Random)) as Random;
+            GénérerDégat();
+        }
+
+        public Projectile(Game game, string nomModèle, float échelleInitiale, Vector3 rotationInitiale, Vector3 positionInitiale, Vector3 direction,
+                          int force, int Précision, int dégat, float intervalleMAJ)
+            : base(game, nomModèle, échelleInitiale, rotationInitiale, positionInitiale, intervalleMAJ)
+        {
+            Force = force;
+            Dégat = dégat;
+            Direction = direction;
         }
 
         /// <summary>
@@ -37,9 +50,6 @@ namespace AtelierXNA
         /// </summary>
         public override void Initialize()
         {
-            GénérateurAléatoire = Game.Services.GetService(typeof(Random)) as Random;
-            GénérerDégat();
-
             base.Initialize();
         }
 
