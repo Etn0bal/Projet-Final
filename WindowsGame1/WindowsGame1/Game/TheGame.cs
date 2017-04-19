@@ -19,12 +19,13 @@ namespace AtelierXNA
 
     public class TheGame : Microsoft.Xna.Framework.DrawableGameComponent
     {
-        const float INTERVALLEMAJ = 1f / 60f;
+        public float INTERVALLEMAJ = 1f / 60f;
         const int INTERVALLEMAJPÉON = 60;
 
 
         const float ÉCHELLE_OBJET_JOUEUR = 0.07f;
         const float ÉCHELLE_OBJET_PÉON = 0.003f;
+        public float ÉCHELLE_PROJECTILE_ATTAQUE_DE_BASE = 0.000009f;
 
         float TempsÉcouléDepuisMAJ = 0;
         float TempsÉcouléDepuisMAJPéon = 0;
@@ -38,6 +39,8 @@ namespace AtelierXNA
         Vector3 positionInitialeInvite = new Vector3(270, 0, 90);
         Vector3 rotationObjetInitialeHost = new Vector3(0, MathHelper.PiOver2, 0);
         Vector3 rotationObjetInitialeInvite = new Vector3(0, 3 * MathHelper.PiOver2, 0);
+        public Vector3 RotationInitialeProjectielADB = new Vector3(0, 0, (float)-Math.PI / 4);
+        public Vector3 DirectionInitialeProjectileADB = new Vector3(1, 0, 0);
 
         public CaméraTypéMoba CaméraJeu { get; private set; }
         RessourcesManager<Texture2D> GestionnaireDeTexture { get; set; }
@@ -323,9 +326,9 @@ namespace AtelierXNA
                 }
             }
         }
-        public void EnvoyerAttaqueAuServeur(Vector3 position)
+        public void EnvoyerAttaqueAuServeur(Vector3 position, int force, int précision, int typeEnnemie, int numEnnemie, int dégat)
         {
-
+            JoueurClient.EnvoyerAttaque(position, force, précision, typeEnnemie, numEnnemie, dégat);
         }
     }
 }

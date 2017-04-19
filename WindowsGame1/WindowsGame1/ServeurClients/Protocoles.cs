@@ -12,6 +12,7 @@ namespace AtelierXNA
         PlayerMovement = 2,
         MinionMovement = 3,
         StartGame = 4,
+        BasicAttaque = 5,
 
 
 
