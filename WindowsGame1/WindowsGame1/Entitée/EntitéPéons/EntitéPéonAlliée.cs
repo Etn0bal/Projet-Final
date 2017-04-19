@@ -43,6 +43,7 @@ namespace AtelierXNA
         public override void Initialize()
         {
             EnMouvement = false;
+            EnRechercheDEnnemi = true;
             EstAlliée = true;
 
             GestionInput = Game.Services.GetService(typeof(InputManager)) as InputManager;
