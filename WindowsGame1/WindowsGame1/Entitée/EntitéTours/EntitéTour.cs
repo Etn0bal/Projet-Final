@@ -17,11 +17,12 @@ namespace AtelierXNA
     /// </summary>
     public class EntitéTour : Entité
     {
+        public int NumTour { get; set; }
         public EntitéTour(Game jeu, string nomModèle, float échelleInitiale, Vector3 rotationInitiale, Vector3 positionInitiale,
-                           float intervalleMAJ, int pointDeVie, int portée, int force, int armure, int précision)
+                           float intervalleMAJ, int pointDeVie, int portée, int force, int armure, int précision,int numTour)
             : base(jeu, nomModèle, échelleInitiale, rotationInitiale, positionInitiale, intervalleMAJ, pointDeVie, portée, force, armure, précision)
         {
-            // TODO: Construct any child components here
+            NumTour = numTour;
         }
 
         /// <summary>
