@@ -21,6 +21,8 @@ namespace AtelierXNA
         const float ÉCHELLE_PROJECTILE_ATTAQUE_DE_BASE = 0.000009f;
         Vector3 PointMaxBDC = new Vector3(2, 16.2f, 5f / 2f);
         Vector3 PointMinBDC = new Vector3(-2, 0, -(5f / 2f));
+        Vector3 RotationInitialeProjectielADB = new Vector3(0, 0, (float)-Math.PI / 4);
+        Vector3 DirectionInitialeProjectileADB = new Vector3(1, 0, 0);
 
 
 

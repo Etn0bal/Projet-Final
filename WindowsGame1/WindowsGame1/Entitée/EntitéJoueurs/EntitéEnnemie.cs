@@ -95,6 +95,7 @@ namespace AtelierXNA
             if ((Destination - Position).Length() > FACTEUR_VITESSE * DirectionDéplacement.Length())
             {
                 Position += FACTEUR_VITESSE * DirectionDéplacement;
+                BoiteDeCollision = new BoundingBox(Position + PointMinBDC, Position + PointMaxBDC);
                 DoCalculerMonde = true;
             }
 
@@ -113,10 +114,13 @@ namespace AtelierXNA
         }
         void GérerRotation()
         {
+            //Le if est là pour vérifier que les valeur de DirectionDéplacement sont des valeur numérique, car si Destination-Position égale
+            //le vecteur 0 alors le normalize donne un vecteur avec des valeurs non numériques
             if (DirectionDéplacement.X >= 0 || DirectionDéplacement.X <= 0)
             {
-                float Angle = (float)Math.Acos(Vector3.Dot(DirectionDéplacement, Direction) / (DirectionDéplacement.Length() * Direction.Length()));
+                float Angle = (float)Math.Acos(Math.Min(Math.Max(Vector3.Dot(DirectionDéplacement, Direction) / (DirectionDéplacement.Length() * Direction.Length()), -1), 1));
                 if (Vector3.Cross(Direction, DirectionDéplacement).Y < 0) { Angle *= -1; }
+
                 Rotation += new Vector3(0, Angle, 0);
                 Direction = DirectionDéplacement;
                 DoCalculerMonde = true;
