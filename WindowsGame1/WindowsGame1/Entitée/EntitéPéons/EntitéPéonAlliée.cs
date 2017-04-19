@@ -13,6 +13,11 @@ namespace AtelierXNA
     class EntitéPéonAlliée : EntitéPéon, IControlée, IDestructible
     {
         const float FACTEUR_VITESSE = 0.01f;
+        Vector3 RotationInitialeProjectielADB = new Vector3(0, 0, (float)-Math.PI / 4);
+        Vector3 DirectionInitialeProjectileADB = new Vector3(1, 0, 0);
+        const float ÉCHELLE_PROJECTILE_ATTAQUE_DE_BASE = 0.000009f;
+
+
         public bool EnMouvement { get; set; }
         bool EstPremierMinion { get; set; }
 
@@ -38,7 +43,6 @@ namespace AtelierXNA
         public override void Initialize()
         {
             EnMouvement = false;
-            EnRechercheDEnnemi = true;
             EstAlliée = true;
 
             GestionInput = Game.Services.GetService(typeof(InputManager)) as InputManager;
@@ -62,13 +66,23 @@ namespace AtelierXNA
                     TrouverCible();
                     TempsÉcouléDepuisMAJ = 0;
                 }
+            }
+            
+            if (Cible != null && !CibleEstMortOuHorsRange())
+            {
+                Game.Components.Add(new ProjectileAttaqueDeBase(Game, "rocket", ÉCHELLE_PROJECTILE_ATTAQUE_DE_BASE,
+                                                                RotationInitialeProjectielADB, Position, DirectionInitialeProjectileADB,
+                                                                Force, Précision, Cible, IntervalleMAJ));
+            }
+            else
+            {
                 GérerDéplacement();
             }
             
-            if (Cible != null)
-            {
-                RegarderSiCibleEstMortOuHorsRange();
-            }
+
+
+
+
             if (LeMinuteur.Secondes == 30 && EstPremierMinion)
             {
                 EnMouvement = true;
@@ -84,17 +98,17 @@ namespace AtelierXNA
         {
             if(Cible == null)
             {
-                foreach (EntitéPéonEnnemie péon in Game.Components.Where(x => x is EntitéPéonEnnemie))
+                try
                 {
-                    float distanceEntreLesDeux = (float)Math.Sqrt(Math.Pow((péon.Position.X - Position.X), 2) + Math.Pow((péon.Position.Z - Position.Z), 2));
-                    if (distanceEntreLesDeux <= Portée && EnRechercheDEnnemi == true)
-                    {
-                        EnMouvement = false;
-                        EnRechercheDEnnemi = false;
-                        Cible = péon;
-
-                    }
+                    Cible = Game.Components.OfType<Entité>().First(x => (float)Math.Sqrt(Math.Pow((x.Position.X - Position.X), 2) + Math.Pow((x.Position.Z - Position.Z), 2)) <= Portée && EnRechercheDEnnemi && !x.EstAlliée);
                 }
+                catch { }
+
+                if (Cible != null)
+                {
+                    EnMouvement = false;
+                    EnRechercheDEnnemi = false;
+                }         
             }
         }
 
@@ -106,15 +120,19 @@ namespace AtelierXNA
             }
         }
 
-        private void RegarderSiCibleEstMortOuHorsRange()
+        private bool CibleEstMortOuHorsRange()
         {
+            bool ind = false;
             float distanceEntreLesDeux = (float)Math.Sqrt(Math.Pow((Cible.Position.X - Position.X), 2) + Math.Pow((Cible.Position.Z - Position.Z), 2));
 
             if (Cible.PointDeVie == 0 || distanceEntreLesDeux > Portée)
             {
                 Cible = null;
+                EnMouvement = true;
+                EnRechercheDEnnemi = true;
+                ind = true;
             }
-    
+            return ind;
         }
 
         protected void GérerDéplacement()

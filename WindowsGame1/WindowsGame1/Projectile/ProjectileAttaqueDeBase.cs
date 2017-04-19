@@ -29,6 +29,13 @@ namespace AtelierXNA
             Cible = cible;
         }
 
+        public ProjectileAttaqueDeBase(Game game, string nomModèle, float échelleInitiale, Vector3 rotationInitiale, Vector3 positionInitiale,
+                                      Vector3 direction, int force, int précision, Entité cible, int dégat, float intervalleMAJ)
+           : base(game, nomModèle, échelleInitiale, rotationInitiale, positionInitiale, direction, force, précision, dégat, intervalleMAJ)
+        {
+            Cible = cible;
+        }
+
         /// <summary>
         /// Allows the game component to perform any initialization it needs to before starting
         /// to run.  This is where it can query for any required services and load content.

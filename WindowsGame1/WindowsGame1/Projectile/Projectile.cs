@@ -19,7 +19,7 @@ namespace AtelierXNA
     {
         int Force { get; set; }
         protected int Précision { get; private set; }
-        protected int Dégat { get; set; }
+        public int Dégat { get; protected set; }
         protected Vector3 DirectionDéplacement { get; set; }
         protected Vector3 Direction { get; set; }
         Random GénérateurAléatoire { get; set; }
