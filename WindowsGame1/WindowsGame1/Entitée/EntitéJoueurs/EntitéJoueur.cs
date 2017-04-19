@@ -114,16 +114,37 @@ namespace AtelierXNA
 
                     if (Cible == null)
                     {
-                    DirectionDéplacement = Vector3.Normalize(Destination - Position);
-                    GérerRotation();
-                    EnMouvement = true;
+                        DirectionDéplacement = Vector3.Normalize(Destination - Position);
+                        GérerRotation();
+                        EnMouvement = true;
 
                     }
                     else
                     {
-                        Game.Components.Add(new ProjectileAttaqueDeBase(Game, "rocket", ÉCHELLE_PROJECTILE_ATTAQUE_DE_BASE,
-                                                                         RotationInitialeProjectielADB, Position, DirectionInitialeProjectileADB, 
-                                                                        Force, Précision, Cible, IntervalleMAJ));
+                        ProjectileAttaqueDeBase attaque = new ProjectileAttaqueDeBase(Game, "rocket", ÉCHELLE_PROJECTILE_ATTAQUE_DE_BASE, DirectionDéplacement, Position, Force, Précision, Cible, IntervalleMAJ);
+                        Game.Components.Add(attaque);
+                        foreach (TheGame game in Game.Components.Where(x => x is TheGame))
+                        {
+                            int typeEnnemie;
+                            int numEnnemie;
+                            if(Cible is EntitéPéonEnnemie)
+                            {
+                                numEnnemie = (Cible as EntitéPéonEnnemie).NumPéon;
+                                typeEnnemie = 1;
+                            }
+                            if(Cible is EntitéTourEnnemie)
+                            {
+                                numEnnemie = (Cible as EntitéTourEnnemie).NumTour;
+                                typeEnnemie = 2;
+                            }
+                            if(Cible is EntitéEnnemie)
+                            {
+                                numEnnemie = 0;
+                                typeEnnemie = 3;
+                            }
+
+                            game.EnvoyerAttaqueAuServeur(DirectionDéplacement, Position, Force,Précision,typeEnnemie,numEnnemie,)
+                        }
                         Cible = null;
                     }
                 }

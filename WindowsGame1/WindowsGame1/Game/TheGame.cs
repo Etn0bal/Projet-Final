@@ -30,7 +30,9 @@ namespace AtelierXNA
         float TempsÉcouléDepuisMAJPéon = 0;
         int NumClient { get; set; }
         int numPéonA { get; set; }
+        int numTourA { get; set; }
         int numPéonE { get; set; }
+        int numTourE { get; set; }
 
         Vector3 positionInitialeHost = new Vector3(-90, 0, 90);
         Vector3 positionInitialeInvite = new Vector3(270, 0, 90);
@@ -128,14 +130,14 @@ namespace AtelierXNA
                 Game.Components.Add(PéonE3);
 
                 //Tours Alliés :
-                TourA1 = new EntitéTourAlliée(Game, "robot2", ÉCHELLE_OBJET_JOUEUR, rotationObjetInitialeHost, PositionInitialTourA1, INTERVALLEMAJ, 1, 3, 1, 1, 1);
+                TourA1 = new EntitéTourAlliée(Game, "robot2", ÉCHELLE_OBJET_JOUEUR, rotationObjetInitialeHost, PositionInitialTourA1, INTERVALLEMAJ, 1, 3, 1, 1, 1,numTourA);
                 Game.Components.Add(TourA1);
-                TourA2 = new EntitéTourAlliée(Game, "robot2", ÉCHELLE_OBJET_JOUEUR, rotationObjetInitialeHost, PositionInitialTourA2, INTERVALLEMAJ, 1, 3, 1, 1, 1);
+                TourA2 = new EntitéTourAlliée(Game, "robot2", ÉCHELLE_OBJET_JOUEUR, rotationObjetInitialeHost, PositionInitialTourA2, INTERVALLEMAJ, 1, 3, 1, 1, 1,++numTourA);
                 Game.Components.Add(TourA2);
                 //Tours Ennemis
-                TourE1 = new EntitéTourEnnemie(Game, "robot2", ÉCHELLE_OBJET_JOUEUR, rotationObjetInitialeInvite, PositionInitialTourE1, INTERVALLEMAJ, 1, 3, 1, 1, 1);
+                TourE1 = new EntitéTourEnnemie(Game, "robot2", ÉCHELLE_OBJET_JOUEUR, rotationObjetInitialeInvite, PositionInitialTourE1, INTERVALLEMAJ, 1, 3, 1, 1, 1,numTourE);
                 Game.Components.Add(TourE1);
-                TourE2 = new EntitéTourEnnemie(Game, "robot2", ÉCHELLE_OBJET_JOUEUR, rotationObjetInitialeInvite, PositionInitialTourE2, INTERVALLEMAJ, 1, 3, 1, 1, 1);
+                TourE2 = new EntitéTourEnnemie(Game, "robot2", ÉCHELLE_OBJET_JOUEUR, rotationObjetInitialeInvite, PositionInitialTourE2, INTERVALLEMAJ, 1, 3, 1, 1, 1,++numTourE);
                 Game.Components.Add(TourE2);
             }
             if (NumClient == 1)
@@ -170,14 +172,14 @@ namespace AtelierXNA
                 Game.Components.Add(PéonE3);
 
                 //Tours Alliés :
-                TourA1 = new EntitéTourAlliée(Game, "robot2", ÉCHELLE_OBJET_JOUEUR, rotationObjetInitialeInvite, PositionInitialTourE1, INTERVALLEMAJ, 1, 3, 1, 1, 1);
+                TourA1 = new EntitéTourAlliée(Game, "robot2", ÉCHELLE_OBJET_JOUEUR, rotationObjetInitialeInvite, PositionInitialTourE1, INTERVALLEMAJ, 1, 3, 1, 1, 1,numTourA);
                 Game.Components.Add(TourA1);
-                TourA2 = new EntitéTourAlliée(Game, "robot2", ÉCHELLE_OBJET_JOUEUR, rotationObjetInitialeInvite, PositionInitialTourE2, INTERVALLEMAJ, 1, 3, 1, 1, 1);
+                TourA2 = new EntitéTourAlliée(Game, "robot2", ÉCHELLE_OBJET_JOUEUR, rotationObjetInitialeInvite, PositionInitialTourE2, INTERVALLEMAJ, 1, 3, 1, 1, 1, ++numTourA);
                 Game.Components.Add(TourA2);
                 //Tours Ennemis
-                TourE1 = new EntitéTourEnnemie(Game, "robot2", ÉCHELLE_OBJET_JOUEUR, rotationObjetInitialeHost, PositionInitialTourA1, INTERVALLEMAJ, 1, 3, 1, 1, 1);
+                TourE1 = new EntitéTourEnnemie(Game, "robot2", ÉCHELLE_OBJET_JOUEUR, rotationObjetInitialeHost, PositionInitialTourA1, INTERVALLEMAJ, 1, 3, 1, 1, 1, numTourE);
                 Game.Components.Add(TourE1);
-                TourE2 = new EntitéTourEnnemie(Game, "robot2", ÉCHELLE_OBJET_JOUEUR, rotationObjetInitialeHost, PositionInitialTourA2, INTERVALLEMAJ, 1, 3, 1, 1, 1);
+                TourE2 = new EntitéTourEnnemie(Game, "robot2", ÉCHELLE_OBJET_JOUEUR, rotationObjetInitialeHost, PositionInitialTourA2, INTERVALLEMAJ, 1, 3, 1, 1, 1,++numTourE);
                 Game.Components.Add(TourE2);
             }
             Game.Components.Add(LeMinuteur);
@@ -196,10 +198,9 @@ namespace AtelierXNA
             TempsÉcouléDepuisMAJ += tempsÉcoulé;
 
 
-            //if(GestionInput.EstNouvelleTouche(Microsoft.Xna.Framework.Input.Keys.F))
-            //{
-            //    Game.Components.Add(new Projectile(Game, "rocket", 0.009f, new Vector3(0,0,(float)-Math.PI/4), Joueur.Position, 1, 1, 1f / 60f));
-            //}
+            if(GestionInput.EstNouvelleTouche(Microsoft.Xna.Framework.Input.Keys.F))
+            {
+            }
 
 
             if (TempsÉcouléDepuisMAJ >= INTERVALLEMAJ)
@@ -219,26 +220,21 @@ namespace AtelierXNA
                 }
             }
 
-            //if (Joueur.EnMouvement)
-            //{
-            //    Vector3 destination = Joueur.AvoirDestination();
-            //    JoueurClient.EnvoyerDestination(destination);
-            //    Joueur.EnMouvement = false;
-            //}
-            //foreach(EntitéPéonAlliée péon in Game.Components.Where(x=> x is EntitéPéonAlliée))
-            //{
-            //    if(péon.EnMouvement)
-            //    {
-            //        Vector3 laPosition = péon.Position;
-            //        int numPéon = péon.NumPéon;
-            //        //JoueurClient.EnvoyerPositionPéon(laPosition, numPéon);
-            //    }
-            //}
-
-
-
-
-
+            if (Joueur.EnMouvement)
+            {
+                Vector3 destination = Joueur.AvoirDestination();
+                JoueurClient.EnvoyerDestination(destination);
+                Joueur.EnMouvement = false;
+            }
+            foreach (EntitéPéonAlliée péon in Game.Components.Where(x => x is EntitéPéonAlliée))
+            {
+                if (péon.EnMouvement)
+                {
+                    Vector3 laPosition = péon.Position;
+                    int numPéon = péon.NumPéon;
+                    JoueurClient.EnvoyerPositionPéon(laPosition, numPéon);
+                }
+            }
             base.Update(gameTime);
         }
 
@@ -326,6 +322,10 @@ namespace AtelierXNA
 
                 }
             }
+        }
+        public void EnvoyerAttaqueAuServeur(Vector3 position)
+        {
+
         }
     }
 }
