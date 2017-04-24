@@ -116,6 +116,7 @@ namespace AtelierXNA
             Destination = destination;
             DirectionDéplacement = Vector3.Normalize(Destination - Position);
             GérerRotation();
+            EnMouvement = true;
 
 
         }
