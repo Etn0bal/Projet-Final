@@ -13,9 +13,7 @@ namespace AtelierXNA
     class EntitéPéonAlliée : EntitéPéon, IControlée, IDestructible
     {
         const float FACTEUR_VITESSE = 0.01f;
-        Vector3 RotationInitialeProjectielADB = new Vector3(0, 0, (float)-Math.PI / 4);
-        Vector3 DirectionInitialeProjectileADB = new Vector3(1, 0, 0);
-        const float ÉCHELLE_PROJECTILE_ATTAQUE_DE_BASE = 0.000009f;
+       
 
 
         public bool EnMouvement { get; set; }
