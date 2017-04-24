@@ -63,17 +63,16 @@ namespace AtelierXNA
 
         public override void Update(GameTime gameTime)
         {
+            if (EnMouvement)
+            {
+                GestionDéplacement();
+            }
             float tempsÉcoulé = (float)gameTime.ElapsedGameTime.TotalSeconds;
             TempsÉcouléDepuisMAJ += tempsÉcoulé;
             if (TempsÉcouléDepuisMAJ >= IntervalleMAJ)
             {
-                if(EnMouvement)
-                {
-                    GestionDéplacement();
-                }
                 GestionVie();
                 TempsÉcouléDepuisMAJ = 0;
-
             }
 
             if (DoCalculerMonde)
