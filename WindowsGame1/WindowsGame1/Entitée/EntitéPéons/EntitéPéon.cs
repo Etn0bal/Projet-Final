@@ -15,7 +15,7 @@ namespace AtelierXNA
     /// <summary>
     /// This is a game component that implements IUpdateable.
     /// </summary>
-    public class EntitéPéon : Entité, IControlée, IDestructible
+    public class EntitéPéon : Entité, IDestructible
     {
         protected Vector3 PointMaxBDC = new Vector3(5f/2f , 3, 3f / 2f);
         protected Vector3 PointMinBDC = new Vector3(-(5/2f), 0, -(3f / 2f));
@@ -23,7 +23,6 @@ namespace AtelierXNA
 
         public bool ÀDétruire { get;  set; }
         protected bool EnRechercheDEnnemi { get; set; }
-        protected Entité Cible { get; set; }
 
         public EntitéPéon(Game jeu, string nomModèle, float échelleInitiale, Vector3 rotationInitiale, Vector3 positionInitiale,
                            float intervalleMAJ, int pointDeVie, int portée, int force, int armure, int précision)
@@ -58,12 +57,6 @@ namespace AtelierXNA
             }
 
             base.Update(gameTime);
-        }
-
-
-        public void ControlerLEntitée()
-        {
-
         }
     }
 }

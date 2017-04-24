@@ -11,7 +11,7 @@ using Microsoft.Xna.Framework.Media;
 
 namespace AtelierXNA
 {
-    class EntitéPéonEnnemie : EntitéPéon, IControlée, IDestructible
+    class EntitéPéonEnnemie : EntitéPéon, IDestructible
     {
         const float FACTEUR_VITESSE = 0.01f;
         protected bool EnMouvement { get; set; }

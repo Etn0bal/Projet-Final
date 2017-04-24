@@ -10,7 +10,7 @@ using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 namespace AtelierXNA
 {
-    class EntitéPéonAlliée : EntitéPéon, IControlée, IDestructible
+    class EntitéPéonAlliée : EntitéPéon, IDestructible
     {
         const float FACTEUR_VITESSE = 0.01f;
        
