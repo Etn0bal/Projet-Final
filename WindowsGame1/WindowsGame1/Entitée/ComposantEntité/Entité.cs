@@ -18,13 +18,19 @@ namespace AtelierXNA
         const int PRÉCISION_MAX = 100;
         const int PRÉCISION_MIN = 0;
         const int DOMMAGE_MIN = 0;
+        protected Vector3 RotationInitialeProjectielADB = new Vector3(0, 0, (float)-Math.PI / 4);
+        protected Vector3 DirectionInitialeProjectileADB = new Vector3(1, 0, 0);
+        protected const float ÉCHELLE_PROJECTILE_ATTAQUE_DE_BASE = 0.000009f;
 
-        int précision;
+
+        protected Entité Cible { get; set; }
         public BoundingBox BoiteDeCollision { get; protected set; }
+        public BoundingBox NouvelleBoiteDeCollision { get; protected set; }
         public int PointDeVie { get; set; }
         public int Portée { get; set; }
         protected int Force { get; set; }
         protected int Armure { get; set; }
+        int précision;
         protected int Précision
         {
             get { return précision; }
@@ -40,6 +46,7 @@ namespace AtelierXNA
         public bool EstAlliée { get; set; }
         public float RayonCollision { get; protected set; }
         public Vector3 NouvellePosition { get; protected set; }
+
 
 
         public Entité(Game jeu, string nomModèle, float échelleInitiale, Vector3 rotationInitiale, Vector3 positionInitiale,
@@ -69,7 +76,7 @@ namespace AtelierXNA
         }
         public void RecevoirAttaque(int dégats)
         {
-            PointDeVie =- Math.Max((dégats - Armure),DOMMAGE_MIN);
+            PointDeVie -= Math.Max((dégats - Armure),DOMMAGE_MIN);
         }
 
     }

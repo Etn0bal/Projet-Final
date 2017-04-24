@@ -15,19 +15,17 @@ namespace AtelierXNA
     /// <summary>
     /// This is a game component that implements IUpdateable.
     /// </summary>
-    public class EntitéJoueur : Entité, IControlable, ICollisionable,IDestructible
+    public class EntitéJoueur : Entité, IControlable,IDestructible
     {
         const float FACTEUR_VITESSE = 0.05f;
-        const float ÉCHELLE_PROJECTILE_ATTAQUE_DE_BASE = 0.000009f;
+        
         Vector3 PointMaxBDC = new Vector3(2, 16.2f, 5f / 2f);
         Vector3 PointMinBDC = new Vector3(-2, 0, -(5f / 2f));
-        Vector3 RotationInitialeProjectielADB = new Vector3(0, 0, (float)-Math.PI / 4);
-        Vector3 DirectionInitialeProjectileADB = new Vector3(1, 0, 0);
+       
 
 
 
-        public BoundingSphere SphèreDeCollision { get; private set; }
-        Entité Cible { get; set; }      
+
         Vector3 DirectionDéplacement { get; set; }
         Vector3 Direction { get; set; }
         Vector3 Destination { get; set; }
@@ -113,12 +111,12 @@ namespace AtelierXNA
                     }
                     catch { }
 
+
                     if (Cible == null)
                     {
                         DirectionDéplacement = Vector3.Normalize(Destination - Position);
                         GérerRotation();
                         EnMouvement = true;
-
                     }
                     else
                     {
@@ -151,11 +149,12 @@ namespace AtelierXNA
             if ((Destination - Position).Length() > FACTEUR_VITESSE * DirectionDéplacement.Length())
             {
                 NouvellePosition = Position + FACTEUR_VITESSE * DirectionDéplacement;
+                NouvelleBoiteDeCollision = new BoundingBox(NouvellePosition + PointMinBDC, NouvellePosition + PointMaxBDC);
 
-                if (!Murs.EnCollision(this))
+                if (!Murs.EnCollision(this) && !EnCollisionAvecTour())
                 {
                     Position = NouvellePosition;
-                    BoiteDeCollision = new BoundingBox(Position + PointMinBDC, Position + PointMaxBDC);
+                    BoiteDeCollision = NouvelleBoiteDeCollision;
                     DoCalculerMonde = true;
                 }
             }
@@ -172,8 +171,18 @@ namespace AtelierXNA
                     CalculerMonde();
                 }
             }
-            
+
             CaméraJeu.DonnerPositionJoueur(Position);
+        }
+
+        bool EnCollisionAvecTour()
+        {
+            foreach(EntitéTour tour in Game.Components.Where(x=> x is EntitéTour))
+            {
+                if(tour.EstEnCollision(this)) { return true; }
+            }
+
+            return false;
         }
 
 
