@@ -67,7 +67,10 @@ namespace AtelierXNA
             TempsÉcouléDepuisMAJ += tempsÉcoulé;
             if (TempsÉcouléDepuisMAJ >= IntervalleMAJ)
             {
-                GestionDéplacement();
+                if(EnMouvement)
+                {
+                    GestionDéplacement();
+                }
                 GestionVie();
                 TempsÉcouléDepuisMAJ = 0;
 
@@ -97,6 +100,10 @@ namespace AtelierXNA
                 Position += FACTEUR_VITESSE * DirectionDéplacement;
                 BoiteDeCollision = new BoundingBox(Position + PointMinBDC, Position + PointMaxBDC);
                 DoCalculerMonde = true;
+            }
+            else
+            {
+                EnMouvement = false;
             }
 
         }
