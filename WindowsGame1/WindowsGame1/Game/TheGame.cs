@@ -117,7 +117,7 @@ namespace AtelierXNA
                 Game.Services.AddService(typeof(Murs), Murs);
 
                 //Joueurs:
-                Joueur = new EntitéJoueur(Game, "robot2", ÉCHELLE_OBJET_JOUEUR, rotationObjetInitialeHost, positionInitialeHost, INTERVALLEMAJ, 1, 999999, 1, 1, 1, new Vector3(1, 0, 0));
+                Joueur = new EntitéJoueur(Game, "robot2", ÉCHELLE_OBJET_JOUEUR, rotationObjetInitialeHost, positionInitialeHost, INTERVALLEMAJ, 10000000, 999999, 1, 1, 1, new Vector3(1, 0, 0));
                 Game.Components.Add(Joueur);
                 JoueurEnnemie = new EntitéEnnemie(Game, "robot2", ÉCHELLE_OBJET_JOUEUR, rotationObjetInitialeInvite, positionInitialeInvite, INTERVALLEMAJ, 1, 5, 1, 1, 1, new Vector3(-1, 0, 0));
                 Game.Components.Add(JoueurEnnemie);
@@ -139,18 +139,18 @@ namespace AtelierXNA
                 Game.Components.Add(PéonE3);
 
                 //Tours Alliés :
-                TourA1 = new EntitéTourAlliée(Game, "Defense_Tower-FBX", ÉCHELLE_OBJET_TOUR, rotationObjetTourHost, positionInitialeHost, INTERVALLEMAJ, 1, 3, 1, 1, 1, numTourA);
+                TourA1 = new EntitéTourAlliée(Game, "Defense_Tower-FBX", ÉCHELLE_OBJET_TOUR, rotationObjetTourHost, positionInitialeHost, INTERVALLEMAJ, 1, 25, 1, 1, 1, numTourA);
                 Game.Components.Add(TourA1);
-                TourA2 = new EntitéTourAlliée(Game, "Defense_Tower-FBX", ÉCHELLE_OBJET_TOUR, rotationObjetTourHost, PositionInitialTourA2, INTERVALLEMAJ, 1, 3, 1, 1, 1,++numTourA);
+                TourA2 = new EntitéTourAlliée(Game, "Defense_Tower-FBX", ÉCHELLE_OBJET_TOUR, rotationObjetTourHost, PositionInitialTourA2, INTERVALLEMAJ, 1, 25, 1, 1, 1,++numTourA);
                 Game.Components.Add(TourA2);
-                TourA3 = new EntitéTourAlliée(Game, "Defense_Tower-FBX", ÉCHELLE_OBJET_TOUR, rotationObjetTourHost, PositionInitialTourA3, INTERVALLEMAJ, 1, 3, 1, 1, 1,++numTourA);
+                TourA3 = new EntitéTourAlliée(Game, "Defense_Tower-FBX", ÉCHELLE_OBJET_TOUR, rotationObjetTourHost, PositionInitialTourA3, INTERVALLEMAJ, 1, 25, 1, 1, 1,++numTourA);
                 Game.Components.Add(TourA3);
                 //Tours Ennemis
-                TourE1 = new EntitéTourEnnemie(Game, "Defense_Tower-FBX", ÉCHELLE_OBJET_TOUR, Vector3.Zero, positionInitialeInvite, INTERVALLEMAJ, 1, 3, 1, 1, 1, numTourE);
+                TourE1 = new EntitéTourEnnemie(Game, "Defense_Tower-FBX", ÉCHELLE_OBJET_TOUR, Vector3.Zero, positionInitialeInvite, INTERVALLEMAJ, 1, 25, 1, 1, 1, numTourE);
                 Game.Components.Add(TourE1);
-                TourE2 = new EntitéTourEnnemie(Game, "Defense_Tower-FBX", ÉCHELLE_OBJET_TOUR, Vector3.Zero, PositionInitialTourE2, INTERVALLEMAJ, 1, 3, 1, 1, 1,++numTourE);
+                TourE2 = new EntitéTourEnnemie(Game, "Defense_Tower-FBX", ÉCHELLE_OBJET_TOUR, Vector3.Zero, PositionInitialTourE2, INTERVALLEMAJ, 1, 25, 1, 1, 1,++numTourE);
                 Game.Components.Add(TourE2);
-                TourE3 = new EntitéTourEnnemie(Game, "Defense_Tower-FBX", ÉCHELLE_OBJET_TOUR, Vector3.Zero, PositionInitialTourE3, INTERVALLEMAJ, 1, 3, 1, 1, 1,++numTourE);
+                TourE3 = new EntitéTourEnnemie(Game, "Defense_Tower-FBX", ÉCHELLE_OBJET_TOUR, Vector3.Zero, PositionInitialTourE3, INTERVALLEMAJ, 1, 25, 1, 1, 1,++numTourE);
                 Game.Components.Add(TourE3);
             }
             if (NumClient == 1)
@@ -185,14 +185,14 @@ namespace AtelierXNA
                 Game.Components.Add(PéonE3);
 
                 //Tours Alliés :
-                TourA1 = new EntitéTourAlliée(Game, "Defense_Tower-FBX", ÉCHELLE_OBJET_TOUR, Vector3.Zero, PositionInitialTourE2, INTERVALLEMAJ, 1, 3, 1, 1, 1,numTourA);
+                TourA1 = new EntitéTourAlliée(Game, "Defense_Tower-FBX", ÉCHELLE_OBJET_TOUR, Vector3.Zero, PositionInitialTourE2, INTERVALLEMAJ, 1, 25, 1, 1, 1,numTourA);
                 Game.Components.Add(TourA1);
-                TourA2 = new EntitéTourAlliée(Game, "Defense_Tower-FBX", ÉCHELLE_OBJET_TOUR, Vector3.Zero, PositionInitialTourE3, INTERVALLEMAJ, 1, 3, 1, 1, 1, ++numTourA);
+                TourA2 = new EntitéTourAlliée(Game, "Defense_Tower-FBX", ÉCHELLE_OBJET_TOUR, Vector3.Zero, PositionInitialTourE3, INTERVALLEMAJ, 1, 25, 1, 1, 1, ++numTourA);
                 Game.Components.Add(TourA2);
                 //Tours Ennemis
-                TourE1 = new EntitéTourEnnemie(Game, "Defense_Tower-FBX", ÉCHELLE_OBJET_TOUR, rotationObjetTourHost, PositionInitialTourA2, INTERVALLEMAJ, 1, 3, 1, 1, 1, numTourE);
+                TourE1 = new EntitéTourEnnemie(Game, "Defense_Tower-FBX", ÉCHELLE_OBJET_TOUR, rotationObjetTourHost, PositionInitialTourA2, INTERVALLEMAJ, 1, 25, 1, 1, 1, numTourE);
                 Game.Components.Add(TourE1);
-                TourE2 = new EntitéTourEnnemie(Game, "Defense_Tower-FBX", ÉCHELLE_OBJET_TOUR, rotationObjetTourHost, PositionInitialTourA3, INTERVALLEMAJ, 1, 3, 1, 1, 1,++numTourE);
+                TourE2 = new EntitéTourEnnemie(Game, "Defense_Tower-FBX", ÉCHELLE_OBJET_TOUR, rotationObjetTourHost, PositionInitialTourA3, INTERVALLEMAJ, 1, 25, 1, 1, 1,++numTourE);
                 Game.Components.Add(TourE2);
             }
             Game.Components.Add(LeMinuteur);
@@ -211,9 +211,7 @@ namespace AtelierXNA
             TempsÉcouléDepuisMAJ += tempsÉcoulé;
 
 
-            if(GestionInput.EstNouvelleTouche(Microsoft.Xna.Framework.Input.Keys.F))
-            {
-            }
+           
 
 
             if (TempsÉcouléDepuisMAJ >= INTERVALLEMAJ)
@@ -235,9 +233,9 @@ namespace AtelierXNA
 
             if (Joueur.EnMouvement)
             {
-                Vector3 destination = Joueur.AvoirDestination();
-                JoueurClient.EnvoyerDestination(destination);
-                Joueur.EnMouvement = false;
+                //Vector3 destination = Joueur.AvoirDestination();
+                //JoueurClient.EnvoyerDestination(destination);
+                //Joueur.EnMouvement = false;
             }
             foreach (EntitéPéonAlliée péon in Game.Components.Where(x => x is EntitéPéonAlliée))
             {
@@ -245,7 +243,7 @@ namespace AtelierXNA
                 {
                     Vector3 laPosition = péon.Position;
                     int numPéon = péon.NumPéon;
-                    JoueurClient.EnvoyerPositionPéon(laPosition, numPéon);
+                    //JoueurClient.EnvoyerPositionPéon(laPosition, numPéon);
                 }
             }
             base.Update(gameTime);
@@ -360,7 +358,7 @@ namespace AtelierXNA
         }
         public void EnvoyerAttaqueAuServeur(Vector3 position, int force, int précision, int typeEnnemie, int numEnnemie, int dégat)
         {
-            JoueurClient.EnvoyerAttaque(position, force, précision, typeEnnemie, numEnnemie, dégat);
+            //JoueurClient.EnvoyerAttaque(position, force, précision, typeEnnemie, numEnnemie, dégat);
         }
     }
 }

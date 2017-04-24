@@ -17,6 +17,10 @@ namespace AtelierXNA
     /// </summary>
     public class EntitéTour : Entité
     {
+        protected Vector3 PointMaxBDC = new Vector3(5, 7.6f, 9f / 2f);
+        protected Vector3 PointMinBDC = new Vector3(-5, 0, -(9f / 2f));
+        
+        float TempsÉcouléDepuisAttaqueMAJ { get; set; }
         public int NumTour { get; set; }
         public EntitéTour(Game jeu, string nomModèle, float échelleInitiale, Vector3 rotationInitiale, Vector3 positionInitiale,
                            float intervalleMAJ, int pointDeVie, int portée, int force, int armure, int précision,int numTour)
@@ -32,7 +36,7 @@ namespace AtelierXNA
         public override void Initialize()
         {
             RayonCollision = 4;
-
+            BoiteDeCollision = new BoundingBox(Position + PointMinBDC, Position + PointMaxBDC);
             base.Initialize();
         }
 
@@ -42,9 +46,56 @@ namespace AtelierXNA
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         public override void Update(GameTime gameTime)
         {
-            // TODO: Add your update code here
-
+            float tempsÉcoulé = (float)gameTime.ElapsedGameTime.TotalSeconds;
+            TempsÉcouléDepuisAttaqueMAJ += tempsÉcoulé;
+            if (TempsÉcouléDepuisAttaqueMAJ >= 1.2f)
+            {
+                GestionAttaque();
+                TempsÉcouléDepuisAttaqueMAJ -= 1.2f;
+            }
             base.Update(gameTime);
+        }
+
+
+        void GestionAttaque()
+        {
+            try
+            {
+                Cible = Game.Components.OfType<Entité>().First(x => Math.Sqrt(Math.Pow(x.Position.X - Position.X, 2) +
+                                                                              Math.Pow(x.Position.Z - Position.Z, 2)) <= Portée && x.EstAlliée != EstAlliée);
+            }
+            catch { }
+
+            if(Cible != null)
+            {
+                ProjectileAttaqueDeBase attaque = new ProjectileAttaqueDeBase(Game, "rocket", ÉCHELLE_PROJECTILE_ATTAQUE_DE_BASE,
+                                                                                      RotationInitialeProjectielADB, Position, DirectionInitialeProjectileADB,
+                                                                                      Force, Précision, Cible, IntervalleMAJ);
+                Game.Components.Add(attaque);
+                //foreach (TheGame thegame in Game.Components.Where(x => x is TheGame))
+                //{
+                //    int typeEnnemie = 3;
+                //    int numEnnemie = 0;
+                //    if (Cible is EntitéPéonEnnemie)
+                //    {
+                //        numEnnemie = (Cible as EntitéPéonEnnemie).NumPéon;
+                //        typeEnnemie = 1;
+                //    }
+                //    if (Cible is EntitéTourEnnemie)
+                //    {
+                //        numEnnemie = (Cible as EntitéTourEnnemie).NumTour;
+                //        typeEnnemie = 2;
+                //    }
+                //    thegame.EnvoyerAttaqueAuServeur(Position, Force, Précision, typeEnnemie, numEnnemie, attaque.Dégat);
+
+                //}
+                Cible = null;
+            }
+        }
+
+        public bool EstEnCollision(Entité ent)
+        {
+            return BoiteDeCollision.Intersects(ent.NouvelleBoiteDeCollision);
         }
     }
 }
