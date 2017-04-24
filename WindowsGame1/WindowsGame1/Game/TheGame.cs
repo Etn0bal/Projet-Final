@@ -25,6 +25,7 @@ namespace AtelierXNA
 
         const float ÉCHELLE_OBJET_JOUEUR = 0.07f;
         const float ÉCHELLE_OBJET_PÉON = 0.003f;
+        const float ÉCHELLE_OBJET_TOUR = 0.009f;
         public float ÉCHELLE_PROJECTILE_ATTAQUE_DE_BASE = 0.000009f;
 
         float TempsÉcouléDepuisMAJ = 0;
@@ -39,6 +40,7 @@ namespace AtelierXNA
         Vector3 positionInitialeInvite = new Vector3(270, 0, 90);
         Vector3 rotationObjetInitialeHost = new Vector3(0, MathHelper.PiOver2, 0);
         Vector3 rotationObjetInitialeInvite = new Vector3(0, 3 * MathHelper.PiOver2, 0);
+        Vector3 rotationObjetTourHost = new Vector3(0, MathHelper.Pi, 0);
         public Vector3 RotationInitialeProjectielADB = new Vector3(0, 0, (float)-Math.PI / 4);
         public Vector3 DirectionInitialeProjectileADB = new Vector3(1, 0, 0);
 
@@ -135,14 +137,14 @@ namespace AtelierXNA
                 Game.Components.Add(PéonE3);
 
                 //Tours Alliés :
-                TourA1 = new EntitéTourAlliée(Game, "robot2", ÉCHELLE_OBJET_JOUEUR, rotationObjetInitialeHost, PositionInitialTourA1, INTERVALLEMAJ, 1, 3, 1, 1, 1,numTourA);
+                TourA1 = new EntitéTourAlliée(Game, "Defense_Tower-FBX", ÉCHELLE_OBJET_TOUR, rotationObjetTourHost, PositionInitialTourA1, INTERVALLEMAJ, 1, 3, 1, 1, 1,numTourA);
                 Game.Components.Add(TourA1);
-                TourA2 = new EntitéTourAlliée(Game, "robot2", ÉCHELLE_OBJET_JOUEUR, rotationObjetInitialeHost, PositionInitialTourA2, INTERVALLEMAJ, 1, 3, 1, 1, 1,++numTourA);
+                TourA2 = new EntitéTourAlliée(Game, "Defense_Tower-FBX", ÉCHELLE_OBJET_TOUR, rotationObjetTourHost, PositionInitialTourA2, INTERVALLEMAJ, 1, 3, 1, 1, 1,++numTourA);
                 Game.Components.Add(TourA2);
                 //Tours Ennemis
-                TourE1 = new EntitéTourEnnemie(Game, "robot2", ÉCHELLE_OBJET_JOUEUR, rotationObjetInitialeInvite, PositionInitialTourE1, INTERVALLEMAJ, 1, 3, 1, 1, 1,numTourE);
+                TourE1 = new EntitéTourEnnemie(Game, "Defense_Tower-FBX", ÉCHELLE_OBJET_TOUR, Vector3.Zero, PositionInitialTourE1, INTERVALLEMAJ, 1, 3, 1, 1, 1,numTourE);
                 Game.Components.Add(TourE1);
-                TourE2 = new EntitéTourEnnemie(Game, "robot2", ÉCHELLE_OBJET_JOUEUR, rotationObjetInitialeInvite, PositionInitialTourE2, INTERVALLEMAJ, 1, 3, 1, 1, 1,++numTourE);
+                TourE2 = new EntitéTourEnnemie(Game, "Defense_Tower-FBX", ÉCHELLE_OBJET_TOUR, Vector3.Zero, PositionInitialTourE2, INTERVALLEMAJ, 1, 3, 1, 1, 1,++numTourE);
                 Game.Components.Add(TourE2);
             }
             if (NumClient == 1)
@@ -177,14 +179,14 @@ namespace AtelierXNA
                 Game.Components.Add(PéonE3);
 
                 //Tours Alliés :
-                TourA1 = new EntitéTourAlliée(Game, "robot2", ÉCHELLE_OBJET_JOUEUR, rotationObjetInitialeInvite, PositionInitialTourE1, INTERVALLEMAJ, 1, 3, 1, 1, 1,numTourA);
+                TourA1 = new EntitéTourAlliée(Game, "Defense_Tower-FBX", ÉCHELLE_OBJET_TOUR, Vector3.Zero, PositionInitialTourE1, INTERVALLEMAJ, 1, 3, 1, 1, 1,numTourA);
                 Game.Components.Add(TourA1);
-                TourA2 = new EntitéTourAlliée(Game, "robot2", ÉCHELLE_OBJET_JOUEUR, rotationObjetInitialeInvite, PositionInitialTourE2, INTERVALLEMAJ, 1, 3, 1, 1, 1, ++numTourA);
+                TourA2 = new EntitéTourAlliée(Game, "Defense_Tower-FBX", ÉCHELLE_OBJET_TOUR, Vector3.Zero, PositionInitialTourE2, INTERVALLEMAJ, 1, 3, 1, 1, 1, ++numTourA);
                 Game.Components.Add(TourA2);
                 //Tours Ennemis
-                TourE1 = new EntitéTourEnnemie(Game, "robot2", ÉCHELLE_OBJET_JOUEUR, rotationObjetInitialeHost, PositionInitialTourA1, INTERVALLEMAJ, 1, 3, 1, 1, 1, numTourE);
+                TourE1 = new EntitéTourEnnemie(Game, "Defense_Tower-FBX", ÉCHELLE_OBJET_TOUR, rotationObjetTourHost, PositionInitialTourA1, INTERVALLEMAJ, 1, 3, 1, 1, 1, numTourE);
                 Game.Components.Add(TourE1);
-                TourE2 = new EntitéTourEnnemie(Game, "robot2", ÉCHELLE_OBJET_JOUEUR, rotationObjetInitialeHost, PositionInitialTourA2, INTERVALLEMAJ, 1, 3, 1, 1, 1,++numTourE);
+                TourE2 = new EntitéTourEnnemie(Game, "Defense_Tower-FBX", ÉCHELLE_OBJET_TOUR, rotationObjetTourHost, PositionInitialTourA2, INTERVALLEMAJ, 1, 3, 1, 1, 1,++numTourE);
                 Game.Components.Add(TourE2);
             }
             Game.Components.Add(LeMinuteur);

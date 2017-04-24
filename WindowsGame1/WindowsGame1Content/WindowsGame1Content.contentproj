@@ -153,6 +153,47 @@
       <Processor>TextureProcessor</Processor>
     </Compile>
   </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Models\Defense_Tower-FBX.FBX">
+      <Name>Defense_Tower-FBX</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>ModelProcessor</Processor>
+    </Compile>
+    <Compile Include="Models\Defense_Tower.FBX">
+      <Name>Defense_Tower</Name>
+      <Importer>FbxImporter</Importer>
+      <Processor>ModelProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="SciFi-Base_Pack03_Scanline\SciFi_Props-Pack03-bump.jpg">
+      <Name>SciFi_Props-Pack03-bump</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="SciFi-Base_Pack03_Scanline\SciFi_Props-Pack03-diffuse.jpg">
+      <Name>SciFi_Props-Pack03-diffuse</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="SciFi-Base_Pack03_Scanline\SciFi_Props-Pack03-Lights.jpg">
+      <Name>SciFi_Props-Pack03-Lights</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+    <Compile Include="SciFi-Base_Pack03_Scanline\SciFi_Props-Pack03-NormalMap.jpg">
+      <Name>SciFi_Props-Pack03-NormalMap</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="SciFi-Base_Pack03_Scanline\Ground.jpg">
+      <Name>Ground</Name>
+      <Importer>TextureImporter</Importer>
+      <Processor>TextureProcessor</Processor>
+    </Compile>
+  </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\$(XnaFrameworkVersion)\Microsoft.Xna.GameStudio.ContentPipeline.targets" />
   <!--  To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
