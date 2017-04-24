@@ -68,12 +68,29 @@ namespace AtelierXNA
                     TempsÉcouléDepuisMAJ = 0;
                 }
             }
-            
+
             if (Cible != null && !CibleEstMortOuHorsRange())
             {
-                Game.Components.Add(new ProjectileAttaqueDeBase(Game, "rocket", ÉCHELLE_PROJECTILE_ATTAQUE_DE_BASE,
+                ProjectileAttaqueDeBase attaque = new ProjectileAttaqueDeBase(Game, "rocket", ÉCHELLE_PROJECTILE_ATTAQUE_DE_BASE,
                                                                 RotationInitialeProjectielADB, Position, DirectionInitialeProjectileADB,
-                                                                Force, Précision, Cible, IntervalleMAJ));
+                                                                Force, Précision, Cible, IntervalleMAJ);
+                Game.Components.Add(attaque);
+                foreach (TheGame thegame in Game.Components.Where(x => x is TheGame))
+                {
+                    int typeEnnemie = 3;
+                    int numEnnemie = 0;
+                    if (Cible is EntitéPéonEnnemie)
+                    {
+                        numEnnemie = (Cible as EntitéPéonEnnemie).NumPéon;
+                        typeEnnemie = 1;
+                    }
+                    if (Cible is EntitéTourEnnemie)
+                    {
+                        numEnnemie = (Cible as EntitéTourEnnemie).NumTour;
+                        typeEnnemie = 2;
+                    }
+                    thegame.EnvoyerAttaqueAuServeur(Position, Force, Précision, typeEnnemie, numEnnemie, attaque.Dégat);
+                }
             }
             else
             {
