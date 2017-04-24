@@ -233,9 +233,9 @@ namespace AtelierXNA
 
             if (Joueur.EnMouvement)
             {
-                //Vector3 destination = Joueur.AvoirDestination();
-                //JoueurClient.EnvoyerDestination(destination);
-                //Joueur.EnMouvement = false;
+                Vector3 destination = Joueur.AvoirDestination();
+                JoueurClient.EnvoyerDestination(destination);
+                Joueur.EnMouvement = false;
             }
             foreach (EntitéPéonAlliée péon in Game.Components.Where(x => x is EntitéPéonAlliée))
             {
@@ -243,7 +243,7 @@ namespace AtelierXNA
                 {
                     Vector3 laPosition = péon.Position;
                     int numPéon = péon.NumPéon;
-                    //JoueurClient.EnvoyerPositionPéon(laPosition, numPéon);
+                    JoueurClient.EnvoyerPositionPéon(laPosition, numPéon);
                 }
             }
             base.Update(gameTime);
@@ -358,7 +358,7 @@ namespace AtelierXNA
         }
         public void EnvoyerAttaqueAuServeur(Vector3 position, int force, int précision, int typeEnnemie, int numEnnemie, int dégat)
         {
-            //JoueurClient.EnvoyerAttaque(position, force, précision, typeEnnemie, numEnnemie, dégat);
+            JoueurClient.EnvoyerAttaque(position, force, précision, typeEnnemie, numEnnemie, dégat);
         }
     }
 }
