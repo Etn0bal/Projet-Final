@@ -305,12 +305,15 @@ namespace AtelierXNA
                     {
                         if (NumClient == 0)
                         {
+                            Game.Components.Add(new Afficheur3D(Game));
+                            JoueurClient.EnvoyerEnnemiMort(0, 0);
                             Game.Components.RemoveAt(i);
                             Joueur = new EntitéJoueur(Game, "robot2", ÉCHELLE_OBJET_JOUEUR, rotationObjetInitialeHost, positionInitialeHost, INTERVALLEMAJ, 1, 5, 1, 1, 1, new Vector3(1, 0, 0));
                             Game.Components.Add(Joueur);
                         }
                         else
                         {
+                            Game.Components.Add(new Afficheur3D(Game));
                             Game.Components.RemoveAt(i);
                             Joueur = new EntitéJoueur(Game, "robot2", ÉCHELLE_OBJET_JOUEUR, rotationObjetInitialeInvite, positionInitialeInvite, INTERVALLEMAJ, 1, 5, 1, 1, 1, new Vector3(-1, 0, 0));
                             Game.Components.Add(Joueur);
@@ -320,18 +323,37 @@ namespace AtelierXNA
                     {
                         if (NumClient == 0)
                         {
+                            Game.Components.Add(new Afficheur3D(Game));
+                            JoueurClient.EnvoyerEnnemiMort(0, 0);
                             Game.Components.RemoveAt(i);
                             JoueurEnnemie = new EntitéEnnemie(Game, "robot2", ÉCHELLE_OBJET_JOUEUR, rotationObjetInitialeInvite, positionInitialeInvite, INTERVALLEMAJ, 1, 5, 1, 1, 1, new Vector3(-1, 0, 0));
                             Game.Components.Add(JoueurEnnemie);
                         }
                         else
                         {
+                            Game.Components.Add(new Afficheur3D(Game));
                             Game.Components.RemoveAt(i);
                             JoueurEnnemie = new EntitéEnnemie(Game, "robot2", ÉCHELLE_OBJET_JOUEUR, rotationObjetInitialeHost, positionInitialeHost, INTERVALLEMAJ, 1, 5, 1, 1, 1, new Vector3(1, 0, 0));
                             Game.Components.Add(JoueurEnnemie);
                         }
                     }
-                    else { Game.Components.RemoveAt(i); }
+                    else
+                    {
+                        if(Game.Components[i] is EntitéPéonEnnemie)
+                        {
+                            EntitéPéonEnnemie theEntité = Game.Components[i] as EntitéPéonEnnemie;
+                            JoueurClient.EnvoyerEnnemiMort(1, theEntité.NumPéon);
+                        }
+                        if(Game.Components[i] is EntitéTourEnnemie)
+                        {
+                            EntitéTourEnnemie theEntité = Game.Components[i] as EntitéTourEnnemie;
+                            JoueurClient.EnvoyerEnnemiMort(2, theEntité.NumTour);
+                        }
+
+
+                        Game.Components.RemoveAt(i);
+
+                    }
 
                 }
             }

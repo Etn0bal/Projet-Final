@@ -62,10 +62,14 @@ namespace AtelierXNA
         }
         private void GestionDéplacement()
         {
-            Position += Direction * FACTEUR_VITESSE;
-            BoiteDeCollision = new BoundingBox(Position + PointMinBDC, Position + PointMaxBDC);
-            CalculerMonde();
-            EnMouvement = false;
+            if (EnMouvement)
+            {
+                Position += Direction * FACTEUR_VITESSE;
+                BoiteDeCollision = new BoundingBox(Position + PointMinBDC, Position + PointMaxBDC);
+                CalculerMonde();
+                EnMouvement = false;
+            }
+
         }
         public void GérerDéplacement(Vector3 position)
         {

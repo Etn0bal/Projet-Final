@@ -112,6 +112,7 @@ namespace AtelierXNA
                 }
                 else if (p == Protocoles.Disconnected)
                 {
+                    ((Game1)Game).ChangerDÉtat(0);
                 }
 
 
@@ -151,38 +152,93 @@ namespace AtelierXNA
 
                 else if (p == Protocoles.BasicAttaque)
                 {
-                    Entité theEntité;
-                    TheGame game = Game.Components.OfType<TheGame>() as TheGame;
-                    float px = reader.ReadSingle();
-                    float py = reader.ReadSingle();
-                    float pz = reader.ReadSingle();
-                    int force = reader.ReadInt32();
-                    int précision = reader.ReadInt32();
+                    foreach (TheGame game in Game.Components.Where(x => x is TheGame))
+                    {
+                        Entité theEntité = null;
+                        float px = reader.ReadSingle();
+                        float py = reader.ReadSingle();
+                        float pz = reader.ReadSingle();
+                        int force = reader.ReadInt32();
+                        int précision = reader.ReadInt32();
+                        int typeEnemmie = reader.ReadInt32();
+                        int numEnnemie = reader.ReadInt32();
+                        int dégat = reader.ReadInt32();
+
+                        if (typeEnemmie == 1)
+                        {
+                            foreach (EntitéPéonAlliée entité in Game.Components.Where(x => x is EntitéPéonAlliée))
+                            {
+                                if (entité.NumPéon == numEnnemie)
+                                {
+                                    theEntité = entité;
+                                }
+                            }
+                        }
+                        else if (typeEnemmie == 2)
+                        {
+                            foreach (EntitéTourAlliée entité in Game.Components.Where(x => x is EntitéTourAlliée))
+                            {
+                                if (entité.NumTour == numEnnemie)
+                                {
+                                    theEntité = entité;
+                                }
+                            }
+                        }
+                        else
+                        {
+                            foreach (EntitéJoueur entité in Game.Components.Where(x => x is EntitéJoueur))
+                            {
+                                theEntité = entité;
+
+                            }
+                        }
+                        if(theEntité != null)
+                        {
+                            ProjectileAttaqueDeBase projectile = new ProjectileAttaqueDeBase(Game, "rocket", game.ÉCHELLE_PROJECTILE_ATTAQUE_DE_BASE, game.RotationInitialeProjectielADB, new Vector3(px, py, pz), game.DirectionInitialeProjectileADB, force, précision, theEntité, dégat, game.INTERVALLEMAJ);
+                            Game.Components.Add(projectile);
+                        }
+
+
+                    }
+
+
+                }
+
+                else if (p == Protocoles.ValidationDeadEnnemi)
+                {
                     int typeEnemmie = reader.ReadInt32();
                     int numEnnemie = reader.ReadInt32();
-                    int dégat = reader.ReadInt32();
 
-                    if(typeEnemmie == 1)
+                    if (typeEnemmie == 1)
                     {
-                        theEntité = Game.Components.OfType<EntitéPéonAlliée>().First(x => x.NumPéon == numEnnemie);
+                        foreach (EntitéPéonAlliée entité in Game.Components.Where(x => x is EntitéPéonAlliée))
+                        {
+                            if (entité.NumPéon == numEnnemie)
+                            {
+                                entité.PointDeVie = 0;                             
+                            }
+                        }
                     }
-                    else if(typeEnemmie == 2)
+                    else if (typeEnemmie == 2)
                     {
-                        theEntité = Game.Components.OfType<EntitéTourAlliée>().First(x => x.NumTour == numEnnemie);
+                        foreach (EntitéTourAlliée entité in Game.Components.Where(x => x is EntitéTourAlliée))
+                        {
+                            if (entité.NumTour == numEnnemie)
+                            {
+                                entité.PointDeVie = 0;
+                            }
+                        }
                     }
                     else
                     {
-                        theEntité = Game.Components.OfType<EntitéJoueur>() as EntitéJoueur;
+                        foreach (EntitéJoueur entité in Game.Components.Where(x => x is EntitéJoueur))
+                        {
+                            entité.PointDeVie = 0;
+                        }
                     }
-                    ProjectileAttaqueDeBase projectile = new ProjectileAttaqueDeBase(Game, "rocket", game.ÉCHELLE_PROJECTILE_ATTAQUE_DE_BASE, game.RotationInitialeProjectielADB, new Vector3(px, py, pz), game.DirectionInitialeProjectileADB, force, précision, theEntité,dégat, game.INTERVALLEMAJ);
-                    Game.Components.Add(projectile);
-                    
+
                 }
             }
-            //        else if (p == Protocoles.Validation)
-            //        {
-            //            //    }
-            //        }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
@@ -273,6 +329,17 @@ namespace AtelierXNA
             writer.Write(numEnnemie);
             //Envoie du dégat
             writer.Write(dégat);
+
+            SendData(GetDataFromMemoryStream(writeStream));
+        }
+        public void EnvoyerEnnemiMort(int typeEnnemie, int numEnnemie)
+        {
+            writeStream.Position = 0;
+            writer.Write((Byte)Protocoles.ValidationDeadEnnemi);
+            writer.Write(typeEnnemie);
+            //Envoi du numéro de l'ennemie
+            writer.Write(numEnnemie);
+            SendData(GetDataFromMemoryStream(writeStream));
         }
     }
 }

@@ -13,6 +13,7 @@ namespace AtelierXNA
         MinionMovement = 3,
         StartGame = 4,
         BasicAttaque = 5,
+        ValidationDeadEnnemi,
 
 
 
