@@ -185,15 +185,19 @@ namespace AtelierXNA
                 Game.Components.Add(PéonE3);
 
                 //Tours Alliés :
-                TourA1 = new EntitéTourAlliée(Game, "Defense_Tower-FBX", ÉCHELLE_OBJET_TOUR, Vector3.Zero, PositionInitialTourE2, INTERVALLEMAJ, 1, 25, 1, 1, 1,numTourA);
+                TourA1 = new EntitéTourAlliée(Game, "Defense_Tower-FBX", ÉCHELLE_OBJET_TOUR, Vector3.Zero, positionInitialeInvite, INTERVALLEMAJ, 1, 25, 1, 1, 1, numTourA);
                 Game.Components.Add(TourA1);
-                TourA2 = new EntitéTourAlliée(Game, "Defense_Tower-FBX", ÉCHELLE_OBJET_TOUR, Vector3.Zero, PositionInitialTourE3, INTERVALLEMAJ, 1, 25, 1, 1, 1, ++numTourA);
+                TourA2 = new EntitéTourAlliée(Game, "Defense_Tower-FBX", ÉCHELLE_OBJET_TOUR, Vector3.Zero, PositionInitialTourE2, INTERVALLEMAJ, 1, 25, 1, 1, 1,numTourA);
                 Game.Components.Add(TourA2);
+                TourA3 = new EntitéTourAlliée(Game, "Defense_Tower-FBX", ÉCHELLE_OBJET_TOUR, Vector3.Zero, PositionInitialTourE3, INTERVALLEMAJ, 1, 25, 1, 1, 1, ++numTourA);
+                Game.Components.Add(TourA3);
                 //Tours Ennemis
-                TourE1 = new EntitéTourEnnemie(Game, "Defense_Tower-FBX", ÉCHELLE_OBJET_TOUR, rotationObjetTourHost, PositionInitialTourA2, INTERVALLEMAJ, 1, 25, 1, 1, 1, numTourE);
+                TourE1 = new EntitéTourEnnemie(Game, "Defense_Tower-FBX", ÉCHELLE_OBJET_TOUR, rotationObjetTourHost, positionInitialeHost, INTERVALLEMAJ, 1, 25, 1, 1, 1, numTourE);
                 Game.Components.Add(TourE1);
-                TourE2 = new EntitéTourEnnemie(Game, "Defense_Tower-FBX", ÉCHELLE_OBJET_TOUR, rotationObjetTourHost, PositionInitialTourA3, INTERVALLEMAJ, 1, 25, 1, 1, 1,++numTourE);
+                TourE2 = new EntitéTourEnnemie(Game, "Defense_Tower-FBX", ÉCHELLE_OBJET_TOUR, rotationObjetTourHost, PositionInitialTourA2, INTERVALLEMAJ, 1, 25, 1, 1, 1, numTourE);
                 Game.Components.Add(TourE2);
+                TourE3 = new EntitéTourEnnemie(Game, "Defense_Tower-FBX", ÉCHELLE_OBJET_TOUR, rotationObjetTourHost, PositionInitialTourA3, INTERVALLEMAJ, 1, 25, 1, 1, 1,++numTourE);
+                Game.Components.Add(TourE3);
             }
             Game.Components.Add(LeMinuteur);
             Game.Components.Add(new AfficheurFPS(Game, "Arial", Color.AliceBlue, 1f));
