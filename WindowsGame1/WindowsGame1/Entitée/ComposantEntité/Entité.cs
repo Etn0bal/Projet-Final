@@ -16,8 +16,7 @@ namespace AtelierXNA
     public class Entité : ObjetDeDémo
     {
         const int PRÉCISION_MAX = 100;
-        const int PRÉCISION_MIN = 0;
-        const int DOMMAGE_MIN = 0;
+        const int CONSTANTE_MIN_ZÉRO = 0;
         protected Vector3 RotationInitialeProjectielADB = new Vector3(0, 0, (float)-Math.PI / 4);
         protected Vector3 DirectionInitialeProjectileADB = new Vector3(1, 0, 0);
         protected const float ÉCHELLE_PROJECTILE_ATTAQUE_DE_BASE = 0.000009f;
@@ -26,7 +25,18 @@ namespace AtelierXNA
         protected Entité Cible { get; set; }
         public BoundingBox BoiteDeCollision { get; protected set; }
         public BoundingBox NouvelleBoiteDeCollision { get; protected set; }
-        public int PointDeVie { get; set; }
+        int pointDeVie;
+        public int PointDeVie
+        {
+            get { return pointDeVie; }
+            private set
+            {
+                
+                if (value < CONSTANTE_MIN_ZÉRO) { précision = value; }
+                else { précision = value; }
+
+            }
+        }
         public int Portée { get; set; }
         protected int Force { get; set; }
         protected int Armure { get; set; }
@@ -36,8 +46,8 @@ namespace AtelierXNA
             get { return précision; }
             private set
             {
-                if (value > PRÉCISION_MAX) { précision = value; }
-                else if(value < PRÉCISION_MIN) { précision = value; }
+                if (value > PRÉCISION_MAX) { précision = PRÉCISION_MAX; }
+                else if(value < CONSTANTE_MIN_ZÉRO) { précision = CONSTANTE_MIN_ZÉRO; }
                 else { précision = value; }
                 
             }
@@ -76,7 +86,7 @@ namespace AtelierXNA
         }
         public void RecevoirAttaque(int dégats)
         {
-            PointDeVie -= Math.Max((dégats - Armure),DOMMAGE_MIN);
+            PointDeVie -= Math.Max((dégats - Armure),CONSTANTE_MIN_ZÉRO);
         }
 
     }

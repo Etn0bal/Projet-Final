@@ -47,7 +47,7 @@ namespace AtelierXNA
             GestionInput = Game.Services.GetService(typeof(InputManager)) as InputManager;
             LeMinuteur = Game.Services.GetService(typeof(Minuteur)) as Minuteur;
 
-            if (EstPremierMinion == false && EnRechercheDEnnemi)
+            if (!EstPremierMinion  && EnRechercheDEnnemi)
             {
                 EnMouvement = true;
             }
@@ -66,45 +66,27 @@ namespace AtelierXNA
                 TempsÉcouléDepuisMAJ += tempsÉcoulé;
                 if(TempsÉcouléDepuisAttaqueMAJ >= 1)
                 {
-                    TrouverCible();
+                    if (CibleEstMortOuHorsRange())
+                    {
+                        TrouverCible();
+                    }
+                    if(Cible != null)
+                    {
+                        GestionAttaque();
+                    }
                     TempsÉcouléDepuisAttaqueMAJ -= 1;
-
                 }
+
                 if (TempsÉcouléDepuisMAJ >= IntervalleMAJ)
                 {
                     GestionVie();
+                    if(EnMouvement)
+                    {
+                        GérerDéplacement();
+                    }
                     TempsÉcouléDepuisMAJ -= IntervalleMAJ;
                 }
             }
-
-            if (Cible != null && !CibleEstMortOuHorsRange())
-            {
-                ProjectileAttaqueDeBase attaque = new ProjectileAttaqueDeBase(Game, "rocket", ÉCHELLE_PROJECTILE_ATTAQUE_DE_BASE,
-                                                                RotationInitialeProjectielADB, Position, DirectionInitialeProjectileADB,
-                                                                Force, Précision, Cible, IntervalleMAJ);
-                Game.Components.Add(attaque);
-                foreach (TheGame thegame in Game.Components.Where(x => x is TheGame))
-                {
-                    int typeEnnemie = 3;
-                    int numEnnemie = 0;
-                    if (Cible is EntitéPéonEnnemie)
-                    {
-                        numEnnemie = (Cible as EntitéPéonEnnemie).NumPéon;
-                        typeEnnemie = 1;
-                    }
-                    if (Cible is EntitéTourEnnemie)
-                    {
-                        numEnnemie = (Cible as EntitéTourEnnemie).NumTour;
-                        typeEnnemie = 2;
-                    }
-                    thegame.EnvoyerAttaqueAuServeur(Position, Force, Précision, typeEnnemie, numEnnemie, attaque.Dégat);
-                }
-            }
-            else
-            {
-                GérerDéplacement();
-            }
-            
 
 
 
@@ -122,19 +104,40 @@ namespace AtelierXNA
 
         private void TrouverCible()
         {
-            if(Cible == null)
+            try
             {
-                try
-                {
-                    Cible = Game.Components.OfType<Entité>().First(x => Math.Sqrt(Math.Pow((x.Position.X - Position.X), 2) + Math.Pow((x.Position.Z - Position.Z), 2)) <= Portée && !x.EstAlliée);
-                }
-                catch { }
+                Cible = Game.Components.OfType<Entité>().First(x => Math.Sqrt(Math.Pow((x.Position.X - Position.X), 2) + Math.Pow((x.Position.Z - Position.Z), 2)) <= Portée && !x.EstAlliée);
+            }
+            catch { }
 
-                if (Cible != null)
+            if (Cible != null)
+            {
+                EnMouvement = false;
+                EnRechercheDEnnemi = false;
+            }
+        }
+
+        void GestionAttaque()
+        {
+            ProjectileAttaqueDeBase attaque = new ProjectileAttaqueDeBase(Game, "rocket", ÉCHELLE_PROJECTILE_ATTAQUE_DE_BASE,
+                                                                RotationInitialeProjectielADB, Position, DirectionInitialeProjectileADB,
+                                                                Force, Précision, Cible, IntervalleMAJ);
+            Game.Components.Add(attaque);
+            foreach (TheGame thegame in Game.Components.Where(x => x is TheGame))
+            {
+                int typeEnnemie = 3;
+                int numEnnemie = 0;
+                if (Cible is EntitéPéonEnnemie)
                 {
-                    EnMouvement = false;
-                    EnRechercheDEnnemi = false;
-                }         
+                    numEnnemie = (Cible as EntitéPéonEnnemie).NumPéon;
+                    typeEnnemie = 1;
+                }
+                if (Cible is EntitéTourEnnemie)
+                {
+                    numEnnemie = (Cible as EntitéTourEnnemie).NumTour;
+                    typeEnnemie = 2;
+                }
+                thegame.EnvoyerAttaqueAuServeur(Position, Force, Précision, typeEnnemie, numEnnemie, attaque.Dégat);
             }
         }
 
