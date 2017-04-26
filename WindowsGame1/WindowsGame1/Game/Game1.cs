@@ -229,12 +229,14 @@ namespace AtelierXNA
             Components.Add(game);
             Services.AddService(typeof(TheGame),game);
         }
+
         private void InitialiserAttentePartie()
         {
             NettoyerListeComponents();
             Sprite FondDécranDattente = new Sprite(this, new Rectangle(0, 0, Window.ClientBounds.Width, Window.ClientBounds.Height), "imagedattente");
             Components.Add(FondDécranDattente);
         }
+
         void NettoyerListeComponents()
         {
             for (int i = Components.Count - 1; i >= 0; --i)
