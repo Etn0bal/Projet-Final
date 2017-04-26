@@ -61,14 +61,14 @@ namespace AtelierXNA
                 TempsÉcouléDepuisAttaqueMAJ += tempsÉcoulé;
                 if (TempsÉcouléDepuisAttaqueMAJ >= 1)
                 {
-                    RegarderSiCibleEstMortOuHorsRange();
-                    if (Cible == null)
+                    if (CibleEstMortOuHorsRange())
                     {
                         TrouverCible();
                     }
                     if (Cible != null)
                     {
                         GestionAttaque();
+                        CibleEstMortOuHorsRange();
                     }
                     TempsÉcouléDepuisAttaqueMAJ -= 1;
                 }
@@ -81,7 +81,19 @@ namespace AtelierXNA
                     }
                     TempsÉcouléDepuisMAJ -= IntervalleMAJ;
                 }
-            
+            }
+
+
+
+
+            if (LeMinuteur.Secondes == 5 && EstPremierMinion)
+            {
+                EnMouvement = true;
+            }
+            if (EstPremierMinion == false && EnRechercheDEnnemi)
+            {
+                EnMouvement = true;
+            }
             base.Update(gameTime);
         }
 
