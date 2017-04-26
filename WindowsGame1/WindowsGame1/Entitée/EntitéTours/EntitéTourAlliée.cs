@@ -40,14 +40,24 @@ namespace AtelierXNA
             {
                 RegarderSiCibleEstMortOuHorsRange();
                 GestionVie();
-                TempsÉcouléDepuisMAJ = 0;
-
-
+                TempsÉcouléDepuisMAJ -= IntervalleMAJ;
             }
+
+            TempsÉcouléDepuisAttaqueMAJ += tempsÉcoulé;
+            if (TempsÉcouléDepuisAttaqueMAJ >= 1.2f)
+            {
+                RegarderSiCibleEstMortOuHorsRange();
+                if (Cible == null)
+                {
+                    GestionAttaque();
+                }
+                TempsÉcouléDepuisAttaqueMAJ -= 1.2f;
+            }
+            base.Update(gameTime);
             base.Update(gameTime);
         }
 
-        protected override void GestionAttaque()
+        protected void GestionAttaque()
         {
             try
             {
@@ -74,10 +84,10 @@ namespace AtelierXNA
 
                     thegame.EnvoyerAttaqueAuServeur(Position, Force, Précision, typeEnnemie, numEnnemie, attaque.Dégat);
                 }
-                Cible = null;
             }
         }
 
+  
 
         private void RegarderSiCibleEstMortOuHorsRange()
         {
@@ -90,8 +100,8 @@ namespace AtelierXNA
                     Cible = null;
                 }
             }
-
         }
+       
         private void GestionVie()
         {
             if (PointDeVie == 0)

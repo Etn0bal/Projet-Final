@@ -20,7 +20,7 @@ namespace AtelierXNA
         protected Vector3 PointMaxBDC = new Vector3(5, 7.6f, 9f / 2f);
         protected Vector3 PointMinBDC = new Vector3(-5, 0, -(9f / 2f));
         
-        float TempsÉcouléDepuisAttaqueMAJ { get; set; }
+        protected float TempsÉcouléDepuisAttaqueMAJ { get; set; }
         public int NumTour { get; set; }
         public EntitéTour(Game jeu, string nomModèle, float échelleInitiale, Vector3 rotationInitiale, Vector3 positionInitiale,
                            float intervalleMAJ, int pointDeVie, int portée, int force, int armure, int précision,int numTour)
@@ -50,14 +50,12 @@ namespace AtelierXNA
             TempsÉcouléDepuisAttaqueMAJ += tempsÉcoulé;
             if (TempsÉcouléDepuisAttaqueMAJ >= 1.2f)
             {
-                GestionAttaque();
-                TempsÉcouléDepuisAttaqueMAJ -= 1.2f;
             }
             base.Update(gameTime);
         }
 
 
-        protected virtual void GestionAttaque() { }
+       
         
 
         public bool EstEnCollision(Entité ent)
