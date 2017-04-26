@@ -262,13 +262,16 @@ namespace AtelierXNA
 
         private void RegarderVictoireOuDéfaite()
         {
-            if(TourA3.PointDeVie == 0)
+            if(TourE1.ÀDétruire||TourE1==null)
             {
-                TexteCentré textefinal = new TexteCentré(Game, "Victoire!", "Arial", new Rectangle(0, 0, Game.Window.ClientBounds.Width / 2, Game.Window.ClientBounds.Height / 2), Color.Black, 0f);
+                TexteCentré textefinal = new TexteCentré(Game, "Victoire!", "Arial", new Rectangle(0, 0, Game.Window.ClientBounds.Width, Game.Window.ClientBounds.Height), Color.Black, 0.2f);
+                Game.Components.Add(textefinal);
+                
             }
-            if (TourE3.PointDeVie == 0)
+            if (TourA1.ÀDétruire || TourA1 == null)
             {
                 TexteCentré textefinal = new TexteCentré(Game, "Défaite!", "Arial", new Rectangle(0, 0, Game.Window.ClientBounds.Width / 2, Game.Window.ClientBounds.Height / 2), Color.Black, 0f);
+                Game.Components.Add(textefinal);
             }
         }
 
