@@ -117,9 +117,9 @@ namespace AtelierXNA
                 Game.Services.AddService(typeof(Murs), Murs);
 
                 //Joueurs:
-                Joueur = new EntitéJoueur(Game, "robot2", ÉCHELLE_OBJET_JOUEUR, rotationObjetInitialeHost, positionInitialeHost+ new Vector3(20,0,0), INTERVALLEMAJ, 10000000, 999999, 1, 1, 1, new Vector3(1, 0, 0));
+                Joueur = new EntitéJoueur(Game, "robot2", ÉCHELLE_OBJET_JOUEUR, rotationObjetInitialeHost, positionInitialeHost+ new Vector3(20,0,0), INTERVALLEMAJ, 10000000, 999999, 10, 1, 100, new Vector3(1, 0, 0));
                 Game.Components.Add(Joueur);
-                JoueurEnnemie = new EntitéEnnemie(Game, "robot2", ÉCHELLE_OBJET_JOUEUR, rotationObjetInitialeInvite, positionInitialeInvite+ new Vector3(-20, 0, 0), INTERVALLEMAJ, 1, 5, 1, 1, 1, new Vector3(-1, 0, 0));
+                JoueurEnnemie = new EntitéEnnemie(Game, "robot2", ÉCHELLE_OBJET_JOUEUR, rotationObjetInitialeInvite, positionInitialeInvite+ new Vector3(-20, 0, 0), INTERVALLEMAJ, 1, 5, 10, 1, 100, new Vector3(-1, 0, 0));
                 Game.Components.Add(JoueurEnnemie);
 
                 //Péons Alliés:
@@ -165,9 +165,9 @@ namespace AtelierXNA
                 Game.Services.AddService(typeof(Murs), Murs);
 
                 //Joueurs :
-                Joueur = new EntitéJoueur(Game, "robot2", ÉCHELLE_OBJET_JOUEUR, rotationObjetInitialeInvite, positionInitialeInvite + new Vector3(-20, 0, 0), INTERVALLEMAJ, 1, 5, 1, 1, 1, new Vector3(-1, 0, 0));
+                Joueur = new EntitéJoueur(Game, "robot2", ÉCHELLE_OBJET_JOUEUR, rotationObjetInitialeInvite, positionInitialeInvite + new Vector3(-20, 0, 0), INTERVALLEMAJ, 1, 5, 10, 1, 100, new Vector3(-1, 0, 0));
                 Game.Components.Add(Joueur);
-                JoueurEnnemie = new EntitéEnnemie(Game, "robot2", ÉCHELLE_OBJET_JOUEUR, rotationObjetInitialeHost, positionInitialeHost + new Vector3(20, 0, 0), INTERVALLEMAJ, 1, 5, 1, 1, 1, new Vector3(1, 0, 0));
+                JoueurEnnemie = new EntitéEnnemie(Game, "robot2", ÉCHELLE_OBJET_JOUEUR, rotationObjetInitialeHost, positionInitialeHost + new Vector3(20, 0, 0), INTERVALLEMAJ, 1, 5, 10, 1, 100, new Vector3(1, 0, 0));
                 Game.Components.Add(JoueurEnnemie);
                 //Péons Alliés:
                 PéonA1 = new EntitéPéonAlliée(Game, "tank", ÉCHELLE_OBJET_PÉON, rotationObjetInitialeInvite, positionInitialeInvite + new Vector3(0, 1.5f, -5), INTERVALLEMAJ, 1, 3, 1, 1, 1, new Vector3(-1, 0, 0), numPéonA, true);
@@ -217,13 +217,13 @@ namespace AtelierXNA
             if (TempsÉcouléDepuisMAJ >= INTERVALLEMAJ)
             {
                 NettoyerListeComponentsEtRespawn();
-                RegarderVictoire();
+                RegarderVictoireOuDéfaite();
                 TempsÉcouléDepuisMAJ -= INTERVALLEMAJ;
 
             }
             if(TempsÉcouléDepuisMAJ >=1)
             {
-                RegarderVictoire();
+                RegarderVictoireOuDéfaite();
                 TempsÉcouléDepuisMAJ -= 1;
             }
             TempsÉcouléDepuisMAJPéon += tempsÉcoulé;
@@ -260,11 +260,15 @@ namespace AtelierXNA
             base.Draw(gameTime);
         }
 
-        private void RegarderVictoire()
+        private void RegarderVictoireOuDéfaite()
         {
             if(TourA3.PointDeVie == 0)
             {
-                
+                TexteCentré textefinal = new TexteCentré(Game, "Victoire!", "Arial", new Rectangle(0, 0, Game.Window.ClientBounds.Width / 2, Game.Window.ClientBounds.Height / 2), Color.Black, 0f);
+            }
+            if (TourE3.PointDeVie == 0)
+            {
+                TexteCentré textefinal = new TexteCentré(Game, "Défaite!", "Arial", new Rectangle(0, 0, Game.Window.ClientBounds.Width / 2, Game.Window.ClientBounds.Height / 2), Color.Black, 0f);
             }
         }
 
@@ -332,7 +336,7 @@ namespace AtelierXNA
                             Game.Components.Add(Joueur);
                         }
                     }
-                    if (Game.Components[i] is EntitéEnnemie)
+                    else if (Game.Components[i] is EntitéEnnemie)
                     {
                         if (NumClient == 0)
                         {
@@ -350,30 +354,17 @@ namespace AtelierXNA
                             Game.Components.Add(JoueurEnnemie);
                         }
                     }
-                    else
-                    {
-                        if(Game.Components[i] is EntitéPéonEnnemie)
-                        {
-                            EntitéPéonEnnemie theEntité = Game.Components[i] as EntitéPéonEnnemie;
-                            JoueurClient.EnvoyerEnnemiMort(1, theEntité.NumPéon);
-                        }
-                        if(Game.Components[i] is EntitéTourEnnemie)
-                        {
-                            EntitéTourEnnemie theEntité = Game.Components[i] as EntitéTourEnnemie;
-                            JoueurClient.EnvoyerEnnemiMort(2, theEntité.NumTour);
-                        }
+                    Game.Components.RemoveAt(i);
 
 
-                        Game.Components.RemoveAt(i);
-
-                    }
 
                 }
+               
             }
         }
         public void EnvoyerAttaqueAuServeur(Vector3 position, int force, int précision, int typeEnnemie, int numEnnemie, int dégat)
         {
-            JoueurClient.EnvoyerAttaque(position, force, précision, typeEnnemie, numEnnemie, dégat);
+            //JoueurClient.EnvoyerAttaque(position, force, précision, typeEnnemie, numEnnemie, dégat);
         }
     }
 }

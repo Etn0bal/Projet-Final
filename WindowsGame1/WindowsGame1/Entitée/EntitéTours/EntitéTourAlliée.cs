@@ -11,7 +11,7 @@ using Microsoft.Xna.Framework.Media;
 
 namespace AtelierXNA
 {
-    class EntitéTourAlliée: EntitéTour, IControlée, ICollisionable, IDestructible
+    class EntitéTourAlliée: EntitéTour, ICollisionable, IDestructible
     {
         public bool ÀDétruire { get; set; }
         public BoundingSphere SphèreDeCollision { get; private set; }
@@ -39,7 +39,6 @@ namespace AtelierXNA
             if (TempsÉcouléDepuisMAJ >= IntervalleMAJ)
             {
                 RegarderSiCibleEstMortOuHorsRange();
-                ControlerLEntitée();
                 GestionVie();
                 TempsÉcouléDepuisMAJ = 0;
 
@@ -79,14 +78,6 @@ namespace AtelierXNA
             }
         }
 
-        public void ControlerLEntitée()
-        {
-            if(Cible!=null)
-            {
-                AttaquerCible();
-            }
-            else { RechercherEntité(); }
-        }
 
         private void RegarderSiCibleEstMortOuHorsRange()
         {
@@ -100,32 +91,6 @@ namespace AtelierXNA
                 }
             }
 
-        }
-        private void RechercherEntité()
-        {
-            foreach(Entité entité in Game.Components.Where(x=> x is Entité))
-            {
-                if(Cible ==null)
-                {
-                    float distanceEntreLesDeux = (float)Math.Sqrt(Math.Pow((entité.Position.X - Position.X), 2) + Math.Pow((entité.Position.Z - Position.Z), 2));
-                    if (distanceEntreLesDeux <= Portée)
-                    {
-                        if (entité is EntitéPéon)
-                        {
-                            Cible = entité;
-                        }
-                        if (entité is EntitéEnnemie)
-                        {
-                            Cible = entité;
-                        }
-                    }
-                }
-
-            }
-        }
-        private void AttaquerCible()
-        {
-          
         }
         private void GestionVie()
         {
