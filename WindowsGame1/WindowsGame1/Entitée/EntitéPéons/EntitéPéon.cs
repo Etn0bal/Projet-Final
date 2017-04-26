@@ -22,7 +22,6 @@ namespace AtelierXNA
 
 
         public bool ÀDétruire { get;  set; }
-        protected bool EnRechercheDEnnemi { get; set; }
 
         public EntitéPéon(Game jeu, string nomModèle, float échelleInitiale, Vector3 rotationInitiale, Vector3 positionInitiale,
                            float intervalleMAJ, int pointDeVie, int portée, int force, int armure, int précision)
@@ -39,7 +38,6 @@ namespace AtelierXNA
             Cible = null;
             BoiteDeCollision = new BoundingBox(Position + PointMinBDC, Position + PointMaxBDC);
             RayonCollision = 1;
-            EnRechercheDEnnemi = true;
             ÀDétruire = false;
 
             base.Initialize();
@@ -51,12 +49,17 @@ namespace AtelierXNA
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         public override void Update(GameTime gameTime)
         {
-            if(PointDeVie== 0)
+            GestionVie();
+
+            base.Update(gameTime);
+        }
+
+        private void GestionVie()
+        {
+            if (PointDeVie == 0)
             {
                 ÀDétruire = true;
             }
-
-            base.Update(gameTime);
         }
     }
 }
