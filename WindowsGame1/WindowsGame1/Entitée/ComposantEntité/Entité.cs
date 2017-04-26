@@ -32,8 +32,8 @@ namespace AtelierXNA
             private set
             {
                 
-                if (value < CONSTANTE_MIN_ZÉRO) { précision = value; }
-                else { précision = value; }
+                if (value < CONSTANTE_MIN_ZÉRO) { pointDeVie = CONSTANTE_MIN_ZÉRO; }
+                else { pointDeVie = value; }
 
             }
         }
