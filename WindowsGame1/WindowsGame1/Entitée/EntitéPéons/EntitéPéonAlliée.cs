@@ -12,7 +12,7 @@ namespace AtelierXNA
 {
     class EntitéPéonAlliée : EntitéPéon, IDestructible
     {
-        const float FACTEUR_VITESSE = 0.01f;
+        const float FACTEUR_VITESSE = 0.1f;
        
 
 
@@ -66,13 +66,14 @@ namespace AtelierXNA
                 TempsÉcouléDepuisMAJ += tempsÉcoulé;
                 if(TempsÉcouléDepuisAttaqueMAJ >= 1)
                 {
-                    if (CibleEstMortOuHorsRange())
+                    if (Cible ==null)
                     {
                         TrouverCible();
                     }
                     if(Cible != null)
                     {
                         GestionAttaque();
+                        CibleEstMortOuHorsRange();
                     }
                     TempsÉcouléDepuisAttaqueMAJ -= 1;
                 }
@@ -92,10 +93,6 @@ namespace AtelierXNA
 
 
             if (LeMinuteur.Secondes == 5 && EstPremierMinion)
-            {
-                EnMouvement = true;
-            }
-            if (EstPremierMinion == false && EnRechercheDEnnemi)
             {
                 EnMouvement = true;
             }
