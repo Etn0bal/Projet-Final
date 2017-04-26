@@ -11,7 +11,7 @@ using Microsoft.Xna.Framework.Media;
 
 namespace AtelierXNA
 {
-    class EntitéTourAlliée: EntitéTour, IControlée, ICollisionable, IDestructible
+    class EntitéTourAlliée: EntitéTour, ICollisionable, IDestructible
     {
         public bool ÀDétruire { get; set; }
         public BoundingSphere SphèreDeCollision { get; private set; }
@@ -39,16 +39,25 @@ namespace AtelierXNA
             if (TempsÉcouléDepuisMAJ >= IntervalleMAJ)
             {
                 RegarderSiCibleEstMortOuHorsRange();
-                ControlerLEntitée();
                 GestionVie();
-                TempsÉcouléDepuisMAJ = 0;
-
-
+                TempsÉcouléDepuisMAJ -= IntervalleMAJ;
             }
+
+            TempsÉcouléDepuisAttaqueMAJ += tempsÉcoulé;
+            if (TempsÉcouléDepuisAttaqueMAJ >= 1.2f)
+            {
+                RegarderSiCibleEstMortOuHorsRange();
+                if (Cible == null)
+                {
+                    GestionAttaque();
+                }
+                TempsÉcouléDepuisAttaqueMAJ -= 1.2f;
+            }
+            base.Update(gameTime);
             base.Update(gameTime);
         }
 
-        protected override void GestionAttaque()
+        protected void GestionAttaque()
         {
             try
             {
@@ -75,18 +84,10 @@ namespace AtelierXNA
 
                     thegame.EnvoyerAttaqueAuServeur(Position, Force, Précision, typeEnnemie, numEnnemie, attaque.Dégat);
                 }
-                Cible = null;
             }
         }
 
-        public void ControlerLEntitée()
-        {
-            if(Cible!=null)
-            {
-                AttaquerCible();
-            }
-            else { RechercherEntité(); }
-        }
+  
 
         private void RegarderSiCibleEstMortOuHorsRange()
         {
@@ -99,34 +100,8 @@ namespace AtelierXNA
                     Cible = null;
                 }
             }
-
         }
-        private void RechercherEntité()
-        {
-            foreach(Entité entité in Game.Components.Where(x=> x is Entité))
-            {
-                if(Cible ==null)
-                {
-                    float distanceEntreLesDeux = (float)Math.Sqrt(Math.Pow((entité.Position.X - Position.X), 2) + Math.Pow((entité.Position.Z - Position.Z), 2));
-                    if (distanceEntreLesDeux <= Portée)
-                    {
-                        if (entité is EntitéPéon)
-                        {
-                            Cible = entité;
-                        }
-                        if (entité is EntitéEnnemie)
-                        {
-                            Cible = entité;
-                        }
-                    }
-                }
-
-            }
-        }
-        private void AttaquerCible()
-        {
-          
-        }
+       
         private void GestionVie()
         {
             if (PointDeVie == 0)
