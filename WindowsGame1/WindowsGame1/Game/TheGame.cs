@@ -28,6 +28,9 @@ namespace AtelierXNA
         const float ÉCHELLE_OBJET_TOUR = 0.009f;
         public float ÉCHELLE_PROJECTILE_ATTAQUE_DE_BASE = 0.000009f;
 
+        
+
+
         float TempsÉcouléDepuisMAJ = 0;
         float TempsÉcouléDepuisMAJPéon = 0;
         int NumClient { get; set; }
