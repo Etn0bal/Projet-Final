@@ -48,7 +48,7 @@ namespace AtelierXNA
             TempsÉcouléDepuisMAJ += tempsÉcoulé;
             if (TempsÉcouléDepuisMAJ >= IntervalleMAJ)
             {
-                GestionDéplacement();
+                //GestionDéplacement();
                 GestionVie();
                 TempsÉcouléDepuisMAJ = 0;
 

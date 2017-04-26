@@ -249,7 +249,7 @@ namespace AtelierXNA
                 {
                     Vector3 laPosition = péon.Position;
                     int numPéon = péon.NumPéon;
-                    JoueurClient.EnvoyerPositionPéon(laPosition, numPéon);
+                    //JoueurClient.EnvoyerPositionPéon(laPosition, numPéon);
                 }
             }
             base.Update(gameTime);
