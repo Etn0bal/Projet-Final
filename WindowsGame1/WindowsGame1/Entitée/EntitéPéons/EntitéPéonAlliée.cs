@@ -46,6 +46,11 @@ namespace AtelierXNA
 
             GestionInput = Game.Services.GetService(typeof(InputManager)) as InputManager;
             LeMinuteur = Game.Services.GetService(typeof(Minuteur)) as Minuteur;
+
+            if (EstPremierMinion == false && EnRechercheDEnnemi)
+            {
+                EnMouvement = true;
+            }
             base.Initialize();
         }
 
@@ -100,10 +105,6 @@ namespace AtelierXNA
 
 
             if (LeMinuteur.Secondes == 30 && EstPremierMinion)
-            {
-                EnMouvement = true;
-            }
-            if (EstPremierMinion == false && EnRechercheDEnnemi)
             {
                 EnMouvement = true;
             }

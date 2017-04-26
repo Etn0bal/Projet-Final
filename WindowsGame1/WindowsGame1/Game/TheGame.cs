@@ -214,15 +214,17 @@ namespace AtelierXNA
             float tempsÉcoulé = (float)gameTime.ElapsedGameTime.TotalSeconds;
             TempsÉcouléDepuisMAJ += tempsÉcoulé;
 
-
-           
-
-
             if (TempsÉcouléDepuisMAJ >= INTERVALLEMAJ)
             {
                 NettoyerListeComponentsEtRespawn();
-                TempsÉcouléDepuisMAJ = 0;
+                RegarderVictoire();
+                TempsÉcouléDepuisMAJ -= INTERVALLEMAJ;
 
+            }
+            if(TempsÉcouléDepuisMAJ >=1)
+            {
+                RegarderVictoire();
+                TempsÉcouléDepuisMAJ -= 1;
             }
             TempsÉcouléDepuisMAJPéon += tempsÉcoulé;
             if (LeMinuteur.Minutes % 1 == 0 && LeMinuteur.Minutes != 0)
@@ -231,7 +233,7 @@ namespace AtelierXNA
                 if (TempsÉcouléDepuisMAJPéon >= INTERVALLEMAJPÉON)
                 {
                     InstancierNouveauPéons();
-                    TempsÉcouléDepuisMAJPéon = 0;
+                    TempsÉcouléDepuisMAJPéon = INTERVALLEMAJ;
                 }
             }
 
@@ -251,6 +253,19 @@ namespace AtelierXNA
                 }
             }
             base.Update(gameTime);
+        }
+        public override void Draw(GameTime gameTime)
+        {
+
+            base.Draw(gameTime);
+        }
+
+        private void RegarderVictoire()
+        {
+            if(TourA3.PointDeVie == 0)
+            {
+                
+            }
         }
 
         private void InstancierNouveauPéons()
@@ -291,11 +306,7 @@ namespace AtelierXNA
             }
         }
 
-        public override void Draw(GameTime gameTime)
-        {
 
-            base.Draw(gameTime);
-        }
         void NettoyerListeComponentsEtRespawn()
         {
             for (int i = Game.Components.Count - 1; i >= 0; --i)
