@@ -12,7 +12,7 @@ namespace AtelierXNA
 {
     class EntitéPéonAlliée : EntitéPéon, IDestructible
     {
-        const float FACTEUR_VITESSE = 0.01f;
+        const float FACTEUR_VITESSE = 0.1f;
        
 
 
@@ -40,17 +40,12 @@ namespace AtelierXNA
         /// </summary>
         public override void Initialize()
         {
-            EnMouvement = false;
-            EnRechercheDEnnemi = true;
+            EnMouvement = true;
             EstAlliée = true;
 
             GestionInput = Game.Services.GetService(typeof(InputManager)) as InputManager;
             LeMinuteur = Game.Services.GetService(typeof(Minuteur)) as Minuteur;
 
-            if (!EstPremierMinion  && EnRechercheDEnnemi)
-            {
-                EnMouvement = true;
-            }
             base.Initialize();
         }
 
@@ -60,17 +55,18 @@ namespace AtelierXNA
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         public override void Update(GameTime gameTime)
         {
-            if (EnMouvement)
-            {
+            
                 float tempsÉcoulé = (float)gameTime.ElapsedGameTime.TotalSeconds;
                 TempsÉcouléDepuisMAJ += tempsÉcoulé;
-                if(TempsÉcouléDepuisAttaqueMAJ >= 1)
+                TempsÉcouléDepuisAttaqueMAJ += tempsÉcoulé;
+                if (TempsÉcouléDepuisAttaqueMAJ >= 1)
                 {
-                    if (CibleEstMortOuHorsRange())
+                    RegarderSiCibleEstMortOuHorsRange();
+                    if (Cible == null)
                     {
                         TrouverCible();
                     }
-                    if(Cible != null)
+                    if (Cible != null)
                     {
                         GestionAttaque();
                     }
@@ -79,26 +75,13 @@ namespace AtelierXNA
 
                 if (TempsÉcouléDepuisMAJ >= IntervalleMAJ)
                 {
-                    GestionVie();
                     if(EnMouvement)
                     {
                         GérerDéplacement();
                     }
                     TempsÉcouléDepuisMAJ -= IntervalleMAJ;
                 }
-            }
-
-
-
-
-            if (LeMinuteur.Secondes == 5 && EstPremierMinion)
-            {
-                EnMouvement = true;
-            }
-            if (EstPremierMinion == false && EnRechercheDEnnemi)
-            {
-                EnMouvement = true;
-            }
+            
             base.Update(gameTime);
         }
 
@@ -113,7 +96,6 @@ namespace AtelierXNA
             if (Cible != null)
             {
                 EnMouvement = false;
-                EnRechercheDEnnemi = false;
             }
         }
 
@@ -141,37 +123,26 @@ namespace AtelierXNA
             }
         }
 
-        private void GestionVie()
-        {
-            if (PointDeVie == 0)
-            {
-                ÀDétruire = true;
-            }
-        }
+        
 
-        private bool CibleEstMortOuHorsRange()
+        private void RegarderSiCibleEstMortOuHorsRange()
         {
-            bool ind = false;
-            float distanceEntreLesDeux = (float)Math.Sqrt(Math.Pow((Cible.Position.X - Position.X), 2) + Math.Pow((Cible.Position.Z - Position.Z), 2));
-
-            if (Cible.PointDeVie == 0 || distanceEntreLesDeux > Portée)
+            if (Cible != null)
             {
-                Cible = null;
-                EnMouvement = true;
-                EnRechercheDEnnemi = true;
-                ind = true;
+                float distanceEntreLesDeux = (float)Math.Sqrt(Math.Pow((Cible.Position.X - Position.X), 2) + Math.Pow((Cible.Position.Z - Position.Z), 2));
+
+                if (Cible.PointDeVie == 0 || distanceEntreLesDeux > Portée)
+                {
+                    Cible = null;
+                }
             }
-            return ind;
         }
 
         protected void GérerDéplacement()
         {
-            if(EnMouvement)
-            {
                 Position += Direction * FACTEUR_VITESSE;
                 BoiteDeCollision = new BoundingBox(Position + PointMinBDC, Position + PointMaxBDC);
                 CalculerMonde();
-            }
         }
         public Vector3 AvoirPosition()
         {
