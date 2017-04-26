@@ -63,23 +63,18 @@ namespace AtelierXNA
                                                                                       RotationInitialeProjectielADB, Position, DirectionInitialeProjectileADB,
                                                                                       Force, Précision, Cible, IntervalleMAJ);
                 Game.Components.Add(attaque);
-                //foreach (TheGame thegame in Game.Components.Where(x => x is TheGame))
-                //{
-                //    int typeEnnemie = 3;
-                //    int numEnnemie = 0;
-                //    if (Cible is EntitéPéonEnnemie)
-                //    {
-                //        numEnnemie = (Cible as EntitéPéonEnnemie).NumPéon;
-                //        typeEnnemie = 1;
-                //    }
-                //    if (Cible is EntitéTourEnnemie)
-                //    {
-                //        numEnnemie = (Cible as EntitéTourEnnemie).NumTour;
-                //        typeEnnemie = 2;
-                //    }
-                //    thegame.EnvoyerAttaqueAuServeur(Position, Force, Précision, typeEnnemie, numEnnemie, attaque.Dégat);
+                foreach (TheGame thegame in Game.Components.Where(x => x is TheGame))
+                {
+                    int typeEnnemie = 3;
+                    int numEnnemie = 0;
+                    if (Cible is EntitéPéonEnnemie)
+                    {
+                        numEnnemie = (Cible as EntitéPéonEnnemie).NumPéon;
+                        typeEnnemie = 1;
+                    }
 
-                //}
+                    thegame.EnvoyerAttaqueAuServeur(Position, Force, Précision, typeEnnemie, numEnnemie, attaque.Dégat);
+                }
                 Cible = null;
             }
         }
