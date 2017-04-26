@@ -18,7 +18,7 @@ namespace AtelierXNA
 
         public bool EnMouvement { get; set; }
         bool EstPremierMinion { get; set; }
-
+        float TempsÉcouléDepuisAttaqueMAJ { get; set; }
         Vector3 Direction { get; set; }
         public int NumPéon { get; set; }
         InputManager GestionInput { get; set; }
@@ -59,11 +59,16 @@ namespace AtelierXNA
             {
                 float tempsÉcoulé = (float)gameTime.ElapsedGameTime.TotalSeconds;
                 TempsÉcouléDepuisMAJ += tempsÉcoulé;
+                if(TempsÉcouléDepuisAttaqueMAJ >= 1)
+                {
+                    TrouverCible();
+                    TempsÉcouléDepuisAttaqueMAJ -= 1;
+
+                }
                 if (TempsÉcouléDepuisMAJ >= IntervalleMAJ)
                 {
                     GestionVie();
-                    TrouverCible();
-                    TempsÉcouléDepuisMAJ = 0;
+                    TempsÉcouléDepuisMAJ -= IntervalleMAJ;
                 }
             }
 
@@ -99,11 +104,11 @@ namespace AtelierXNA
 
 
 
-            if (LeMinuteur.Secondes == 30 && EstPremierMinion)
+            if (LeMinuteur.Secondes == 5 && EstPremierMinion)
             {
                 EnMouvement = true;
             }
-            if (EstPremierMinion == false && EnRechercheDEnnemi)
+            if (!EstPremierMinion && EnRechercheDEnnemi)
             {
                 EnMouvement = true;
             }
@@ -116,7 +121,7 @@ namespace AtelierXNA
             {
                 try
                 {
-                    Cible = Game.Components.OfType<Entité>().First(x => (float)Math.Sqrt(Math.Pow((x.Position.X - Position.X), 2) + Math.Pow((x.Position.Z - Position.Z), 2)) <= Portée && EnRechercheDEnnemi && !x.EstAlliée);
+                    Cible = Game.Components.OfType<Entité>().First(x => Math.Sqrt(Math.Pow((x.Position.X - Position.X), 2) + Math.Pow((x.Position.Z - Position.Z), 2)) <= Portée && !x.EstAlliée);
                 }
                 catch { }
 
