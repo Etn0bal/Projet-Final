@@ -144,9 +144,7 @@ namespace AtelierXNA
                 BoiteDeCollision = new BoundingBox(Position + PointMinBDC, Position + PointMaxBDC);
                 CalculerMonde();
         }
-        public Vector3 AvoirPosition()
-        {
-            return Position;
-        }
+
+        
     }
 }
