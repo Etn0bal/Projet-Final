@@ -29,7 +29,7 @@ namespace AtelierXNA
         public int PointDeVie
         {
             get { return pointDeVie; }
-            private set
+            set
             {
                 
                 if (value < CONSTANTE_MIN_ZÉRO) { pointDeVie = CONSTANTE_MIN_ZÉRO; }

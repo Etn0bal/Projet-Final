@@ -13,7 +13,7 @@ namespace AtelierXNA
     class EntitéPéonAlliée : EntitéPéon, IDestructible
     {
         const float FACTEUR_VITESSE = 0.1f;
-       
+
 
 
         public bool EnMouvement { get; set; }
@@ -26,7 +26,7 @@ namespace AtelierXNA
 
 
         public EntitéPéonAlliée(Game jeu, string nomModèle, float échelleInitiale, Vector3 rotationInitiale, Vector3 positionInitiale,
-                           float intervalleMAJ, int pointDeVie, int portée, int force, int armure, int précision,  Vector3 direction, int numPéon,bool estPremierMinion)
+                           float intervalleMAJ, int pointDeVie, int portée, int force, int armure, int précision, Vector3 direction, int numPéon, bool estPremierMinion)
             : base(jeu, nomModèle, échelleInitiale, rotationInitiale, positionInitiale, intervalleMAJ, pointDeVie, portée, force, armure, précision)
         {
             Direction = direction;
@@ -55,45 +55,33 @@ namespace AtelierXNA
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         public override void Update(GameTime gameTime)
         {
-            
-                float tempsÉcoulé = (float)gameTime.ElapsedGameTime.TotalSeconds;
-                TempsÉcouléDepuisMAJ += tempsÉcoulé;
-                TempsÉcouléDepuisAttaqueMAJ += tempsÉcoulé;
-                if (TempsÉcouléDepuisAttaqueMAJ >= 1)
-                {
-                    if (CibleEstMortOuHorsRange())
-                    {
-                        TrouverCible();
-                    }
-                    if (Cible != null)
-                    {
-                        GestionAttaque();
-                        CibleEstMortOuHorsRange();
-                    }
-                    TempsÉcouléDepuisAttaqueMAJ -= 1;
-                }
 
-                if (TempsÉcouléDepuisMAJ >= IntervalleMAJ)
-                {
-                    if(EnMouvement)
-                    {
-                        GérerDéplacement();
-                    }
-                    TempsÉcouléDepuisMAJ -= IntervalleMAJ;
-                }
-            }
-
-
-
-
-            if (LeMinuteur.Secondes == 5 && EstPremierMinion)
+            float tempsÉcoulé = (float)gameTime.ElapsedGameTime.TotalSeconds;
+            TempsÉcouléDepuisMAJ += tempsÉcoulé;
+            TempsÉcouléDepuisAttaqueMAJ += tempsÉcoulé;
+            if (TempsÉcouléDepuisAttaqueMAJ >= 1)
             {
-                EnMouvement = true;
+                RegarderSiCibleEstMortOuHorsRange();
+                if (Cible == null)
+                {
+                    TrouverCible();
+                }
+                if (Cible != null)
+                {
+                    GestionAttaque();
+                }
+                TempsÉcouléDepuisAttaqueMAJ -= 1;
             }
-            if (EstPremierMinion == false && EnRechercheDEnnemi)
+
+            if (TempsÉcouléDepuisMAJ >= IntervalleMAJ)
             {
-                EnMouvement = true;
+                if (EnMouvement)
+                {
+                    GérerDéplacement();
+                }
+                TempsÉcouléDepuisMAJ -= IntervalleMAJ;
             }
+
             base.Update(gameTime);
         }
 
@@ -135,7 +123,7 @@ namespace AtelierXNA
             }
         }
 
-        
+
 
         private void RegarderSiCibleEstMortOuHorsRange()
         {
@@ -152,9 +140,9 @@ namespace AtelierXNA
 
         protected void GérerDéplacement()
         {
-                Position += Direction * FACTEUR_VITESSE;
-                BoiteDeCollision = new BoundingBox(Position + PointMinBDC, Position + PointMaxBDC);
-                CalculerMonde();
+            Position += Direction * FACTEUR_VITESSE;
+            BoiteDeCollision = new BoundingBox(Position + PointMinBDC, Position + PointMaxBDC);
+            CalculerMonde();
         }
         public Vector3 AvoirPosition()
         {

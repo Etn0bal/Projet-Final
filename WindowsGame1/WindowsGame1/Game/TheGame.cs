@@ -190,14 +190,14 @@ namespace AtelierXNA
                 //Tours Alliés :
                 TourA1 = new EntitéTourAlliée(Game, "Defense_Tower-FBX", ÉCHELLE_OBJET_TOUR, Vector3.Zero, positionInitialeInvite, INTERVALLEMAJ, 1, 25, 1, 1, 1, numTourA);
                 Game.Components.Add(TourA1);
-                TourA2 = new EntitéTourAlliée(Game, "Defense_Tower-FBX", ÉCHELLE_OBJET_TOUR, Vector3.Zero, PositionInitialTourE2, INTERVALLEMAJ, 1, 25, 1, 1, 1,numTourA);
+                TourA2 = new EntitéTourAlliée(Game, "Defense_Tower-FBX", ÉCHELLE_OBJET_TOUR, Vector3.Zero, PositionInitialTourE2, INTERVALLEMAJ, 1, 25, 1, 1, 1,++numTourA);
                 Game.Components.Add(TourA2);
                 TourA3 = new EntitéTourAlliée(Game, "Defense_Tower-FBX", ÉCHELLE_OBJET_TOUR, Vector3.Zero, PositionInitialTourE3, INTERVALLEMAJ, 1, 25, 1, 1, 1, ++numTourA);
                 Game.Components.Add(TourA3);
                 //Tours Ennemis
                 TourE1 = new EntitéTourEnnemie(Game, "Defense_Tower-FBX", ÉCHELLE_OBJET_TOUR, rotationObjetTourHost, positionInitialeHost, INTERVALLEMAJ, 1, 25, 1, 1, 1, numTourE);
                 Game.Components.Add(TourE1);
-                TourE2 = new EntitéTourEnnemie(Game, "Defense_Tower-FBX", ÉCHELLE_OBJET_TOUR, rotationObjetTourHost, PositionInitialTourA2, INTERVALLEMAJ, 1, 25, 1, 1, 1, numTourE);
+                TourE2 = new EntitéTourEnnemie(Game, "Defense_Tower-FBX", ÉCHELLE_OBJET_TOUR, rotationObjetTourHost, PositionInitialTourA2, INTERVALLEMAJ, 1, 25, 1, 1, 1, ++numTourE);
                 Game.Components.Add(TourE2);
                 TourE3 = new EntitéTourEnnemie(Game, "Defense_Tower-FBX", ÉCHELLE_OBJET_TOUR, rotationObjetTourHost, PositionInitialTourA3, INTERVALLEMAJ, 1, 25, 1, 1, 1,++numTourE);
                 Game.Components.Add(TourE3);
@@ -252,7 +252,7 @@ namespace AtelierXNA
                 {
                     Vector3 laPosition = péon.Position;
                     int numPéon = péon.NumPéon;
-                    //JoueurClient.EnvoyerPositionPéon(laPosition, numPéon);
+                    JoueurClient.EnvoyerPositionPéon(laPosition, numPéon);
                 }
             }
             base.Update(gameTime);
@@ -329,15 +329,12 @@ namespace AtelierXNA
                         if (NumClient == 0)
                         {
                             Game.Components.Add(new Afficheur3D(Game));
-                            JoueurClient.EnvoyerEnnemiMort(0, 0);
-                            Game.Components.RemoveAt(i);
                             Joueur = new EntitéJoueur(Game, "robot2", ÉCHELLE_OBJET_JOUEUR, rotationObjetInitialeHost, positionInitialeHost, INTERVALLEMAJ, 1, 5, 1, 1, 1, new Vector3(1, 0, 0));
                             Game.Components.Add(Joueur);
                         }
                         else
                         {
                             Game.Components.Add(new Afficheur3D(Game));
-                            Game.Components.RemoveAt(i);
                             Joueur = new EntitéJoueur(Game, "robot2", ÉCHELLE_OBJET_JOUEUR, rotationObjetInitialeInvite, positionInitialeInvite, INTERVALLEMAJ, 1, 5, 1, 1, 1, new Vector3(-1, 0, 0));
                             Game.Components.Add(Joueur);
                         }
@@ -347,16 +344,27 @@ namespace AtelierXNA
                         if (NumClient == 0)
                         {
                             Game.Components.Add(new Afficheur3D(Game));
-                            Game.Components.RemoveAt(i);
+                            JoueurClient.EnvoyerEnnemiMort(0, 0);
                             JoueurEnnemie = new EntitéEnnemie(Game, "robot2", ÉCHELLE_OBJET_JOUEUR, rotationObjetInitialeInvite, positionInitialeInvite, INTERVALLEMAJ, 1, 5, 1, 1, 1, new Vector3(-1, 0, 0));
                             Game.Components.Add(JoueurEnnemie);
                         }
                         else
                         {
                             Game.Components.Add(new Afficheur3D(Game));
+                            JoueurClient.EnvoyerEnnemiMort(0, 0);
                             JoueurEnnemie = new EntitéEnnemie(Game, "robot2", ÉCHELLE_OBJET_JOUEUR, rotationObjetInitialeHost, positionInitialeHost, INTERVALLEMAJ, 1, 5, 1, 1, 1, new Vector3(1, 0, 0));
                             Game.Components.Add(JoueurEnnemie);
-                        }
+                        }               
+                    }
+                    else if (Game.Components[i] is EntitéPéonEnnemie)
+                    {
+                        int num = (Game.Components[i] as EntitéPéonEnnemie).NumPéon;
+                        JoueurClient.EnvoyerEnnemiMort(1, num);
+                    }
+                    else if (Game.Components[i] is EntitéTourEnnemie)
+                    {
+                        int num = (Game.Components[i] as EntitéTourEnnemie).NumTour;
+                        JoueurClient.EnvoyerEnnemiMort(2, num);
                     }
                     Game.Components.RemoveAt(i);
 
@@ -368,7 +376,7 @@ namespace AtelierXNA
         }
         public void EnvoyerAttaqueAuServeur(Vector3 position, int force, int précision, int typeEnnemie, int numEnnemie, int dégat)
         {
-            //JoueurClient.EnvoyerAttaque(position, force, précision, typeEnnemie, numEnnemie, dégat);
+            JoueurClient.EnvoyerAttaque(position, force, précision, typeEnnemie, numEnnemie, dégat);
         }
     }
 }

@@ -204,40 +204,40 @@ namespace AtelierXNA
 
                 }
 
-                //else if (p == Protocoles.ValidationDeadEnnemi)
-                //{
-                //    int typeEnemmie = reader.ReadInt32();
-                //    int numEnnemie = reader.ReadInt32();
+                else if (p == Protocoles.ValidationDeadEnnemi)
+                {
+                    int typeEnemmie = reader.ReadInt32();
+                    int numEnnemie = reader.ReadInt32();
 
-                //    if (typeEnemmie == 1)
-                //    {
-                //        foreach (EntitéPéonAlliée entité in Game.Components.Where(x => x is EntitéPéonAlliée))
-                //        {
-                //            if (entité.NumPéon == numEnnemie)
-                //            {
-                //                entité.PointDeVie = 0;                             
-                //            }
-                //        }
-                //    }
-                //    else if (typeEnemmie == 2)
-                //    {
-                //        foreach (EntitéTourAlliée entité in Game.Components.Where(x => x is EntitéTourAlliée))
-                //        {
-                //            if (entité.NumTour == numEnnemie)
-                //            {
-                //                entité.PointDeVie = 0;
-                //            }
-                //        }
-                //    }
-                //    else
-                //    {
-                //        foreach (EntitéJoueur entité in Game.Components.Where(x => x is EntitéJoueur))
-                //        {
-                //            entité.PointDeVie = 0;
-                //        }
-                //    }
+                    if (typeEnemmie == 1)
+                    {
+                        foreach (EntitéPéonAlliée entité in Game.Components.Where(x => x is EntitéPéonAlliée))
+                        {
+                            if (entité.NumPéon == numEnnemie)
+                            {
+                                entité.PointDeVie = 0;
+                            }
+                        }
+                    }
+                    else if (typeEnemmie == 2)
+                    {
+                        foreach (EntitéTourAlliée entité in Game.Components.Where(x => x is EntitéTourAlliée))
+                        {
+                            if (entité.NumTour == numEnnemie)
+                            {
+                                entité.PointDeVie = 0;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        foreach (EntitéJoueur entité in Game.Components.Where(x => x is EntitéJoueur))
+                        {
+                            entité.PointDeVie = 0;
+                        }
+                    }
 
-                //}
+                }
             }
             catch (Exception ex)
             {
@@ -336,6 +336,7 @@ namespace AtelierXNA
         {
             writeStream.Position = 0;
             writer.Write((Byte)Protocoles.ValidationDeadEnnemi);
+            //Envoi du type de l'ennemie
             writer.Write(typeEnnemie);
             //Envoi du numéro de l'ennemie
             writer.Write(numEnnemie);
