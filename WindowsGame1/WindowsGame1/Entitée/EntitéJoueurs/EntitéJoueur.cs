@@ -29,6 +29,7 @@ namespace AtelierXNA
         Vector3 DirectionDéplacement { get; set; }
         Vector3 Direction { get; set; }
         Vector3 Destination { get; set; }
+        Vector3 DestinationTampon { get; set; }
         Plane PlanReprésentantCarte { get; set; }
         InputManager GestionInputs { get; set; }
         CaméraTypéMoba CaméraJeu { get; set; }
@@ -160,16 +161,19 @@ namespace AtelierXNA
             }
             if (GestionInputs.EstNouvelleTouche(Keys.Q))
             {
+                DestinationTampon = Destination;
                 GetDestination();
                 float distanceEntreLesDeux = (float)Math.Sqrt(Math.Pow((Destination.X - Position.X), 2) + Math.Pow((Destination.Z - Position.Z), 2));
-                DirectionDéplacement = Vector3.Normalize(Destination - Position);
+
                 if (distanceEntreLesDeux <= Portée)
                 {
+                    DirectionDéplacement = Vector3.Normalize(Destination - Position);
                     GérerRotation();
                     Position = Destination;
                     BoiteDeCollision = new BoundingBox(Position + PointMinBDC, Position + PointMaxBDC);
                     CalculerMonde();
                 }
+                else { Destination = DestinationTampon; }
             }
 
             CaméraJeu.DonnerPositionJoueur(Position);
