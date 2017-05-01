@@ -264,6 +264,20 @@ namespace AtelierXNA
                         EntitéeEnnemie.PointDeVie = pdv;
                     }
                 }
+                else if (p == Protocoles.WAttack)
+                {
+                    TheGame game = Game.Components.First(x => x is TheGame) as TheGame;
+                    float px = reader.ReadSingle();
+                    float py = reader.ReadSingle();
+                    float pz = reader.ReadSingle();
+                    float dx = reader.ReadSingle();
+                    float dy = reader.ReadSingle();
+                    float dz = reader.ReadSingle();
+                    int force = reader.ReadInt32();
+                    int précision = reader.ReadInt32();
+                    ProjectileAttaqueW projectile = new ProjectileAttaqueW(Game, "rocket", game.ÉCHELLE_PROJECTILE_ATTAQUE_DE_BASE, game.RotationInitialeProjectielADB, new Vector3(px, py, pz), game.DirectionInitialeProjectileADB,new Vector3(dx,dy,dz), force, précision, game.INTERVALLEMAJ);
+                    Game.Components.Add(projectile);
+                }
             }
             catch (Exception ex)
             {
@@ -411,6 +425,25 @@ namespace AtelierXNA
             writeStream.Position = 0;
             writer.Write((Byte)Protocoles.HealthChange);
             writer.Write(PointDeVie);
+            SendData(GetDataFromMemoryStream(writeStream));
+        }
+        public void EnvoyerAttaqueW(Vector3 position, Vector3 direction, int force, int précision)
+        {
+            writeStream.Position = 0;
+            writer.Write((Byte)Protocoles.WAttack);
+
+            //Envoi position joueurA
+            writer.Write(position.X);
+            writer.Write(position.Y);
+            writer.Write(position.Z);
+            //Envoi direction attaque
+            writer.Write(direction.X);
+            writer.Write(direction.Y);
+            writer.Write(direction.Z);
+            //Envoi de la force 
+            writer.Write(force);
+            //Envoi de la précision 
+            writer.Write(précision);
             SendData(GetDataFromMemoryStream(writeStream));
         }
     }

@@ -36,11 +36,15 @@ namespace AtelierXNA
         Murs Murs { get; set; }
         Ray RayonPicking { get; set; }
         TheGame LeGame { get; set; }
+
         float TempsÉcouléDepuisDernierQ { get; set; }
         float CoolDownQ { get; set; }
+        float TempsÉcouléDepuisDernierW { get; set; }
+        float CoolDownW { get; set; }
         float TempsÉcouléDepuisDernierE { get; set; }
         float CoolDownE { get; set; }
         int PointDeVieRedonné { get; set; }
+
         public bool EnMouvement { get; set; }
         public bool ÀDétruire { get; set;}
 
@@ -74,7 +78,7 @@ namespace AtelierXNA
             Murs = Game.Services.GetService(typeof(Murs)) as Murs;
             LeGame = Game.Components.First(x => x is TheGame) as TheGame;
             base.Initialize();
-            PointDeVieRedonné = (1 / 10) * PointDeVieInitial;
+            PointDeVieRedonné = (int)(0.1f * PointDeVieInitial);
         }
 
         public override void Update(GameTime gameTime)
@@ -84,6 +88,7 @@ namespace AtelierXNA
             float tempsÉcoulé = (float)gameTime.ElapsedGameTime.TotalSeconds;
             TempsÉcouléDepuisMAJ += tempsÉcoulé;
             TempsÉcouléDepuisDernierQ += tempsÉcoulé;
+            TempsÉcouléDepuisDernierW += tempsÉcoulé;
             TempsÉcouléDepuisDernierE += tempsÉcoulé;
             if (TempsÉcouléDepuisMAJ >= IntervalleMAJ)
             {
@@ -104,13 +109,19 @@ namespace AtelierXNA
                 }
                 catch { }
 
-                if (Cible != null) { GestionAttaque(); }
+                if (Cible != null) { GestionAttaqueDeBase(); }
             }
 
             if (TempsÉcouléDepuisDernierQ >= CoolDownQ && GestionInputs.EstNouvelleTouche(Keys.Q))
             {
                 GestionQ();
                 TempsÉcouléDepuisDernierQ = 0;
+            }
+
+            if (TempsÉcouléDepuisDernierW >= CoolDownQ && GestionInputs.EstNouvelleTouche(Keys.W))
+            {
+                GestionW();
+                TempsÉcouléDepuisDernierW = 0;
             }
 
             if (TempsÉcouléDepuisDernierE >= CoolDownQ && GestionInputs.EstNouvelleTouche(Keys.E))
@@ -129,9 +140,24 @@ namespace AtelierXNA
 
         }
 
+        private void GestionW()
+        {
+            GetDestination();
+            Vector3 directionAttaqueW = Vector3.Normalize(Destination - Position);
+            directionAttaqueW.Y = 0;
+            GérerRotation();
+            ProjectileAttaqueW attaque = new ProjectileAttaqueW(Game, "rocket", ÉCHELLE_PROJECTILE_ATTAQUE_DE_BASE,
+                                                                RotationInitialeProjectielADB, Position + new Vector3(0, 5, 0),DirectionInitialeProjectileADB, directionAttaqueW,
+                                                                Force, Précision, IntervalleMAJ);
+            LeGame.EnvoyerAttaqueW(Position + new Vector3(0, 5, 0), directionAttaqueW, Force, Précision);
+
+            Game.Components.Add(attaque);
+
+        }
+
         private void GestionE()
         {
-            PointDeVie += Math.Min(PointDeVie+PointDeVieRedonné, PointDeVieInitial);
+            PointDeVie = Math.Min(PointDeVie+PointDeVieRedonné, PointDeVieInitial);
             LeGame.EnvoyerGainDeVie(PointDeVie);
         }
 
@@ -143,10 +169,10 @@ namespace AtelierXNA
             }
         }
 
-        void GestionAttaque()
+        void GestionAttaqueDeBase()
         {
             ProjectileAttaqueDeBase attaque = new ProjectileAttaqueDeBase(Game, "rocket", ÉCHELLE_PROJECTILE_ATTAQUE_DE_BASE,
-                                                                              RotationInitialeProjectielADB, Position, DirectionInitialeProjectileADB,
+                                                                              RotationInitialeProjectielADB, Position+new Vector3(0,5,0), DirectionInitialeProjectileADB,
                                                                               Force, Précision, Cible, IntervalleMAJ);
             Game.Components.Add(attaque);
 

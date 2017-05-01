@@ -15,53 +15,43 @@ namespace AtelierXNA
     /// <summary>
     /// This is a game component that implements IUpdateable.
     /// </summary>
-    public class ProjectileAttaqueDeBase : Projectile, IDestructible
+    public class ProjectileAttaqueW : Projectile, IDestructible
     {
-        const float FACTEUR_VITESSE = 1f;
+        const float FACTEUR_VITESSE = 0.5f;
+        const float PORTEE_MAX =100f ;
 
-        Entité Cible { get; set; }
+        protected Vector3 PointMaxBDC = new Vector3(1,1,1);
+        protected Vector3 PointMinBDC = new Vector3(-1,-1,-1);
+
+        public Entité Cible { get; private set; }
         public bool ÀDétruire { get; set; }
+        Vector3 PositionInitiale { get;set;}
+        BoundingBox BoiteDeCollision { get; set; }
 
-        public ProjectileAttaqueDeBase(Game game, string nomModèle, float échelleInitiale, Vector3 rotationInitiale, Vector3 positionInitiale,
-                                       Vector3 direction, int force, int précision, Entité cible, float intervalleMAJ)
+        public ProjectileAttaqueW(Game game, string nomModèle, float échelleInitiale, Vector3 rotationInitiale, Vector3 positionInitiale,
+                                       Vector3 direction,Vector3 directionDéplacement, int force, int précision,float intervalleMAJ)
             : base(game, nomModèle, échelleInitiale, rotationInitiale, positionInitiale, direction, force, précision, intervalleMAJ)
         {
-            Cible = cible;
+            DirectionDéplacement = directionDéplacement;
+            PositionInitiale = positionInitiale;
         }
 
-        public ProjectileAttaqueDeBase(Game game, string nomModèle, float échelleInitiale, Vector3 rotationInitiale, Vector3 positionInitiale,
-                                      Vector3 direction, int force, int précision, Entité cible, int dégat, float intervalleMAJ)
-           : base(game, nomModèle, échelleInitiale, rotationInitiale, positionInitiale,direction, force, précision, dégat, intervalleMAJ)
-        {
-            Cible = cible;
-        }
-
-        /// <summary>
-        /// Allows the game component to perform any initialization it needs to before starting
-        /// to run.  This is where it can query for any required services and load content.
-        /// </summary>
         public override void Initialize()
         {
             ÀDétruire = false;
-
+            DoCalculerMonde = false;
+            BoiteDeCollision = new BoundingBox(Position + PointMinBDC, Position + PointMaxBDC);
             base.Initialize();
         }
 
-        /// <summary>
-        /// Allows the game component to update itself.
-        /// </summary>
-        /// <param name="gameTime">Provides a snapshot of timing values.</param>
         public override void Update(GameTime gameTime)
         {
-            DoCalculerMonde = false;
-
             float tempsÉcoulé = (float)gameTime.ElapsedGameTime.TotalSeconds;
             TempsÉcouléDepuisMAJ += tempsÉcoulé;
             if (TempsÉcouléDepuisMAJ >= IntervalleMAJ)
             {
-                CibleAtteinte();
-                GestionDéplacement();
                 GérerRotation();
+                GestionDéplacement();
                 if (DoCalculerMonde) { CalculerMonde(); DoCalculerMonde = false; }
                 TempsÉcouléDepuisMAJ = 0;
             }
@@ -71,18 +61,30 @@ namespace AtelierXNA
 
         void GestionDéplacement()
         {
-            if (!(ÀDétruire))
+            float distanceEntre2Positions = (float)Math.Sqrt(Math.Pow((PositionInitiale.X - Position.X), 2) + Math.Pow((PositionInitiale.Z - Position.Z), 2));
+            if (!(ÀDétruire) && distanceEntre2Positions <= PORTEE_MAX)
             {
-                DirectionDéplacement = Vector3.Normalize(Cible.Position - Position);
-
-                if (DirectionDéplacement.X >= 0 || DirectionDéplacement.X <= 0) 
+                if (DirectionDéplacement.X >= 0 || DirectionDéplacement.X <= 0)
                 {
                     Position += DirectionDéplacement * FACTEUR_VITESSE;
+                    BoiteDeCollision = new BoundingBox(Position + PointMinBDC, Position + PointMaxBDC);
                     DoCalculerMonde = true;
+                    foreach(Entité entité in Game.Components.Where(x => x is Entité) )
+                    {
+                        if(BoiteDeCollision.Intersects(entité.BoiteDeCollision)&& !entité.EstAlliée)
+                        {
+                            Cible = entité;
+                            ÀDétruire = true;
+                        }
+                    }
+                    if(Cible!= null)
+                    {
+                        Cible.RecevoirAttaque(Dégat);
+                    }
                 }
-                else { ÀDétruire = true;  }
-               
+
             }
+            else { ÀDétruire = true; }
         }
 
         void GérerRotation()
@@ -97,15 +99,6 @@ namespace AtelierXNA
                 Rotation += new Vector3(0, Angle, 0);
                 Direction = DirectionDéplacement;
                 DoCalculerMonde = true;
-            }
-        }
-
-        void CibleAtteinte()
-        {
-            if((Cible.Position - Position).Length() <= Cible.RayonCollision)
-            {
-                ÀDétruire = true;
-                Cible.RecevoirAttaque(Dégat);
             }
         }
     }
