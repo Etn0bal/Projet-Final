@@ -153,18 +153,17 @@ namespace AtelierXNA
                 else if (p == Protocoles.BasicAttaque)
                 {
                     Entité theEntité = null;
-                    TheGame game = Game.Components.OfType<TheGame>() as TheGame;
-                    //foreach (TheGame game in Game.Components.Where(x => x is TheGame))
-                    //{
+                    foreach (TheGame game in Game.Components.Where(x => x is TheGame))
+                    {
 
-                    float px = reader.ReadSingle();
-                    float py = reader.ReadSingle();
-                    float pz = reader.ReadSingle();
-                    int force = reader.ReadInt32();
-                    int précision = reader.ReadInt32();
-                    int typeEnemmie = reader.ReadInt32();
-                    int numEnnemie = reader.ReadInt32();
-                    int dégat = reader.ReadInt32();
+                        float px = reader.ReadSingle();
+                        float py = reader.ReadSingle();
+                        float pz = reader.ReadSingle();
+                        int force = reader.ReadInt32();
+                        int précision = reader.ReadInt32();
+                        int typeEnemmie = reader.ReadInt32();
+                        int numEnnemie = reader.ReadInt32();
+                        int dégat = reader.ReadInt32();
 
                     if (typeEnemmie == 1)
                     {
@@ -228,7 +227,7 @@ namespace AtelierXNA
                             }
                         }
                     }
-                    else
+                    else if (typeEnemmie == 0)
                     {
                         foreach (EntitéJoueur entité in Game.Components.Where(x => x is EntitéJoueur))
                         {
