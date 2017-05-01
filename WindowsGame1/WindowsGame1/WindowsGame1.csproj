@@ -89,6 +89,7 @@
     <Compile Include="Entitée\EntitéTours\EntitéTourAlliée.cs" />
     <Compile Include="Entitée\EntitéTours\EntitéTourEnnemie.cs" />
     <Compile Include="Minuteur.cs" />
+    <Compile Include="PointDeVieSprite.cs" />
     <Compile Include="Projectile\Projectile.cs" />
     <Compile Include="Projectile\ProjectileAttaqueDeBase.cs" />
     <Compile Include="Serveur\Delegates.cs" />

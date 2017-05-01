@@ -123,7 +123,7 @@ namespace AtelierXNA
                     Game.Components.Add(IpAAfficher);
                     Game.Components.Add(txt);
 
-                    if (ServeurCréé == false)
+                    if (!ServeurCréé)
                     {
                         ServeurDeJeu = new Server(5011);
                         ServeurCréé = true;
