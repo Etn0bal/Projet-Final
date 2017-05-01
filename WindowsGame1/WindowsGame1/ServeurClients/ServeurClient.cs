@@ -193,11 +193,11 @@ namespace AtelierXNA
                             theEntité = entité;
 
                         }
-                        if (theEntité != null)
-                        {
-                            ProjectileAttaqueDeBase projectile = new ProjectileAttaqueDeBase(Game, "rocket", game.ÉCHELLE_PROJECTILE_ATTAQUE_DE_BASE, game.RotationInitialeProjectielADB, new Vector3(px, py, pz), game.DirectionInitialeProjectileADB, force, précision, theEntité, dégat, game.INTERVALLEMAJ);
-                            Game.Components.Add(projectile);
-                        }
+                    }
+                    if (theEntité != null)
+                    {
+                        ProjectileAttaqueDeBase projectile = new ProjectileAttaqueDeBase(Game, "rocket", game.ÉCHELLE_PROJECTILE_ATTAQUE_DE_BASE, game.RotationInitialeProjectielADB, new Vector3(px, py, pz), game.DirectionInitialeProjectileADB, force, précision, theEntité, dégat, game.INTERVALLEMAJ);
+                        Game.Components.Add(projectile);
                     }
                 }
 
