@@ -47,7 +47,7 @@ namespace AtelierXNA
         //Constante PointDeVie
         const int PV_PÉON = 1;
         const int PV_TOUR = 1;
-        const int PV_JOUEUR = 1;
+        const int PV_JOUEUR = 1000;
 
 
 
@@ -404,6 +404,10 @@ namespace AtelierXNA
         public void EnvoyerMatrice(Matrix matrice)
         {
             JoueurClient.EnvoyerMatrice(matrice);
+        }
+        public void EnvoyerGainDeVie(int PointDeVie)
+        {
+            JoueurClient.EnvoyerGainDeVie(PointDeVie);
         }
     }
 }

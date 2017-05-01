@@ -14,6 +14,7 @@ namespace AtelierXNA
         StartGame = 4,
         BasicAttaque = 5,
         ValidationDeadEnnemi = 6,
+        HealthChange = 7,
 
 
 

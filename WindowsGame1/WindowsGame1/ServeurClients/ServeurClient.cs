@@ -256,6 +256,14 @@ namespace AtelierXNA
                     }
 
                 }
+                else if (p == Protocoles.HealthChange)
+                {
+                    int pdv = reader.ReadInt32();
+                    foreach (EntitéEnnemie EntitéeEnnemie in Game.Components.Where(x => x is EntitéEnnemie))
+                    {
+                        EntitéeEnnemie.PointDeVie = pdv;
+                    }
+                }
             }
             catch (Exception ex)
             {
@@ -306,16 +314,16 @@ namespace AtelierXNA
             writer.Write(true);
             SendData(GetDataFromMemoryStream(writeStream));
         }
-        public void EnvoyerDestination(Vector3 destination)
-        {
-            writeStream.Position = 0;
-            writer.Write((Byte)Protocoles.PlayerMovement);
-            //Envoi de la position
-            writer.Write(destination.X);
-            writer.Write(destination.Y);
-            writer.Write(destination.Z);
-            SendData(GetDataFromMemoryStream(writeStream));
-        }
+        //public void EnvoyerDestination(Vector3 destination)
+        //{
+        //    writeStream.Position = 0;
+        //    writer.Write((Byte)Protocoles.PlayerMovement);
+        //    //Envoi de la position
+        //    writer.Write(destination.X);
+        //    writer.Write(destination.Y);
+        //    writer.Write(destination.Z);
+        //    SendData(GetDataFromMemoryStream(writeStream));
+        //}
         public void EnvoyerPositionPéon(Vector3 position, int numPéon)
         {
             writeStream.Position = 0;
@@ -396,6 +404,13 @@ namespace AtelierXNA
             writer.Write(m42);
             writer.Write(m43);
             writer.Write(m44);
+            SendData(GetDataFromMemoryStream(writeStream));
+        }
+        public void EnvoyerGainDeVie(int PointDeVie)
+        {
+            writeStream.Position = 0;
+            writer.Write((Byte)Protocoles.HealthChange);
+            writer.Write(PointDeVie);
             SendData(GetDataFromMemoryStream(writeStream));
         }
     }

@@ -37,6 +37,7 @@ namespace AtelierXNA
 
             }
         }
+        public int PointDeVieInitial { get; private set; }
         public int Portée { get; set; }
         protected int Force { get; set; }
         protected int Armure { get; set; }
@@ -63,6 +64,7 @@ namespace AtelierXNA
             : base(jeu, nomModèle, échelleInitiale, rotationInitiale, positionInitiale, intervalleMAJ)
         {
             PointDeVie = pointDeVie;
+            PointDeVieInitial = pointDeVie;
             Portée = portée;
             Force = force;
             Armure = armure;

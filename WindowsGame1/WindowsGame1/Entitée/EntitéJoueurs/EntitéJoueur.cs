@@ -38,6 +38,9 @@ namespace AtelierXNA
         TheGame LeGame { get; set; }
         float TempsÉcouléDepuisDernierQ { get; set; }
         float CoolDownQ { get; set; }
+        float TempsÉcouléDepuisDernierE { get; set; }
+        float CoolDownE { get; set; }
+        int PointDeVieRedonné { get; set; }
         public bool EnMouvement { get; set; }
         public bool ÀDétruire { get; set;}
 
@@ -65,6 +68,8 @@ namespace AtelierXNA
             EnMouvement = true;
             RayonCollision = 3;
             CoolDownQ = 10;
+            CoolDownE = 10;
+            PointDeVieRedonné = (int)(1 / 10 * PointDeVieInitial);
             BoiteDeCollision = new BoundingBox(Position + PointMinBDC, Position + PointMaxBDC);
             Murs = Game.Services.GetService(typeof(Murs)) as Murs;
             LeGame = Game.Components.First(x => x is TheGame) as TheGame;
@@ -78,6 +83,7 @@ namespace AtelierXNA
             float tempsÉcoulé = (float)gameTime.ElapsedGameTime.TotalSeconds;
             TempsÉcouléDepuisMAJ += tempsÉcoulé;
             TempsÉcouléDepuisDernierQ += tempsÉcoulé;
+            TempsÉcouléDepuisDernierE += tempsÉcoulé;
             if (TempsÉcouléDepuisMAJ >= IntervalleMAJ)
             {
                 GestionDéplacement();
@@ -106,6 +112,12 @@ namespace AtelierXNA
                 TempsÉcouléDepuisDernierQ = 0;
             }
 
+            if (TempsÉcouléDepuisDernierE >= CoolDownQ && GestionInputs.EstNouvelleTouche(Keys.Q))
+            {
+                GestionE();
+                TempsÉcouléDepuisDernierE = 0;
+            }
+
             if (DoCalculerMonde)
             {
                 CalculerMonde();
@@ -116,9 +128,10 @@ namespace AtelierXNA
 
         }
 
-        public override void Draw(GameTime gameTime)
+        private void GestionE()
         {
-            base.Draw(gameTime);
+            PointDeVie += Math.Min(PointDeVie+PointDeVieInitial, PointDeVieInitial);
+            LeGame.EnvoyerGainDeVie(PointDeVie);
         }
 
         private void GestionVie()
