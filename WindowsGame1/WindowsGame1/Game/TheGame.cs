@@ -245,7 +245,7 @@ namespace AtelierXNA
                 TempsÉcouléDepuisMAJ -= INTERVALLEMAJ;
 
             }
-            if(TempsÉcouléDepuisMAJ >=1)
+            if (TempsÉcouléDepuisMAJ >= 1)
             {
                 RegarderVictoireOuDéfaite();
                 TempsÉcouléDepuisMAJ -= 1;
@@ -267,13 +267,16 @@ namespace AtelierXNA
             //    JoueurClient.EnvoyerDestination(destination);
             //    Joueur.EnMouvement = false;
             //}
-            foreach (EntitéPéonAlliée péon in Game.Components.Where(x => x is EntitéPéonAlliée))
+            if (Game.Components.Any(x=> x is EntitéPéonAlliée))
             {
-                if (péon.EnMouvement)
+                foreach (EntitéPéonAlliée péon in Game.Components.Where(x => x is EntitéPéonAlliée))
                 {
-                    Vector3 laPosition = péon.Position;
-                    int numPéon = péon.NumPéon;
-                    JoueurClient.EnvoyerPositionPéon(laPosition, numPéon);
+                    if (péon.EnMouvement)
+                    {
+                        Vector3 laPosition = péon.Position;
+                        int numPéon = péon.NumPéon;
+                        JoueurClient.EnvoyerPositionPéon(laPosition, numPéon);
+                    }
                 }
             }
             base.Update(gameTime);

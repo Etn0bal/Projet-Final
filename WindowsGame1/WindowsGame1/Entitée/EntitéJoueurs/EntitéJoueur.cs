@@ -69,11 +69,12 @@ namespace AtelierXNA
             RayonCollision = 3;
             CoolDownQ = 10;
             CoolDownE = 10;
-            PointDeVieRedonné = (int)(1 / 10 * PointDeVieInitial);
+
             BoiteDeCollision = new BoundingBox(Position + PointMinBDC, Position + PointMaxBDC);
             Murs = Game.Services.GetService(typeof(Murs)) as Murs;
             LeGame = Game.Components.First(x => x is TheGame) as TheGame;
             base.Initialize();
+            PointDeVieRedonné = (1 / 10) * PointDeVieInitial;
         }
 
         public override void Update(GameTime gameTime)
