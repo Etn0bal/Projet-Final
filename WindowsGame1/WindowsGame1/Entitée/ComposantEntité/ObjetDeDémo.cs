@@ -68,7 +68,6 @@ namespace AtelierXNA
         public override void Update(GameTime gameTime)
         {
             DoCalculerMonde = false;
-            GérerClavier();
             float tempsÉcoulé = (float)gameTime.ElapsedGameTime.TotalSeconds;
             TempsÉcouléDepuisMAJ += tempsÉcoulé;
             if (TempsÉcouléDepuisMAJ >= IntervalleMAJ)
@@ -84,16 +83,7 @@ namespace AtelierXNA
         }
         
 
-        void GérerClavier()
-        {
-            VariationÉchelle = GérerTouche(Keys.OemPlus) - GérerTouche(Keys.OemMinus);
 
-            DoYaw = GérerCommutateur(Keys.NumPad1, DoYaw);
-            DoPitch = GérerCommutateur(Keys.NumPad2, DoPitch);
-            DoRoll = GérerCommutateur(Keys.NumPad3, DoRoll);
-
-            GérerReset();
-        }
 
         float GérerTouche(Keys touche)
         {
@@ -105,14 +95,6 @@ namespace AtelierXNA
             return GestionInput.EstNouvelleTouche(touche) ? !DoSomething : DoSomething;
         }
 
-        void GérerReset()
-        {
-            if (GestionInput.EstNouvelleTouche(Keys.Space) && Rotation != RotationInitiale)
-            {
-                Rotation = RotationInitiale;
-                DoCalculerMonde = true;
-            }
-        }
 
         void GérerHomothétie()
         {
