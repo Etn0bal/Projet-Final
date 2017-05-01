@@ -152,10 +152,10 @@ namespace AtelierXNA
 
                 else if (p == Protocoles.BasicAttaque)
                 {
-                    Entité theEntité = null;
+                    TheGame game1 = Game.Components
                     foreach (TheGame game in Game.Components.Where(x => x is TheGame))
                     {
-
+                        Entité theEntité = null;
                         float px = reader.ReadSingle();
                         float py = reader.ReadSingle();
                         float pz = reader.ReadSingle();
@@ -192,14 +192,15 @@ namespace AtelierXNA
                                 theEntité = entité;
 
                             }
-                            if (theEntité != null)
-                            {
-                                ProjectileAttaqueDeBase projectile = new ProjectileAttaqueDeBase(Game, "rocket", game.ÉCHELLE_PROJECTILE_ATTAQUE_DE_BASE, game.RotationInitialeProjectielADB, new Vector3(px, py, pz), game.DirectionInitialeProjectileADB, force, précision, theEntité, dégat, game.INTERVALLEMAJ);
-                                Game.Components.Add(projectile);
-                            }
                         }
+
                     }
-                    
+                    if (theEntité != null)
+                    {
+                        ProjectileAttaqueDeBase projectile = new ProjectileAttaqueDeBase(Game, "rocket", game.ÉCHELLE_PROJECTILE_ATTAQUE_DE_BASE, game.RotationInitialeProjectielADB, new Vector3(px, py, pz), game.DirectionInitialeProjectileADB, force, précision, theEntité, dégat, game.INTERVALLEMAJ);
+                        Game.Components.Add(projectile);
+                    }
+
                 }
 
                 else if (p == Protocoles.ValidationDeadEnnemi)
@@ -227,7 +228,7 @@ namespace AtelierXNA
                             }
                         }
                     }
-                    else
+                    else if (typeEnemmie == 0)
                     {
                         foreach (EntitéJoueur entité in Game.Components.Where(x => x is EntitéJoueur))
                         {
