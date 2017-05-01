@@ -82,7 +82,7 @@ namespace AtelierXNA
             if (DoCalculerMonde)
             {
                 CalculerMonde();
-                LeGame.EnvoyerMatrice();
+                LeGame.EnvoyerMatrice(Monde);
                 DoCalculerMonde = false;
             }
             base.Update(gameTime);

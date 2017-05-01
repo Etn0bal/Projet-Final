@@ -15,7 +15,7 @@ namespace AtelierXNA
     /// <summary>
     /// This is a game component that implements IUpdateable.
     /// </summary>
-    public class EntitéEnnemie : Entité, IControlable, ICollisionable, IDestructible
+    public class EntitéEnnemie : Entité, ICollisionable, IDestructible
     {
         Vector3 PointMaxBDC = new Vector3(2, 16.2f, 5f / 2f);
         Vector3 PointMinBDC = new Vector3(-2, 0, -(5f / 2f));
@@ -27,6 +27,7 @@ namespace AtelierXNA
         Vector3 DirectionDéplacement { get; set; }
         Vector3 Direction { get; set; }
         Vector3 Destination { get; set; }
+        Vector3 PositionInitiale { get; set; }
         InputManager GestionInputs { get; set; }
         Caméra CaméraJeu { get; set; }
         bool EnMouvement { get; set; }
@@ -41,6 +42,7 @@ namespace AtelierXNA
             : base(jeu, nomModèle, échelleInitiale, rotationInitiale, positionInitiale, intervalleMAJ, pointDeVie, portée, force, armure, précision)
         {
             Direction = direction;
+            PositionInitiale = positionInitiale;
         }
 
         /// <summary>
@@ -63,23 +65,17 @@ namespace AtelierXNA
 
         public override void Update(GameTime gameTime)
         {
-            if (EnMouvement)
-            {
-                GestionDéplacement();
-            }
+            
+            
             float tempsÉcoulé = (float)gameTime.ElapsedGameTime.TotalSeconds;
             TempsÉcouléDepuisMAJ += tempsÉcoulé;
             if (TempsÉcouléDepuisMAJ >= IntervalleMAJ)
             {
                 GestionVie();
+                DécomposéMonde();
                 TempsÉcouléDepuisMAJ = 0;
             }
 
-            if (DoCalculerMonde)
-            {
-                CalculerMonde();
-                DoCalculerMonde = false;
-            }
             base.Update(gameTime);
 
         }
@@ -92,48 +88,54 @@ namespace AtelierXNA
             }
         }
 
-        public void GestionDéplacement()
+        void DécomposéMonde()
         {
-            if ((Destination - Position).Length() > FACTEUR_VITESSE * DirectionDéplacement.Length())
-            {
-                Position += FACTEUR_VITESSE * DirectionDéplacement;
-                BoiteDeCollision = new BoundingBox(Position + PointMinBDC, Position + PointMaxBDC);
-                DoCalculerMonde = true;
-            }
-            else
-            {
-                EnMouvement = false;
-            }
+            Position = Monde.Translation;
+            BoiteDeCollision = new BoundingBox(Position + PointMinBDC, Position + PointMaxBDC);
+        }
+
+        //public void GestionDéplacement()
+        //{
+        //    if ((Destination - Position).Length() > FACTEUR_VITESSE * DirectionDéplacement.Length())
+        //    {
+        //        Position += FACTEUR_VITESSE * DirectionDéplacement;
+        //        BoiteDeCollision = new BoundingBox(Position + PointMinBDC, Position + PointMaxBDC);
+        //        DoCalculerMonde = true;
+        //    }
+        //    else
+        //    {
+        //        EnMouvement = false;
+        //    }
             
 
-        }
+        //}
         public override void Draw(GameTime gameTime)
         {
             base.Draw(gameTime);
         }
-        public void DéplacerEnnemie(Vector3 destination)
-        {
-            Destination = destination;
-            DirectionDéplacement = Vector3.Normalize(Destination - Position);
-            GérerRotation();
-            EnMouvement = true;
+        //public void DéplacerEnnemie(Vector3 destination)
+        //{
+        //    Destination = destination;
+        //    DirectionDéplacement = Vector3.Normalize(Destination - Position);
+        //    GérerRotation();
+        //    EnMouvement = true;
 
 
-        }
-        void GérerRotation()
-        {
-            //Le if est là pour vérifier que les valeur de DirectionDéplacement sont des valeur numérique, car si Destination-Position égale
-            //le vecteur 0 alors le normalize donne un vecteur avec des valeurs non numériques
-            if (DirectionDéplacement.X >= 0 || DirectionDéplacement.X <= 0)
-            {
-                float Angle = (float)Math.Acos(Math.Min(Math.Max(Vector3.Dot(DirectionDéplacement, Direction) / (DirectionDéplacement.Length() * Direction.Length()), -1), 1));
-                if (Vector3.Cross(Direction, DirectionDéplacement).Y < 0) { Angle *= -1; }
+        //}
+        //void GérerRotation()
+        //{
+        //    //Le if est là pour vérifier que les valeur de DirectionDéplacement sont des valeur numérique, car si Destination-Position égale
+        //    //le vecteur 0 alors le normalize donne un vecteur avec des valeurs non numériques
+        //    if (DirectionDéplacement.X >= 0 || DirectionDéplacement.X <= 0)
+        //    {
+        //        float Angle = (float)Math.Acos(Math.Min(Math.Max(Vector3.Dot(DirectionDéplacement, Direction) / (DirectionDéplacement.Length() * Direction.Length()), -1), 1));
+        //        if (Vector3.Cross(Direction, DirectionDéplacement).Y < 0) { Angle *= -1; }
 
-                Rotation += new Vector3(0, Angle, 0);
-                Direction = DirectionDéplacement;
-                DoCalculerMonde = true;
-            }
-        }
+        //        Rotation += new Vector3(0, Angle, 0);
+        //        Direction = DirectionDéplacement;
+        //        DoCalculerMonde = true;
+        //    }
+        //}
         public bool EstEnCollision(object autreObjet)
         {
             return false;
