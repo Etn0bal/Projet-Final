@@ -153,6 +153,7 @@ namespace AtelierXNA
                 else if (p == Protocoles.BasicAttaque)
                 {
                     Entité theEntité = null;
+
                     TheGame game = Game.Components.First(x => x is TheGame) as TheGame;
 
                         float px = reader.ReadSingle();
