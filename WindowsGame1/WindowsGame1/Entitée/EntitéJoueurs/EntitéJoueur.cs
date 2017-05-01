@@ -36,6 +36,8 @@ namespace AtelierXNA
         Murs Murs { get; set; }
         Ray RayonPicking { get; set; }
         TheGame LeGame { get; set; }
+        float TempsÉcouléDepuisDernierQ { get; set; }
+        float CoolDownQ { get; set; }
         public bool EnMouvement { get; set; }
         public bool ÀDétruire { get; set;}
 
@@ -62,6 +64,7 @@ namespace AtelierXNA
             EstAlliée = true;
             EnMouvement = true;
             RayonCollision = 3;
+            CoolDownQ = 10;
             BoiteDeCollision = new BoundingBox(Position + PointMinBDC, Position + PointMaxBDC);
             Murs = Game.Services.GetService(typeof(Murs)) as Murs;
             LeGame = Game.Components.First(x => x is TheGame) as TheGame;
@@ -74,10 +77,32 @@ namespace AtelierXNA
             GestionDéplacement();
             float tempsÉcoulé = (float)gameTime.ElapsedGameTime.TotalSeconds;
             TempsÉcouléDepuisMAJ += tempsÉcoulé;
+            TempsÉcouléDepuisDernierQ += tempsÉcoulé;
             if (TempsÉcouléDepuisMAJ >= IntervalleMAJ)
             {
+                if (GestionInputs.EstSourisActive && GestionInputs.EstNouveauClicDroit())
+                {
+                    GetDestination();
+                    DirectionDéplacement = Vector3.Normalize(Destination - Position);
+                    GérerRotation();
+
+                    try
+                    {
+                        Cible = Game.Components.OfType<Entité>().First(x => x.BoiteDeCollision.Intersects(RayonPicking) != null && !x.EstAlliée);
+                    }
+                    catch { }
+
+                    if(Cible == null) { GestionDéplacement(); }
+                    else { GestionAttaque(); }
+                }
+
                 GestionVie();
-                TempsÉcouléDepuisMAJ = 0;
+                TempsÉcouléDepuisMAJ -= IntervalleMAJ;
+            }
+            if (TempsÉcouléDepuisDernierQ >= CoolDownQ && GestionInputs.EstNouvelleTouche(Keys.Q))
+            {
+                GestionQ();
+                TempsÉcouléDepuisDernierQ = 0;
             }
             if (DoCalculerMonde)
             {
@@ -102,53 +127,51 @@ namespace AtelierXNA
             }
         }
 
+        void GestionAttaque()
+        {
+            ProjectileAttaqueDeBase attaque = new ProjectileAttaqueDeBase(Game, "rocket", ÉCHELLE_PROJECTILE_ATTAQUE_DE_BASE,
+                                                                              RotationInitialeProjectielADB, Position, DirectionInitialeProjectileADB,
+                                                                              Force, Précision, Cible, IntervalleMAJ);
+            Game.Components.Add(attaque);
+
+            int typeEnnemie = 3;
+            int numEnnemie = 0;
+            if (Cible is EntitéPéonEnnemie)
+            {
+                numEnnemie = (Cible as EntitéPéonEnnemie).NumPéon;
+                typeEnnemie = 1;
+            }
+            if (Cible is EntitéTourEnnemie)
+            {
+                numEnnemie = (Cible as EntitéTourEnnemie).NumTour;
+                typeEnnemie = 2;
+            }
+            LeGame.EnvoyerAttaqueAuServeur(Position, Force, Précision, typeEnnemie, numEnnemie, attaque.Dégat);
+
+            Cible = null;
+            Destination = Position;
+        }
+
+        void GestionQ()
+        {
+            DestinationTampon = Destination;
+            GetDestination();
+            float distanceEntreLesDeux = (float)Math.Sqrt(Math.Pow((Destination.X - Position.X), 2) + Math.Pow((Destination.Z - Position.Z), 2));
+
+            if (distanceEntreLesDeux <= Portée)
+            {
+                DirectionDéplacement = Vector3.Normalize(Destination - Position);
+                GérerRotation();
+                Position = Destination;
+                CaméraJeu.DonnerPositionJoueur(Position);
+                BoiteDeCollision = new BoundingBox(Position + PointMinBDC, Position + PointMaxBDC);
+                DoCalculerMonde = true;
+            }
+            else { Destination = DestinationTampon; }
+        }
+
         public void GestionDéplacement()
         {
-            if (GestionInputs.EstSourisActive)
-            {
-                if (GestionInputs.EstNouveauClicDroit()) //// Regarder S'il n'y a pas d'autre entitée
-                {
-                    GetDestination();
-                    DirectionDéplacement = Vector3.Normalize(Destination - Position);
-                    GérerRotation();
-
-                    try
-                    {
-                        Cible = Game.Components.OfType<Entité>().First(x => x.BoiteDeCollision.Intersects(RayonPicking) != null && !x.EstAlliée);
-                    }
-                    catch { }
-
-
-
-                    if(Cible != null)
-                    {
-                        ProjectileAttaqueDeBase attaque = new ProjectileAttaqueDeBase(Game, "rocket", ÉCHELLE_PROJECTILE_ATTAQUE_DE_BASE,
-                                                                                      RotationInitialeProjectielADB, Position, DirectionInitialeProjectileADB,
-                                                                                      Force, Précision, Cible, IntervalleMAJ);
-                        Game.Components.Add(attaque);
-                        foreach(TheGame thegame in Game.Components.Where(x => x is TheGame))
-                        {
-                            int typeEnnemie = 3;
-                            int numEnnemie = 0;
-                            if (Cible is EntitéPéonEnnemie)
-                            {
-                                numEnnemie = (Cible as EntitéPéonEnnemie).NumPéon;
-                                typeEnnemie = 1;
-                            }
-                            if (Cible is EntitéTourEnnemie)
-                            {
-                                numEnnemie = (Cible as EntitéTourEnnemie).NumTour;
-                                typeEnnemie = 2;
-                            }
-                            thegame.EnvoyerAttaqueAuServeur(Position, Force, Précision, typeEnnemie, numEnnemie, attaque.Dégat);
-
-                        }
-                        Cible = null;
-                        Destination = Position;
-                    }
-                }
-            }           
-
             if ((Destination - Position).Length() > FACTEUR_VITESSE * DirectionDéplacement.Length())
             {
                 NouvellePosition = Position + FACTEUR_VITESSE * DirectionDéplacement;
@@ -160,24 +183,7 @@ namespace AtelierXNA
                     Position = NouvellePosition;
                     BoiteDeCollision = NouvelleBoiteDeCollision;
                     DoCalculerMonde = true;
-
                 }
-            }
-            if (GestionInputs.EstNouvelleTouche(Keys.Q))
-            {
-                DestinationTampon = Destination;
-                GetDestination();
-                float distanceEntreLesDeux = (float)Math.Sqrt(Math.Pow((Destination.X - Position.X), 2) + Math.Pow((Destination.Z - Position.Z), 2));
-
-                if (distanceEntreLesDeux <= Portée)
-                {
-                    DirectionDéplacement = Vector3.Normalize(Destination - Position);
-                    GérerRotation();
-                    Position = Destination;
-                    BoiteDeCollision = new BoundingBox(Position + PointMinBDC, Position + PointMaxBDC);
-                    CalculerMonde();
-                }
-                else { Destination = DestinationTampon; }
             }
 
             CaméraJeu.DonnerPositionJoueur(Position);
