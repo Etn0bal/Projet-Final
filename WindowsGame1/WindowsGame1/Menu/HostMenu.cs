@@ -140,7 +140,7 @@ namespace AtelierXNA
                 if (GestionnaireInputs.EstNouveauClicGauche())
                 {
 
-                    if (/*AutreClientConnecté &&*/ ((Game1)Game).EnJeu == false)
+                    if (AutreClientConnecté && ((Game1)Game).EnJeu == false)
                     {
 
                         ((Game1)Game).NumClient = 0;

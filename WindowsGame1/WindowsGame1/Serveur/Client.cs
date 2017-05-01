@@ -101,7 +101,7 @@ namespace AtelierXNA
                 }
             }
 
-            catch (Exception e) { }
+            catch (Exception) { }
 
             //An error happened that created bad data
             if (bytesRead == 0)
@@ -139,7 +139,7 @@ namespace AtelierXNA
                     client.GetStream().BeginWrite(b, 0, b.Length, null, null);
                 }
             }
-            catch (Exception e)
+            catch (Exception)
             {
             }
         }

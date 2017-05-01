@@ -81,6 +81,7 @@ namespace AtelierXNA
         {
             connectedClients--;
 
+
             client[user.id] = null;
         }
 
