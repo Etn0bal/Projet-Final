@@ -33,13 +33,13 @@ namespace AtelierXNA
         const int PORTÉE_TOUR = 25;
         const int PORTÉE_JOUEUR = 25;
         //Constante Force
-        const int FORCE_PÉON = 1;
-        const int FORCE_TOUR = 1;
-        const int FORCE_JOUEUR = 1;
+        const int FORCE_PÉON = 100;
+        const int FORCE_TOUR = 100;
+        const int FORCE_JOUEUR = 100;
         //CONSTANTE PRÉCISION
-        const int PRÉCISION_PÉON = 1;
-        const int PRÉCISION_TOUR = 1;
-        const int PRÉCISION_JOUEUR = 1;
+        const int PRÉCISION_PÉON = 100;
+        const int PRÉCISION_TOUR = 100;
+        const int PRÉCISION_JOUEUR = 100;
         //Constante Armure
         const int ARMURE_PÉON = 1;
         const int ARMURE_TOUR = 1;
@@ -352,13 +352,13 @@ namespace AtelierXNA
                         if (NumClient == 0)
                         {
                             Game.Components.Add(new Afficheur3D(Game));
-                            Joueur = new EntitéJoueur(Game, "robot2", ÉCHELLE_OBJET_JOUEUR, rotationObjetInitialeHost, positionInitialeHost, INTERVALLEMAJ, 1, 5, 1, 1, 1, new Vector3(1, 0, 0));
+                            Joueur = new EntitéJoueur(Game, "robot2", ÉCHELLE_OBJET_JOUEUR, rotationObjetInitialeHost, positionInitialeHost, INTERVALLEMAJ, PV_JOUEUR, PORTÉE_JOUEUR, FORCE_JOUEUR, ARMURE_JOUEUR, PRÉCISION_JOUEUR, new Vector3(1, 0, 0));
                             Game.Components.Add(Joueur);
                         }
                         else
                         {
                             Game.Components.Add(new Afficheur3D(Game));
-                            Joueur = new EntitéJoueur(Game, "robot2", ÉCHELLE_OBJET_JOUEUR, rotationObjetInitialeInvite, positionInitialeInvite, INTERVALLEMAJ, 1, 5, 1, 1, 1, new Vector3(-1, 0, 0));
+                            Joueur = new EntitéJoueur(Game, "robot2", ÉCHELLE_OBJET_JOUEUR, rotationObjetInitialeInvite, positionInitialeInvite, INTERVALLEMAJ, PV_JOUEUR, PORTÉE_JOUEUR, FORCE_JOUEUR, ARMURE_JOUEUR, PRÉCISION_JOUEUR, new Vector3(-1, 0, 0));
                             Game.Components.Add(Joueur);
                         }
                     }
@@ -368,14 +368,14 @@ namespace AtelierXNA
                         {
                             Game.Components.Add(new Afficheur3D(Game));
                             JoueurClient.EnvoyerEnnemiMort(0, 0);
-                            JoueurEnnemie = new EntitéEnnemie(Game, "robot2", ÉCHELLE_OBJET_JOUEUR, rotationObjetInitialeInvite, positionInitialeInvite, INTERVALLEMAJ, 1, 5, 1, 1, 1, new Vector3(-1, 0, 0));
+                            JoueurEnnemie = new EntitéEnnemie(Game, "robot2", ÉCHELLE_OBJET_JOUEUR, rotationObjetInitialeInvite, positionInitialeInvite, INTERVALLEMAJ, PV_JOUEUR, PORTÉE_JOUEUR, FORCE_JOUEUR, ARMURE_JOUEUR, PRÉCISION_JOUEUR, new Vector3(-1, 0, 0));
                             Game.Components.Add(JoueurEnnemie);
                         }
                         else
                         {
                             Game.Components.Add(new Afficheur3D(Game));
                             JoueurClient.EnvoyerEnnemiMort(0, 0);
-                            JoueurEnnemie = new EntitéEnnemie(Game, "robot2", ÉCHELLE_OBJET_JOUEUR, rotationObjetInitialeHost, positionInitialeHost, INTERVALLEMAJ, 1, 5, 1, 1, 1, new Vector3(1, 0, 0));
+                            JoueurEnnemie = new EntitéEnnemie(Game, "robot2", ÉCHELLE_OBJET_JOUEUR, rotationObjetInitialeHost, positionInitialeHost, INTERVALLEMAJ, PV_JOUEUR, PORTÉE_JOUEUR, FORCE_JOUEUR, ARMURE_JOUEUR, PRÉCISION_JOUEUR, new Vector3(1, 0, 0));
                             Game.Components.Add(JoueurEnnemie);
                         }               
                     }
