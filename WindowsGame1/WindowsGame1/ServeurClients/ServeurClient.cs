@@ -118,14 +118,34 @@ namespace AtelierXNA
 
                 else if (p == Protocoles.PlayerMovement)
                 {
+                    //foreach (EntitéEnnemie EntitéeEnnemie in Game.Components.Where(x => x is EntitéEnnemie))
+                    //{
+                    //    float px = reader.ReadSingle();
+                    //    float py = reader.ReadSingle();
+                    //    float pz = reader.ReadSingle();
+                    //    Vector3 positionEnnemie = new Vector3(px, py, pz);
+
+                    //    EntitéeEnnemie.DéplacerEnnemie(positionEnnemie);
+                    //}
                     foreach (EntitéEnnemie EntitéeEnnemie in Game.Components.Where(x => x is EntitéEnnemie))
                     {
-                        float px = reader.ReadSingle();
-                        float py = reader.ReadSingle();
-                        float pz = reader.ReadSingle();
-                        Vector3 positionEnnemie = new Vector3(px, py, pz);
-
-                        EntitéeEnnemie.DéplacerEnnemie(positionEnnemie);
+                        float m11 = reader.ReadSingle();
+                        float m12 = reader.ReadSingle();
+                        float m13 = reader.ReadSingle();
+                        float m14 = reader.ReadSingle();
+                        float m21 = reader.ReadSingle();
+                        float m22 = reader.ReadSingle();
+                        float m23 = reader.ReadSingle();
+                        float m24 = reader.ReadSingle();
+                        float m31 = reader.ReadSingle();
+                        float m32 = reader.ReadSingle();
+                        float m33 = reader.ReadSingle();
+                        float m34 = reader.ReadSingle();
+                        float m41 = reader.ReadSingle();
+                        float m42 = reader.ReadSingle();
+                        float m43 = reader.ReadSingle();
+                        float m44 = reader.ReadSingle();
+                        EntitéeEnnemie.Monde = new Matrix(m11, m12, m13, m14, m21, m22, m23, m24, m31, m32, m33, m34, m41, m42, m43, m44);
                     }
                 }
 
@@ -156,14 +176,14 @@ namespace AtelierXNA
 
                     TheGame game = Game.Components.First(x => x is TheGame) as TheGame;
 
-                        float px = reader.ReadSingle();
-                        float py = reader.ReadSingle();
-                        float pz = reader.ReadSingle();
-                        int force = reader.ReadInt32();
-                        int précision = reader.ReadInt32();
-                        int typeEnemmie = reader.ReadInt32();
-                        int numEnnemie = reader.ReadInt32();
-                        int dégat = reader.ReadInt32();
+                    float px = reader.ReadSingle();
+                    float py = reader.ReadSingle();
+                    float pz = reader.ReadSingle();
+                    int force = reader.ReadInt32();
+                    int précision = reader.ReadInt32();
+                    int typeEnemmie = reader.ReadInt32();
+                    int numEnnemie = reader.ReadInt32();
+                    int dégat = reader.ReadInt32();
 
                     if (typeEnemmie == 1)
                     {
@@ -338,6 +358,44 @@ namespace AtelierXNA
             writer.Write(typeEnnemie);
             //Envoi du numéro de l'ennemie
             writer.Write(numEnnemie);
+            SendData(GetDataFromMemoryStream(writeStream));
+        }
+        public void EnvoyerMatrice(Matrix matrice)
+        {
+            float m11 = matrice.M11;
+            float m12 = matrice.M12;
+            float m13 = matrice.M13;
+            float m14 = matrice.M14;
+            float m21 = matrice.M21;
+            float m22 = matrice.M22;
+            float m23 = matrice.M23;
+            float m24 = matrice.M24;
+            float m31 = matrice.M31;
+            float m32 = matrice.M32;
+            float m33 = matrice.M33;
+            float m34 = matrice.M34;
+            float m41 = matrice.M41;
+            float m42 = matrice.M42;
+            float m43 = matrice.M43;
+            float m44 = matrice.M44;
+            writeStream.Position = 0;
+            writer.Write((Byte)Protocoles.PlayerMovement);
+            writer.Write(m11);
+            writer.Write(m12);
+            writer.Write(m13);
+            writer.Write(m14);
+            writer.Write(m21);
+            writer.Write(m22);
+            writer.Write(m23);
+            writer.Write(m24);
+            writer.Write(m31);
+            writer.Write(m32);
+            writer.Write(m33);
+            writer.Write(m34);
+            writer.Write(m41);
+            writer.Write(m42);
+            writer.Write(m43);
+            writer.Write(m44);
             SendData(GetDataFromMemoryStream(writeStream));
         }
     }

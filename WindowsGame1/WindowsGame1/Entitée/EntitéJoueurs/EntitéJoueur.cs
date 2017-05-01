@@ -58,6 +58,7 @@ namespace AtelierXNA
             PlanReprésentantCarte = new Plane(0, 1, 0, 0);
             ÀDétruire = false;
             EstAlliée = true;
+            EnMouvement = true;
             RayonCollision = 3;
             BoiteDeCollision = new BoundingBox(Position + PointMinBDC, Position + PointMaxBDC);
             Murs = Game.Services.GetService(typeof(Murs)) as Murs; 
@@ -151,9 +152,11 @@ namespace AtelierXNA
 
                 if (!Murs.EnCollision(this) && !EnCollisionAvecTour())
                 {
+                    EnMouvement = true;
                     Position = NouvellePosition;
                     BoiteDeCollision = NouvelleBoiteDeCollision;
                     DoCalculerMonde = true;
+
                 }
             }
             if (GestionInputs.EstNouvelleTouche(Keys.Q))

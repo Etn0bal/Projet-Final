@@ -261,12 +261,12 @@ namespace AtelierXNA
                 }
             }
 
-            if (Joueur.EnMouvement)
-            {
-                Vector3 destination = Joueur.AvoirDestination();
-                JoueurClient.EnvoyerDestination(destination);
-                Joueur.EnMouvement = false;
-            }
+            //if (Joueur.EnMouvement)
+            //{
+            //    Vector3 destination = Joueur.AvoirDestination();
+            //    JoueurClient.EnvoyerDestination(destination);
+            //    Joueur.EnMouvement = false;
+            //}
             foreach (EntitéPéonAlliée péon in Game.Components.Where(x => x is EntitéPéonAlliée))
             {
                 if (péon.EnMouvement)
@@ -352,13 +352,13 @@ namespace AtelierXNA
                         if (NumClient == 0)
                         {
                             Game.Components.Add(new Afficheur3D(Game));
-                            Joueur = new EntitéJoueur(Game, "robot2", ÉCHELLE_OBJET_JOUEUR, rotationObjetInitialeHost, positionInitialeHost, INTERVALLEMAJ, PV_JOUEUR, PORTÉE_JOUEUR, FORCE_JOUEUR, ARMURE_JOUEUR, PRÉCISION_JOUEUR, new Vector3(1, 0, 0));
+                            Joueur = new EntitéJoueur(Game, "robot2", ÉCHELLE_OBJET_JOUEUR, rotationObjetInitialeHost, positionInitialeHost + new Vector3(20, 0, 0), INTERVALLEMAJ, PV_JOUEUR, PORTÉE_JOUEUR, FORCE_JOUEUR, ARMURE_JOUEUR, PRÉCISION_JOUEUR, new Vector3(1, 0, 0));
                             Game.Components.Add(Joueur);
                         }
                         else
                         {
                             Game.Components.Add(new Afficheur3D(Game));
-                            Joueur = new EntitéJoueur(Game, "robot2", ÉCHELLE_OBJET_JOUEUR, rotationObjetInitialeInvite, positionInitialeInvite, INTERVALLEMAJ, PV_JOUEUR, PORTÉE_JOUEUR, FORCE_JOUEUR, ARMURE_JOUEUR, PRÉCISION_JOUEUR, new Vector3(-1, 0, 0));
+                            Joueur = new EntitéJoueur(Game, "robot2", ÉCHELLE_OBJET_JOUEUR, rotationObjetInitialeInvite, positionInitialeInvite + new Vector3(-20, 0, 0), INTERVALLEMAJ, PV_JOUEUR, PORTÉE_JOUEUR, FORCE_JOUEUR, ARMURE_JOUEUR, PRÉCISION_JOUEUR, new Vector3(-1, 0, 0));
                             Game.Components.Add(Joueur);
                         }
                     }
@@ -368,14 +368,14 @@ namespace AtelierXNA
                         {
                             Game.Components.Add(new Afficheur3D(Game));
                             JoueurClient.EnvoyerEnnemiMort(0, 0);
-                            JoueurEnnemie = new EntitéEnnemie(Game, "robot2", ÉCHELLE_OBJET_JOUEUR, rotationObjetInitialeInvite, positionInitialeInvite, INTERVALLEMAJ, PV_JOUEUR, PORTÉE_JOUEUR, FORCE_JOUEUR, ARMURE_JOUEUR, PRÉCISION_JOUEUR, new Vector3(-1, 0, 0));
+                            JoueurEnnemie = new EntitéEnnemie(Game, "robot2", ÉCHELLE_OBJET_JOUEUR, rotationObjetInitialeInvite, positionInitialeInvite + new Vector3(-20, 0, 0), INTERVALLEMAJ, PV_JOUEUR, PORTÉE_JOUEUR, FORCE_JOUEUR, ARMURE_JOUEUR, PRÉCISION_JOUEUR, new Vector3(-1, 0, 0));
                             Game.Components.Add(JoueurEnnemie);
                         }
                         else
                         {
                             Game.Components.Add(new Afficheur3D(Game));
                             JoueurClient.EnvoyerEnnemiMort(0, 0);
-                            JoueurEnnemie = new EntitéEnnemie(Game, "robot2", ÉCHELLE_OBJET_JOUEUR, rotationObjetInitialeHost, positionInitialeHost, INTERVALLEMAJ, PV_JOUEUR, PORTÉE_JOUEUR, FORCE_JOUEUR, ARMURE_JOUEUR, PRÉCISION_JOUEUR, new Vector3(1, 0, 0));
+                            JoueurEnnemie = new EntitéEnnemie(Game, "robot2", ÉCHELLE_OBJET_JOUEUR, rotationObjetInitialeHost, positionInitialeHost + new Vector3(20, 0, 0), INTERVALLEMAJ, PV_JOUEUR, PORTÉE_JOUEUR, FORCE_JOUEUR, ARMURE_JOUEUR, PRÉCISION_JOUEUR, new Vector3(1, 0, 0));
                             Game.Components.Add(JoueurEnnemie);
                         }               
                     }
@@ -400,6 +400,10 @@ namespace AtelierXNA
         public void EnvoyerAttaqueAuServeur(Vector3 position, int force, int précision, int typeEnnemie, int numEnnemie, int dégat)
         {
             JoueurClient.EnvoyerAttaque(position, force, précision, typeEnnemie, numEnnemie, dégat);
+        }
+        public void EnvoyerMatrice(Matrix matrice)
+        {
+            JoueurClient.EnvoyerMatrice(matrice);
         }
     }
 }
