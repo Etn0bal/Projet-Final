@@ -56,7 +56,6 @@ namespace AtelierXNA
             DoCalculerMonde = false;
             Destination = Position;
             PlanReprésentantCarte = new Plane(0, 1, 0, 0);
-            EnMouvement = false;
             ÀDétruire = false;
             EstAlliée = true;
             RayonCollision = 3;
@@ -105,6 +104,8 @@ namespace AtelierXNA
                 if (GestionInputs.EstNouveauClicDroit()) //// Regarder S'il n'y a pas d'autre entitée
                 {
                     GetDestination();
+                    DirectionDéplacement = Vector3.Normalize(Destination - Position);
+                    GérerRotation();
 
                     try
                     {
@@ -113,13 +114,8 @@ namespace AtelierXNA
                     catch { }
 
 
-                    if (Cible == null)
-                    {
-                        DirectionDéplacement = Vector3.Normalize(Destination - Position);
-                        GérerRotation();
-                        EnMouvement = true;
-                    }
-                    else
+
+                    if(Cible != null)
                     {
                         ProjectileAttaqueDeBase attaque = new ProjectileAttaqueDeBase(Game, "rocket", ÉCHELLE_PROJECTILE_ATTAQUE_DE_BASE,
                                                                                       RotationInitialeProjectielADB, Position, DirectionInitialeProjectileADB,
@@ -143,6 +139,7 @@ namespace AtelierXNA
 
                         }
                         Cible = null;
+                        Destination = Position;
                     }
                 }
             }           
