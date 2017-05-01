@@ -17,7 +17,7 @@ namespace AtelierXNA
     /// </summary>
     public class EntitéJoueur : Entité, IControlable,IDestructible
     {
-        const float FACTEUR_VITESSE = 0.05f;
+        const float FACTEUR_VITESSE = 0.35f;
         
         Vector3 PointMaxBDC = new Vector3(2, 16.2f, 5f / 2f);
         Vector3 PointMinBDC = new Vector3(-2, 0, -(5f / 2f));
@@ -74,36 +74,38 @@ namespace AtelierXNA
         public override void Update(GameTime gameTime)
         {
             //Rajouter mécanique gestion du temps
-            GestionDéplacement();
+            
             float tempsÉcoulé = (float)gameTime.ElapsedGameTime.TotalSeconds;
             TempsÉcouléDepuisMAJ += tempsÉcoulé;
             TempsÉcouléDepuisDernierQ += tempsÉcoulé;
             if (TempsÉcouléDepuisMAJ >= IntervalleMAJ)
             {
-                if (GestionInputs.EstSourisActive && GestionInputs.EstNouveauClicDroit())
-                {
-                    GetDestination();
-                    DirectionDéplacement = Vector3.Normalize(Destination - Position);
-                    GérerRotation();
-
-                    try
-                    {
-                        Cible = Game.Components.OfType<Entité>().First(x => x.BoiteDeCollision.Intersects(RayonPicking) != null && !x.EstAlliée);
-                    }
-                    catch { }
-
-                    if(Cible == null) { GestionDéplacement(); }
-                    else { GestionAttaque(); }
-                }
-
+                GestionDéplacement();
                 GestionVie();
                 TempsÉcouléDepuisMAJ -= IntervalleMAJ;
             }
+
+            if (GestionInputs.EstSourisActive && GestionInputs.EstNouveauClicDroit())
+            {
+                GetDestination();
+                DirectionDéplacement = Vector3.Normalize(Destination - Position);
+                GérerRotation();
+
+                try
+                {
+                    Cible = Game.Components.OfType<Entité>().First(x => x.BoiteDeCollision.Intersects(RayonPicking) != null && !x.EstAlliée);
+                }
+                catch { }
+
+                if (Cible != null) { GestionAttaque(); }
+            }
+
             if (TempsÉcouléDepuisDernierQ >= CoolDownQ && GestionInputs.EstNouvelleTouche(Keys.Q))
             {
                 GestionQ();
                 TempsÉcouléDepuisDernierQ = 0;
             }
+
             if (DoCalculerMonde)
             {
                 CalculerMonde();
