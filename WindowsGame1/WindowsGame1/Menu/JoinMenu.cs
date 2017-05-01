@@ -25,6 +25,7 @@ namespace AtelierXNA
         string IPÉcrit { get; set; }
         SpriteFont Font { get; set; }
         string IP { get; set; }
+        ServeurClient Invité { get; set; }
 
         Rectangle positionBackButton;
         Rectangle positionJoinServerButton;
@@ -39,6 +40,7 @@ namespace AtelierXNA
             positionSouris = new Point(0, 0);
             IPÉcrit = "";
             ServerTrouvé = true;
+            Invité = null;
 
             //Arriere plan
             Rectangle arrièrePlan = new Rectangle(0, 0, Game.Window.ClientBounds.Width, Game.Window.ClientBounds.Height);
@@ -100,21 +102,25 @@ namespace AtelierXNA
                     ((Game1)Game).ChangerDÉtat(0);
                 }
             }
-            if (positionJoinServerButton.Contains(positionSouris)&& GestionnaireInputs.EstNouveauClicGauche() || GestionnaireInputs.EstNouvelleTouche(Microsoft.Xna.Framework.Input.Keys.Enter))
+            if (positionJoinServerButton.Contains(positionSouris) && GestionnaireInputs.EstNouveauClicGauche() || GestionnaireInputs.EstNouvelleTouche(Microsoft.Xna.Framework.Input.Keys.Enter))
             {
-                    try
+                try
+                {
+                    if (Invité == null)
                     {
-                        ServeurClient Invité = new ServeurClient(Game, IP);
+                        Invité = new ServeurClient(Game, IP);
                         Game.Services.AddService(typeof(ServeurClient), Invité);
-                        ServerTrouvé = true;                        
+                        ServerTrouvé = true;
                     }
-                    catch (Exception)
-                    {
-                    }
-                    if (ServerTrouvé == true)
-                    {
-                       ((Game1)Game).NumClient = 1;
-                    }
+
+                }
+                catch (Exception)
+                {
+                }
+                if (ServerTrouvé == true)
+                {
+                    ((Game1)Game).NumClient = 1;
+                }
             }
         }
         void GérerClavier(GameTime gameTime)
