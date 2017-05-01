@@ -153,18 +153,17 @@ namespace AtelierXNA
                 else if (p == Protocoles.BasicAttaque)
                 {
                     Entité theEntité = null;
-                    TheGame game = Game.Components.OfType<TheGame>() as TheGame;
-                    //foreach (TheGame game in Game.Components.Where(x => x is TheGame))
-                    //{
+                    foreach (TheGame game in Game.Components.Where(x => x is TheGame))
+                    {
 
-                    float px = reader.ReadSingle();
-                    float py = reader.ReadSingle();
-                    float pz = reader.ReadSingle();
-                    int force = reader.ReadInt32();
-                    int précision = reader.ReadInt32();
-                    int typeEnemmie = reader.ReadInt32();
-                    int numEnnemie = reader.ReadInt32();
-                    int dégat = reader.ReadInt32();
+                        float px = reader.ReadSingle();
+                        float py = reader.ReadSingle();
+                        float pz = reader.ReadSingle();
+                        int force = reader.ReadInt32();
+                        int précision = reader.ReadInt32();
+                        int typeEnemmie = reader.ReadInt32();
+                        int numEnnemie = reader.ReadInt32();
+                        int dégat = reader.ReadInt32();
 
                     if (typeEnemmie == 1)
                     {
@@ -192,16 +191,16 @@ namespace AtelierXNA
                         {
                             theEntité = entité;
 
-                        }
-                        if (theEntité != null)
-                        {
-                            ProjectileAttaqueDeBase projectile = new ProjectileAttaqueDeBase(Game, "rocket", game.ÉCHELLE_PROJECTILE_ATTAQUE_DE_BASE, game.RotationInitialeProjectielADB, new Vector3(px, py, pz), game.DirectionInitialeProjectileADB, force, précision, theEntité, dégat, game.INTERVALLEMAJ);
-                            Game.Components.Add(projectile);
+                            }
+                            if (theEntité != null)
+                            {
+                                ProjectileAttaqueDeBase projectile = new ProjectileAttaqueDeBase(Game, "rocket", game.ÉCHELLE_PROJECTILE_ATTAQUE_DE_BASE, game.RotationInitialeProjectielADB, new Vector3(px, py, pz), game.DirectionInitialeProjectileADB, force, précision, theEntité, dégat, game.INTERVALLEMAJ);
+                                Game.Components.Add(projectile);
+                            }
                         }
                     }
+                    
                 }
-
-
 
                 else if (p == Protocoles.ValidationDeadEnnemi)
                 {
@@ -228,7 +227,7 @@ namespace AtelierXNA
                             }
                         }
                     }
-                    else
+                    else if (typeEnemmie == 0)
                     {
                         foreach (EntitéJoueur entité in Game.Components.Where(x => x is EntitéJoueur))
                         {
