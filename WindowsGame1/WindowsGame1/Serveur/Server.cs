@@ -80,8 +80,6 @@ namespace AtelierXNA
         private void user_UserDisconnected(object sender, Client user)
         {
             connectedClients--;
-
-
             client[user.id] = null;
         }
 
