@@ -37,7 +37,7 @@ namespace AtelierXNA
             GestionnaireInputs = Game.Services.GetService(typeof(InputManager)) as InputManager;
             positionSouris = new Point(0, 0);
             ServeurCréé = false;
-            bool AutreClientConnecté = false;
+            AutreClientConnecté = false;
 
 
             //Arriere plan
@@ -140,7 +140,7 @@ namespace AtelierXNA
                 if (GestionnaireInputs.EstNouveauClicGauche())
                 {
 
-                    if (AutreClientConnecté && ((Game1)Game).EnJeu == false)
+                    if (AutreClientConnecté && !((Game1)Game).EnJeu)
                     {
 
                         ((Game1)Game).NumClient = 0;

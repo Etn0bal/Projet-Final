@@ -153,8 +153,7 @@ namespace AtelierXNA
                 else if (p == Protocoles.BasicAttaque)
                 {
                     Entité theEntité = null;
-                    foreach (TheGame game in Game.Components.Where(x => x is TheGame))
-                    {
+                    TheGame game = Game.Components.First(x => x is TheGame) as TheGame;
 
                         float px = reader.ReadSingle();
                         float py = reader.ReadSingle();
