@@ -112,7 +112,7 @@ namespace AtelierXNA
                 TempsÉcouléDepuisDernierQ = 0;
             }
 
-            if (TempsÉcouléDepuisDernierE >= CoolDownQ && GestionInputs.EstNouvelleTouche(Keys.Q))
+            if (TempsÉcouléDepuisDernierE >= CoolDownQ && GestionInputs.EstNouvelleTouche(Keys.E))
             {
                 GestionE();
                 TempsÉcouléDepuisDernierE = 0;
@@ -130,7 +130,7 @@ namespace AtelierXNA
 
         private void GestionE()
         {
-            PointDeVie += Math.Min(PointDeVie+PointDeVieInitial, PointDeVieInitial);
+            PointDeVie += Math.Min(PointDeVie+PointDeVieRedonné, PointDeVieInitial);
             LeGame.EnvoyerGainDeVie(PointDeVie);
         }
 
