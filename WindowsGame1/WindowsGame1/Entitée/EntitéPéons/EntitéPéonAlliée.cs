@@ -139,8 +139,12 @@ namespace AtelierXNA
                 if (Cible.PointDeVie == 0 || distanceEntreLesDeux > Portée)
                 {
                     Cible = null;
-                    EnMouvement = true;
+
                 }
+            }
+            if(Cible == null)
+            {
+                EnMouvement = true;
             }
         }
 
