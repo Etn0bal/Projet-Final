@@ -261,12 +261,12 @@ namespace AtelierXNA
                 }
             }
 
-            if (Joueur.EnMouvement)
-            {
-                Vector3 destination = Joueur.AvoirDestination();
-                JoueurClient.EnvoyerDestination(destination);
-                Joueur.EnMouvement = false;
-            }
+            //if (Joueur.EnMouvement)
+            //{
+            //    Vector3 destination = Joueur.AvoirDestination();
+            //    JoueurClient.EnvoyerDestination(destination);
+            //    Joueur.EnMouvement = false;
+            //}
             foreach (EntitéPéonAlliée péon in Game.Components.Where(x => x is EntitéPéonAlliée))
             {
                 if (péon.EnMouvement)

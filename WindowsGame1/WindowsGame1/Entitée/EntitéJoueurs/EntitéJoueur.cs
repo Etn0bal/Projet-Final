@@ -35,6 +35,7 @@ namespace AtelierXNA
         CaméraTypéMoba CaméraJeu { get; set; }
         Murs Murs { get; set; }
         Ray RayonPicking { get; set; }
+        TheGame LeGame { get; set; }
         public bool EnMouvement { get; set; }
         public bool ÀDétruire { get; set;}
 
@@ -57,10 +58,12 @@ namespace AtelierXNA
             Destination = Position;
             PlanReprésentantCarte = new Plane(0, 1, 0, 0);
             ÀDétruire = false;
+            EnMouvement = true;
             EstAlliée = true;
             RayonCollision = 3;
             BoiteDeCollision = new BoundingBox(Position + PointMinBDC, Position + PointMaxBDC);
-            Murs = Game.Services.GetService(typeof(Murs)) as Murs; 
+            Murs = Game.Services.GetService(typeof(Murs)) as Murs;
+            LeGame = Game.Components.First(x => x is TheGame) as TheGame;
             base.Initialize();
         }
 
@@ -78,6 +81,7 @@ namespace AtelierXNA
             if (DoCalculerMonde)
             {
                 CalculerMonde();
+                LeGame.EnvoyerMatrice();
                 DoCalculerMonde = false;
             }
             base.Update(gameTime);
@@ -151,6 +155,7 @@ namespace AtelierXNA
 
                 if (!Murs.EnCollision(this) && !EnCollisionAvecTour())
                 {
+                    EnMouvement = true;
                     Position = NouvellePosition;
                     BoiteDeCollision = NouvelleBoiteDeCollision;
                     DoCalculerMonde = true;

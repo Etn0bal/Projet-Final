@@ -104,6 +104,7 @@ namespace AtelierXNA
             {
                 EnMouvement = false;
             }
+            
 
         }
         public override void Draw(GameTime gameTime)
