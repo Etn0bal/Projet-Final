@@ -20,6 +20,7 @@ namespace AtelierXNA
         protected Vector3 RotationInitialeProjectielADB = new Vector3(0, 0, (float)-Math.PI / 4);
         protected Vector3 DirectionInitialeProjectileADB = new Vector3(1, 0, 0);
         protected const float ÉCHELLE_PROJECTILE_ATTAQUE_DE_BASE = 0.000009f;
+        protected const float ÉCHELLE_PROJECTILE_W = 0.05f;
 
 
         protected Entité Cible { get; set; }

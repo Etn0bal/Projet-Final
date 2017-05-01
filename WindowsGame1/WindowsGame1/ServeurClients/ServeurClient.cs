@@ -215,7 +215,7 @@ namespace AtelierXNA
                     }
                     if (theEntité != null)
                     {
-                        ProjectileAttaqueDeBase projectile = new ProjectileAttaqueDeBase(Game, "rocket", game.ÉCHELLE_PROJECTILE_ATTAQUE_DE_BASE, game.RotationInitialeProjectielADB, new Vector3(px, py, pz), game.DirectionInitialeProjectileADB, force, précision, theEntité, dégat, game.INTERVALLEMAJ);
+                        ProjectileAttaqueDeBase projectile = new ProjectileAttaqueDeBase(Game, "rocket", game.ÉCHELLE_PROJECTILE_ATTAQUE_DE_BASE, game.RotationInitialeProjectielADB, new Vector3(px, py, pz) + new Vector3(0, 5, 0), game.DirectionInitialeProjectileADB, force, précision, theEntité, dégat, game.INTERVALLEMAJ);
                         Game.Components.Add(projectile);
                     }
                 }
@@ -275,7 +275,7 @@ namespace AtelierXNA
                     float dz = reader.ReadSingle();
                     int force = reader.ReadInt32();
                     int précision = reader.ReadInt32();
-                    ProjectileAttaqueW projectile = new ProjectileAttaqueW(Game, "rocket", game.ÉCHELLE_PROJECTILE_ATTAQUE_DE_BASE, game.RotationInitialeProjectielADB, new Vector3(px, py, pz), game.DirectionInitialeProjectileADB,new Vector3(dx,dy,dz), force, précision, game.INTERVALLEMAJ);
+                    ProjectileAttaqueW projectile = new ProjectileAttaqueW(Game, "bomb", game.ÉCHELLE_PROJECTILE_W, game.RotationInitialeProjectielADB, new Vector3(px, py, pz), game.DirectionInitialeProjectileADB,new Vector3(dx,dy,dz), force, précision, game.INTERVALLEMAJ);
                     Game.Components.Add(projectile);
                 }
             }

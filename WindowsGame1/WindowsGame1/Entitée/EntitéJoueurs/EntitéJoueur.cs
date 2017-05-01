@@ -146,12 +146,13 @@ namespace AtelierXNA
             Vector3 directionAttaqueW = Vector3.Normalize(Destination - Position);
             directionAttaqueW.Y = 0;
             GérerRotation();
-            ProjectileAttaqueW attaque = new ProjectileAttaqueW(Game, "rocket", ÉCHELLE_PROJECTILE_ATTAQUE_DE_BASE,
+            ProjectileAttaqueW attaque = new ProjectileAttaqueW(Game, "bomb", ÉCHELLE_PROJECTILE_W,
                                                                 RotationInitialeProjectielADB, Position + new Vector3(0, 5, 0),DirectionInitialeProjectileADB, directionAttaqueW,
                                                                 Force, Précision, IntervalleMAJ);
             LeGame.EnvoyerAttaqueW(Position + new Vector3(0, 5, 0), directionAttaqueW, Force, Précision);
 
             Game.Components.Add(attaque);
+            Destination = Position;
 
         }
 

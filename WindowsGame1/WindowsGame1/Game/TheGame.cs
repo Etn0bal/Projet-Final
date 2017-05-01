@@ -27,6 +27,7 @@ namespace AtelierXNA
         const float ÉCHELLE_OBJET_PÉON = 0.003f;
         const float ÉCHELLE_OBJET_TOUR = 0.009f;
         public float ÉCHELLE_PROJECTILE_ATTAQUE_DE_BASE = 0.000009f;
+        public float ÉCHELLE_PROJECTILE_W = 0.05f;
 
         //Constante portée
         const int PORTÉE_PÉON = 25;
