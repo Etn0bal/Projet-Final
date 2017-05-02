@@ -16,6 +16,7 @@ namespace AtelierXNA
         ValidationDeadEnnemi = 6,
         HealthChange = 7,
         WAttack = 8,
+        dégat = 9,
 
 
 

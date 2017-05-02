@@ -275,9 +275,11 @@ namespace AtelierXNA
                     float dz = reader.ReadSingle();
                     int force = reader.ReadInt32();
                     int précision = reader.ReadInt32();
-                    ProjectileAttaqueW projectile = new ProjectileAttaqueW(Game, "bomb", game.ÉCHELLE_PROJECTILE_W, game.RotationInitialeProjectielADB, new Vector3(px, py, pz), game.DirectionInitialeProjectileADB,new Vector3(dx,dy,dz), force, précision, game.INTERVALLEMAJ);
+                    int dégat = reader.ReadInt32();
+                    ProjectileAttaqueW projectile = new ProjectileAttaqueW(Game, "bomb", game.ÉCHELLE_PROJECTILE_W, game.RotationInitialeProjectielADB, new Vector3(px, py, pz), game.DirectionInitialeProjectileADB, new Vector3(dx, dy, dz), force, précision,dégat,game.INTERVALLEMAJ, 2);
                     Game.Components.Add(projectile);
                 }
+                
             }
             catch (Exception ex)
             {
@@ -427,7 +429,7 @@ namespace AtelierXNA
             writer.Write(PointDeVie);
             SendData(GetDataFromMemoryStream(writeStream));
         }
-        public void EnvoyerAttaqueW(Vector3 position, Vector3 direction, int force, int précision)
+        public void EnvoyerAttaqueW(Vector3 position, Vector3 direction, int force, int précision, int dégat)
         {
             writeStream.Position = 0;
             writer.Write((Byte)Protocoles.WAttack);
@@ -444,6 +446,8 @@ namespace AtelierXNA
             writer.Write(force);
             //Envoi de la précision 
             writer.Write(précision);
+            //Envoi du dégat
+            writer.Write(dégat);
             SendData(GetDataFromMemoryStream(writeStream));
         }
     }

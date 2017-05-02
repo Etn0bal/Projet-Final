@@ -27,13 +27,24 @@ namespace AtelierXNA
         public bool ÀDétruire { get; set; }
         Vector3 PositionInitiale { get;set;}
         BoundingBox BoiteDeCollision { get; set; }
+        int LanceurOuReceveur { get; set; }
 
         public ProjectileAttaqueW(Game game, string nomModèle, float échelleInitiale, Vector3 rotationInitiale, Vector3 positionInitiale,
-                                       Vector3 direction,Vector3 directionDéplacement, int force, int précision,float intervalleMAJ)
+                                       Vector3 direction,Vector3 directionDéplacement, int force, int précision,float intervalleMAJ,int lanceurOuReceveur)
             : base(game, nomModèle, échelleInitiale, rotationInitiale, positionInitiale, direction, force, précision, intervalleMAJ)
         {
             DirectionDéplacement = directionDéplacement;
             PositionInitiale = positionInitiale;
+            LanceurOuReceveur = lanceurOuReceveur;
+        }
+        public ProjectileAttaqueW(Game game, string nomModèle, float échelleInitiale, Vector3 rotationInitiale, Vector3 positionInitiale,
+                               Vector3 direction, Vector3 directionDéplacement, int force, int précision, int dégat, float intervalleMAJ, int lanceurOuReceveur)
+        : base(game, nomModèle, échelleInitiale, rotationInitiale, positionInitiale, direction, force, précision,dégat, intervalleMAJ)
+        {
+            DirectionDéplacement = directionDéplacement;
+            PositionInitiale = positionInitiale;
+            LanceurOuReceveur = lanceurOuReceveur;
+            
         }
 
         public override void Initialize()
@@ -71,10 +82,19 @@ namespace AtelierXNA
                     DoCalculerMonde = true;
                     foreach(Entité entité in Game.Components.Where(x => x is Entité) )
                     {
-                        if(BoiteDeCollision.Intersects(entité.BoiteDeCollision)&& !entité.EstAlliée)
+                        if(BoiteDeCollision.Intersects(entité.BoiteDeCollision))
                         {
-                            Cible = entité;
-                            ÀDétruire = true;
+                            if(LanceurOuReceveur ==1 && !entité.EstAlliée)
+                            {
+                                    Cible = entité;
+                                    ÀDétruire = true;
+                            }
+                            else if(LanceurOuReceveur == 2 && entité.EstAlliée)
+                            {
+                                Cible = entité;
+                                ÀDétruire = true;
+                            }
+
                         }
                     }
                     if(Cible!= null)

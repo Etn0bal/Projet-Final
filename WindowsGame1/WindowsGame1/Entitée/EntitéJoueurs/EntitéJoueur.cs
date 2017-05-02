@@ -148,8 +148,8 @@ namespace AtelierXNA
             GérerRotation();
             ProjectileAttaqueW attaque = new ProjectileAttaqueW(Game, "bomb", ÉCHELLE_PROJECTILE_W,
                                                                 RotationInitialeProjectielADB, Position + new Vector3(0, 5, 0),DirectionInitialeProjectileADB, directionAttaqueW,
-                                                                Force, Précision, IntervalleMAJ);
-            LeGame.EnvoyerAttaqueW(Position + new Vector3(0, 5, 0), directionAttaqueW, Force, Précision);
+                                                                Force, Précision, IntervalleMAJ,1);
+            LeGame.EnvoyerAttaqueW(Position + new Vector3(0, 5, 0), directionAttaqueW, Force, Précision, attaque.Dégat);
 
             Game.Components.Add(attaque);
             Destination = Position;
@@ -177,7 +177,7 @@ namespace AtelierXNA
                                                                               Force, Précision, Cible, IntervalleMAJ);
             Game.Components.Add(attaque);
 
-            int typeEnnemie = 3;
+            int typeEnnemie = 0;
             int numEnnemie = 0;
             if (Cible is EntitéPéonEnnemie)
             {

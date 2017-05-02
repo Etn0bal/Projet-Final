@@ -419,9 +419,9 @@ namespace AtelierXNA
         {
             JoueurClient.EnvoyerGainDeVie(PointDeVie);
         }
-        public void EnvoyerAttaqueW(Vector3 position, Vector3 direction, int force, int précision)
+        public void EnvoyerAttaqueW(Vector3 position, Vector3 direction, int force, int précision, int dégat)
         {
-            JoueurClient.EnvoyerAttaqueW(position, direction, force, précision);
+            JoueurClient.EnvoyerAttaqueW(position, direction, force, précision, dégat);
         }
 
     }
