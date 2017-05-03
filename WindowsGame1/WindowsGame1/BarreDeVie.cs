@@ -69,7 +69,7 @@ namespace AtelierXNA
             NbColonnes = PointDeVie;
             NbRangées = 1;
 
-            DeltaPoint = new Vector3(Étendue.X / NbRangées, Étendue.Y, Étendue.Z / NbColonnes);
+            DeltaPoint = new Vector3(Étendue.X / NbColonnes, Étendue.Y, Étendue.Z / NbRangées);
 
 
         }
@@ -90,9 +90,9 @@ namespace AtelierXNA
                 for (int colonne = 0; colonne < PtsSommets.GetLength(0); colonne++)
                 {
 
-                    PtsSommets[colonne, rangée] = new Vector3(Origine.X + (rangée * DeltaPoint.X),
+                    PtsSommets[colonne, rangée] = new Vector3(Origine.X + (colonne * DeltaPoint.X),
                                                           Origine.Y,
-                                                          Origine.Z - (colonne * DeltaPoint.Z));
+                                                          Origine.Z - (rangée * DeltaPoint.Z));
                 }
             }
         }
@@ -115,12 +115,14 @@ namespace AtelierXNA
             for (int colonne = 0; colonne < PointDeVie; ++colonne)
             {
                 Sommets[Cpt++] = new VertexPositionColor(PtsSommets[colonne, 0], Color.Red);
-                Sommets[Cpt++] = new VertexPositionColor(PtsSommets[colonne + 1, 0], Color.Red);
+                //Sommets[Cpt++] = new VertexPositionColor(PtsSommets[colonne + 1, 0], Color.Red);
                 Sommets[Cpt++] = new VertexPositionColor(PtsSommets[colonne, 1], Color.Red);
+                Sommets[Cpt++] = new VertexPositionColor(PtsSommets[colonne + 1, 0], Color.Red);
 
                 Sommets[Cpt++] = new VertexPositionColor(PtsSommets[colonne, 1], Color.Red);
-                Sommets[Cpt++] = new VertexPositionColor(PtsSommets[colonne + 1, 0], Color.Red);
+                //Sommets[Cpt++] = new VertexPositionColor(PtsSommets[colonne + 1, 0], Color.Red);
                 Sommets[Cpt++] = new VertexPositionColor(PtsSommets[colonne + 1, 1], Color.Red);
+                Sommets[Cpt++] = new VertexPositionColor(PtsSommets[colonne + 1, 0], Color.Red);
             }
             Cpt = 0;
         }
