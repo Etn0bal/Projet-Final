@@ -30,25 +30,25 @@ namespace AtelierXNA
         public float ÉCHELLE_PROJECTILE_W = 0.05f;
 
         //Constante portée
-        const int PORTÉE_PÉON = 25;
-        const int PORTÉE_TOUR = 25;
+        const int PORTÉE_PÉON = 20;
+        const int PORTÉE_TOUR = 30;
         const int PORTÉE_JOUEUR = 25;
         //Constante Force
-        const int FORCE_PÉON = 100;
-        const int FORCE_TOUR = 100;
+        const int FORCE_PÉON = 50;
+        const int FORCE_TOUR = 175;
         const int FORCE_JOUEUR = 100;
         //CONSTANTE PRÉCISION
-        const int PRÉCISION_PÉON = 100;
-        const int PRÉCISION_TOUR = 100;
-        const int PRÉCISION_JOUEUR = 100;
+        const int PRÉCISION_PÉON = 50;
+        const int PRÉCISION_TOUR = 85;
+        const int PRÉCISION_JOUEUR = 75;
         //Constante Armure
-        const int ARMURE_PÉON = 1;
-        const int ARMURE_TOUR = 1;
-        const int ARMURE_JOUEUR = 1;
+        const int ARMURE_PÉON = 10;
+        const int ARMURE_TOUR = 20;
+        const int ARMURE_JOUEUR = 5;
         //Constante PointDeVie
-        const int PV_PÉON = 1;
-        const int PV_TOUR = 1;
-        const int PV_JOUEUR = 1000;
+        const int PV_PÉON = 750;
+        const int PV_TOUR = 3000;
+        const int PV_JOUEUR = 1500;
 
 
 
