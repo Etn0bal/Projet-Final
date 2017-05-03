@@ -76,7 +76,7 @@ namespace AtelierXNA
             CoolDownQ = 10;
             CoolDownW = 10;
             CoolDownE = 10;
-            CoolDownAttaque = 0.5f;
+            CoolDownAttaque = 0.2f;
 
             HauteurPosition = new Vector3(0, 15, 0);
 
