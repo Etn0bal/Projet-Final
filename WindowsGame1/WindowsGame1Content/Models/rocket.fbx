@@ -3384,7 +3384,7 @@ Objects:  {
 		}
 		UseMipMap: 0
 		Filename: "10038.jpg"
-		RelativeFilename: "C:\Users\201543792\Source\Repos\Projet-Final\WindowsGame1\WindowsGame1Content\Models\10038.jpg"
+		RelativeFilename: "C:\Users\Fred\Source\Repos\Projet-Final\WindowsGame1\WindowsGame1Content\Models\10038.jpg"
 	}
 	Texture: "Texture::10038.jpg", "TextureVideoClip" {
 		Type: "TextureVideoClip"
