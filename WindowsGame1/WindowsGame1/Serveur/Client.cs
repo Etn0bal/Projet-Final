@@ -101,7 +101,10 @@ namespace AtelierXNA
                 }
             }
 
-            catch (Exception) { }
+            catch (Exception)
+            {
+                //TODO
+            }
 
             //An error happened that created bad data
             if (bytesRead == 0)
@@ -141,6 +144,7 @@ namespace AtelierXNA
             }
             catch (Exception)
             {
+                //TODO
             }
         }
 

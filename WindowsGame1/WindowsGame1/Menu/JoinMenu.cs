@@ -116,7 +116,9 @@ namespace AtelierXNA
                 }
                 catch (Exception)
                 {
+                    //TODO
                 }
+
                 if (ServerTrouvé == true)
                 {
                     ((Game1)Game).NumClient = 1;

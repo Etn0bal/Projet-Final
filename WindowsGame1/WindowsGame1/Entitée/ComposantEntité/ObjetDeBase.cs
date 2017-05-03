@@ -70,7 +70,10 @@ namespace AtelierXNA
                 {
                     maille.Draw();
                 }
-                catch { }
+                catch
+                {
+                    //TODO
+                }
                 
             }
       }

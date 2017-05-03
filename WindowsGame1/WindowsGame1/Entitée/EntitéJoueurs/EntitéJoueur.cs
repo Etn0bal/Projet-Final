@@ -103,11 +103,7 @@ namespace AtelierXNA
                 DirectionDéplacement = Vector3.Normalize(Destination - Position);
                 GérerRotation();
 
-                try
-                {
-                    Cible = Game.Components.OfType<Entité>().First(x => x.BoiteDeCollision.Intersects(RayonPicking) != null && !x.EstAlliée);
-                }
-                catch { }
+                Cible = Game.Components.OfType<Entité>().FirstOrDefault(x => x.BoiteDeCollision.Intersects(RayonPicking) != null && !x.EstAlliée);
 
                 if (Cible != null) { GestionAttaqueDeBase(); }
             }
@@ -234,7 +230,8 @@ namespace AtelierXNA
 
         bool EnCollisionAvecTour()
         {
-            foreach(EntitéTour tour in Game.Components.Where(x=> x is EntitéTour))
+            List<EntitéTour> tours = Game.Components.OfType<EntitéTour>().ToList();
+            foreach (EntitéTour tour in tours)
             {
                 if(tour.EstEnCollision(this)) { return true; }
             }

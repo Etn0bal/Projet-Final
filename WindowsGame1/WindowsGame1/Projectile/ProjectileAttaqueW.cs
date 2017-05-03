@@ -80,7 +80,9 @@ namespace AtelierXNA
                     Position += DirectionDéplacement * FACTEUR_VITESSE;
                     BoiteDeCollision = new BoundingBox(Position + PointMinBDC, Position + PointMaxBDC);
                     DoCalculerMonde = true;
-                    foreach(Entité entité in Game.Components.Where(x => x is Entité) )
+
+                    List<Entité> entités = Game.Components.OfType<Entité>().ToList();
+                    foreach (Entité entité in entités)
                     {
                         if(BoiteDeCollision.Intersects(entité.BoiteDeCollision))
                         {
