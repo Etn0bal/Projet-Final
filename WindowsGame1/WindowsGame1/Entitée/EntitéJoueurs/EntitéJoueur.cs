@@ -15,13 +15,13 @@ namespace AtelierXNA
     /// <summary>
     /// This is a game component that implements IUpdateable.
     /// </summary>
-    public class EntitéJoueur : Entité, IControlable,IDestructible
+    public class EntitéJoueur : Entité, IControlable, IDestructible
     {
         const float FACTEUR_VITESSE = 0.35f;
-        
+
         Vector3 PointMaxBDC = new Vector3(2, 16.2f, 5f / 2f);
         Vector3 PointMinBDC = new Vector3(-2, 0, -(5f / 2f));
-       
+
 
 
 
@@ -37,6 +37,8 @@ namespace AtelierXNA
         Ray RayonPicking { get; set; }
         TheGame LeGame { get; set; }
 
+        float TempsÉcouléDepuisDernièreAttaque { get; set; }
+        float CoolDownAttaque { get; set; }
         float TempsÉcouléDepuisDernierQ { get; set; }
         float CoolDownQ { get; set; }
         float TempsÉcouléDepuisDernierW { get; set; }
@@ -72,7 +74,9 @@ namespace AtelierXNA
             EnMouvement = true;
             RayonCollision = 3;
             CoolDownQ = 10;
+            CoolDownW = 10;
             CoolDownE = 10;
+            CoolDownAttaque = 1;
 
             BoiteDeCollision = new BoundingBox(Position + PointMinBDC, Position + PointMaxBDC);
             Murs = Game.Services.GetService(typeof(Murs)) as Murs;
@@ -87,6 +91,7 @@ namespace AtelierXNA
             
             float tempsÉcoulé = (float)gameTime.ElapsedGameTime.TotalSeconds;
             TempsÉcouléDepuisMAJ += tempsÉcoulé;
+            TempsÉcouléDepuisDernièreAttaque += tempsÉcoulé;
             TempsÉcouléDepuisDernierQ += tempsÉcoulé;
             TempsÉcouléDepuisDernierW += tempsÉcoulé;
             TempsÉcouléDepuisDernierE += tempsÉcoulé;
@@ -109,7 +114,14 @@ namespace AtelierXNA
                 }
                 catch { }
 
-                if (Cible != null) { GestionAttaqueDeBase(); }
+                if (Cible != null)
+                {
+                    if(TempsÉcouléDepuisDernièreAttaque >= CoolDownAttaque)
+                    {
+                        GestionAttaqueDeBase();
+                        TempsÉcouléDepuisDernièreAttaque = 0;
+                    }
+                }
             }
 
             if (TempsÉcouléDepuisDernierQ >= CoolDownQ && GestionInputs.EstNouvelleTouche(Keys.Q))
@@ -118,13 +130,13 @@ namespace AtelierXNA
                 TempsÉcouléDepuisDernierQ = 0;
             }
 
-            if (TempsÉcouléDepuisDernierW >= CoolDownQ && GestionInputs.EstNouvelleTouche(Keys.W))
+            if (TempsÉcouléDepuisDernierW >= CoolDownW && GestionInputs.EstNouvelleTouche(Keys.W))
             {
                 GestionW();
                 TempsÉcouléDepuisDernierW = 0;
             }
 
-            if (TempsÉcouléDepuisDernierE >= CoolDownQ && GestionInputs.EstNouvelleTouche(Keys.E))
+            if (TempsÉcouléDepuisDernierE >= CoolDownE && GestionInputs.EstNouvelleTouche(Keys.E))
             {
                 GestionE();
                 TempsÉcouléDepuisDernierE = 0;
