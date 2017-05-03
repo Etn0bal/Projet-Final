@@ -306,7 +306,7 @@ namespace AtelierXNA
             }
             if (TourA1.ÀDétruire || TourA1 == null)
             {
-                TexteCentré textefinal = new TexteCentré(Game, "Défaite!", "Arial", new Rectangle(0, 0, Game.Window.ClientBounds.Width / 2, Game.Window.ClientBounds.Height / 2), Color.Black, 0f);
+                TexteCentré textefinal = new TexteCentré(Game, "Défaite!", "Arial", new Rectangle(0, 0, Game.Window.ClientBounds.Width, Game.Window.ClientBounds.Height), Color.Black, 0.2f);
                 Game.Components.Add(textefinal);
             }
         }
