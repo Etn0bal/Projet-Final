@@ -46,14 +46,14 @@ namespace AtelierXNA
             }
 
             TempsÉcouléDepuisAttaqueMAJ += tempsÉcoulé;
-            if (TempsÉcouléDepuisAttaqueMAJ >= 0.5f)
+            if (TempsÉcouléDepuisAttaqueMAJ >= 1.2f)
             {
                 //RegarderSiCibleEstMortOuHorsRange();
                 //if (Cible == null)
                 //{
                     GestionAttaque();
                 //}
-                TempsÉcouléDepuisAttaqueMAJ -= 0.5f;
+                TempsÉcouléDepuisAttaqueMAJ -= 1.2f;
             }
             base.Update(gameTime);
             base.Update(gameTime);
