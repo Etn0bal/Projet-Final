@@ -44,14 +44,14 @@ namespace AtelierXNA
             }
 
             TempsÉcouléDepuisAttaqueMAJ += tempsÉcoulé;
-            if (TempsÉcouléDepuisAttaqueMAJ >= 1.2f)
+            if (TempsÉcouléDepuisAttaqueMAJ >= 0.5f)
             {
                 RegarderSiCibleEstMortOuHorsRange();
                 if (Cible == null)
                 {
                     GestionAttaque();
                 }
-                TempsÉcouléDepuisAttaqueMAJ -= 1.2f;
+                TempsÉcouléDepuisAttaqueMAJ -= 0.5f;
             }
             base.Update(gameTime);
             base.Update(gameTime);
@@ -79,6 +79,7 @@ namespace AtelierXNA
                     }
 
                     thegame.EnvoyerAttaqueAuServeur(Position, Force, Précision, typeEnnemie, numEnnemie, attaque.Dégat);
+                    Cible = null;
                 }
             }
         }
