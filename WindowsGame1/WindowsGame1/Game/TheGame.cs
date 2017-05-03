@@ -270,7 +270,7 @@ namespace AtelierXNA
             //}
             if (Game.Components.Any(x=> x is EntitéPéonAlliée))
             {
-                List<EntitéPéonAlliée> péons = Game.Components.OfType<EntitéPéonAlliée>().ToList();
+                    List<EntitéPéonAlliée> péons = Game.Components.OfType<EntitéPéonAlliée>().ToList();
                 foreach (EntitéPéonAlliée péon in péons)
                 {
                     if (péon.EnMouvement)

@@ -15,6 +15,7 @@ namespace AtelierXNA
     {
         public bool ÀDétruire { get; set; }
         public BoundingSphere SphèreDeCollision { get; private set; }
+        TheGame LeGame { get; set; }
 
 
         public EntitéTourAlliée(Game jeu, string nomModèle, float échelleInitiale, Vector3 rotationInitiale, Vector3 positionInitiale,
@@ -28,6 +29,7 @@ namespace AtelierXNA
             RayonCollision = 4;
             ÀDétruire = false;
             EstAlliée = true;
+            LeGame = Game.Components.First(x => x is TheGame) as TheGame;
             base.Initialize();
         }
 
@@ -46,11 +48,11 @@ namespace AtelierXNA
             TempsÉcouléDepuisAttaqueMAJ += tempsÉcoulé;
             if (TempsÉcouléDepuisAttaqueMAJ >= 0.5f)
             {
-                RegarderSiCibleEstMortOuHorsRange();
-                if (Cible == null)
-                {
+                //RegarderSiCibleEstMortOuHorsRange();
+                //if (Cible == null)
+                //{
                     GestionAttaque();
-                }
+                //}
                 TempsÉcouléDepuisAttaqueMAJ -= 0.5f;
             }
             base.Update(gameTime);
@@ -68,8 +70,7 @@ namespace AtelierXNA
                                                                                       RotationInitialeProjectielADB, Position, DirectionInitialeProjectileADB,
                                                                                       Force, Précision, Cible, IntervalleMAJ);
                 Game.Components.Add(attaque);
-                foreach (TheGame thegame in Game.Components.Where(x => x is TheGame))
-                {
+                
                     int typeEnnemie = 3;
                     int numEnnemie = 0;
                     if (Cible is EntitéPéonEnnemie)
