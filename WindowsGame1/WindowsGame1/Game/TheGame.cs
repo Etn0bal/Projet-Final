@@ -300,13 +300,15 @@ namespace AtelierXNA
         {
             if(TourE1.ÀDétruire||TourE1==null)
             {
-                TexteCentré textefinal = new TexteCentré(Game, "Victoire!", "Arial", new Rectangle(0, 0, Game.Window.ClientBounds.Width, Game.Window.ClientBounds.Height), Color.Black, 0.2f);
+                NettoyerListeComponents();
+                TexteCentré textefinal = new TexteCentré(Game, "Victoire!", "Arial", new Rectangle(0, 0, Game.Window.ClientBounds.Width, Game.Window.ClientBounds.Height), Color.White, 0.2f);
                 Game.Components.Add(textefinal);
                 
             }
             if (TourA1.ÀDétruire || TourA1 == null)
             {
-                TexteCentré textefinal = new TexteCentré(Game, "Défaite!", "Arial", new Rectangle(0, 0, Game.Window.ClientBounds.Width, Game.Window.ClientBounds.Height), Color.Black, 0.2f);
+                NettoyerListeComponents();
+                TexteCentré textefinal = new TexteCentré(Game, "Défaite!", "Arial", new Rectangle(0, 0, Game.Window.ClientBounds.Width, Game.Window.ClientBounds.Height), Color.White, 0.2f);
                 Game.Components.Add(textefinal);
             }
         }
@@ -422,6 +424,13 @@ namespace AtelierXNA
         public void EnvoyerAttaqueW(Vector3 position, Vector3 direction, int force, int précision, int dégat)
         {
             JoueurClient.EnvoyerAttaqueW(position, direction, force, précision, dégat);
+        }
+        void NettoyerListeComponents()
+        {
+            for (int i = Game.Components.Count - 1; i >= 0; --i)
+            {
+                Game.Components.RemoveAt(i);
+            }
         }
 
     }

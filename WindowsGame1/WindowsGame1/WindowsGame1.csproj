@@ -78,6 +78,7 @@
     <Reference Include="System.Net" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BarreDeVie.cs" />
     <Compile Include="CaméraTypéMoba.cs" />
     <Compile Include="Entitée\EntitéJoueurs\EntitéEnnemie.cs" />
     <Compile Include="Entitée\EntitéJoueurs\EntitéJoueur.cs" />
@@ -105,7 +106,7 @@
     <Compile Include="Entitée\ComposantEntité\ObjetDeDémo.cs" />
     <Compile Include="ServeurClients\Protocoles.cs" />
     <Compile Include="Serveur\Client.cs" />
-    <Compile Include="Menu\Listener.cs" />
+    <Compile Include="Serveur\Listener.cs" />
     <Compile Include="Serveur\Server.cs" />
     <Compile Include="ServeurClients\ServeurClient.cs" />
     <Compile Include="Sprite.cs" />

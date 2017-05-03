@@ -38,6 +38,7 @@ namespace AtelierXNA
 
             }
         }
+        BarreDeVie LaBarre { get; set; }
         public int PointDeVieInitial { get; private set; }
         public int Portée { get; set; }
         protected int Force { get; set; }
@@ -74,12 +75,24 @@ namespace AtelierXNA
 
         public override void Initialize()
         {
+            LaBarre = new BarreDeVie(Game, 1, Vector3.Zero, Position + new Vector3(0,8,0), new Vector3(4, 0, 1), IntervalleMAJ, PointDeVie);
+            Game.Components.Add(LaBarre);
             base.Initialize();
 
         }
 
         public override void Update(GameTime gameTime)
         {
+            
+                LaBarre.ChangerPosition(Position);
+
+            
+            if (LaBarre.PointDeVie != PointDeVie)
+            {
+                LaBarre.ChangerBarreDeVie(PointDeVie);
+            }
+
+            
 
             base.Update(gameTime);
         }
