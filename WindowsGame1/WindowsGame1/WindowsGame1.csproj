@@ -85,7 +85,7 @@
     <Compile Include="Entitée\EntitéPéons\EntitéPéonAlliée.cs" />
     <Compile Include="Entitée\EntitéPéons\EntitéPéonEnnemie.cs" />
     <Compile Include="Entitée\EntitéTours\EntitéTour.cs" />
-    <Compile Include="Carte\CartePlan.cs" />
+    <Compile Include="Game\Carte\CartePlan.cs" />
     <Compile Include="Entitée\EntitéTours\EntitéTourAlliée.cs" />
     <Compile Include="Entitée\EntitéTours\EntitéTourEnnemie.cs" />
     <Compile Include="Minuteur.cs" />
@@ -100,7 +100,7 @@
     <Compile Include="Menu\SpriteHostMenu.cs" />
     <Compile Include="Menu\SpriteJoinMenu.cs" />
     <Compile Include="Menu\SpriteMainMenu.cs" />
-    <Compile Include="Carte\Murs.cs" />
+    <Compile Include="Game\Carte\Murs.cs" />
     <Compile Include="Entitée\ComposantEntité\ObjetDeBase.cs" />
     <Compile Include="Entitée\ComposantEntité\ObjetDeDémo.cs" />
     <Compile Include="ServeurClients\Protocoles.cs" />

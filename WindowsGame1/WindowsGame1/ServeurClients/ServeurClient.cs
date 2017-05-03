@@ -112,7 +112,7 @@ namespace AtelierXNA
                 }
                 else if (p == Protocoles.Disconnected)
                 {
-                    ((Game1)Game).ChangerDÉtat(0);
+
                 }
 
 
