@@ -26,6 +26,7 @@ namespace AtelierXNA
         protected Entité Cible { get; set; }
         public BoundingBox BoiteDeCollision { get; protected set; }
         public BoundingBox NouvelleBoiteDeCollision { get; protected set; }
+        protected Vector3 HauteurPosition { get; set; }
         int pointDeVie;
         public int PointDeVie
         {
@@ -75,7 +76,7 @@ namespace AtelierXNA
 
         public override void Initialize()
         {
-            LaBarre = new BarreDeVie(Game, 1, Vector3.Zero, Position + new Vector3(0,8,0), new Vector3(4, 0, 1), IntervalleMAJ, PointDeVie);
+            LaBarre = new BarreDeVie(Game, 1, Vector3.Zero, Position + HauteurPosition, new Vector3(4, 0, 1), IntervalleMAJ, PointDeVie, HauteurPosition);
             Game.Components.Add(LaBarre);
             base.Initialize();
 
@@ -86,9 +87,10 @@ namespace AtelierXNA
             
                 LaBarre.ChangerPosition(Position);
 
-            
+            if(PointDeVie == 0) { LaBarre.ÀDétruire = true; }
             if (LaBarre.PointDeVie != PointDeVie)
             {
+
                 LaBarre.ChangerBarreDeVie(PointDeVie);
             }
 

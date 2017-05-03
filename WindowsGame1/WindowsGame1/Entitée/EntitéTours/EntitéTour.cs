@@ -37,6 +37,8 @@ namespace AtelierXNA
         {
             RayonCollision = 4;
             BoiteDeCollision = new BoundingBox(Position + PointMinBDC, Position + PointMaxBDC);
+
+            HauteurPosition = new Vector3(0, 8, 0);
             base.Initialize();
         }
 

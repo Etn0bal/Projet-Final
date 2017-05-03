@@ -76,7 +76,9 @@ namespace AtelierXNA
             CoolDownQ = 10;
             CoolDownW = 10;
             CoolDownE = 10;
-            CoolDownAttaque = 1;
+            CoolDownAttaque = 0.5f;
+
+            HauteurPosition = new Vector3(0, 15, 0);
 
             BoiteDeCollision = new BoundingBox(Position + PointMinBDC, Position + PointMaxBDC);
             Murs = Game.Services.GetService(typeof(Murs)) as Murs;

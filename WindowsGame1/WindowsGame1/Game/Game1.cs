@@ -32,6 +32,7 @@ namespace AtelierXNA
             graphics.SynchronizeWithVerticalRetrace = false;
             IsFixedTimeStep = false;
             IsMouseVisible = true;
+            graphics.IsFullScreen = true;
 
         }
 
@@ -55,6 +56,8 @@ namespace AtelierXNA
             Components.Add(mainMenu);
 
             EnJeu = false;
+
+           
 
 
             base.Initialize();
