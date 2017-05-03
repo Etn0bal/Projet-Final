@@ -17,8 +17,8 @@ namespace AtelierXNA
     /// </summary>
     public class EntitéTour : Entité
     {
-        protected Vector3 PointMaxBDC = new Vector3(5, 7.6f, 9f / 2f);
-        protected Vector3 PointMinBDC = new Vector3(-5, 0, -(9f / 2f));
+        protected Vector3 PointMaxBDC = new Vector3(4, 7.6f, 7.5f / 2f);
+        protected Vector3 PointMinBDC = new Vector3(-4, 0, -(7.5f / 2f));
         
         protected float TempsÉcouléDepuisAttaqueMAJ { get; set; }
         public int NumTour { get; set; }
