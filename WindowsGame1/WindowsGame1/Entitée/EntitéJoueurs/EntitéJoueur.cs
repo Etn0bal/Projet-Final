@@ -125,7 +125,7 @@ namespace AtelierXNA
             if (TempsÉcouléDepuisDernierQ >= CoolDownQ && GestionInputs.EstNouvelleTouche(Keys.Q))
             {
                 GestionQ();
-                TempsÉcouléDepuisDernierQ = 0;
+
             }
 
             if (TempsÉcouléDepuisDernierW >= CoolDownW && GestionInputs.EstNouvelleTouche(Keys.W))
@@ -219,6 +219,7 @@ namespace AtelierXNA
                 CaméraJeu.DonnerPositionJoueur(Position);
                 BoiteDeCollision = new BoundingBox(Position + PointMinBDC, Position + PointMaxBDC);
                 DoCalculerMonde = true;
+                TempsÉcouléDepuisDernierQ = 0;
             }
             else { Destination = DestinationTampon; }
         }
