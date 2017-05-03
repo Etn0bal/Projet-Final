@@ -79,9 +79,9 @@ namespace AtelierXNA
                         typeEnnemie = 1;
                     }
 
-                    thegame.EnvoyerAttaqueAuServeur(Position, Force, Précision, typeEnnemie, numEnnemie, attaque.Dégat);
+                    LeGame.EnvoyerAttaqueAuServeur(Position, Force, Précision, typeEnnemie, numEnnemie, attaque.Dégat);
                     Cible = null;
-                }
+                
             }
         }
 
