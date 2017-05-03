@@ -35,7 +35,7 @@ namespace AtelierXNA
         const int PORTÉE_JOUEUR = 25;
         //Constante Force
         const int FORCE_PÉON = 50;
-        const int FORCE_TOUR = 175;
+        const int FORCE_TOUR = 250;
         const int FORCE_JOUEUR = 100;
         //CONSTANTE PRÉCISION
         const int PRÉCISION_PÉON = 50;
