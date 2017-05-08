@@ -15,13 +15,13 @@ namespace AtelierXNA
     /// <summary>
     /// This is a game component that implements IUpdateable.
     /// </summary>
-    public class EntitéJoueur : Entité, IControlable,IDestructible
+    public class EntitéJoueur : Entité, IControlable, IDestructible
     {
         const float FACTEUR_VITESSE = 0.35f;
-        
+
         Vector3 PointMaxBDC = new Vector3(2, 16.2f, 5f / 2f);
         Vector3 PointMinBDC = new Vector3(-2, 0, -(5f / 2f));
-       
+
 
 
 
@@ -36,11 +36,17 @@ namespace AtelierXNA
         Murs Murs { get; set; }
         Ray RayonPicking { get; set; }
         TheGame LeGame { get; set; }
+
+        float TempsÉcouléDepuisDernièreAttaque { get; set; }
+        float CoolDownAttaque { get; set; }
         float TempsÉcouléDepuisDernierQ { get; set; }
         float CoolDownQ { get; set; }
+        float TempsÉcouléDepuisDernierW { get; set; }
+        float CoolDownW { get; set; }
         float TempsÉcouléDepuisDernierE { get; set; }
         float CoolDownE { get; set; }
         int PointDeVieRedonné { get; set; }
+
         public bool EnMouvement { get; set; }
         public bool ÀDétruire { get; set;}
 
@@ -68,13 +74,17 @@ namespace AtelierXNA
             EnMouvement = true;
             RayonCollision = 3;
             CoolDownQ = 10;
+            CoolDownW = 10;
             CoolDownE = 10;
+            CoolDownAttaque = 0.2f;
+
+            HauteurPosition = new Vector3(0, 15, 0);
 
             BoiteDeCollision = new BoundingBox(Position + PointMinBDC, Position + PointMaxBDC);
             Murs = Game.Services.GetService(typeof(Murs)) as Murs;
             LeGame = Game.Components.First(x => x is TheGame) as TheGame;
             base.Initialize();
-            PointDeVieRedonné = (1 / 10) * PointDeVieInitial;
+            PointDeVieRedonné = (int)(0.1f * PointDeVieInitial);
         }
 
         public override void Update(GameTime gameTime)
@@ -83,7 +93,9 @@ namespace AtelierXNA
             
             float tempsÉcoulé = (float)gameTime.ElapsedGameTime.TotalSeconds;
             TempsÉcouléDepuisMAJ += tempsÉcoulé;
+            TempsÉcouléDepuisDernièreAttaque += tempsÉcoulé;
             TempsÉcouléDepuisDernierQ += tempsÉcoulé;
+            TempsÉcouléDepuisDernierW += tempsÉcoulé;
             TempsÉcouléDepuisDernierE += tempsÉcoulé;
             if (TempsÉcouléDepuisMAJ >= IntervalleMAJ)
             {
@@ -98,22 +110,32 @@ namespace AtelierXNA
                 DirectionDéplacement = Vector3.Normalize(Destination - Position);
                 GérerRotation();
 
-                try
-                {
-                    Cible = Game.Components.OfType<Entité>().First(x => x.BoiteDeCollision.Intersects(RayonPicking) != null && !x.EstAlliée);
-                }
-                catch { }
+                Cible = Game.Components.OfType<Entité>().FirstOrDefault(x => x.BoiteDeCollision.Intersects(RayonPicking) != null && !x.EstAlliée &&
+                Math.Sqrt(Math.Pow(x.Position.X - Position.X,2) - Math.Pow(x.Position.Z - Position.Z,2)) <= Portée);
 
-                if (Cible != null) { GestionAttaque(); }
+                if (Cible != null)
+                {
+                    if(TempsÉcouléDepuisDernièreAttaque >= CoolDownAttaque)
+                    {
+                        GestionAttaqueDeBase();
+                        TempsÉcouléDepuisDernièreAttaque = 0;
+                    }
+                }
             }
 
             if (TempsÉcouléDepuisDernierQ >= CoolDownQ && GestionInputs.EstNouvelleTouche(Keys.Q))
             {
                 GestionQ();
-                TempsÉcouléDepuisDernierQ = 0;
+
             }
 
-            if (TempsÉcouléDepuisDernierE >= CoolDownQ && GestionInputs.EstNouvelleTouche(Keys.E))
+            if (TempsÉcouléDepuisDernierW >= CoolDownW && GestionInputs.EstNouvelleTouche(Keys.W))
+            {
+                GestionW();
+                TempsÉcouléDepuisDernierW = 0;
+            }
+
+            if (TempsÉcouléDepuisDernierE >= CoolDownE && GestionInputs.EstNouvelleTouche(Keys.E))
             {
                 GestionE();
                 TempsÉcouléDepuisDernierE = 0;
@@ -129,9 +151,25 @@ namespace AtelierXNA
 
         }
 
+        private void GestionW()
+        {
+            GetDestination();
+            Vector3 directionAttaqueW = Vector3.Normalize(Destination - Position);
+            directionAttaqueW.Y = 0;
+            GérerRotation();
+            ProjectileAttaqueW attaque = new ProjectileAttaqueW(Game, "bomb", ÉCHELLE_PROJECTILE_W,
+                                                                RotationInitialeProjectielADB, Position + new Vector3(0, 5, 0),DirectionInitialeProjectileADB, directionAttaqueW,
+                                                                Force, Précision, IntervalleMAJ,1);
+            LeGame.EnvoyerAttaqueW(Position + new Vector3(0, 5, 0), directionAttaqueW, Force, Précision, attaque.Dégat);
+
+            Game.Components.Add(attaque);
+            Destination = Position;
+
+        }
+
         private void GestionE()
         {
-            PointDeVie += Math.Min(PointDeVie+PointDeVieRedonné, PointDeVieInitial);
+            PointDeVie = Math.Min(PointDeVie+PointDeVieRedonné, PointDeVieInitial);
             LeGame.EnvoyerGainDeVie(PointDeVie);
         }
 
@@ -143,14 +181,14 @@ namespace AtelierXNA
             }
         }
 
-        void GestionAttaque()
+        void GestionAttaqueDeBase()
         {
             ProjectileAttaqueDeBase attaque = new ProjectileAttaqueDeBase(Game, "rocket", ÉCHELLE_PROJECTILE_ATTAQUE_DE_BASE,
-                                                                              RotationInitialeProjectielADB, Position, DirectionInitialeProjectileADB,
+                                                                              RotationInitialeProjectielADB, Position+new Vector3(0,5,0), DirectionInitialeProjectileADB,
                                                                               Force, Précision, Cible, IntervalleMAJ);
             Game.Components.Add(attaque);
 
-            int typeEnnemie = 3;
+            int typeEnnemie = 0;
             int numEnnemie = 0;
             if (Cible is EntitéPéonEnnemie)
             {
@@ -182,6 +220,7 @@ namespace AtelierXNA
                 CaméraJeu.DonnerPositionJoueur(Position);
                 BoiteDeCollision = new BoundingBox(Position + PointMinBDC, Position + PointMaxBDC);
                 DoCalculerMonde = true;
+                TempsÉcouléDepuisDernierQ = 0;
             }
             else { Destination = DestinationTampon; }
         }
@@ -207,7 +246,8 @@ namespace AtelierXNA
 
         bool EnCollisionAvecTour()
         {
-            foreach(EntitéTour tour in Game.Components.Where(x=> x is EntitéTour))
+            List<EntitéTour> tours = Game.Components.OfType<EntitéTour>().ToList();
+            foreach (EntitéTour tour in tours)
             {
                 if(tour.EstEnCollision(this)) { return true; }
             }

@@ -20,11 +20,13 @@ namespace AtelierXNA
         protected Vector3 RotationInitialeProjectielADB = new Vector3(0, 0, (float)-Math.PI / 4);
         protected Vector3 DirectionInitialeProjectileADB = new Vector3(1, 0, 0);
         protected const float ÉCHELLE_PROJECTILE_ATTAQUE_DE_BASE = 0.000009f;
+        protected const float ÉCHELLE_PROJECTILE_W = 0.05f;
 
 
         protected Entité Cible { get; set; }
         public BoundingBox BoiteDeCollision { get; protected set; }
         public BoundingBox NouvelleBoiteDeCollision { get; protected set; }
+        protected Vector3 HauteurPosition { get; set; }
         int pointDeVie;
         public int PointDeVie
         {
@@ -37,6 +39,7 @@ namespace AtelierXNA
 
             }
         }
+        BarreDeVie LaBarre { get; set; }
         public int PointDeVieInitial { get; private set; }
         public int Portée { get; set; }
         protected int Force { get; set; }
@@ -73,12 +76,25 @@ namespace AtelierXNA
 
         public override void Initialize()
         {
+            LaBarre = new BarreDeVie(Game, 1, Vector3.Zero, Position + HauteurPosition, new Vector3(4, 0, 1), IntervalleMAJ, PointDeVie, HauteurPosition);
+            Game.Components.Add(LaBarre);
             base.Initialize();
 
         }
 
         public override void Update(GameTime gameTime)
         {
+            
+                LaBarre.ChangerPosition(Position);
+
+            if(PointDeVie == 0) { LaBarre.ÀDétruire = true; }
+            if (LaBarre.PointDeVie != PointDeVie)
+            {
+
+                LaBarre.ChangerBarreDeVie(PointDeVie);
+            }
+
+            
 
             base.Update(gameTime);
         }

@@ -59,6 +59,7 @@ namespace AtelierXNA
             EnMouvement = false;
             ÀDétruire = false;
             EstAlliée = false;
+            HauteurPosition = new Vector3(0, 13, 0);
 
             base.Initialize();
         }

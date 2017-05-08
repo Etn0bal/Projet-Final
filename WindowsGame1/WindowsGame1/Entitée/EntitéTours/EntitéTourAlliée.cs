@@ -15,6 +15,7 @@ namespace AtelierXNA
     {
         public bool ÀDétruire { get; set; }
         public BoundingSphere SphèreDeCollision { get; private set; }
+        TheGame LeGame { get; set; }
 
 
         public EntitéTourAlliée(Game jeu, string nomModèle, float échelleInitiale, Vector3 rotationInitiale, Vector3 positionInitiale,
@@ -28,6 +29,7 @@ namespace AtelierXNA
             RayonCollision = 4;
             ÀDétruire = false;
             EstAlliée = true;
+            LeGame = Game.Components.First(x => x is TheGame) as TheGame;
             base.Initialize();
         }
 
@@ -46,11 +48,11 @@ namespace AtelierXNA
             TempsÉcouléDepuisAttaqueMAJ += tempsÉcoulé;
             if (TempsÉcouléDepuisAttaqueMAJ >= 1.2f)
             {
-                RegarderSiCibleEstMortOuHorsRange();
-                if (Cible == null)
-                {
+                //RegarderSiCibleEstMortOuHorsRange();
+                //if (Cible == null)
+                //{
                     GestionAttaque();
-                }
+                //}
                 TempsÉcouléDepuisAttaqueMAJ -= 1.2f;
             }
             base.Update(gameTime);
@@ -59,12 +61,8 @@ namespace AtelierXNA
 
         protected void GestionAttaque()
         {
-            try
-            {
-                Cible = Game.Components.OfType<Entité>().First(x => Math.Sqrt(Math.Pow(x.Position.X - Position.X, 2) +
-                                                                              Math.Pow(x.Position.Z - Position.Z, 2)) <= Portée && !x.EstAlliée);
-            }
-            catch { }
+            Cible = Game.Components.OfType<Entité>().FirstOrDefault(x => Math.Sqrt(Math.Pow(x.Position.X - Position.X, 2) +
+                                                                    Math.Pow(x.Position.Z - Position.Z, 2)) <= Portée && !x.EstAlliée);
 
             if (Cible != null)
             {
@@ -72,8 +70,7 @@ namespace AtelierXNA
                                                                                       RotationInitialeProjectielADB, Position, DirectionInitialeProjectileADB,
                                                                                       Force, Précision, Cible, IntervalleMAJ);
                 Game.Components.Add(attaque);
-                foreach (TheGame thegame in Game.Components.Where(x => x is TheGame))
-                {
+                
                     int typeEnnemie = 3;
                     int numEnnemie = 0;
                     if (Cible is EntitéPéonEnnemie)
@@ -82,8 +79,9 @@ namespace AtelierXNA
                         typeEnnemie = 1;
                     }
 
-                    thegame.EnvoyerAttaqueAuServeur(Position, Force, Précision, typeEnnemie, numEnnemie, attaque.Dégat);
-                }
+                    LeGame.EnvoyerAttaqueAuServeur(Position, Force, Précision, typeEnnemie, numEnnemie, attaque.Dégat);
+                    Cible = null;
+                
             }
         }
 

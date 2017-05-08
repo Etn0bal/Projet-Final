@@ -27,27 +27,28 @@ namespace AtelierXNA
         const float ÉCHELLE_OBJET_PÉON = 0.003f;
         const float ÉCHELLE_OBJET_TOUR = 0.009f;
         public float ÉCHELLE_PROJECTILE_ATTAQUE_DE_BASE = 0.000009f;
+        public float ÉCHELLE_PROJECTILE_W = 0.05f;
 
         //Constante portée
-        const int PORTÉE_PÉON = 25;
-        const int PORTÉE_TOUR = 25;
+        const int PORTÉE_PÉON = 20;
+        const int PORTÉE_TOUR = 30;
         const int PORTÉE_JOUEUR = 25;
         //Constante Force
-        const int FORCE_PÉON = 100;
-        const int FORCE_TOUR = 100;
+        const int FORCE_PÉON = 50;
+        const int FORCE_TOUR = 250;
         const int FORCE_JOUEUR = 100;
         //CONSTANTE PRÉCISION
-        const int PRÉCISION_PÉON = 100;
-        const int PRÉCISION_TOUR = 100;
-        const int PRÉCISION_JOUEUR = 100;
+        const int PRÉCISION_PÉON = 50;
+        const int PRÉCISION_TOUR = 85;
+        const int PRÉCISION_JOUEUR = 75;
         //Constante Armure
-        const int ARMURE_PÉON = 1;
-        const int ARMURE_TOUR = 1;
-        const int ARMURE_JOUEUR = 1;
+        const int ARMURE_PÉON = 10;
+        const int ARMURE_TOUR = 20;
+        const int ARMURE_JOUEUR = 5;
         //Constante PointDeVie
-        const int PV_PÉON = 1;
-        const int PV_TOUR = 1;
-        const int PV_JOUEUR = 1000;
+        const int PV_PÉON = 750;
+        const int PV_TOUR = 3000;
+        const int PV_JOUEUR = 1500;
 
 
 
@@ -196,14 +197,14 @@ namespace AtelierXNA
                 //Péons Alliés:
                 PéonA1 = new EntitéPéonAlliée(Game, "tank", ÉCHELLE_OBJET_PÉON, rotationObjetInitialeInvite, positionInitialeInvite + new Vector3(0, 1.5f, -5), INTERVALLEMAJ, PV_PÉON, PORTÉE_PÉON, FORCE_PÉON, ARMURE_PÉON, PRÉCISION_PÉON, new Vector3(-1, 0, 0), numPéonA, true);
                 Game.Components.Add(PéonA1);
-                PéonA2 = new EntitéPéonAlliée(Game, "tank", ÉCHELLE_OBJET_PÉON, rotationObjetInitialeInvite, positionInitialeInvite + new Vector3(5, 1.5f, 0), INTERVALLEMAJ, PV_PÉON, PORTÉE_PÉON, FORCE_PÉON, ARMURE_PÉON, PRÉCISION_PÉON, new Vector3(-1, 0, 0), ++numPéonA, true);
+                PéonA2 = new EntitéPéonAlliée(Game, "tank", ÉCHELLE_OBJET_PÉON, rotationObjetInitialeInvite, positionInitialeInvite + new Vector3(-5, 1.5f, 0), INTERVALLEMAJ, PV_PÉON, PORTÉE_PÉON, FORCE_PÉON, ARMURE_PÉON, PRÉCISION_PÉON, new Vector3(-1, 0, 0), ++numPéonA, true);
                 Game.Components.Add(PéonA2);
                 PéonA3 = new EntitéPéonAlliée(Game, "tank", ÉCHELLE_OBJET_PÉON, rotationObjetInitialeInvite, positionInitialeInvite + new Vector3(0, 1.5f, 5), INTERVALLEMAJ, PV_PÉON, PORTÉE_PÉON, FORCE_PÉON, ARMURE_PÉON, PRÉCISION_PÉON, new Vector3(-1, 0, 0), ++numPéonA, true);
                 Game.Components.Add(PéonA3);
                 //Péons Ennemis :
                 PéonE1 = new EntitéPéonEnnemie(Game, "tank", ÉCHELLE_OBJET_PÉON, rotationObjetInitialeHost, positionInitialeHost + new Vector3(0, 1.5f, -5), INTERVALLEMAJ, PV_PÉON, PORTÉE_PÉON, FORCE_PÉON, ARMURE_PÉON, PRÉCISION_PÉON, new Vector3(1, 0, 0), numPéonE);
                 Game.Components.Add(PéonE1);
-                PéonE2 = new EntitéPéonEnnemie(Game, "tank", ÉCHELLE_OBJET_PÉON, rotationObjetInitialeHost, positionInitialeHost + new Vector3(-5, 1.5f, 0), INTERVALLEMAJ, PV_PÉON, PORTÉE_PÉON, FORCE_PÉON, ARMURE_PÉON, PRÉCISION_PÉON, new Vector3(1, 0, 0), ++numPéonE);
+                PéonE2 = new EntitéPéonEnnemie(Game, "tank", ÉCHELLE_OBJET_PÉON, rotationObjetInitialeHost, positionInitialeHost + new Vector3(5, 1.5f, 0), INTERVALLEMAJ, PV_PÉON, PORTÉE_PÉON, FORCE_PÉON, ARMURE_PÉON, PRÉCISION_PÉON, new Vector3(1, 0, 0), ++numPéonE);
                 Game.Components.Add(PéonE2);
                 PéonE3 = new EntitéPéonEnnemie(Game, "tank", ÉCHELLE_OBJET_PÉON, rotationObjetInitialeHost, positionInitialeHost + new Vector3(0, 1.5f, 5), INTERVALLEMAJ, PV_PÉON, PORTÉE_PÉON, FORCE_PÉON, ARMURE_PÉON, PRÉCISION_PÉON, new Vector3(1, 0, 0), ++numPéonE);
                 Game.Components.Add(PéonE3);
@@ -269,7 +270,8 @@ namespace AtelierXNA
             //}
             if (Game.Components.Any(x=> x is EntitéPéonAlliée))
             {
-                foreach (EntitéPéonAlliée péon in Game.Components.Where(x => x is EntitéPéonAlliée))
+                    List<EntitéPéonAlliée> péons = Game.Components.OfType<EntitéPéonAlliée>().ToList();
+                foreach (EntitéPéonAlliée péon in péons)
                 {
                     if (péon.EnMouvement)
                     {
@@ -293,13 +295,15 @@ namespace AtelierXNA
         {
             if(TourE1.ÀDétruire||TourE1==null)
             {
-                TexteCentré textefinal = new TexteCentré(Game, "Victoire!", "Arial", new Rectangle(0, 0, Game.Window.ClientBounds.Width, Game.Window.ClientBounds.Height), Color.Black, 0.2f);
+                NettoyerListeComponents();
+                TexteCentré textefinal = new TexteCentré(Game, "Victoire!", "Arial", new Rectangle(0, 0, Game.Window.ClientBounds.Width, Game.Window.ClientBounds.Height), Color.White, 0.2f);
                 Game.Components.Add(textefinal);
                 
             }
             if (TourA1.ÀDétruire || TourA1 == null)
             {
-                TexteCentré textefinal = new TexteCentré(Game, "Défaite!", "Arial", new Rectangle(0, 0, Game.Window.ClientBounds.Width / 2, Game.Window.ClientBounds.Height / 2), Color.Black, 0f);
+                NettoyerListeComponents();
+                TexteCentré textefinal = new TexteCentré(Game, "Défaite!", "Arial", new Rectangle(0, 0, Game.Window.ClientBounds.Width, Game.Window.ClientBounds.Height), Color.White, 0.2f);
                 Game.Components.Add(textefinal);
             }
         }
@@ -412,5 +416,17 @@ namespace AtelierXNA
         {
             JoueurClient.EnvoyerGainDeVie(PointDeVie);
         }
+        public void EnvoyerAttaqueW(Vector3 position, Vector3 direction, int force, int précision, int dégat)
+        {
+            JoueurClient.EnvoyerAttaqueW(position, direction, force, précision, dégat);
+        }
+        void NettoyerListeComponents()
+        {
+            for (int i = Game.Components.Count - 1; i >= 0; --i)
+            {
+                Game.Components.RemoveAt(i);
+            }
+        }
+
     }
 }

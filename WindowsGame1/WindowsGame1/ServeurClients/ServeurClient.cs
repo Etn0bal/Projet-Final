@@ -112,7 +112,7 @@ namespace AtelierXNA
                 }
                 else if (p == Protocoles.Disconnected)
                 {
-                    ((Game1)Game).ChangerDÉtat(0);
+
                 }
 
 
@@ -127,7 +127,8 @@ namespace AtelierXNA
 
                     //    EntitéeEnnemie.DéplacerEnnemie(positionEnnemie);
                     //}
-                    foreach (EntitéEnnemie EntitéeEnnemie in Game.Components.Where(x => x is EntitéEnnemie))
+                    List<EntitéEnnemie> entitésEnnemies = Game.Components.OfType<EntitéEnnemie>().ToList();
+                    foreach (EntitéEnnemie entitéEnnemie in entitésEnnemies)
                     {
                         float m11 = reader.ReadSingle();
                         float m12 = reader.ReadSingle();
@@ -145,14 +146,15 @@ namespace AtelierXNA
                         float m42 = reader.ReadSingle();
                         float m43 = reader.ReadSingle();
                         float m44 = reader.ReadSingle();
-                        EntitéeEnnemie.Monde = new Matrix(m11, m12, m13, m14, m21, m22, m23, m24, m31, m32, m33, m34, m41, m42, m43, m44);
+                        entitéEnnemie.Monde = new Matrix(m11, m12, m13, m14, m21, m22, m23, m24, m31, m32, m33, m34, m41, m42, m43, m44);
                     }
                 }
 
                 else if (p == Protocoles.MinionMovement)
                 {
                     int numPéon = reader.ReadInt32();
-                    foreach (EntitéPéonEnnemie péon in Game.Components.Where(x => x is EntitéPéonEnnemie))
+                    List<EntitéPéonEnnemie> péons = Game.Components.OfType<EntitéPéonEnnemie>().ToList();
+                    foreach (EntitéPéonEnnemie péon in péons)
                     {
                         if (péon.NumPéon == numPéon)
                         {
@@ -187,7 +189,8 @@ namespace AtelierXNA
 
                     if (typeEnemmie == 1)
                     {
-                        foreach (EntitéPéonAlliée entité in Game.Components.Where(x => x is EntitéPéonAlliée))
+                        List<EntitéPéonAlliée> entités = Game.Components.OfType<EntitéPéonAlliée>().ToList();
+                        foreach (EntitéPéonAlliée entité in entités)
                         {
                             if (entité.NumPéon == numEnnemie)
                             {
@@ -197,7 +200,8 @@ namespace AtelierXNA
                     }
                     else if (typeEnemmie == 2)
                     {
-                        foreach (EntitéTourAlliée entité in Game.Components.Where(x => x is EntitéTourAlliée))
+                        List<EntitéTourAlliée> entités = Game.Components.OfType<EntitéTourAlliée>().ToList();
+                        foreach (EntitéTourAlliée entité in entités)
                         {
                             if (entité.NumTour == numEnnemie)
                             {
@@ -207,7 +211,8 @@ namespace AtelierXNA
                     }
                     else
                     {
-                        foreach (EntitéJoueur entité in Game.Components.Where(x => x is EntitéJoueur))
+                        List<EntitéJoueur> entités = Game.Components.OfType<EntitéJoueur>().ToList();
+                        foreach (EntitéJoueur entité in entités)
                         {
                             theEntité = entité;
 
@@ -215,7 +220,7 @@ namespace AtelierXNA
                     }
                     if (theEntité != null)
                     {
-                        ProjectileAttaqueDeBase projectile = new ProjectileAttaqueDeBase(Game, "rocket", game.ÉCHELLE_PROJECTILE_ATTAQUE_DE_BASE, game.RotationInitialeProjectielADB, new Vector3(px, py, pz), game.DirectionInitialeProjectileADB, force, précision, theEntité, dégat, game.INTERVALLEMAJ);
+                        ProjectileAttaqueDeBase projectile = new ProjectileAttaqueDeBase(Game, "rocket", game.ÉCHELLE_PROJECTILE_ATTAQUE_DE_BASE, game.RotationInitialeProjectielADB, new Vector3(px, py, pz) + new Vector3(0, 5, 0), game.DirectionInitialeProjectileADB, force, précision, theEntité, dégat, game.INTERVALLEMAJ);
                         Game.Components.Add(projectile);
                     }
                 }
@@ -229,7 +234,8 @@ namespace AtelierXNA
 
                     if (typeEnemmie == 1)
                     {
-                        foreach (EntitéPéonAlliée entité in Game.Components.Where(x => x is EntitéPéonAlliée))
+                        List<EntitéPéonAlliée> entités = Game.Components.OfType<EntitéPéonAlliée>().ToList();
+                        foreach (EntitéPéonAlliée entité in entités)
                         {
                             if (entité.NumPéon == numEnnemie)
                             {
@@ -239,7 +245,8 @@ namespace AtelierXNA
                     }
                     else if (typeEnemmie == 2)
                     {
-                        foreach (EntitéTourAlliée entité in Game.Components.Where(x => x is EntitéTourAlliée))
+                        List<EntitéTourAlliée> entités = Game.Components.OfType<EntitéTourAlliée>().ToList();
+                        foreach (EntitéTourAlliée entité in entités)
                         {
                             if (entité.NumTour == numEnnemie)
                             {
@@ -249,7 +256,8 @@ namespace AtelierXNA
                     }
                     else if (typeEnemmie == 0)
                     {
-                        foreach (EntitéJoueur entité in Game.Components.Where(x => x is EntitéJoueur))
+                        List<EntitéJoueur> entités = Game.Components.OfType<EntitéJoueur>().ToList();
+                        foreach (EntitéJoueur entité in entités)
                         {
                             entité.PointDeVie = 0;
                         }
@@ -259,11 +267,28 @@ namespace AtelierXNA
                 else if (p == Protocoles.HealthChange)
                 {
                     int pdv = reader.ReadInt32();
-                    foreach (EntitéEnnemie EntitéeEnnemie in Game.Components.Where(x => x is EntitéEnnemie))
+                    List<EntitéEnnemie> entitésEnnemies = Game.Components.OfType<EntitéEnnemie>().ToList();
+                    foreach (EntitéEnnemie entitéEnnemie in entitésEnnemies)
                     {
-                        EntitéeEnnemie.PointDeVie = pdv;
+                        entitéEnnemie.PointDeVie = pdv;
                     }
                 }
+                else if (p == Protocoles.WAttack)
+                {
+                    TheGame game = Game.Components.First(x => x is TheGame) as TheGame;
+                    float px = reader.ReadSingle();
+                    float py = reader.ReadSingle();
+                    float pz = reader.ReadSingle();
+                    float dx = reader.ReadSingle();
+                    float dy = reader.ReadSingle();
+                    float dz = reader.ReadSingle();
+                    int force = reader.ReadInt32();
+                    int précision = reader.ReadInt32();
+                    int dégat = reader.ReadInt32();
+                    ProjectileAttaqueW projectile = new ProjectileAttaqueW(Game, "bomb", game.ÉCHELLE_PROJECTILE_W, game.RotationInitialeProjectielADB, new Vector3(px, py, pz), game.DirectionInitialeProjectileADB, new Vector3(dx, dy, dz), force, précision,dégat,game.INTERVALLEMAJ, 2);
+                    Game.Components.Add(projectile);
+                }
+                
             }
             catch (Exception ex)
             {
@@ -304,7 +329,7 @@ namespace AtelierXNA
             }
             catch (Exception)
             {
-
+                //TODO
             }
         }
         public void StartGame()
@@ -411,6 +436,27 @@ namespace AtelierXNA
             writeStream.Position = 0;
             writer.Write((Byte)Protocoles.HealthChange);
             writer.Write(PointDeVie);
+            SendData(GetDataFromMemoryStream(writeStream));
+        }
+        public void EnvoyerAttaqueW(Vector3 position, Vector3 direction, int force, int précision, int dégat)
+        {
+            writeStream.Position = 0;
+            writer.Write((Byte)Protocoles.WAttack);
+
+            //Envoi position joueurA
+            writer.Write(position.X);
+            writer.Write(position.Y);
+            writer.Write(position.Z);
+            //Envoi direction attaque
+            writer.Write(direction.X);
+            writer.Write(direction.Y);
+            writer.Write(direction.Z);
+            //Envoi de la force 
+            writer.Write(force);
+            //Envoi de la précision 
+            writer.Write(précision);
+            //Envoi du dégat
+            writer.Write(dégat);
             SendData(GetDataFromMemoryStream(writeStream));
         }
     }

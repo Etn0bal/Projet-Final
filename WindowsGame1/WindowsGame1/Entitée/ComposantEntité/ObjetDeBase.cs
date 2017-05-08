@@ -53,19 +53,29 @@ namespace AtelierXNA
 
       public override void Draw(GameTime gameTime)
       {
-         foreach (ModelMesh maille in Modèle.Meshes)
-         {
-            Matrix mondeLocal = TransformationsModèle[maille.ParentBone.Index] * GetMonde();
-            foreach (ModelMeshPart portionDeMaillage in maille.MeshParts)
-            {
-               BasicEffect effet = (BasicEffect)portionDeMaillage.Effect;
-               effet.EnableDefaultLighting();
-               effet.Projection = CaméraJeu.Projection;
-               effet.View = CaméraJeu.Vue;
-               effet.World = mondeLocal;
+
+                foreach (ModelMesh maille in Modèle.Meshes)
+                {
+
+                    Matrix mondeLocal = TransformationsModèle[maille.ParentBone.Index] * GetMonde();
+                    foreach (ModelMeshPart portionDeMaillage in maille.MeshParts)
+                    {
+                        BasicEffect effet = (BasicEffect)portionDeMaillage.Effect;
+                        effet.EnableDefaultLighting();
+                        effet.Projection = CaméraJeu.Projection;
+                        effet.View = CaméraJeu.Vue;
+                        effet.World = mondeLocal;
+                    }
+                try
+                {
+                    maille.Draw();
+                }
+                catch
+                {
+                    //TODO
+                }
+                
             }
-            maille.Draw();
-         }
       }
 
       public virtual Matrix GetMonde()

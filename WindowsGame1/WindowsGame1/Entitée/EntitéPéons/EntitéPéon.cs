@@ -40,6 +40,8 @@ namespace AtelierXNA
             RayonCollision = 1;
             ÀDétruire = false;
 
+            HauteurPosition = new Vector3(0, 6, 0);
+
             base.Initialize();
         }
 

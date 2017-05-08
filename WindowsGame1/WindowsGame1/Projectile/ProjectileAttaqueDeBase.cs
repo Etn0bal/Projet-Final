@@ -31,7 +31,7 @@ namespace AtelierXNA
 
         public ProjectileAttaqueDeBase(Game game, string nomModèle, float échelleInitiale, Vector3 rotationInitiale, Vector3 positionInitiale,
                                       Vector3 direction, int force, int précision, Entité cible, int dégat, float intervalleMAJ)
-           : base(game, nomModèle, échelleInitiale, rotationInitiale, positionInitiale, direction, force, précision, dégat, intervalleMAJ)
+           : base(game, nomModèle, échelleInitiale, rotationInitiale, positionInitiale,direction, force, précision, dégat, intervalleMAJ)
         {
             Cible = cible;
         }
