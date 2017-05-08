@@ -95,8 +95,8 @@
     <Compile Include="Projectile\ProjectileAttaqueW.cs" />
     <Compile Include="Serveur\Delegates.cs" />
     <Compile Include="Entitée\ComposantEntité\Entité.cs" />
-    <Compile Include="Game\TheGame.cs" />
-    <Compile Include="Entitée\ComposantEntité\IControlable.cs" />
+    <Compile Include="Game\GestionnaireJeu.cs" />
+    <Compile Include="Entitée\ComposantEntité\IMobile.cs" />
     <Compile Include="Entitée\ComposantEntité\IControlée.cs" />
     <Compile Include="Menu\SpriteHostMenu.cs" />
     <Compile Include="Menu\SpriteJoinMenu.cs" />

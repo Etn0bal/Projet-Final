@@ -17,7 +17,7 @@ using System.IO;
 namespace AtelierXNA
 {
 
-    public class TheGame : Microsoft.Xna.Framework.DrawableGameComponent
+    public class GestionnaireJeu : Microsoft.Xna.Framework.DrawableGameComponent
     {
         public float INTERVALLEMAJ = 1f / 60f;
         const int INTERVALLEMAJPÉON = 60;
@@ -99,7 +99,7 @@ namespace AtelierXNA
         Minuteur LeMinuteur { get; set; }
 
 
-        public TheGame(Game game, int numClient)
+        public GestionnaireJeu(Game game, int numClient)
             : base(game)
         {
             NumClient = numClient;

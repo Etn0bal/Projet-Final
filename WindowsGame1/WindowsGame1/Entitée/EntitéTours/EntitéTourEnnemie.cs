@@ -11,9 +11,8 @@ using Microsoft.Xna.Framework.Media;
 
 namespace AtelierXNA
 {
-    class EntitéTourEnnemie: EntitéTour, IControlée, ICollisionable, IDestructible
+    class EntitéTourEnnemie: EntitéTour
     {
-        public bool ÀDétruire { get; set; }
         public BoundingSphere SphèreDeCollision { get; private set; }
         
         public EntitéTourEnnemie (Game jeu, string nomModèle, float échelleInitiale, Vector3 rotationInitiale, Vector3 positionInitiale,
@@ -40,29 +39,14 @@ namespace AtelierXNA
             TempsÉcouléDepuisMAJ += tempsÉcoulé;
             if (TempsÉcouléDepuisMAJ >= IntervalleMAJ)
             {
-                GestionVie();
                 TempsÉcouléDepuisMAJ = 0;
 
             }
             base.Update(gameTime);
         }
 
-        private void GestionVie()
-        {
-            if (PointDeVie == 0)
-            {
-                ÀDétruire = true;
-            }
-        }
-        public void ControlerLEntitée()
-        {
 
-        }
 
-        public bool EstEnCollision(object autreObjet)
-        {
-            return false;
-        }
     }
 }
 

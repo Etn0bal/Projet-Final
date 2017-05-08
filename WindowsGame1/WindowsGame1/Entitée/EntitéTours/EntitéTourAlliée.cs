@@ -11,12 +11,11 @@ using Microsoft.Xna.Framework.Media;
 
 namespace AtelierXNA
 {
-    class EntitéTourAlliée: EntitéTour, ICollisionable, IDestructible
+    class EntitéTourAlliée: EntitéTour
     {
-        public bool ÀDétruire { get; set; }
         public BoundingSphere SphèreDeCollision { get; private set; }
-        TheGame LeGame { get; set; }
-
+        float TempsÉcouléDepuisAttaqueMAJ { get; set; }
+        float TempsDeRechargeAttaque { get; set; }
 
         public EntitéTourAlliée(Game jeu, string nomModèle, float échelleInitiale, Vector3 rotationInitiale, Vector3 positionInitiale,
                            float intervalleMAJ, int pointDeVie, int portée, int force, int armure, int précision, int numTour)
@@ -29,7 +28,7 @@ namespace AtelierXNA
             RayonCollision = 4;
             ÀDétruire = false;
             EstAlliée = true;
-            LeGame = Game.Components.First(x => x is TheGame) as TheGame;
+            TempsDeRechargeAttaque = 1.2f;
             base.Initialize();
         }
 
@@ -41,19 +40,17 @@ namespace AtelierXNA
             if (TempsÉcouléDepuisMAJ >= IntervalleMAJ)
             {
                 RegarderSiCibleEstMortOuHorsRange();
-                GestionVie();
                 TempsÉcouléDepuisMAJ -= IntervalleMAJ;
             }
 
             TempsÉcouléDepuisAttaqueMAJ += tempsÉcoulé;
-            if (TempsÉcouléDepuisAttaqueMAJ >= 1.2f)
+            if (TempsÉcouléDepuisAttaqueMAJ >= TempsDeRechargeAttaque)
             {
                 //RegarderSiCibleEstMortOuHorsRange();
                 //if (Cible == null)
                 //{
                     GestionAttaque();
                 //}
-                TempsÉcouléDepuisAttaqueMAJ -= 1.2f;
             }
             base.Update(gameTime);
             base.Update(gameTime);
@@ -79,8 +76,9 @@ namespace AtelierXNA
                         typeEnnemie = 1;
                     }
 
-                    LeGame.EnvoyerAttaqueAuServeur(Position, Force, Précision, typeEnnemie, numEnnemie, attaque.Dégat);
+                    LeJeu.EnvoyerAttaqueAuServeur(Position, Force, Précision, typeEnnemie, numEnnemie, attaque.Dégat);
                     Cible = null;
+                TempsÉcouléDepuisAttaqueMAJ = 0;
                 
             }
         }
@@ -100,18 +98,7 @@ namespace AtelierXNA
             }
         }
        
-        private void GestionVie()
-        {
-            if (PointDeVie == 0)
-            {
-                ÀDétruire = true;
-            }
-        }
 
-        public bool EstEnCollision(object autreObjet)
-        {
-            return false;
-        }
     }
 
 }

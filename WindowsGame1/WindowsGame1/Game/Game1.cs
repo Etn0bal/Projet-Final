@@ -32,7 +32,7 @@ namespace AtelierXNA
             graphics.SynchronizeWithVerticalRetrace = false;
             IsFixedTimeStep = false;
             IsMouseVisible = true;
-            graphics.IsFullScreen = true;
+            //graphics.IsFullScreen = true;
 
         }
 
@@ -228,9 +228,9 @@ namespace AtelierXNA
         void InitialiserGame()
         {
             NettoyerListeComponents();
-            TheGame game = new TheGame(this,NumClient);
+            GestionnaireJeu game = new GestionnaireJeu(this,NumClient);
             Components.Add(game);
-            Services.AddService(typeof(TheGame),game);
+            Services.AddService(typeof(GestionnaireJeu),game);
         }
 
         private void InitialiserAttentePartie()

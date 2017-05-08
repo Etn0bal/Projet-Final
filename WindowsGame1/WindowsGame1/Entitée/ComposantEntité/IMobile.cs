@@ -5,7 +5,7 @@ using System.Text;
 
 namespace AtelierXNA
 {
-    interface IControlable
+    interface IMobile
     {
         void GestionDéplacement();
     }

@@ -11,7 +11,7 @@ using Microsoft.Xna.Framework.Media;
 
 namespace AtelierXNA
 {
-    class EntitéPéonEnnemie : EntitéPéon, IDestructible
+    class EntitéPéonEnnemie : EntitéPéon
     {
         const float FACTEUR_VITESSE = 0.01f;
         protected bool EnMouvement { get; set; }
@@ -49,18 +49,17 @@ namespace AtelierXNA
             if (TempsÉcouléDepuisMAJ >= IntervalleMAJ)
             {
                 GestionDéplacement();
-                GestionVie();
                 TempsÉcouléDepuisMAJ = 0;
 
             }
-            if (DoCalculerMonde)
+            if (MondeÀRecalculer)
             {
                 CalculerMonde();
-                DoCalculerMonde = false;
+                MondeÀRecalculer = false;
             }
             base.Update(gameTime);
         }
-        private void GestionDéplacement()
+        public override void GestionDéplacement()
         {
             if (EnMouvement)
             {
@@ -76,24 +75,7 @@ namespace AtelierXNA
             Position = position;
             BoiteDeCollision = new BoundingBox(Position + PointMinBDC, Position + PointMaxBDC);
             EnMouvement = true;
-        }
-        private void GestionVie()
-        {
-            if (PointDeVie == 0)
-            {
-                ÀDétruire = true;
-            }
-        }
-        void GérerRotation()
-        {
-            if (DirectionDéplacement.X >= 0 || DirectionDéplacement.X <= 0)
-            {
-                float Angle = (float)Math.Acos(Vector3.Dot(DirectionDéplacement, Direction) / (DirectionDéplacement.Length() * Direction.Length()));
-                if (Vector3.Cross(Direction, DirectionDéplacement).Y < 0) { Angle *= -1; }
-                Rotation += new Vector3(0, Angle, 0);
-                Direction = DirectionDéplacement;
-                DoCalculerMonde = true;
-            }
+            CalculerMonde();
         }
 
     }

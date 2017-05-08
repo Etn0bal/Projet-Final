@@ -50,7 +50,7 @@ namespace AtelierXNA
         public override void Initialize()
         {
             ¿DÈtruire = false;
-            DoCalculerMonde = false;
+            Monde¿Recalculer = false;
             BoiteDeCollision = new BoundingBox(Position + PointMinBDC, Position + PointMaxBDC);
             base.Initialize();
         }
@@ -63,7 +63,7 @@ namespace AtelierXNA
             {
                 GÈrerRotation();
                 GestionDÈplacement();
-                if (DoCalculerMonde) { CalculerMonde(); DoCalculerMonde = false; }
+                if (Monde¿Recalculer) { CalculerMonde(); Monde¿Recalculer = false; }
                 Temps…coulÈDepuisMAJ = 0;
             }
 
@@ -79,7 +79,7 @@ namespace AtelierXNA
                 {
                     Position += DirectionDÈplacement * FACTEUR_VITESSE;
                     BoiteDeCollision = new BoundingBox(Position + PointMinBDC, Position + PointMaxBDC);
-                    DoCalculerMonde = true;
+                    Monde¿Recalculer = true;
 
                     List<EntitÈ> entitÈs = Game.Components.OfType<EntitÈ>().ToList();
                     foreach (EntitÈ entitÈ in entitÈs)
@@ -120,7 +120,7 @@ namespace AtelierXNA
 
                 Rotation += new Vector3(0, Angle, 0);
                 Direction = DirectionDÈplacement;
-                DoCalculerMonde = true;
+                Monde¿Recalculer = true;
             }
         }
     }

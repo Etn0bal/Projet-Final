@@ -15,14 +15,13 @@ namespace AtelierXNA
     /// <summary>
     /// This is a game component that implements IUpdateable.
     /// </summary>
-    public class EntitéEnnemie : Entité, ICollisionable, IDestructible
+    public class EntitéEnnemie : Entité, ICollisionable, IMobile
     {
         Vector3 PointMaxBDC = new Vector3(2, 16.2f, 5f / 2f);
         Vector3 PointMinBDC = new Vector3(-2, 0, -(5f / 2f));
-
-
-
         const float FACTEUR_VITESSE = 0.05f;
+
+
         public BoundingSphere SphèreDeCollision { get; private set; }
         Vector3 DirectionDéplacement { get; set; }
         Vector3 Direction { get; set; }
@@ -30,8 +29,6 @@ namespace AtelierXNA
         Vector3 PositionInitiale { get; set; }
         InputManager GestionInputs { get; set; }
         Caméra CaméraJeu { get; set; }
-        bool EnMouvement { get; set; }
-        public bool ÀDétruire { get; set; }
 
 
 
@@ -55,11 +52,10 @@ namespace AtelierXNA
             CaméraJeu = Game.Services.GetService(typeof(Caméra)) as Caméra;
             BoiteDeCollision = new BoundingBox(Position + PointMinBDC, Position + PointMaxBDC);
             RayonCollision = 3;
-            DoCalculerMonde = false;
-            EnMouvement = false;
+            MondeÀRecalculer = false;
             ÀDétruire = false;
             EstAlliée = false;
-            HauteurPosition = new Vector3(0, 13, 0);
+            HauteurPositionBarrePV = new Vector3(0, 13, 0);
 
             base.Initialize();
         }
@@ -72,8 +68,7 @@ namespace AtelierXNA
             TempsÉcouléDepuisMAJ += tempsÉcoulé;
             if (TempsÉcouléDepuisMAJ >= IntervalleMAJ)
             {
-                GestionVie();
-                DécomposéMonde();
+                GestionDéplacement();
                 TempsÉcouléDepuisMAJ = 0;
             }
 
@@ -81,62 +76,13 @@ namespace AtelierXNA
 
         }
 
-        private void GestionVie()
-        {
-            if (PointDeVie == 0)
-            {
-                ÀDétruire = true;
-            }
-        }
-
-        void DécomposéMonde()
+        public void GestionDéplacement()
         {
             Position = Monde.Translation;
             BoiteDeCollision = new BoundingBox(Position + PointMinBDC, Position + PointMaxBDC);
+            MondeÀRecalculer = true;
         }
-
-        //public void GestionDéplacement()
-        //{
-        //    if ((Destination - Position).Length() > FACTEUR_VITESSE * DirectionDéplacement.Length())
-        //    {
-        //        Position += FACTEUR_VITESSE * DirectionDéplacement;
-        //        BoiteDeCollision = new BoundingBox(Position + PointMinBDC, Position + PointMaxBDC);
-        //        DoCalculerMonde = true;
-        //    }
-        //    else
-        //    {
-        //        EnMouvement = false;
-        //    }
-
-
-        //}
-        public override void Draw(GameTime gameTime)
-        {
-            base.Draw(gameTime);
-        }
-        //public void DéplacerEnnemie(Vector3 destination)
-        //{
-        //    Destination = destination;
-        //    DirectionDéplacement = Vector3.Normalize(Destination - Position);
-        //    GérerRotation();
-        //    EnMouvement = true;
-
-
-        //}
-        //void GérerRotation()
-        //{
-        //    //Le if est là pour vérifier que les valeur de DirectionDéplacement sont des valeur numérique, car si Destination-Position égale
-        //    //le vecteur 0 alors le normalize donne un vecteur avec des valeurs non numériques
-        //    if (DirectionDéplacement.X >= 0 || DirectionDéplacement.X <= 0)
-        //    {
-        //        float Angle = (float)Math.Acos(Math.Min(Math.Max(Vector3.Dot(DirectionDéplacement, Direction) / (DirectionDéplacement.Length() * Direction.Length()), -1), 1));
-        //        if (Vector3.Cross(Direction, DirectionDéplacement).Y < 0) { Angle *= -1; }
-
-        //        Rotation += new Vector3(0, Angle, 0);
-        //        Direction = DirectionDéplacement;
-        //        DoCalculerMonde = true;
-        //    }
-        //}
+       
         public bool EstEnCollision(object autreObjet)
         {
             return false;

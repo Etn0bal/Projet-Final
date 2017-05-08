@@ -176,7 +176,7 @@ namespace AtelierXNA
                 {
                     Entité theEntité = null;
 
-                    TheGame game = Game.Components.First(x => x is TheGame) as TheGame;
+                    GestionnaireJeu game = Game.Components.First(x => x is GestionnaireJeu) as GestionnaireJeu;
 
                     float px = reader.ReadSingle();
                     float py = reader.ReadSingle();
@@ -275,7 +275,7 @@ namespace AtelierXNA
                 }
                 else if (p == Protocoles.WAttack)
                 {
-                    TheGame game = Game.Components.First(x => x is TheGame) as TheGame;
+                    GestionnaireJeu game = Game.Components.First(x => x is GestionnaireJeu) as GestionnaireJeu;
                     float px = reader.ReadSingle();
                     float py = reader.ReadSingle();
                     float pz = reader.ReadSingle();

@@ -15,13 +15,12 @@ namespace AtelierXNA
     /// <summary>
     /// This is a game component that implements IUpdateable.
     /// </summary>
-    public class EntitéPéon : Entité, IDestructible
+    public class EntitéPéon : Entité, IMobile
     {
         protected Vector3 PointMaxBDC = new Vector3(5f/2f , 3, 3f / 2f);
         protected Vector3 PointMinBDC = new Vector3(-(5/2f), 0, -(3f / 2f));
 
 
-        public bool ÀDétruire { get;  set; }
 
         public EntitéPéon(Game jeu, string nomModèle, float échelleInitiale, Vector3 rotationInitiale, Vector3 positionInitiale,
                            float intervalleMAJ, int pointDeVie, int portée, int force, int armure, int précision)
@@ -39,8 +38,7 @@ namespace AtelierXNA
             BoiteDeCollision = new BoundingBox(Position + PointMinBDC, Position + PointMaxBDC);
             RayonCollision = 1;
             ÀDétruire = false;
-
-            HauteurPosition = new Vector3(0, 6, 0);
+            HauteurPositionBarrePV = new Vector3(0, 6, 0);
 
             base.Initialize();
         }
@@ -51,17 +49,10 @@ namespace AtelierXNA
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         public override void Update(GameTime gameTime)
         {
-            GestionVie();
-
             base.Update(gameTime);
         }
 
-        private void GestionVie()
-        {
-            if (PointDeVie == 0)
-            {
-                ÀDétruire = true;
-            }
-        }
+        public virtual void GestionDéplacement() { }
+
     }
 }
