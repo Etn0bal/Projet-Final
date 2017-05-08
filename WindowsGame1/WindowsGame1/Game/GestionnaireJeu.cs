@@ -99,7 +99,7 @@ namespace AtelierXNA
         Minuteur LeMinuteur { get; set; }
 
 
-        public GestionnaireJeu(Game game, int numClient)
+        public GestionnaireJeu(Microsoft.Xna.Framework.Game game, int numClient)
             : base(game)
         {
             NumClient = numClient;

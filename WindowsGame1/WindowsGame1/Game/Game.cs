@@ -14,7 +14,7 @@ namespace AtelierXNA
 {
     public enum States { MainMenu, JoinGame, HostGame, Game ,Waiting,EnAttenteDeLaPartie}
 
-    public class Game1 : Game
+    public class Game : Microsoft.Xna.Framework.Game
     {
 
         GraphicsDeviceManager graphics { get; set; }
@@ -23,9 +23,12 @@ namespace AtelierXNA
         States State { get; set; }
         public bool EnJeu { get; set; }
         public int NumClient {get;set;}
+        JoinMenu JoinMenu { get; set; }
+        HostMenu HostMenu { get; set; }
+        MainMenu MainMenu { get; set; }
 
 
-        public Game1()
+        public Game()
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
@@ -48,12 +51,12 @@ namespace AtelierXNA
             Services.AddService(typeof(Random), new Random());
 
             State = States.MainMenu;
-            JoinMenu joinMenu = new JoinMenu(this);
-            Components.Add(joinMenu);
-            HostMenu hostMenu = new HostMenu(this);
-            Components.Add(hostMenu);
-            MainMenu mainMenu = new MainMenu(this);
-            Components.Add(mainMenu);
+            JoinMenu = new JoinMenu(this);
+            Components.Add(JoinMenu);
+            HostMenu = new HostMenu(this);
+            Components.Add(HostMenu);
+            MainMenu = new MainMenu(this);
+            Components.Add(MainMenu);
 
             EnJeu = false;
 
@@ -62,12 +65,7 @@ namespace AtelierXNA
 
             base.Initialize();
         }
-        protected override void LoadContent()
-        {
 
-
-
-        }
         protected override void Update(GameTime gameTime)
         {
             if (State != States.Waiting)
@@ -139,9 +137,10 @@ namespace AtelierXNA
 
         void InitialiserMainMenu()
         {
+            
             foreach (GameComponent Mm in Components.Where(x => x is MainMenu))
             {
-                Mm.Enabled = true;
+                MainMenu.Enabled = true;
             }
             foreach (GameComponent gc in Components.Where(x => x is SpriteMainMenu))
             {

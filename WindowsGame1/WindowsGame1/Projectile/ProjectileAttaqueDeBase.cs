@@ -22,14 +22,14 @@ namespace AtelierXNA
         Entité Cible { get; set; }
         public bool ÀDétruire { get; set; }
 
-        public ProjectileAttaqueDeBase(Game game, string nomModèle, float échelleInitiale, Vector3 rotationInitiale, Vector3 positionInitiale,
+        public ProjectileAttaqueDeBase(Microsoft.Xna.Framework.Game game, string nomModèle, float échelleInitiale, Vector3 rotationInitiale, Vector3 positionInitiale,
                                        Vector3 direction, int force, int précision, Entité cible, float intervalleMAJ)
             : base(game, nomModèle, échelleInitiale, rotationInitiale, positionInitiale, direction, force, précision, intervalleMAJ)
         {
             Cible = cible;
         }
 
-        public ProjectileAttaqueDeBase(Game game, string nomModèle, float échelleInitiale, Vector3 rotationInitiale, Vector3 positionInitiale,
+        public ProjectileAttaqueDeBase(Microsoft.Xna.Framework.Game game, string nomModèle, float échelleInitiale, Vector3 rotationInitiale, Vector3 positionInitiale,
                                       Vector3 direction, int force, int précision, Entité cible, int dégat, float intervalleMAJ)
            : base(game, nomModèle, échelleInitiale, rotationInitiale, positionInitiale,direction, force, précision, dégat, intervalleMAJ)
         {

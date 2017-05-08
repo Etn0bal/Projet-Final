@@ -17,7 +17,7 @@ namespace AtelierXNA
     /// </summary>
     public class SpriteHostMenu : Sprite
     {
-        public SpriteHostMenu(Game game, Rectangle position, string textureName)
+        public SpriteHostMenu(Microsoft.Xna.Framework.Game game, Rectangle position, string textureName)
             : base(game,position,textureName)
         {
             // TODO: Construct any child components here

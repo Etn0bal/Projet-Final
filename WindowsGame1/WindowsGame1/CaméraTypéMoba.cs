@@ -31,7 +31,7 @@ namespace AtelierXNA
 
 
 
-        public CaméraTypéMoba(Game game, Vector3 positionCaméra, Vector3 direction, Vector3 orientation, float intervalleMAJ)
+        public CaméraTypéMoba(Microsoft.Xna.Framework.Game game, Vector3 positionCaméra, Vector3 direction, Vector3 orientation, float intervalleMAJ)
             : base(game)
         {
             IntervalleMAJ = intervalleMAJ;

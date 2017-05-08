@@ -32,7 +32,7 @@ namespace AtelierXNA
         const int BUFFER_SIZE = 2048;
         private byte[] readbuffer;
 
-        public ServeurClient(Game game, string iP)
+        public ServeurClient(Microsoft.Xna.Framework.Game game, string iP)
             : base(game)
         {
             IP = iP;
@@ -169,7 +169,7 @@ namespace AtelierXNA
                 else if (p == Protocoles.StartGame)
                 {
                     bool valeur = reader.ReadBoolean();
-                    ((Game1)Game).EnJeu = valeur;
+                    ((Game)Game).EnJeu = valeur;
                 }
 
                 else if (p == Protocoles.BasicAttaque)

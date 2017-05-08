@@ -33,7 +33,7 @@ namespace AtelierXNA
         protected bool MondeÀRecalculer { get; set; }
 
 
-        public ObjetDeDémo(Game jeu, string nomModèle, float échelleInitiale, Vector3 rotationInitiale, Vector3 positionInitiale,
+        public ObjetDeDémo(Microsoft.Xna.Framework.Game jeu, string nomModèle, float échelleInitiale, Vector3 rotationInitiale, Vector3 positionInitiale,
                            float intervalleMAJ)
             : base(jeu, nomModèle, échelleInitiale, rotationInitiale, positionInitiale)
         {

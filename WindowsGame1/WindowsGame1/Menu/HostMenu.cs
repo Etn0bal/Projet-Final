@@ -28,7 +28,7 @@ namespace AtelierXNA
         bool AutreClientConnecté { get; set; }
         string IP { get; set; }
 
-        public HostMenu(Game game)
+        public HostMenu(Microsoft.Xna.Framework.Game game)
             : base(game)
         { }
 
@@ -103,7 +103,7 @@ namespace AtelierXNA
                 if (GestionnaireInputs.EstNouveauClicGauche())
                 {
                     EnleverTxt();
-                    ((Game1)Game).ChangerDÉtat(0);
+                    ((Game)Game).ChangerDÉtat(0);
                     
                 }
             }
@@ -140,19 +140,19 @@ namespace AtelierXNA
                 if (GestionnaireInputs.EstNouveauClicGauche())
                 {
 
-                    if (AutreClientConnecté && !((Game1)Game).EnJeu)
+                    if (AutreClientConnecté && !((Game)Game).EnJeu)
                     {
 
-                        ((Game1)Game).NumClient = 0;
+                        ((Game)Game).NumClient = 0;
                         Client.StartGame();
-                        ((Game1)Game).EnJeu = true;
+                        ((Game)Game).EnJeu = true;
 
                     }
 
                 }
-                if (((Game1)Game).EnJeu)
+                if (((Game)Game).EnJeu)
                 {
-                    ((Game1)Game).ChangerDÉtat(3);
+                    ((Game)Game).ChangerDÉtat(3);
                 }
 
 

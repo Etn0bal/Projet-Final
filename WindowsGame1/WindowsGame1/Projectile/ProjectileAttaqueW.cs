@@ -29,7 +29,7 @@ namespace AtelierXNA
         BoundingBox BoiteDeCollision { get; set; }
         int LanceurOuReceveur { get; set; }
 
-        public ProjectileAttaqueW(Game game, string nomModèle, float échelleInitiale, Vector3 rotationInitiale, Vector3 positionInitiale,
+        public ProjectileAttaqueW(Microsoft.Xna.Framework.Game game, string nomModèle, float échelleInitiale, Vector3 rotationInitiale, Vector3 positionInitiale,
                                        Vector3 direction,Vector3 directionDéplacement, int force, int précision,float intervalleMAJ,int lanceurOuReceveur)
             : base(game, nomModèle, échelleInitiale, rotationInitiale, positionInitiale, direction, force, précision, intervalleMAJ)
         {
@@ -37,7 +37,7 @@ namespace AtelierXNA
             PositionInitiale = positionInitiale;
             LanceurOuReceveur = lanceurOuReceveur;
         }
-        public ProjectileAttaqueW(Game game, string nomModèle, float échelleInitiale, Vector3 rotationInitiale, Vector3 positionInitiale,
+        public ProjectileAttaqueW(Microsoft.Xna.Framework.Game game, string nomModèle, float échelleInitiale, Vector3 rotationInitiale, Vector3 positionInitiale,
                                Vector3 direction, Vector3 directionDéplacement, int force, int précision, int dégat, float intervalleMAJ, int lanceurOuReceveur)
         : base(game, nomModèle, échelleInitiale, rotationInitiale, positionInitiale, direction, force, précision,dégat, intervalleMAJ)
         {

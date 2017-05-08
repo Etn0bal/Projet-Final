@@ -14,7 +14,7 @@ namespace AtelierXNA
 {
     class TexteJoinMenu : Texte
     {
-        public TexteJoinMenu(Game jeu, string texteÀAfficher, string nomFont, Rectangle zoneAffichage, Vector2 positionAffichage,
+        public TexteJoinMenu(Microsoft.Xna.Framework.Game jeu, string texteÀAfficher, string nomFont, Rectangle zoneAffichage, Vector2 positionAffichage,
            Color couleurTexte, float marge)
            : base(jeu,texteÀAfficher,nomFont,zoneAffichage,positionAffichage,couleurTexte,marge)
         {

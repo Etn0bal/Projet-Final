@@ -23,7 +23,7 @@ namespace AtelierXNA
         string TexteMinuteur { get; set; }
         Texte Minuteur¿Affficher { get; set; }
 
-        public Minuteur(Game game)
+        public Minuteur(Microsoft.Xna.Framework.Game game)
             : base(game)
         {
         }

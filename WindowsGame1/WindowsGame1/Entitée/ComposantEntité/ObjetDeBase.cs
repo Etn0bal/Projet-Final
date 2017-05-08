@@ -19,7 +19,7 @@ namespace AtelierXNA
       protected Matrix[] TransformationsModèle { get; private set; }
       public Matrix Monde { get; set; }
 
-      public ObjetDeBase(Game jeu, string nomModèle, float échelleInitiale, Vector3 rotationInitiale, Vector3 positionInitiale)
+      public ObjetDeBase(Microsoft.Xna.Framework.Game jeu, string nomModèle, float échelleInitiale, Vector3 rotationInitiale, Vector3 positionInitiale)
          : base(jeu)
       {
          NomModèle = nomModèle;

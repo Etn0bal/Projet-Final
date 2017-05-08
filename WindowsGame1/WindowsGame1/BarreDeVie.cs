@@ -39,7 +39,7 @@ namespace AtelierXNA
 
         public int PointDeVie { get; private set; }
 
-        public BarreDeVie(Game game, float homothétieInitiale, Vector3 rotationInitiale, Vector3 positionInitiale, Vector3 étendue,
+        public BarreDeVie(Microsoft.Xna.Framework.Game game, float homothétieInitiale, Vector3 rotationInitiale, Vector3 positionInitiale, Vector3 étendue,
                          float intervalleMAJ,int pointDeVie, Vector3 hauteurPosition)
 
             : base(game, homothétieInitiale, rotationInitiale, positionInitiale, intervalleMAJ)

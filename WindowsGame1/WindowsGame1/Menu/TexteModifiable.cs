@@ -13,7 +13,7 @@ namespace AtelierXNA
 {
     class TexteModifiable : Texte
     {
-        public TexteModifiable(Game jeu, string texteÀAfficher, string nomFont, Rectangle zoneAffichage, Vector2 positionAffichage,
+        public TexteModifiable(Microsoft.Xna.Framework.Game jeu, string texteÀAfficher, string nomFont, Rectangle zoneAffichage, Vector2 positionAffichage,
                    Color couleurTexte, float marge)
            : base(jeu,texteÀAfficher,nomFont,zoneAffichage,positionAffichage,couleurTexte,marge)
         {

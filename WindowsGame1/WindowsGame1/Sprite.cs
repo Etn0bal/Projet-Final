@@ -22,7 +22,7 @@ namespace AtelierXNA
 
 
 
-        public Sprite(Game game, Rectangle position,string textureName)
+        public Sprite(Microsoft.Xna.Framework.Game game, Rectangle position,string textureName)
         :base(game)
         {
             Position = position;
@@ -42,7 +42,7 @@ namespace AtelierXNA
         public override void Draw(GameTime gameTime)
         {
             GestionSprites.Begin();
-            if (Enabled == true)
+            if (Enabled)
             {
                 GestionSprites.Draw(Image, Position, Color.White);
             } 

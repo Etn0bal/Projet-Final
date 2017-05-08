@@ -45,7 +45,7 @@ namespace AtelierXNA
         int PtsDroite { get; set; }
         int NumDroite { get; set; }
 
-        public Murs(Game game, float homothétieInitiale, Vector3 rotationInitiale, Vector3 positionInitiale, Vector3 étendue, string nomMurs,
+        public Murs(Microsoft.Xna.Framework.Game game, float homothétieInitiale, Vector3 rotationInitiale, Vector3 positionInitiale, Vector3 étendue, string nomMurs,
                          float intervalleMAJ)
 
             : base(game, homothétieInitiale, rotationInitiale, positionInitiale, intervalleMAJ)
