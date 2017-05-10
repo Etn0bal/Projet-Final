@@ -73,15 +73,15 @@ namespace AtelierXNA
             EstAlliée = true;
             RayonCollision = 3;
             TempsDeRechargeQ = 10;
-            TempDeRechargeW = 10;
-            TempsDeRechargeE = 10;
+            TempDeRechargeW = 7;
+            TempsDeRechargeE = 5;
             TempsDeRechargeAttaque = 0.2f;
 
             HauteurPositionBarrePV = new Vector3(0, 15, 0);
 
             BoiteDeCollision = new BoundingBox(Position + PointMinBDC, Position + PointMaxBDC);
             base.Initialize();
-            PointDeVieRedonné = (int)(0.1f * PointDeVieInitial);
+            PointDeVieRedonné = (int)(0.3f * PointDeVieInitial);
         }
 
         public override void Update(GameTime gameTime)
@@ -155,7 +155,7 @@ namespace AtelierXNA
             GérerRotation();
             ProjectileAttaqueW attaque = new ProjectileAttaqueW(Game, "bomb", ÉCHELLE_PROJECTILE_W,
                                                                 RotationInitialeProjectielADB, Position + HauteurAttaque,DirectionInitialeProjectileADB, directionAttaqueW,
-                                                                Force+150, Précision, IntervalleMAJ,1);
+                                                                Force+500, Précision, IntervalleMAJ,1);
             LeJeu.EnvoyerAttaqueW(Position + new Vector3(0, 5, 0), directionAttaqueW, Force, Précision, attaque.Dégat);
 
             Game.Components.Add(attaque);
