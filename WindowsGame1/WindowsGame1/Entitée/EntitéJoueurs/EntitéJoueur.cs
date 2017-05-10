@@ -65,6 +65,7 @@ namespace AtelierXNA
             GestionInputs = Game.Services.GetService(typeof(InputManager)) as InputManager;
             CaméraJeu = Game.Services.GetService(typeof(Caméra)) as CaméraTypéMoba;
             Murs = Game.Services.GetService(typeof(Murs)) as Murs;
+            LeJeu = Game.Services.GetService(typeof(GestionnaireJeu)) as GestionnaireJeu;
             MondeÀRecalculer = false;
             Destination = Position;
             PlanReprésentantCarte = new Plane(0, 1, 0, 0);
@@ -154,7 +155,7 @@ namespace AtelierXNA
             GérerRotation();
             ProjectileAttaqueW attaque = new ProjectileAttaqueW(Game, "bomb", ÉCHELLE_PROJECTILE_W,
                                                                 RotationInitialeProjectielADB, Position + HauteurAttaque,DirectionInitialeProjectileADB, directionAttaqueW,
-                                                                Force, Précision, IntervalleMAJ,1);
+                                                                Force+150, Précision, IntervalleMAJ,1);
             LeJeu.EnvoyerAttaqueW(Position + new Vector3(0, 5, 0), directionAttaqueW, Force, Précision, attaque.Dégat);
 
             Game.Components.Add(attaque);
