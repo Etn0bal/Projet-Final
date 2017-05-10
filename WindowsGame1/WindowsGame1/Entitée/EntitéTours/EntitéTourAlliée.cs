@@ -57,8 +57,15 @@ namespace AtelierXNA
 
         protected void GestionAttaque()
         {
-            Cible = Game.Components.OfType<Entité>().FirstOrDefault(x => Math.Sqrt(Math.Pow(x.Position.X - Position.X, 2) +
-                                                                    Math.Pow(x.Position.Z - Position.Z, 2)) <= Portée && !x.EstAlliée);
+            try
+            {
+                Cible = Game.Components.OfType<Entité>().FirstOrDefault(x => Math.Sqrt(Math.Pow(x.Position.X - Position.X, 2) +
+                                                                        Math.Pow(x.Position.Z - Position.Z, 2)) <= Portée && !x.EstAlliée);
+            }
+            catch(Exception)
+            {
+                Cible = null;
+            }
 
             if (Cible != null)
             {

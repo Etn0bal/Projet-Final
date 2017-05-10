@@ -270,14 +270,23 @@ namespace AtelierXNA
             //}
             if (Game.Components.Any(x=> x is EntitéPéonAlliée))
             {
-                    List<EntitéPéonAlliée> péons = Game.Components.OfType<EntitéPéonAlliée>().ToList();
-                foreach (EntitéPéonAlliée péon in péons)
+                List<EntitéPéonAlliée> péons;
+                try
                 {
-                    if (péon.EnMouvement)
+                    péons = Game.Components.OfType<EntitéPéonAlliée>().ToList();
+                }
+                catch (Exception) { péons = null; }
+
+                if (péons != null)
+                {
+                    foreach (EntitéPéonAlliée péon in péons)
                     {
-                        Vector3 laPosition = péon.Position;
-                        int numPéon = péon.NumPéon;
-                        JoueurClient.EnvoyerPositionPéon(laPosition, numPéon);
+                        if (péon.EnMouvement)
+                        {
+                            Vector3 laPosition = péon.Position;
+                            int numPéon = péon.NumPéon;
+                            JoueurClient.EnvoyerPositionPéon(laPosition, numPéon);
+                        }
                     }
                 }
             }
