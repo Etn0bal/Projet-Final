@@ -36,7 +36,7 @@ namespace AtelierXNA
         int NbColonnes { get; set; }
         int NbRangées { get; set; }
 
-        public CartePlan(Game game, float homothétieInitiale, Vector3 rotationInitiale, Vector3 positionInitiale, Vector3 étendue, string nomCartePlan, 
+        public CartePlan(Microsoft.Xna.Framework.Game game, float homothétieInitiale, Vector3 rotationInitiale, Vector3 positionInitiale, Vector3 étendue, string nomCartePlan, 
                          float intervalleMAJ)
 
             : base(game, homothétieInitiale, rotationInitiale, positionInitiale, intervalleMAJ)

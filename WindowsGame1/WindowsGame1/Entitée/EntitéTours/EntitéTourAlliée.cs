@@ -11,13 +11,13 @@ using Microsoft.Xna.Framework.Media;
 
 namespace AtelierXNA
 {
-    class EntitéTourAlliée: EntitéTour, ICollisionable, IDestructible
+    class EntitéTourAlliée: EntitéTour
     {
-        public bool ÀDétruire { get; set; }
         public BoundingSphere SphèreDeCollision { get; private set; }
+        float TempsÉcouléDepuisAttaqueMAJ { get; set; }
+        float TempsDeRechargeAttaque { get; set; }
 
-
-        public EntitéTourAlliée(Game jeu, string nomModèle, float échelleInitiale, Vector3 rotationInitiale, Vector3 positionInitiale,
+        public EntitéTourAlliée(Microsoft.Xna.Framework.Game jeu, string nomModèle, float échelleInitiale, Vector3 rotationInitiale, Vector3 positionInitiale,
                            float intervalleMAJ, int pointDeVie, int portée, int force, int armure, int précision, int numTour)
             : base(jeu, nomModèle, échelleInitiale, rotationInitiale, positionInitiale, intervalleMAJ, pointDeVie, portée, force, armure, précision, numTour)
         {
@@ -28,6 +28,7 @@ namespace AtelierXNA
             RayonCollision = 4;
             ÀDétruire = false;
             EstAlliée = true;
+            TempsDeRechargeAttaque = 1.2f;
             base.Initialize();
         }
 
@@ -39,19 +40,17 @@ namespace AtelierXNA
             if (TempsÉcouléDepuisMAJ >= IntervalleMAJ)
             {
                 RegarderSiCibleEstMortOuHorsRange();
-                GestionVie();
                 TempsÉcouléDepuisMAJ -= IntervalleMAJ;
             }
 
             TempsÉcouléDepuisAttaqueMAJ += tempsÉcoulé;
-            if (TempsÉcouléDepuisAttaqueMAJ >= 1.2f)
+            if (TempsÉcouléDepuisAttaqueMAJ >= TempsDeRechargeAttaque)
             {
-                RegarderSiCibleEstMortOuHorsRange();
-                if (Cible == null)
-                {
+                //RegarderSiCibleEstMortOuHorsRange();
+                //if (Cible == null)
+                //{
                     GestionAttaque();
-                }
-                TempsÉcouléDepuisAttaqueMAJ -= 1.2f;
+                //}
             }
             base.Update(gameTime);
             base.Update(gameTime);
@@ -68,8 +67,7 @@ namespace AtelierXNA
                                                                                       RotationInitialeProjectielADB, Position, DirectionInitialeProjectileADB,
                                                                                       Force, Précision, Cible, IntervalleMAJ);
                 Game.Components.Add(attaque);
-                foreach (TheGame thegame in Game.Components.Where(x => x is TheGame))
-                {
+                
                     int typeEnnemie = 3;
                     int numEnnemie = 0;
                     if (Cible is EntitéPéonEnnemie)
@@ -78,8 +76,10 @@ namespace AtelierXNA
                         typeEnnemie = 1;
                     }
 
-                    thegame.EnvoyerAttaqueAuServeur(Position, Force, Précision, typeEnnemie, numEnnemie, attaque.Dégat);
-                }
+                    LeJeu.EnvoyerAttaqueAuServeur(Position, Force, Précision, typeEnnemie, numEnnemie, attaque.Dégat);
+                    Cible = null;
+                TempsÉcouléDepuisAttaqueMAJ = 0;
+                
             }
         }
 
@@ -98,18 +98,7 @@ namespace AtelierXNA
             }
         }
        
-        private void GestionVie()
-        {
-            if (PointDeVie == 0)
-            {
-                ÀDétruire = true;
-            }
-        }
 
-        public bool EstEnCollision(object autreObjet)
-        {
-            return false;
-        }
     }
 
 }

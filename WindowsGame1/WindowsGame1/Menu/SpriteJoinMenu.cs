@@ -17,7 +17,7 @@ namespace AtelierXNA
     /// </summary>
     public class SpriteJoinMenu : Sprite
     {
-        public SpriteJoinMenu(Game game,Rectangle position, string textureName)
+        public SpriteJoinMenu(Microsoft.Xna.Framework.Game game,Rectangle position, string textureName)
             : base(game,position,textureName)
         {
             // TODO: Construct any child components here

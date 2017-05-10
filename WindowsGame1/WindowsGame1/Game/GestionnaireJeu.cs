@@ -17,7 +17,7 @@ using System.IO;
 namespace AtelierXNA
 {
 
-    public class TheGame : Microsoft.Xna.Framework.DrawableGameComponent
+    public class GestionnaireJeu : Microsoft.Xna.Framework.DrawableGameComponent
     {
         public float INTERVALLEMAJ = 1f / 60f;
         const int INTERVALLEMAJPÉON = 60;
@@ -35,7 +35,7 @@ namespace AtelierXNA
         const int PORTÉE_JOUEUR = 25;
         //Constante Force
         const int FORCE_PÉON = 50;
-        const int FORCE_TOUR = 175;
+        const int FORCE_TOUR = 250;
         const int FORCE_JOUEUR = 100;
         //CONSTANTE PRÉCISION
         const int PRÉCISION_PÉON = 50;
@@ -99,7 +99,7 @@ namespace AtelierXNA
         Minuteur LeMinuteur { get; set; }
 
 
-        public TheGame(Game game, int numClient)
+        public GestionnaireJeu(Microsoft.Xna.Framework.Game game, int numClient)
             : base(game)
         {
             NumClient = numClient;
@@ -270,7 +270,7 @@ namespace AtelierXNA
             //}
             if (Game.Components.Any(x=> x is EntitéPéonAlliée))
             {
-                List<EntitéPéonAlliée> péons = Game.Components.OfType<EntitéPéonAlliée>().ToList();
+                    List<EntitéPéonAlliée> péons = Game.Components.OfType<EntitéPéonAlliée>().ToList();
                 foreach (EntitéPéonAlliée péon in péons)
                 {
                     if (péon.EnMouvement)

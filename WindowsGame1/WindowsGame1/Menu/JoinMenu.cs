@@ -30,7 +30,7 @@ namespace AtelierXNA
         Rectangle positionBackButton;
         Rectangle positionJoinServerButton;
         bool ServerTrouvé;
-        public JoinMenu(Game game)
+        public JoinMenu(Microsoft.Xna.Framework.Game game)
             : base(game)
         { }
 
@@ -85,9 +85,9 @@ namespace AtelierXNA
 
         private void GérerGame()
         {
-            if(((Game1)Game).EnJeu)
+            if(((Game)Game).EnJeu)
             {
-                ((Game1)Game).ChangerDÉtat(3);
+                ((Game)Game).ChangerDÉtat(3);
             }
         }
 
@@ -99,7 +99,7 @@ namespace AtelierXNA
             {
                 if (GestionnaireInputs.EstNouveauClicGauche())
                 {
-                    ((Game1)Game).ChangerDÉtat(0);
+                    ((Game)Game).ChangerDÉtat(0);
                 }
             }
             if (positionJoinServerButton.Contains(positionSouris) && GestionnaireInputs.EstNouveauClicGauche() || GestionnaireInputs.EstNouvelleTouche(Microsoft.Xna.Framework.Input.Keys.Enter))
@@ -121,7 +121,7 @@ namespace AtelierXNA
 
                 if (ServerTrouvé == true)
                 {
-                    ((Game1)Game).NumClient = 1;
+                    ((Game)Game).NumClient = 1;
                 }
             }
         }

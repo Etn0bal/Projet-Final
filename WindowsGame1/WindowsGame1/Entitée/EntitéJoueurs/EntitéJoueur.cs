@@ -15,12 +15,13 @@ namespace AtelierXNA
     /// <summary>
     /// This is a game component that implements IUpdateable.
     /// </summary>
-    public class EntitéJoueur : Entité, IControlable, IDestructible
+    public class EntitéJoueur : Entité, IMobile
     {
         const float FACTEUR_VITESSE = 0.35f;
 
         Vector3 PointMaxBDC = new Vector3(2, 16.2f, 5f / 2f);
         Vector3 PointMinBDC = new Vector3(-2, 0, -(5f / 2f));
+        Vector3 HauteurAttaque = new Vector3(0, 5, 0);
 
 
 
@@ -34,27 +35,25 @@ namespace AtelierXNA
         InputManager GestionInputs { get; set; }
         CaméraTypéMoba CaméraJeu { get; set; }
         Murs Murs { get; set; }
-        Ray RayonPicking { get; set; }
-        TheGame LeGame { get; set; }
+        Ray Rayon { get; set; }
 
         float TempsÉcouléDepuisDernièreAttaque { get; set; }
-        float CoolDownAttaque { get; set; }
+        float TempsDeRechargeAttaque { get; set; }
         float TempsÉcouléDepuisDernierQ { get; set; }
-        float CoolDownQ { get; set; }
+        float TempsDeRechargeQ { get; set; }
         float TempsÉcouléDepuisDernierW { get; set; }
-        float CoolDownW { get; set; }
+        float TempDeRechargeW { get; set; }
         float TempsÉcouléDepuisDernierE { get; set; }
-        float CoolDownE { get; set; }
+        float TempsDeRechargeE { get; set; }
         int PointDeVieRedonné { get; set; }
 
-        public bool EnMouvement { get; set; }
-        public bool ÀDétruire { get; set;}
 
 
 
 
 
-        public EntitéJoueur(Game jeu, string nomModèle, float échelleInitiale, Vector3 rotationInitiale, Vector3 positionInitiale,
+
+        public EntitéJoueur(Microsoft.Xna.Framework.Game jeu, string nomModèle, float échelleInitiale, Vector3 rotationInitiale, Vector3 positionInitiale,
                            float intervalleMAJ, int pointDeVie, int portée, int force, int armure, int précision, Vector3 direction)
             : base(jeu, nomModèle, échelleInitiale, rotationInitiale, positionInitiale, intervalleMAJ, pointDeVie, portée, force, armure, précision)
         {
@@ -65,22 +64,21 @@ namespace AtelierXNA
         {
             GestionInputs = Game.Services.GetService(typeof(InputManager)) as InputManager;
             CaméraJeu = Game.Services.GetService(typeof(Caméra)) as CaméraTypéMoba;
-            DoCalculerMonde = false;
+            Murs = Game.Services.GetService(typeof(Murs)) as Murs;
+            MondeÀRecalculer = false;
             Destination = Position;
             PlanReprésentantCarte = new Plane(0, 1, 0, 0);
             ÀDétruire = false;
-            EnMouvement = true;
             EstAlliée = true;
-            EnMouvement = true;
             RayonCollision = 3;
-            CoolDownQ = 10;
-            CoolDownW = 10;
-            CoolDownE = 10;
-            CoolDownAttaque = 1;
+            TempsDeRechargeQ = 10;
+            TempDeRechargeW = 10;
+            TempsDeRechargeE = 10;
+            TempsDeRechargeAttaque = 0.2f;
+
+            HauteurPositionBarrePV = new Vector3(0, 15, 0);
 
             BoiteDeCollision = new BoundingBox(Position + PointMinBDC, Position + PointMaxBDC);
-            Murs = Game.Services.GetService(typeof(Murs)) as Murs;
-            LeGame = Game.Components.First(x => x is TheGame) as TheGame;
             base.Initialize();
             PointDeVieRedonné = (int)(0.1f * PointDeVieInitial);
         }
@@ -98,21 +96,21 @@ namespace AtelierXNA
             if (TempsÉcouléDepuisMAJ >= IntervalleMAJ)
             {
                 GestionDéplacement();
-                GestionVie();
                 TempsÉcouléDepuisMAJ -= IntervalleMAJ;
             }
 
             if (GestionInputs.EstSourisActive && GestionInputs.EstNouveauClicDroit())
             {
-                GetDestination();
+                ObtenirDestination();
                 DirectionDéplacement = Vector3.Normalize(Destination - Position);
                 GérerRotation();
 
-                Cible = Game.Components.OfType<Entité>().FirstOrDefault(x => x.BoiteDeCollision.Intersects(RayonPicking) != null && !x.EstAlliée);
+                Cible = Game.Components.OfType<Entité>().FirstOrDefault(x => x.BoiteDeCollision.Intersects(Rayon) != null && !x.EstAlliée &&
+                Math.Sqrt(Math.Pow(x.Position.X - Position.X,2) - Math.Pow(x.Position.Z - Position.Z,2)) <= Portée);
 
                 if (Cible != null)
                 {
-                    if(TempsÉcouléDepuisDernièreAttaque >= CoolDownAttaque)
+                    if(TempsÉcouléDepuisDernièreAttaque >= TempsDeRechargeAttaque)
                     {
                         GestionAttaqueDeBase();
                         TempsÉcouléDepuisDernièreAttaque = 0;
@@ -120,29 +118,29 @@ namespace AtelierXNA
                 }
             }
 
-            if (TempsÉcouléDepuisDernierQ >= CoolDownQ && GestionInputs.EstNouvelleTouche(Keys.Q))
+            if (TempsÉcouléDepuisDernierQ >= TempsDeRechargeQ && GestionInputs.EstNouvelleTouche(Keys.Q))
             {
                 GestionQ();
-                TempsÉcouléDepuisDernierQ = 0;
+
             }
 
-            if (TempsÉcouléDepuisDernierW >= CoolDownW && GestionInputs.EstNouvelleTouche(Keys.W))
+            if (TempsÉcouléDepuisDernierW >= TempDeRechargeW && GestionInputs.EstNouvelleTouche(Keys.W))
             {
                 GestionW();
                 TempsÉcouléDepuisDernierW = 0;
             }
 
-            if (TempsÉcouléDepuisDernierE >= CoolDownE && GestionInputs.EstNouvelleTouche(Keys.E))
+            if (TempsÉcouléDepuisDernierE >= TempsDeRechargeE && GestionInputs.EstNouvelleTouche(Keys.E))
             {
                 GestionE();
                 TempsÉcouléDepuisDernierE = 0;
             }
 
-            if (DoCalculerMonde)
+            if (MondeÀRecalculer)
             {
                 CalculerMonde();
-                LeGame.EnvoyerMatrice(Monde);
-                DoCalculerMonde = false;
+                LeJeu.EnvoyerMatrice(Monde);
+                MondeÀRecalculer = false;
             }
             base.Update(gameTime);
 
@@ -150,14 +148,14 @@ namespace AtelierXNA
 
         private void GestionW()
         {
-            GetDestination();
+            ObtenirDestination();
             Vector3 directionAttaqueW = Vector3.Normalize(Destination - Position);
             directionAttaqueW.Y = 0;
             GérerRotation();
             ProjectileAttaqueW attaque = new ProjectileAttaqueW(Game, "bomb", ÉCHELLE_PROJECTILE_W,
-                                                                RotationInitialeProjectielADB, Position + new Vector3(0, 5, 0),DirectionInitialeProjectileADB, directionAttaqueW,
+                                                                RotationInitialeProjectielADB, Position + HauteurAttaque,DirectionInitialeProjectileADB, directionAttaqueW,
                                                                 Force, Précision, IntervalleMAJ,1);
-            LeGame.EnvoyerAttaqueW(Position + new Vector3(0, 5, 0), directionAttaqueW, Force, Précision, attaque.Dégat);
+            LeJeu.EnvoyerAttaqueW(Position + new Vector3(0, 5, 0), directionAttaqueW, Force, Précision, attaque.Dégat);
 
             Game.Components.Add(attaque);
             Destination = Position;
@@ -167,21 +165,14 @@ namespace AtelierXNA
         private void GestionE()
         {
             PointDeVie = Math.Min(PointDeVie+PointDeVieRedonné, PointDeVieInitial);
-            LeGame.EnvoyerGainDeVie(PointDeVie);
+            LeJeu.EnvoyerGainDeVie(PointDeVie);
         }
 
-        private void GestionVie()
-        {
-            if (PointDeVie == 0)
-            {
-                ÀDétruire = true;
-            }
-        }
 
         void GestionAttaqueDeBase()
         {
             ProjectileAttaqueDeBase attaque = new ProjectileAttaqueDeBase(Game, "rocket", ÉCHELLE_PROJECTILE_ATTAQUE_DE_BASE,
-                                                                              RotationInitialeProjectielADB, Position+new Vector3(0,5,0), DirectionInitialeProjectileADB,
+                                                                              RotationInitialeProjectielADB, Position + HauteurAttaque, DirectionInitialeProjectileADB,
                                                                               Force, Précision, Cible, IntervalleMAJ);
             Game.Components.Add(attaque);
 
@@ -197,7 +188,7 @@ namespace AtelierXNA
                 numEnnemie = (Cible as EntitéTourEnnemie).NumTour;
                 typeEnnemie = 2;
             }
-            LeGame.EnvoyerAttaqueAuServeur(Position, Force, Précision, typeEnnemie, numEnnemie, attaque.Dégat);
+            LeJeu.EnvoyerAttaqueAuServeur(Position, Force, Précision, typeEnnemie, numEnnemie, attaque.Dégat);
 
             Cible = null;
             Destination = Position;
@@ -206,7 +197,7 @@ namespace AtelierXNA
         void GestionQ()
         {
             DestinationTampon = Destination;
-            GetDestination();
+            ObtenirDestination();
             float distanceEntreLesDeux = (float)Math.Sqrt(Math.Pow((Destination.X - Position.X), 2) + Math.Pow((Destination.Z - Position.Z), 2));
 
             if (distanceEntreLesDeux <= Portée)
@@ -216,7 +207,8 @@ namespace AtelierXNA
                 Position = Destination;
                 CaméraJeu.DonnerPositionJoueur(Position);
                 BoiteDeCollision = new BoundingBox(Position + PointMinBDC, Position + PointMaxBDC);
-                DoCalculerMonde = true;
+                MondeÀRecalculer = true;
+                TempsÉcouléDepuisDernierQ = 0;
             }
             else { Destination = DestinationTampon; }
         }
@@ -230,13 +222,12 @@ namespace AtelierXNA
 
                 if (!Murs.EnCollision(this) && !EnCollisionAvecTour())
                 {
-                    EnMouvement = true;
                     Position = NouvellePosition;
                     BoiteDeCollision = NouvelleBoiteDeCollision;
-                    DoCalculerMonde = true;
+                    MondeÀRecalculer = true;
                 }
             }
-
+            //Pour pouvoir garder la caméra centrée sur le joueur
             CaméraJeu.DonnerPositionJoueur(Position);
         }
 
@@ -252,7 +243,7 @@ namespace AtelierXNA
         }
 
 
-        private void GetDestination()
+        private void ObtenirDestination()
         {
             Point positionSouris = GestionInputs.GetPositionSouris();
             Vector2 vecteurPosition = new Vector2(positionSouris.X, positionSouris.Y);
@@ -264,9 +255,9 @@ namespace AtelierXNA
             Vector3 direction = farPoint - nearPoint;
             direction = Vector3.Normalize(direction);
 
-            RayonPicking = new Ray(nearPoint, direction);
+            Rayon = new Ray(nearPoint, direction);
 
-            Destination = (Vector3)(nearPoint + direction * RayonPicking.Intersects(PlanReprésentantCarte));
+            Destination = (Vector3)(nearPoint + direction * Rayon.Intersects(PlanReprésentantCarte));
         }
 
         void GérerRotation()
@@ -280,7 +271,7 @@ namespace AtelierXNA
 
                 Rotation += new Vector3(0, Angle, 0);
                 Direction = DirectionDéplacement;
-                DoCalculerMonde = true;
+                MondeÀRecalculer = true;
             }
         }
 

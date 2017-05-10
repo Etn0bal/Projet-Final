@@ -25,7 +25,7 @@ namespace AtelierXNA
         protected Vector3 Direction { get; set; }
 
 
-        public Projectile(Game game, string nomModèle, float échelleInitiale, Vector3 rotationInitiale, Vector3 positionInitiale,Vector3 direction,
+        public Projectile(Microsoft.Xna.Framework.Game game, string nomModèle, float échelleInitiale, Vector3 rotationInitiale, Vector3 positionInitiale,Vector3 direction,
                           int force, int Précision, float intervalleMAJ)
             : base(game, nomModèle, échelleInitiale, rotationInitiale, positionInitiale, intervalleMAJ)
         {
@@ -35,7 +35,7 @@ namespace AtelierXNA
             Direction = direction;
         }
 
-        public Projectile(Game game, string nomModèle, float échelleInitiale, Vector3 rotationInitiale, Vector3 positionInitiale, Vector3 direction,
+        public Projectile(Microsoft.Xna.Framework.Game game, string nomModèle, float échelleInitiale, Vector3 rotationInitiale, Vector3 positionInitiale, Vector3 direction,
                           int force, int Précision, int dégat, float intervalleMAJ)
             : base(game, nomModèle, échelleInitiale, rotationInitiale, positionInitiale, intervalleMAJ)
         {

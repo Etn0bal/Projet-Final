@@ -22,14 +22,14 @@ namespace AtelierXNA
         Entité Cible { get; set; }
         public bool ÀDétruire { get; set; }
 
-        public ProjectileAttaqueDeBase(Game game, string nomModèle, float échelleInitiale, Vector3 rotationInitiale, Vector3 positionInitiale,
+        public ProjectileAttaqueDeBase(Microsoft.Xna.Framework.Game game, string nomModèle, float échelleInitiale, Vector3 rotationInitiale, Vector3 positionInitiale,
                                        Vector3 direction, int force, int précision, Entité cible, float intervalleMAJ)
             : base(game, nomModèle, échelleInitiale, rotationInitiale, positionInitiale, direction, force, précision, intervalleMAJ)
         {
             Cible = cible;
         }
 
-        public ProjectileAttaqueDeBase(Game game, string nomModèle, float échelleInitiale, Vector3 rotationInitiale, Vector3 positionInitiale,
+        public ProjectileAttaqueDeBase(Microsoft.Xna.Framework.Game game, string nomModèle, float échelleInitiale, Vector3 rotationInitiale, Vector3 positionInitiale,
                                       Vector3 direction, int force, int précision, Entité cible, int dégat, float intervalleMAJ)
            : base(game, nomModèle, échelleInitiale, rotationInitiale, positionInitiale,direction, force, précision, dégat, intervalleMAJ)
         {
@@ -53,7 +53,7 @@ namespace AtelierXNA
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         public override void Update(GameTime gameTime)
         {
-            DoCalculerMonde = false;
+            MondeÀRecalculer = false;
 
             float tempsÉcoulé = (float)gameTime.ElapsedGameTime.TotalSeconds;
             TempsÉcouléDepuisMAJ += tempsÉcoulé;
@@ -62,7 +62,7 @@ namespace AtelierXNA
                 CibleAtteinte();
                 GestionDéplacement();
                 GérerRotation();
-                if (DoCalculerMonde) { CalculerMonde(); DoCalculerMonde = false; }
+                if (MondeÀRecalculer) { CalculerMonde(); MondeÀRecalculer = false; }
                 TempsÉcouléDepuisMAJ = 0;
             }
 
@@ -78,7 +78,7 @@ namespace AtelierXNA
                 if (DirectionDéplacement.X >= 0 || DirectionDéplacement.X <= 0) 
                 {
                     Position += DirectionDéplacement * FACTEUR_VITESSE;
-                    DoCalculerMonde = true;
+                    MondeÀRecalculer = true;
                 }
                 else { ÀDétruire = true;  }
                
@@ -96,7 +96,7 @@ namespace AtelierXNA
 
                 Rotation += new Vector3(0, Angle, 0);
                 Direction = DirectionDéplacement;
-                DoCalculerMonde = true;
+                MondeÀRecalculer = true;
             }
         }
 

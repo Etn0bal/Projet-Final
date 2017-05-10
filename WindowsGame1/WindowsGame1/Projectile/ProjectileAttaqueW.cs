@@ -29,7 +29,7 @@ namespace AtelierXNA
         BoundingBox BoiteDeCollision { get; set; }
         int LanceurOuReceveur { get; set; }
 
-        public ProjectileAttaqueW(Game game, string nomModèle, float échelleInitiale, Vector3 rotationInitiale, Vector3 positionInitiale,
+        public ProjectileAttaqueW(Microsoft.Xna.Framework.Game game, string nomModèle, float échelleInitiale, Vector3 rotationInitiale, Vector3 positionInitiale,
                                        Vector3 direction,Vector3 directionDéplacement, int force, int précision,float intervalleMAJ,int lanceurOuReceveur)
             : base(game, nomModèle, échelleInitiale, rotationInitiale, positionInitiale, direction, force, précision, intervalleMAJ)
         {
@@ -37,7 +37,7 @@ namespace AtelierXNA
             PositionInitiale = positionInitiale;
             LanceurOuReceveur = lanceurOuReceveur;
         }
-        public ProjectileAttaqueW(Game game, string nomModèle, float échelleInitiale, Vector3 rotationInitiale, Vector3 positionInitiale,
+        public ProjectileAttaqueW(Microsoft.Xna.Framework.Game game, string nomModèle, float échelleInitiale, Vector3 rotationInitiale, Vector3 positionInitiale,
                                Vector3 direction, Vector3 directionDéplacement, int force, int précision, int dégat, float intervalleMAJ, int lanceurOuReceveur)
         : base(game, nomModèle, échelleInitiale, rotationInitiale, positionInitiale, direction, force, précision,dégat, intervalleMAJ)
         {
@@ -50,7 +50,7 @@ namespace AtelierXNA
         public override void Initialize()
         {
             ÀDétruire = false;
-            DoCalculerMonde = false;
+            MondeÀRecalculer = false;
             BoiteDeCollision = new BoundingBox(Position + PointMinBDC, Position + PointMaxBDC);
             base.Initialize();
         }
@@ -63,7 +63,7 @@ namespace AtelierXNA
             {
                 GérerRotation();
                 GestionDéplacement();
-                if (DoCalculerMonde) { CalculerMonde(); DoCalculerMonde = false; }
+                if (MondeÀRecalculer) { CalculerMonde(); MondeÀRecalculer = false; }
                 TempsÉcouléDepuisMAJ = 0;
             }
 
@@ -79,7 +79,7 @@ namespace AtelierXNA
                 {
                     Position += DirectionDéplacement * FACTEUR_VITESSE;
                     BoiteDeCollision = new BoundingBox(Position + PointMinBDC, Position + PointMaxBDC);
-                    DoCalculerMonde = true;
+                    MondeÀRecalculer = true;
 
                     List<Entité> entités = Game.Components.OfType<Entité>().ToList();
                     foreach (Entité entité in entités)
@@ -120,7 +120,7 @@ namespace AtelierXNA
 
                 Rotation += new Vector3(0, Angle, 0);
                 Direction = DirectionDéplacement;
-                DoCalculerMonde = true;
+                MondeÀRecalculer = true;
             }
         }
     }

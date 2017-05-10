@@ -26,7 +26,7 @@ namespace AtelierXNA
         InputManager GestionInputs { get; set; }
 
 
-            public MainMenu(Game game)
+            public MainMenu(Microsoft.Xna.Framework.Game game)
             : base(game)
         { }
 
@@ -70,7 +70,7 @@ namespace AtelierXNA
         {
             if(GestionInputs.EstNouvelleTouche(Keys.NumPad0))
             {
-                ((Game1)Game).ChangerDÉtat(3);
+                ((Game)Game).ChangerDÉtat(3);
             }
             GérerSouris();
         }
@@ -89,14 +89,14 @@ namespace AtelierXNA
             {
                 if (GestionInputs.EstNouveauClicGauche())
                 {
-                    ((Game1)Game).ChangerDÉtat(2);
+                    ((Game)Game).ChangerDÉtat(2);
                 }
             }
             if (positionCreateGameButton.Contains(positionSouris))
             {
                 if (GestionInputs.EstNouveauClicGauche())
                 {
-                    ((Game1)Game).ChangerDÉtat(1);
+                    ((Game)Game).ChangerDÉtat(1);
 
                 }
             }

@@ -10,7 +10,7 @@ using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 namespace AtelierXNA
 {
-    class EntitéPéonAlliée : EntitéPéon, IDestructible
+    class EntitéPéonAlliée : EntitéPéon
     {
         const float FACTEUR_VITESSE = 0.1f;
 
@@ -25,7 +25,7 @@ namespace AtelierXNA
         Minuteur LeMinuteur;
 
 
-        public EntitéPéonAlliée(Game jeu, string nomModèle, float échelleInitiale, Vector3 rotationInitiale, Vector3 positionInitiale,
+        public EntitéPéonAlliée(Microsoft.Xna.Framework.Game jeu, string nomModèle, float échelleInitiale, Vector3 rotationInitiale, Vector3 positionInitiale,
                            float intervalleMAJ, int pointDeVie, int portée, int force, int armure, int précision, Vector3 direction, int numPéon, bool estPremierMinion)
             : base(jeu, nomModèle, échelleInitiale, rotationInitiale, positionInitiale, intervalleMAJ, pointDeVie, portée, force, armure, précision)
         {
@@ -77,16 +77,11 @@ namespace AtelierXNA
             {
                 if (EnMouvement)
                 {
-                    GérerDéplacement();
+                    GestionDéplacement();
                 }
                 TempsÉcouléDepuisMAJ -= IntervalleMAJ;
             }
-
-
-
-
-
-            
+                    
             base.Update(gameTime);
         } 
 
@@ -106,22 +101,21 @@ namespace AtelierXNA
                                                                 RotationInitialeProjectielADB, Position, DirectionInitialeProjectileADB,
                                                                 Force, Précision, Cible, IntervalleMAJ);
             Game.Components.Add(attaque);
-            foreach (TheGame thegame in Game.Components.Where(x => x is TheGame))
+
+            int typeEnnemie = 3;
+            int numEnnemie = 0;
+            if (Cible is EntitéPéonEnnemie)
             {
-                int typeEnnemie = 3;
-                int numEnnemie = 0;
-                if (Cible is EntitéPéonEnnemie)
-                {
-                    numEnnemie = (Cible as EntitéPéonEnnemie).NumPéon;
-                    typeEnnemie = 1;
-                }
-                if (Cible is EntitéTourEnnemie)
-                {
-                    numEnnemie = (Cible as EntitéTourEnnemie).NumTour;
-                    typeEnnemie = 2;
-                }
-                thegame.EnvoyerAttaqueAuServeur(Position, Force, Précision, typeEnnemie, numEnnemie, attaque.Dégat);
+                numEnnemie = (Cible as EntitéPéonEnnemie).NumPéon;
+                typeEnnemie = 1;
             }
+            if (Cible is EntitéTourEnnemie)
+            {
+                numEnnemie = (Cible as EntitéTourEnnemie).NumTour;
+                typeEnnemie = 2;
+            }
+            LeJeu.EnvoyerAttaqueAuServeur(Position, Force, Précision, typeEnnemie, numEnnemie, attaque.Dégat);
+
         }
 
 
@@ -144,7 +138,7 @@ namespace AtelierXNA
             }
         }
 
-        protected void GérerDéplacement()
+        public override void GestionDéplacement()
         {
             Position += Direction * FACTEUR_VITESSE;
             BoiteDeCollision = new BoundingBox(Position + PointMinBDC, Position + PointMaxBDC);

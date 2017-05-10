@@ -20,9 +20,8 @@ namespace AtelierXNA
         protected Vector3 PointMaxBDC = new Vector3(4, 7.6f, 7.5f / 2f);
         protected Vector3 PointMinBDC = new Vector3(-4, 0, -(7.5f / 2f));
         
-        protected float TempsÉcouléDepuisAttaqueMAJ { get; set; }
         public int NumTour { get; set; }
-        public EntitéTour(Game jeu, string nomModèle, float échelleInitiale, Vector3 rotationInitiale, Vector3 positionInitiale,
+        public EntitéTour(Microsoft.Xna.Framework.Game jeu, string nomModèle, float échelleInitiale, Vector3 rotationInitiale, Vector3 positionInitiale,
                            float intervalleMAJ, int pointDeVie, int portée, int force, int armure, int précision,int numTour)
             : base(jeu, nomModèle, échelleInitiale, rotationInitiale, positionInitiale, intervalleMAJ, pointDeVie, portée, force, armure, précision)
         {
@@ -37,6 +36,8 @@ namespace AtelierXNA
         {
             RayonCollision = 4;
             BoiteDeCollision = new BoundingBox(Position + PointMinBDC, Position + PointMaxBDC);
+
+            HauteurPositionBarrePV = new Vector3(0, 8, 0);
             base.Initialize();
         }
 
@@ -46,11 +47,6 @@ namespace AtelierXNA
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         public override void Update(GameTime gameTime)
         {
-            float tempsÉcoulé = (float)gameTime.ElapsedGameTime.TotalSeconds;
-            TempsÉcouléDepuisAttaqueMAJ += tempsÉcoulé;
-            if (TempsÉcouléDepuisAttaqueMAJ >= 1.2f)
-            {
-            }
             base.Update(gameTime);
         }
 

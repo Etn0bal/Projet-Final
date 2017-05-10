@@ -30,10 +30,10 @@ namespace AtelierXNA
         bool DoYaw { get; set; }
         bool DoPitch { get; set; }
         bool DoRoll { get; set; }
-        protected bool DoCalculerMonde { get; set; }
+        protected bool Monde¿Recalculer { get; set; }
 
 
-        public ObjetDeDÈmo(Game jeu, string nomModËle, float ÈchelleInitiale, Vector3 rotationInitiale, Vector3 positionInitiale,
+        public ObjetDeDÈmo(Microsoft.Xna.Framework.Game jeu, string nomModËle, float ÈchelleInitiale, Vector3 rotationInitiale, Vector3 positionInitiale,
                            float intervalleMAJ)
             : base(jeu, nomModËle, ÈchelleInitiale, rotationInitiale, positionInitiale)
         {
@@ -52,7 +52,7 @@ namespace AtelierXNA
             DoYaw = false;
             DoPitch = false;
             DoRoll = false;
-            DoCalculerMonde = false;
+            Monde¿Recalculer = false;
         }
 
         protected override void LoadContent()
@@ -67,14 +67,14 @@ namespace AtelierXNA
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         public override void Update(GameTime gameTime)
         {
-            DoCalculerMonde = false;
+            Monde¿Recalculer = false;
             float temps…coulÈ = (float)gameTime.ElapsedGameTime.TotalSeconds;
             Temps…coulÈDepuisMAJ += temps…coulÈ;
             if (Temps…coulÈDepuisMAJ >= IntervalleMAJ)
             {
                 GÈrerHomothÈtie();
                 GÈrerRotation();
-                if (DoCalculerMonde) { CalculerMonde(); }
+                if (Monde¿Recalculer) { CalculerMonde(); }
 
                 Temps…coulÈDepuisMAJ = 0;
             }
@@ -102,7 +102,7 @@ namespace AtelierXNA
             if(Èchelle != …chelle)
             {
                 …chelle = Èchelle;
-                DoCalculerMonde = true;
+                Monde¿Recalculer = true;
             }
         }
 
@@ -116,7 +116,7 @@ namespace AtelierXNA
             if( rotation != Rotation)
             {
                 Rotation = rotation;
-                DoCalculerMonde = true;
+                Monde¿Recalculer = true;
             }
         }
 

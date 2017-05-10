@@ -27,9 +27,9 @@ namespace AtelierXNA
         float Échelle { get; set; }
         SpriteFont PoliceDeCaractères { get; set; }
         SpriteBatch GestionSprites { get; set; }
-        RessourcesManager<SpriteFont> GestionnaireDeFonts { get; set; }
+        RessourcesManager<SpriteFont> GestionnaireDePoliceDeCaractère { get; set; }
 
-        public Texte(Game jeu, string texteÀAfficher, string nomFont, Rectangle zoneAffichage,Vector2 positionAffichage,
+        public Texte(Microsoft.Xna.Framework.Game jeu, string texteÀAfficher, string nomFont, Rectangle zoneAffichage,Vector2 positionAffichage,
                            Color couleurTexte, float marge)
            : base(jeu)
         {
@@ -44,8 +44,8 @@ namespace AtelierXNA
         protected override void LoadContent()
         {
             GestionSprites = Game.Services.GetService(typeof(SpriteBatch)) as SpriteBatch;
-            GestionnaireDeFonts = Game.Services.GetService(typeof(RessourcesManager<SpriteFont>)) as RessourcesManager<SpriteFont>;
-            PoliceDeCaractères = GestionnaireDeFonts.Find(NomFont);
+            GestionnaireDePoliceDeCaractère = Game.Services.GetService(typeof(RessourcesManager<SpriteFont>)) as RessourcesManager<SpriteFont>;
+            PoliceDeCaractères = GestionnaireDePoliceDeCaractère.Find(NomFont);
             ModifierTexte(TexteÀAfficher);
         }
 
