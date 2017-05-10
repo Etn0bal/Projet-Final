@@ -17,11 +17,13 @@ namespace AtelierXNA
         float TempsÉcouléDepuisAttaqueMAJ { get; set; }
         float TempsDeRechargeAttaque { get; set; }
 
+        object Clé;
+
         public EntitéTourAlliée(Microsoft.Xna.Framework.Game jeu, string nomModèle, float échelleInitiale, Vector3 rotationInitiale, Vector3 positionInitiale,
                            float intervalleMAJ, int pointDeVie, int portée, int force, int armure, int précision, int numTour)
             : base(jeu, nomModèle, échelleInitiale, rotationInitiale, positionInitiale, intervalleMAJ, pointDeVie, portée, force, armure, précision, numTour)
         {
-
+            Clé = new object();
         }
         public override void Initialize()
         {
@@ -57,9 +59,15 @@ namespace AtelierXNA
 
         protected void GestionAttaque()
         {
-            Cible = Game.Components.OfType<Entité>().FirstOrDefault(x => Math.Sqrt(Math.Pow(x.Position.X - Position.X, 2) +
-                                                                    Math.Pow(x.Position.Z - Position.Z, 2)) <= Portée && !x.EstAlliée);
-
+            try
+            {
+                Cible = Game.Components.OfType<Entité>().FirstOrDefault(x => Math.Sqrt(Math.Pow(x.Position.X - Position.X, 2) +
+                                                                        Math.Pow(x.Position.Z - Position.Z, 2)) <= Portée && !x.EstAlliée);
+            }
+            catch(Exception)
+            {
+                Cible = null;
+            }
             if (Cible != null)
             {
                 ProjectileAttaqueDeBase attaque = new ProjectileAttaqueDeBase(Game, "rocket", ÉCHELLE_PROJECTILE_ATTAQUE_DE_BASE,
