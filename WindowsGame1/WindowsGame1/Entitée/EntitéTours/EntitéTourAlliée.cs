@@ -68,6 +68,7 @@ namespace AtelierXNA
             {
                 Cible = null;
             }
+
             if (Cible != null)
             {
                 ProjectileAttaqueDeBase attaque = new ProjectileAttaqueDeBase(Game, "rocket", ÉCHELLE_PROJECTILE_ATTAQUE_DE_BASE,

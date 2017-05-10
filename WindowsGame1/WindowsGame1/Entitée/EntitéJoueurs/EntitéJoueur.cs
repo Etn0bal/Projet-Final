@@ -107,7 +107,8 @@ namespace AtelierXNA
                 GérerRotation();
 
                 Cible = Game.Components.OfType<Entité>().FirstOrDefault(x => x.BoiteDeCollision.Intersects(Rayon) != null && !x.EstAlliée &&
-                Math.Sqrt(Math.Pow(x.Position.X - Position.X,2) - Math.Pow(x.Position.Z - Position.Z,2)) <= Portée);
+                                                                        Math.Sqrt(Math.Pow(x.Position.X - Position.X,2) - Math.Pow(x.Position.Z 
+                                                                        -Position.Z,2)) <= Portée);
 
                 if (Cible != null)
                 {
