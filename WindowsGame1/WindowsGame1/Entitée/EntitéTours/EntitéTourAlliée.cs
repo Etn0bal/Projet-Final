@@ -46,13 +46,12 @@ namespace AtelierXNA
             TempsÉcouléDepuisAttaqueMAJ += tempsÉcoulé;
             if (TempsÉcouléDepuisAttaqueMAJ >= TempsDeRechargeAttaque)
             {
-                //RegarderSiCibleEstMortOuHorsRange();
-                //if (Cible == null)
-                //{
+                RegarderSiCibleEstMortOuHorsRange();
+                if (Cible == null)
+                {
                     GestionAttaque();
-                //}
+                }
             }
-            base.Update(gameTime);
             base.Update(gameTime);
         }
 
