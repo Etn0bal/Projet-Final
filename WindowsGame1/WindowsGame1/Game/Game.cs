@@ -35,7 +35,7 @@ namespace AtelierXNA
             graphics.SynchronizeWithVerticalRetrace = false;
             IsFixedTimeStep = false;
             IsMouseVisible = true;
-            //graphics.IsFullScreen = true;
+            graphics.IsFullScreen = true;
 
         }
 
