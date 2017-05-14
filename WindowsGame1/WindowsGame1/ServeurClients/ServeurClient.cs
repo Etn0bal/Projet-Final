@@ -21,16 +21,16 @@ namespace AtelierXNA
     public class ServeurClient : Microsoft.Xna.Framework.GameComponent
     {
 
-        MemoryStream readStream, writeStream;
+        MemoryStream LectureFlux, ÉcritureFlux;
 
-        BinaryReader reader;
-        BinaryWriter writer;
+        BinaryReader Lecteur;
+        BinaryWriter Rédacteur;
 
         TcpClient Client;
         const int PORT = 5011;
         string IP { get; set; }
-        const int BUFFER_SIZE = 2048;
-        private byte[] readbuffer;
+        const int GRANDEUR_TAMPON = 2048;
+        private byte[] LectureTampon;
 
         public ServeurClient(Microsoft.Xna.Framework.Game game, string iP)
             : base(game)
@@ -44,15 +44,15 @@ namespace AtelierXNA
             Client = new TcpClient();
             Client.NoDelay = true;
             Client.Connect(IP, PORT);
-            readbuffer = new byte[BUFFER_SIZE];
-            Client.GetStream().BeginRead(readbuffer, 0, BUFFER_SIZE, StreamReceived, null);
+            LectureTampon = new byte[GRANDEUR_TAMPON];
+            Client.GetStream().BeginRead(LectureTampon, 0, GRANDEUR_TAMPON, RéceptionDuFlux, null);
 
 
-            readStream = new MemoryStream();
-            writeStream = new MemoryStream();
+            LectureFlux = new MemoryStream();
+            ÉcritureFlux = new MemoryStream();
 
-            reader = new BinaryReader(readStream);
-            writer = new BinaryWriter(writeStream);
+            Lecteur = new BinaryReader(LectureFlux);
+            Rédacteur = new BinaryWriter(ÉcritureFlux);
 
         }
 
@@ -60,15 +60,15 @@ namespace AtelierXNA
         /// Allows the game component to perform any initialization it needs to before starting
         /// to run.  This is where it can query for any required services and load content.
         /// </summary>
-        private void StreamReceived(IAsyncResult ar)
+        private void RéceptionDuFlux(IAsyncResult ar)
         {
-            int bytesRead = 0;
+            int bytesLus = 0;
 
             try
             {
                 lock (Client.GetStream())
                 {
-                    bytesRead = Client.GetStream().EndRead(ar);
+                    bytesLus = Client.GetStream().EndRead(ar);
                 }
             }
             catch (Exception ex)
@@ -76,35 +76,35 @@ namespace AtelierXNA
                 MessageBox.Show(ex.Message);
             }
 
-            if (bytesRead == 0)
+            if (bytesLus == 0)
             {
                 Client.Close();
                 return;
             }
 
-            byte[] data = new byte[bytesRead];
+            byte[] data = new byte[bytesLus];
 
-            for (int i = 0; i < bytesRead; i++)
-                data[i] = readbuffer[i];
+            for (int i = 0; i < bytesLus; i++)
+                data[i] = LectureTampon[i];
 
             ProcessData(data);
 
-            Client.GetStream().BeginRead(readbuffer, 0, BUFFER_SIZE, StreamReceived, null);
+            Client.GetStream().BeginRead(LectureTampon, 0, GRANDEUR_TAMPON, RéceptionDuFlux, null);
         }
 
         private void ProcessData(byte[] data)
         {
-            readStream.SetLength(0);
-            readStream.Position = 0;
+            LectureFlux.SetLength(0);
+            LectureFlux.Position = 0;
 
-            readStream.Write(data, 0, data.Length);
-            readStream.Position = 0;
+            LectureFlux.Write(data, 0, data.Length);
+            LectureFlux.Position = 0;
 
             Protocoles p;
 
             try
             {
-                p = (Protocoles)reader.ReadByte();
+                p = (Protocoles)Lecteur.ReadByte();
 
                 if (p == Protocoles.Connected)
                 {
@@ -118,49 +118,40 @@ namespace AtelierXNA
 
                 else if (p == Protocoles.PlayerMovement)
                 {
-                    //foreach (EntitéEnnemie EntitéeEnnemie in Game.Components.Where(x => x is EntitéEnnemie))
-                    //{
-                    //    float px = reader.ReadSingle();
-                    //    float py = reader.ReadSingle();
-                    //    float pz = reader.ReadSingle();
-                    //    Vector3 positionEnnemie = new Vector3(px, py, pz);
-
-                    //    EntitéeEnnemie.DéplacerEnnemie(positionEnnemie);
-                    //}
                     List<EntitéEnnemie> entitésEnnemies = Game.Components.OfType<EntitéEnnemie>().ToList();
                     foreach (EntitéEnnemie entitéEnnemie in entitésEnnemies)
                     {
-                        float m11 = reader.ReadSingle();
-                        float m12 = reader.ReadSingle();
-                        float m13 = reader.ReadSingle();
-                        float m14 = reader.ReadSingle();
-                        float m21 = reader.ReadSingle();
-                        float m22 = reader.ReadSingle();
-                        float m23 = reader.ReadSingle();
-                        float m24 = reader.ReadSingle();
-                        float m31 = reader.ReadSingle();
-                        float m32 = reader.ReadSingle();
-                        float m33 = reader.ReadSingle();
-                        float m34 = reader.ReadSingle();
-                        float m41 = reader.ReadSingle();
-                        float m42 = reader.ReadSingle();
-                        float m43 = reader.ReadSingle();
-                        float m44 = reader.ReadSingle();
+                        float m11 = Lecteur.ReadSingle();
+                        float m12 = Lecteur.ReadSingle();
+                        float m13 = Lecteur.ReadSingle();
+                        float m14 = Lecteur.ReadSingle();
+                        float m21 = Lecteur.ReadSingle();
+                        float m22 = Lecteur.ReadSingle();
+                        float m23 = Lecteur.ReadSingle();
+                        float m24 = Lecteur.ReadSingle();
+                        float m31 = Lecteur.ReadSingle();
+                        float m32 = Lecteur.ReadSingle();
+                        float m33 = Lecteur.ReadSingle();
+                        float m34 = Lecteur.ReadSingle();
+                        float m41 = Lecteur.ReadSingle();
+                        float m42 = Lecteur.ReadSingle();
+                        float m43 = Lecteur.ReadSingle();
+                        float m44 = Lecteur.ReadSingle();
                         entitéEnnemie.Monde = new Matrix(m11, m12, m13, m14, m21, m22, m23, m24, m31, m32, m33, m34, m41, m42, m43, m44);
                     }
                 }
 
                 else if (p == Protocoles.MinionMovement)
                 {
-                    int numPéon = reader.ReadInt32();
+                    int numPéon = Lecteur.ReadInt32();
                     List<EntitéPéonEnnemie> péons = Game.Components.OfType<EntitéPéonEnnemie>().ToList();
                     foreach (EntitéPéonEnnemie péon in péons)
                     {
                         if (péon.NumPéon == numPéon)
                         {
-                            float px = reader.ReadSingle();
-                            float py = reader.ReadSingle();
-                            float pz = reader.ReadSingle();
+                            float px = Lecteur.ReadSingle();
+                            float py = Lecteur.ReadSingle();
+                            float pz = Lecteur.ReadSingle();
                             Vector3 positionEnnemie = new Vector3(px, py, pz);
                             péon.GérerDéplacement(positionEnnemie);
                         }
@@ -168,7 +159,7 @@ namespace AtelierXNA
                 }
                 else if (p == Protocoles.StartGame)
                 {
-                    bool valeur = reader.ReadBoolean();
+                    bool valeur = Lecteur.ReadBoolean();
                     ((Game)Game).EnJeu = valeur;
                 }
 
@@ -178,14 +169,14 @@ namespace AtelierXNA
 
                     GestionnaireJeu game = Game.Components.First(x => x is GestionnaireJeu) as GestionnaireJeu;
 
-                    float px = reader.ReadSingle();
-                    float py = reader.ReadSingle();
-                    float pz = reader.ReadSingle();
-                    int force = reader.ReadInt32();
-                    int précision = reader.ReadInt32();
-                    int typeEnemmie = reader.ReadInt32();
-                    int numEnnemie = reader.ReadInt32();
-                    int dégat = reader.ReadInt32();
+                    float px = Lecteur.ReadSingle();
+                    float py = Lecteur.ReadSingle();
+                    float pz = Lecteur.ReadSingle();
+                    int force = Lecteur.ReadInt32();
+                    int précision = Lecteur.ReadInt32();
+                    int typeEnemmie = Lecteur.ReadInt32();
+                    int numEnnemie = Lecteur.ReadInt32();
+                    int dégat = Lecteur.ReadInt32();
 
                     if (typeEnemmie == 1)
                     {
@@ -229,8 +220,8 @@ namespace AtelierXNA
 
                 else if (p == Protocoles.ValidationDeadEnnemi)
                 {
-                    int typeEnemmie = reader.ReadInt32();
-                    int numEnnemie = reader.ReadInt32();
+                    int typeEnemmie = Lecteur.ReadInt32();
+                    int numEnnemie = Lecteur.ReadInt32();
 
                     if (typeEnemmie == 1)
                     {
@@ -266,7 +257,7 @@ namespace AtelierXNA
                 }
                 else if (p == Protocoles.HealthChange)
                 {
-                    int pdv = reader.ReadInt32();
+                    int pdv = Lecteur.ReadInt32();
                     List<EntitéEnnemie> entitésEnnemies = Game.Components.OfType<EntitéEnnemie>().ToList();
                     foreach (EntitéEnnemie entitéEnnemie in entitésEnnemies)
                     {
@@ -276,15 +267,15 @@ namespace AtelierXNA
                 else if (p == Protocoles.WAttack)
                 {
                     GestionnaireJeu game = Game.Components.First(x => x is GestionnaireJeu) as GestionnaireJeu;
-                    float px = reader.ReadSingle();
-                    float py = reader.ReadSingle();
-                    float pz = reader.ReadSingle();
-                    float dx = reader.ReadSingle();
-                    float dy = reader.ReadSingle();
-                    float dz = reader.ReadSingle();
-                    int force = reader.ReadInt32();
-                    int précision = reader.ReadInt32();
-                    int dégat = reader.ReadInt32();
+                    float px = Lecteur.ReadSingle();
+                    float py = Lecteur.ReadSingle();
+                    float pz = Lecteur.ReadSingle();
+                    float dx = Lecteur.ReadSingle();
+                    float dy = Lecteur.ReadSingle();
+                    float dz = Lecteur.ReadSingle();
+                    int force = Lecteur.ReadInt32();
+                    int précision = Lecteur.ReadInt32();
+                    int dégat = Lecteur.ReadInt32();
                     ProjectileAttaqueW projectile = new ProjectileAttaqueW(Game, "bomb", game.ÉCHELLE_PROJECTILE_W, game.RotationInitialeProjectielADB, new Vector3(px, py, pz), game.DirectionInitialeProjectileADB, new Vector3(dx, dy, dz), force, précision,dégat,game.INTERVALLEMAJ, 2);
                     Game.Components.Add(projectile);
                 }
@@ -292,7 +283,6 @@ namespace AtelierXNA
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
             }
         }
 
@@ -334,10 +324,10 @@ namespace AtelierXNA
         }
         public void StartGame()
         {
-            writeStream.Position = 0;
-            writer.Write((Byte)Protocoles.StartGame);
-            writer.Write(true);
-            SendData(GetDataFromMemoryStream(writeStream));
+            ÉcritureFlux.Position = 0;
+            Rédacteur.Write((Byte)Protocoles.StartGame);
+            Rédacteur.Write(true);
+            SendData(GetDataFromMemoryStream(ÉcritureFlux));
         }
         //public void EnvoyerDestination(Vector3 destination)
         //{
@@ -351,47 +341,47 @@ namespace AtelierXNA
         //}
         public void EnvoyerPositionPéon(Vector3 position, int numPéon)
         {
-            writeStream.Position = 0;
-            writer.Write((Byte)Protocoles.MinionMovement);
+            ÉcritureFlux.Position = 0;
+            Rédacteur.Write((Byte)Protocoles.MinionMovement);
             //Envoi du numéro de péon
-            writer.Write(numPéon);
+            Rédacteur.Write(numPéon);
             //Envoi de la position du péon
-            writer.Write(position.X);
-            writer.Write(position.Y);
-            writer.Write(position.Z);
+            Rédacteur.Write(position.X);
+            Rédacteur.Write(position.Y);
+            Rédacteur.Write(position.Z);
 
-            SendData(GetDataFromMemoryStream(writeStream));
+            SendData(GetDataFromMemoryStream(ÉcritureFlux));
         }
         public void EnvoyerAttaque(Vector3 position, int force, int précision, int typeEnnemie, int numEnnemie, int dégat)
         {
-            writeStream.Position = 0;
-            writer.Write((Byte)Protocoles.BasicAttaque);
+            ÉcritureFlux.Position = 0;
+            Rédacteur.Write((Byte)Protocoles.BasicAttaque);
             //Envoi position joueurA
-            writer.Write(position.X);
-            writer.Write(position.Y);
-            writer.Write(position.Z);
+            Rédacteur.Write(position.X);
+            Rédacteur.Write(position.Y);
+            Rédacteur.Write(position.Z);
             //Envoi de la force 
-            writer.Write(force);
+            Rédacteur.Write(force);
             //Envoi de la précision 
-            writer.Write(précision);
+            Rédacteur.Write(précision);
             //Envoi du type de l'ennemie
-            writer.Write(typeEnnemie);
+            Rédacteur.Write(typeEnnemie);
             //Envoi du numéro de l'ennemie
-            writer.Write(numEnnemie);
+            Rédacteur.Write(numEnnemie);
             //Envoie du dégat
-            writer.Write(dégat);
+            Rédacteur.Write(dégat);
 
-            SendData(GetDataFromMemoryStream(writeStream));
+            SendData(GetDataFromMemoryStream(ÉcritureFlux));
         }
         public void EnvoyerEnnemiMort(int typeEnnemie, int numEnnemie)
         {
-            writeStream.Position = 0;
-            writer.Write((Byte)Protocoles.ValidationDeadEnnemi);
+            ÉcritureFlux.Position = 0;
+            Rédacteur.Write((Byte)Protocoles.ValidationDeadEnnemi);
             //Envoi du type de l'ennemie
-            writer.Write(typeEnnemie);
+            Rédacteur.Write(typeEnnemie);
             //Envoi du numéro de l'ennemie
-            writer.Write(numEnnemie);
-            SendData(GetDataFromMemoryStream(writeStream));
+            Rédacteur.Write(numEnnemie);
+            SendData(GetDataFromMemoryStream(ÉcritureFlux));
         }
         public void EnvoyerMatrice(Matrix matrice)
         {
@@ -411,53 +401,53 @@ namespace AtelierXNA
             float m42 = matrice.M42;
             float m43 = matrice.M43;
             float m44 = matrice.M44;
-            writeStream.Position = 0;
-            writer.Write((Byte)Protocoles.PlayerMovement);
-            writer.Write(m11);
-            writer.Write(m12);
-            writer.Write(m13);
-            writer.Write(m14);
-            writer.Write(m21);
-            writer.Write(m22);
-            writer.Write(m23);
-            writer.Write(m24);
-            writer.Write(m31);
-            writer.Write(m32);
-            writer.Write(m33);
-            writer.Write(m34);
-            writer.Write(m41);
-            writer.Write(m42);
-            writer.Write(m43);
-            writer.Write(m44);
-            SendData(GetDataFromMemoryStream(writeStream));
+            ÉcritureFlux.Position = 0;
+            Rédacteur.Write((Byte)Protocoles.PlayerMovement);
+            Rédacteur.Write(m11);
+            Rédacteur.Write(m12);
+            Rédacteur.Write(m13);
+            Rédacteur.Write(m14);
+            Rédacteur.Write(m21);
+            Rédacteur.Write(m22);
+            Rédacteur.Write(m23);
+            Rédacteur.Write(m24);
+            Rédacteur.Write(m31);
+            Rédacteur.Write(m32);
+            Rédacteur.Write(m33);
+            Rédacteur.Write(m34);
+            Rédacteur.Write(m41);
+            Rédacteur.Write(m42);
+            Rédacteur.Write(m43);
+            Rédacteur.Write(m44);
+            SendData(GetDataFromMemoryStream(ÉcritureFlux));
         }
         public void EnvoyerGainDeVie(int PointDeVie)
         {
-            writeStream.Position = 0;
-            writer.Write((Byte)Protocoles.HealthChange);
-            writer.Write(PointDeVie);
-            SendData(GetDataFromMemoryStream(writeStream));
+            ÉcritureFlux.Position = 0;
+            Rédacteur.Write((Byte)Protocoles.HealthChange);
+            Rédacteur.Write(PointDeVie);
+            SendData(GetDataFromMemoryStream(ÉcritureFlux));
         }
         public void EnvoyerAttaqueW(Vector3 position, Vector3 direction, int force, int précision, int dégat)
         {
-            writeStream.Position = 0;
-            writer.Write((Byte)Protocoles.WAttack);
+            ÉcritureFlux.Position = 0;
+            Rédacteur.Write((Byte)Protocoles.WAttack);
 
             //Envoi position joueurA
-            writer.Write(position.X);
-            writer.Write(position.Y);
-            writer.Write(position.Z);
+            Rédacteur.Write(position.X);
+            Rédacteur.Write(position.Y);
+            Rédacteur.Write(position.Z);
             //Envoi direction attaque
-            writer.Write(direction.X);
-            writer.Write(direction.Y);
-            writer.Write(direction.Z);
+            Rédacteur.Write(direction.X);
+            Rédacteur.Write(direction.Y);
+            Rédacteur.Write(direction.Z);
             //Envoi de la force 
-            writer.Write(force);
+            Rédacteur.Write(force);
             //Envoi de la précision 
-            writer.Write(précision);
+            Rédacteur.Write(précision);
             //Envoi du dégat
-            writer.Write(dégat);
-            SendData(GetDataFromMemoryStream(writeStream));
+            Rédacteur.Write(dégat);
+            SendData(GetDataFromMemoryStream(ÉcritureFlux));
         }
     }
 }
