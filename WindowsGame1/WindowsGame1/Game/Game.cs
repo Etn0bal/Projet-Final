@@ -219,8 +219,9 @@ namespace AtelierXNA
         {
             NettoyerListeComponents();
             GestionnaireJeu game = new GestionnaireJeu(this,NumClient);
+            Services.AddService(typeof(GestionnaireJeu), game);
             Components.Add(game);
-            Services.AddService(typeof(GestionnaireJeu),game);
+
         }
 
 

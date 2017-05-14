@@ -65,6 +65,7 @@ namespace AtelierXNA
             GestionInputs = Game.Services.GetService(typeof(InputManager)) as InputManager;
             CaméraJeu = Game.Services.GetService(typeof(Caméra)) as CaméraTypéMoba;
             Murs = Game.Services.GetService(typeof(Murs)) as Murs;
+            LeJeu = Game.Services.GetService(typeof(GestionnaireJeu)) as GestionnaireJeu;
             MondeÀRecalculer = false;
             Destination = Position;
             PlanReprésentantCarte = new Plane(0, 1, 0, 0);
@@ -72,15 +73,15 @@ namespace AtelierXNA
             EstAlliée = true;
             RayonCollision = 3;
             TempsDeRechargeQ = 10;
-            TempDeRechargeW = 10;
-            TempsDeRechargeE = 10;
+            TempDeRechargeW = 7;
+            TempsDeRechargeE = 5;
             TempsDeRechargeAttaque = 0.2f;
 
             HauteurPositionBarrePV = new Vector3(0, 15, 0);
 
             BoiteDeCollision = new BoundingBox(Position + PointMinBDC, Position + PointMaxBDC);
             base.Initialize();
-            PointDeVieRedonné = (int)(0.1f * PointDeVieInitial);
+            PointDeVieRedonné = (int)(0.3f * PointDeVieInitial);
         }
 
         public override void Update(GameTime gameTime)
@@ -106,7 +107,8 @@ namespace AtelierXNA
                 GérerRotation();
 
                 Cible = Game.Components.OfType<Entité>().FirstOrDefault(x => x.BoiteDeCollision.Intersects(Rayon) != null && !x.EstAlliée &&
-                Math.Sqrt(Math.Pow(x.Position.X - Position.X,2) - Math.Pow(x.Position.Z - Position.Z,2)) <= Portée);
+                                                                        Math.Sqrt(Math.Pow(x.Position.X - Position.X,2) - Math.Pow(x.Position.Z 
+                                                                        -Position.Z,2)) <= Portée);
 
                 if (Cible != null)
                 {
@@ -154,7 +156,7 @@ namespace AtelierXNA
             GérerRotation();
             ProjectileAttaqueW attaque = new ProjectileAttaqueW(Game, "bomb", ÉCHELLE_PROJECTILE_W,
                                                                 RotationInitialeProjectielADB, Position + HauteurAttaque,DirectionInitialeProjectileADB, directionAttaqueW,
-                                                                Force, Précision, IntervalleMAJ,1);
+                                                                Force+1500, Précision, IntervalleMAJ,1);
             LeJeu.EnvoyerAttaqueW(Position + new Vector3(0, 5, 0), directionAttaqueW, Force, Précision, attaque.Dégat);
 
             Game.Components.Add(attaque);

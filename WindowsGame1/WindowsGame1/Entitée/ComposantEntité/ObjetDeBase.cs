@@ -49,7 +49,7 @@ namespace AtelierXNA
          Modèle = GestionnaireDeModèles.Find(NomModèle);
          TransformationsModèle = new Matrix[Modèle.Bones.Count];
          Modèle.CopyAbsoluteBoneTransformsTo(TransformationsModèle);
-      }
+      } 
 
       public override void Draw(GameTime gameTime)
       {
