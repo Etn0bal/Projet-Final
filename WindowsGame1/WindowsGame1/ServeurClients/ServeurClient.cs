@@ -292,7 +292,6 @@ namespace AtelierXNA
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
             }
         }
 

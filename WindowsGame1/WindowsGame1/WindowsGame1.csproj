@@ -97,7 +97,6 @@
     <Compile Include="Entitée\ComposantEntité\Entité.cs" />
     <Compile Include="Game\GestionnaireJeu.cs" />
     <Compile Include="Entitée\ComposantEntité\IMobile.cs" />
-    <Compile Include="Entitée\ComposantEntité\IControlée.cs" />
     <Compile Include="Menu\SpriteHostMenu.cs" />
     <Compile Include="Menu\SpriteJoinMenu.cs" />
     <Compile Include="Menu\SpriteMainMenu.cs" />
