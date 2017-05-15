@@ -38,9 +38,7 @@ namespace AtelierXNA
             //Arriere plan
             Rectangle arrièrePlan = new Rectangle(0, 0, Game.Window.ClientBounds.Width, Game.Window.ClientBounds.Height);
             SpriteMainMenu fonddÉcran = new SpriteMainMenu(Game, arrièrePlan, "imagedefond");
-            Game.Components.Add(fonddÉcran);
-            
-            //Vidéo
+            Game.Components.Add(fonddÉcran);           
 
             //Button
             positionCreateGameButton = new Rectangle(Game.Window.ClientBounds.Width / 10, 5 * Game.Window.ClientBounds.Height / 10, 3 * (Game.Window.ClientBounds.Width / 10), Game.Window.ClientBounds.Height / 10);

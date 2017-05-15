@@ -12,7 +12,7 @@ using System.Windows.Forms;
 
 namespace AtelierXNA
 {
-    public enum States { MainMenu, JoinGame, HostGame, Game ,Waiting,EnAttenteDeLaPartie}
+    public enum States { MainMenu, JoinGame, HostGame, Game ,Waiting}
 
     public class Game : Microsoft.Xna.Framework.Game
     {
@@ -90,11 +90,6 @@ namespace AtelierXNA
                     InitialiserGame();
                     State = States.Waiting;
                 }
-                if (State == States.EnAttenteDeLaPartie)
-                {
-                    InitialiserAttentePartie();
-                    State = States.Waiting;
-                }
             }
             base.Update(gameTime);
         }
@@ -126,10 +121,6 @@ namespace AtelierXNA
             if (num…tat == (int)States.Game)
             {
                 State = States.Game;
-            }
-            if (num…tat == (int)States.EnAttenteDeLaPartie)
-            {
-                State = States.EnAttenteDeLaPartie;
             }
         }
 
@@ -233,12 +224,6 @@ namespace AtelierXNA
 
         }
 
-        private void InitialiserAttentePartie()
-        {
-            NettoyerListeComponents();
-            Sprite FondDÈcranDattente = new Sprite(this, new Rectangle(0, 0, Window.ClientBounds.Width, Window.ClientBounds.Height), "imagedattente");
-            Components.Add(FondDÈcranDattente);
-        }
 
         void NettoyerListeComponents()
         {

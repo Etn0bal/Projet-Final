@@ -23,7 +23,6 @@ namespace AtelierXNA
         InputManager GestionnaireInputs { get; set; }
         RessourcesManager<SpriteFont> Fonts { get; set; }
         string IPÉcrit { get; set; }
-        SpriteFont Font { get; set; }
         string IP { get; set; }
         ServeurClient Invité { get; set; }
 
