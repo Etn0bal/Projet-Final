@@ -118,15 +118,6 @@ namespace AtelierXNA
 
                 else if (p == Protocoles.PlayerMovement)
                 {
-                    //foreach (EntitéEnnemie EntitéeEnnemie in Game.Components.Where(x => x is EntitéEnnemie))
-                    //{
-                    //    float px = reader.ReadSingle();
-                    //    float py = reader.ReadSingle();
-                    //    float pz = reader.ReadSingle();
-                    //    Vector3 positionEnnemie = new Vector3(px, py, pz);
-
-                    //    EntitéeEnnemie.DéplacerEnnemie(positionEnnemie);
-                    //}
                     List<EntitéEnnemie> entitésEnnemies = Game.Components.OfType<EntitéEnnemie>().ToList();
                     foreach (EntitéEnnemie entitéEnnemie in entitésEnnemies)
                     {
@@ -290,10 +281,8 @@ namespace AtelierXNA
                 }
                 
             }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
+            catch (Exception)
+            {   }
         }
 
 
@@ -313,13 +302,9 @@ namespace AtelierXNA
             return result;
         }
 
-        /// <summary>
-        /// Code to actually send the data to the client
-        /// </summary>
-        /// <param name="b">Data to send</param>
+
         public void SendData(byte[] b)
         {
-
             try
             {
                 lock (Client.GetStream())
@@ -339,16 +324,6 @@ namespace AtelierXNA
             writer.Write(true);
             SendData(GetDataFromMemoryStream(writeStream));
         }
-        //public void EnvoyerDestination(Vector3 destination)
-        //{
-        //    writeStream.Position = 0;
-        //    writer.Write((Byte)Protocoles.PlayerMovement);
-        //    //Envoi de la position
-        //    writer.Write(destination.X);
-        //    writer.Write(destination.Y);
-        //    writer.Write(destination.Z);
-        //    SendData(GetDataFromMemoryStream(writeStream));
-        //}
         public void EnvoyerPositionPéon(Vector3 position, int numPéon)
         {
             writeStream.Position = 0;
