@@ -267,172 +267,6 @@ namespace AtelierXNA
                 }
             }
             catch (Exception) { }
-            //if (p == Protocoles.PlayerMovement)
-            //{
-            //    List<EntitéEnnemie> entitésEnnemies = Game.Components.OfType<EntitéEnnemie>().ToList();
-            //    foreach (EntitéEnnemie entitéEnnemie in entitésEnnemies)
-            //    {
-            //        float m11 = lecteur.ReadSingle();
-            //        float m12 = lecteur.ReadSingle();
-            //        float m13 = lecteur.ReadSingle();
-            //        float m14 = lecteur.ReadSingle();
-            //        float m21 = lecteur.ReadSingle();
-            //        float m22 = lecteur.ReadSingle();
-            //        float m23 = lecteur.ReadSingle();
-            //        float m24 = lecteur.ReadSingle();
-            //        float m31 = lecteur.ReadSingle();
-            //        float m32 = lecteur.ReadSingle();
-            //        float m33 = lecteur.ReadSingle();
-            //        float m34 = lecteur.ReadSingle();
-            //        float m41 = lecteur.ReadSingle();
-            //        float m42 = lecteur.ReadSingle();
-            //        float m43 = lecteur.ReadSingle();
-            //        float m44 = lecteur.ReadSingle();
-            //        entitéEnnemie.Monde = new Matrix(m11, m12, m13, m14, m21, m22, m23, m24, m31, m32, m33, m34, m41, m42, m43, m44);
-            //    }
-            //}
-
-            //else if (p == Protocoles.MinionMovement)
-            //{
-            //    int numPéon = lecteur.ReadInt32();
-            //    List<EntitéPéonEnnemie> péons = Game.Components.OfType<EntitéPéonEnnemie>().ToList();
-            //    foreach (EntitéPéonEnnemie péon in péons)
-            //    {
-            //        if (péon.NumPéon == numPéon)
-            //        {
-            //            float px = lecteur.ReadSingle();
-            //            float py = lecteur.ReadSingle();
-            //            float pz = lecteur.ReadSingle();
-            //            Vector3 positionEnnemie = new Vector3(px, py, pz);
-            //            péon.GérerDéplacement(positionEnnemie);
-            //        }
-            //    }
-            //}
-            //else if (p == Protocoles.StartGame)
-            //{
-            //    bool valeur = lecteur.ReadBoolean();
-            //    ((Game)Game).EnJeu = valeur;
-            //}
-
-            //else if (p == Protocoles.BasicAttaque)
-            //{
-            //    Entité theEntité = null;
-
-            //    GestionnaireJeu game = Game.Components.First(x => x is GestionnaireJeu) as GestionnaireJeu;
-
-            //    float px = lecteur.ReadSingle();
-            //    float py = lecteur.ReadSingle();
-            //    float pz = lecteur.ReadSingle();
-            //    int force = lecteur.ReadInt32();
-            //    int précision = lecteur.ReadInt32();
-            //    int typeEnemmie = lecteur.ReadInt32();
-            //    int numEnnemie = lecteur.ReadInt32();
-            //    int dégat = lecteur.ReadInt32();
-
-            //    if (typeEnemmie == 1)
-            //    {
-            //        List<EntitéPéonAlliée> entités = Game.Components.OfType<EntitéPéonAlliée>().ToList();
-            //        foreach (EntitéPéonAlliée entité in entités)
-            //        {
-            //            if (entité.NumPéon == numEnnemie)
-            //            {
-            //                theEntité = entité;
-            //            }
-            //        }
-            //    }
-            //    else if (typeEnemmie == 2)
-            //    {
-            //        List<EntitéTourAlliée> entités = Game.Components.OfType<EntitéTourAlliée>().ToList();
-            //        foreach (EntitéTourAlliée entité in entités)
-            //        {
-            //            if (entité.NumTour == numEnnemie)
-            //            {
-            //                theEntité = entité;
-            //            }
-            //        }
-            //    }
-            //    else
-            //    {
-            //        List<EntitéJoueur> entités = Game.Components.OfType<EntitéJoueur>().ToList();
-            //        foreach (EntitéJoueur entité in entités)
-            //        {
-            //            theEntité = entité;
-
-            //        }
-            //    }
-            //    if (theEntité != null)
-            //    {
-            //        ProjectileAttaqueDeBase projectile = new ProjectileAttaqueDeBase(Game, "rocket", game.ÉCHELLE_PROJECTILE_ATTAQUE_DE_BASE, game.RotationInitialeProjectielADB, new Vector3(px, py, pz) + new Vector3(0, 5, 0), game.DirectionInitialeProjectileADB, force, précision, theEntité, dégat, game.INTERVALLEMAJ);
-            //        Game.Components.Add(projectile);
-            //    }
-            //}
-
-
-
-            //else if (p == Protocoles.ValidationDeadEnnemi)
-            //{
-            //    int typeEnemmie = lecteur.ReadInt32();
-            //    int numEnnemie = lecteur.ReadInt32();
-
-            //    if (typeEnemmie == 1)
-            //    {
-            //        List<EntitéPéonAlliée> entités = Game.Components.OfType<EntitéPéonAlliée>().ToList();
-            //        foreach (EntitéPéonAlliée entité in entités)
-            //        {
-            //            if (entité.NumPéon == numEnnemie)
-            //            {
-            //                entité.PointDeVie = 0;
-            //            }
-            //        }
-            //    }
-            //    else if (typeEnemmie == 2)
-            //    {
-            //        List<EntitéTourAlliée> entités = Game.Components.OfType<EntitéTourAlliée>().ToList();
-            //        foreach (EntitéTourAlliée entité in entités)
-            //        {
-            //            if (entité.NumTour == numEnnemie)
-            //            {
-            //                entité.PointDeVie = 0;
-            //            }
-            //        }
-            //    }
-            //    else if (typeEnemmie == 0)
-            //    {
-            //        List<EntitéJoueur> entités = Game.Components.OfType<EntitéJoueur>().ToList();
-            //        foreach (EntitéJoueur entité in entités)
-            //        {
-            //            entité.PointDeVie = 0;
-            //        }
-            //    }
-
-            //}
-            //else if (p == Protocoles.HealthChange)
-            //{
-            //    int pdv = lecteur.ReadInt32();
-            //    List<EntitéEnnemie> entitésEnnemies = Game.Components.OfType<EntitéEnnemie>().ToList();
-            //    foreach (EntitéEnnemie entitéEnnemie in entitésEnnemies)
-            //    {
-            //        entitéEnnemie.PointDeVie = pdv;
-            //    }
-            //}
-            //    else if (p == Protocoles.WAttack)
-            //    {
-            //        GestionnaireJeu game = Game.Components.First(x => x is GestionnaireJeu) as GestionnaireJeu;
-            //        float px = lecteur.ReadSingle();
-            //        float py = lecteur.ReadSingle();
-            //        float pz = lecteur.ReadSingle();
-            //        float dx = lecteur.ReadSingle();
-            //        float dy = lecteur.ReadSingle();
-            //        float dz = lecteur.ReadSingle();
-            //        int force = lecteur.ReadInt32();
-            //        int précision = lecteur.ReadInt32();
-            //        int dégat = lecteur.ReadInt32();
-            //        ProjectileAttaqueW projectile = new ProjectileAttaqueW(Game, "bomb", game.ÉCHELLE_PROJECTILE_W, game.RotationInitialeProjectielADB, new Vector3(px, py, pz), game.DirectionInitialeProjectileADB, new Vector3(dx, dy, dz), force, précision,dégat,game.INTERVALLEMAJ, 2);
-            //        Game.Components.Add(projectile);
-            //    }
-
-            //}
-            //catch (Exception) { }
         }
 
 
@@ -440,7 +274,7 @@ namespace AtelierXNA
         {
             byte[] resultat;
 
-            lock (fluxMemoire)
+            lock (fluxMemoire)// On lock pour que l'exécution se fasse avant que d'autre donnée soit capté et analysé.
             {
                 int bytesÉcrits = (int)fluxMemoire.Position;
                 resultat = new byte[bytesÉcrits];
@@ -463,7 +297,7 @@ namespace AtelierXNA
             }
             catch (Exception) { }
         }
-        public void StartGame()
+        public void PartirPartie()
         {
             écritureFlux.Position = 0;
             rédacteur.Write((Byte)Protocoles.StartGame);

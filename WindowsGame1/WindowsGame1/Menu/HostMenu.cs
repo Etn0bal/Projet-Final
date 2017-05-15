@@ -144,7 +144,7 @@ namespace AtelierXNA
                     {
 
                         ((Game)Game).NumClient = 0;
-                        Client.StartGame();
+                        Client.PartirPartie();
                         ((Game)Game).EnJeu = true;
 
                     }
