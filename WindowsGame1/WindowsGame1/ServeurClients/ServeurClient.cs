@@ -15,16 +15,13 @@ using System.IO;
 
 namespace AtelierXNA
 {
-    /// <summary>
-    /// This is a game component that implements IUpdateable.
-    /// </summary>
     public class ServeurClient : Microsoft.Xna.Framework.GameComponent
     {
 
-        MemoryStream LectureFlux, ÉcritureFlux;
+        MemoryStream lectureFlux, écritureFlux;
 
-        BinaryReader Lecteur;
-        BinaryWriter Rédacteur;
+        BinaryReader lecteur;
+        BinaryWriter rédacteur;
 
         TcpClient Client;
         const int PORT = 5011;
@@ -36,10 +33,10 @@ namespace AtelierXNA
             : base(game)
         {
             IP = iP;
-            InializeClient();
+            InitialiserClient();
         }
 
-        private void InializeClient()
+        private void InitialiserClient()
         {
             Client = new TcpClient();
             Client.NoDelay = true;
@@ -48,19 +45,15 @@ namespace AtelierXNA
             Client.GetStream().BeginRead(LectureTampon, 0, GRANDEUR_TAMPON, RéceptionDuFlux, null);
 
 
-            LectureFlux = new MemoryStream();
-            ÉcritureFlux = new MemoryStream();
+            lectureFlux = new MemoryStream();
+            écritureFlux = new MemoryStream();
 
-            Lecteur = new BinaryReader(LectureFlux);
-            Rédacteur = new BinaryWriter(ÉcritureFlux);
+            lecteur = new BinaryReader(lectureFlux);
+            rédacteur = new BinaryWriter(écritureFlux);
 
         }
 
-        /// <summary>
-        /// Allows the game component to perform any initialization it needs to before starting
-        /// to run.  This is where it can query for any required services and load content.
-        /// </summary>
-        private void RéceptionDuFlux(IAsyncResult ar)
+        private void RéceptionDuFlux(IAsyncResult resultat)
         {
             int bytesLus = 0;
 
@@ -68,13 +61,10 @@ namespace AtelierXNA
             {
                 lock (Client.GetStream())
                 {
-                    bytesLus = Client.GetStream().EndRead(ar);
+                    bytesLus = Client.GetStream().EndRead(resultat);
                 }
             }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
+            catch (Exception) { }
 
             if (bytesLus == 0)
             {
@@ -82,306 +72,448 @@ namespace AtelierXNA
                 return;
             }
 
-            byte[] data = new byte[bytesLus];
+            byte[] donnée = new byte[bytesLus];
 
             for (int i = 0; i < bytesLus; i++)
-                data[i] = LectureTampon[i];
+            {
+                donnée[i] = LectureTampon[i];
+            }
 
-            ProcessData(data);
-
+            TraitementDonnées(donnée);
             Client.GetStream().BeginRead(LectureTampon, 0, GRANDEUR_TAMPON, RéceptionDuFlux, null);
         }
 
-        private void ProcessData(byte[] data)
+        private void TraitementDonnées(byte[] data)
         {
-            LectureFlux.SetLength(0);
-            LectureFlux.Position = 0;
+            lectureFlux.SetLength(0);
+            lectureFlux.Position = 0;
 
-            LectureFlux.Write(data, 0, data.Length);
-            LectureFlux.Position = 0;
+            lectureFlux.Write(data, 0, data.Length);
+            lectureFlux.Position = 0;
 
             Protocoles p;
 
             try
             {
-                p = (Protocoles)Lecteur.ReadByte();
 
-                if (p == Protocoles.Connected)
+                p = (Protocoles)lecteur.ReadByte();
+                switch (p)
                 {
-
-                }
-                else if (p == Protocoles.Disconnected)
-                {
-
-                }
-
-
-                else if (p == Protocoles.PlayerMovement)
-                {
-                    List<EntitéEnnemie> entitésEnnemies = Game.Components.OfType<EntitéEnnemie>().ToList();
-                    foreach (EntitéEnnemie entitéEnnemie in entitésEnnemies)
-                    {
-                        float m11 = Lecteur.ReadSingle();
-                        float m12 = Lecteur.ReadSingle();
-                        float m13 = Lecteur.ReadSingle();
-                        float m14 = Lecteur.ReadSingle();
-                        float m21 = Lecteur.ReadSingle();
-                        float m22 = Lecteur.ReadSingle();
-                        float m23 = Lecteur.ReadSingle();
-                        float m24 = Lecteur.ReadSingle();
-                        float m31 = Lecteur.ReadSingle();
-                        float m32 = Lecteur.ReadSingle();
-                        float m33 = Lecteur.ReadSingle();
-                        float m34 = Lecteur.ReadSingle();
-                        float m41 = Lecteur.ReadSingle();
-                        float m42 = Lecteur.ReadSingle();
-                        float m43 = Lecteur.ReadSingle();
-                        float m44 = Lecteur.ReadSingle();
-                        entitéEnnemie.Monde = new Matrix(m11, m12, m13, m14, m21, m22, m23, m24, m31, m32, m33, m34, m41, m42, m43, m44);
-                    }
-                }
-
-                else if (p == Protocoles.MinionMovement)
-                {
-                    int numPéon = Lecteur.ReadInt32();
-                    List<EntitéPéonEnnemie> péons = Game.Components.OfType<EntitéPéonEnnemie>().ToList();
-                    foreach (EntitéPéonEnnemie péon in péons)
-                    {
-                        if (péon.NumPéon == numPéon)
+                    case (Protocoles.PlayerMovement):
                         {
-                            float px = Lecteur.ReadSingle();
-                            float py = Lecteur.ReadSingle();
-                            float pz = Lecteur.ReadSingle();
-                            Vector3 positionEnnemie = new Vector3(px, py, pz);
-                            péon.GérerDéplacement(positionEnnemie);
-                        }
-                    }
-                }
-                else if (p == Protocoles.StartGame)
-                {
-                    bool valeur = Lecteur.ReadBoolean();
-                    ((Game)Game).EnJeu = valeur;
-                }
-
-                else if (p == Protocoles.BasicAttaque)
-                {
-                    Entité theEntité = null;
-
-                    GestionnaireJeu game = Game.Components.First(x => x is GestionnaireJeu) as GestionnaireJeu;
-
-                    float px = Lecteur.ReadSingle();
-                    float py = Lecteur.ReadSingle();
-                    float pz = Lecteur.ReadSingle();
-                    int force = Lecteur.ReadInt32();
-                    int précision = Lecteur.ReadInt32();
-                    int typeEnemmie = Lecteur.ReadInt32();
-                    int numEnnemie = Lecteur.ReadInt32();
-                    int dégat = Lecteur.ReadInt32();
-
-                    if (typeEnemmie == 1)
-                    {
-                        List<EntitéPéonAlliée> entités = Game.Components.OfType<EntitéPéonAlliée>().ToList();
-                        foreach (EntitéPéonAlliée entité in entités)
-                        {
-                            if (entité.NumPéon == numEnnemie)
+                            List<EntitéEnnemie> entitésEnnemies = Game.Components.OfType<EntitéEnnemie>().ToList();
+                            foreach (EntitéEnnemie entitéEnnemie in entitésEnnemies)
                             {
-                                theEntité = entité;
+                                float m11 = lecteur.ReadSingle();
+                                float m12 = lecteur.ReadSingle();
+                                float m13 = lecteur.ReadSingle();
+                                float m14 = lecteur.ReadSingle();
+                                float m21 = lecteur.ReadSingle();
+                                float m22 = lecteur.ReadSingle();
+                                float m23 = lecteur.ReadSingle();
+                                float m24 = lecteur.ReadSingle();
+                                float m31 = lecteur.ReadSingle();
+                                float m32 = lecteur.ReadSingle();
+                                float m33 = lecteur.ReadSingle();
+                                float m34 = lecteur.ReadSingle();
+                                float m41 = lecteur.ReadSingle();
+                                float m42 = lecteur.ReadSingle();
+                                float m43 = lecteur.ReadSingle();
+                                float m44 = lecteur.ReadSingle();
+                                entitéEnnemie.Monde = new Matrix(m11, m12, m13, m14, m21, m22, m23, m24, m31, m32, m33, m34, m41, m42, m43, m44);
                             }
+                            break;
                         }
-                    }
-                    else if (typeEnemmie == 2)
-                    {
-                        List<EntitéTourAlliée> entités = Game.Components.OfType<EntitéTourAlliée>().ToList();
-                        foreach (EntitéTourAlliée entité in entités)
+                    case (Protocoles.MinionMovement):
                         {
-                            if (entité.NumTour == numEnnemie)
+                            int numPéon = lecteur.ReadInt32();
+                            List<EntitéPéonEnnemie> péons = Game.Components.OfType<EntitéPéonEnnemie>().ToList();
+                            foreach (EntitéPéonEnnemie péon in péons)
                             {
-                                theEntité = entité;
+                                if (péon.NumPéon == numPéon)
+                                {
+                                    float px = lecteur.ReadSingle();
+                                    float py = lecteur.ReadSingle();
+                                    float pz = lecteur.ReadSingle();
+                                    Vector3 positionEnnemie = new Vector3(px, py, pz);
+                                    péon.GérerDéplacement(positionEnnemie);
+                                }
                             }
+                            break;
                         }
-                    }
-                    else
-                    {
-                        List<EntitéJoueur> entités = Game.Components.OfType<EntitéJoueur>().ToList();
-                        foreach (EntitéJoueur entité in entités)
+                    case (Protocoles.StartGame):
                         {
-                            theEntité = entité;
-
+                            bool valeur = lecteur.ReadBoolean();
+                            ((Game)Game).EnJeu = valeur;
+                            break;
                         }
-                    }
-                    if (theEntité != null)
-                    {
-                        ProjectileAttaqueDeBase projectile = new ProjectileAttaqueDeBase(Game, "rocket", game.ÉCHELLE_PROJECTILE_ATTAQUE_DE_BASE, game.RotationInitialeProjectielADB, new Vector3(px, py, pz) + new Vector3(0, 5, 0), game.DirectionInitialeProjectileADB, force, précision, theEntité, dégat, game.INTERVALLEMAJ);
-                        Game.Components.Add(projectile);
-                    }
-                }
-
-
-
-                else if (p == Protocoles.ValidationDeadEnnemi)
-                {
-                    int typeEnemmie = Lecteur.ReadInt32();
-                    int numEnnemie = Lecteur.ReadInt32();
-
-                    if (typeEnemmie == 1)
-                    {
-                        List<EntitéPéonAlliée> entités = Game.Components.OfType<EntitéPéonAlliée>().ToList();
-                        foreach (EntitéPéonAlliée entité in entités)
+                    case (Protocoles.BasicAttaque):
                         {
-                            if (entité.NumPéon == numEnnemie)
+                            Entité theEntité = null;
+
+                            GestionnaireJeu game = Game.Components.First(x => x is GestionnaireJeu) as GestionnaireJeu;
+
+                            float px = lecteur.ReadSingle();
+                            float py = lecteur.ReadSingle();
+                            float pz = lecteur.ReadSingle();
+                            int force = lecteur.ReadInt32();
+                            int précision = lecteur.ReadInt32();
+                            int typeEnemmie = lecteur.ReadInt32();
+                            int numEnnemie = lecteur.ReadInt32();
+                            int dégat = lecteur.ReadInt32();
+
+                            if (typeEnemmie == 1)
                             {
-                                entité.PointDeVie = 0;
+                                List<EntitéPéonAlliée> entités = Game.Components.OfType<EntitéPéonAlliée>().ToList();
+                                foreach (EntitéPéonAlliée entité in entités)
+                                {
+                                    if (entité.NumPéon == numEnnemie)
+                                    {
+                                        theEntité = entité;
+                                    }
+                                }
                             }
-                        }
-                    }
-                    else if (typeEnemmie == 2)
-                    {
-                        List<EntitéTourAlliée> entités = Game.Components.OfType<EntitéTourAlliée>().ToList();
-                        foreach (EntitéTourAlliée entité in entités)
-                        {
-                            if (entité.NumTour == numEnnemie)
+                            else if (typeEnemmie == 2)
                             {
-                                entité.PointDeVie = 0;
+                                List<EntitéTourAlliée> entités = Game.Components.OfType<EntitéTourAlliée>().ToList();
+                                foreach (EntitéTourAlliée entité in entités)
+                                {
+                                    if (entité.NumTour == numEnnemie)
+                                    {
+                                        theEntité = entité;
+                                    }
+                                }
                             }
+                            else
+                            {
+                                List<EntitéJoueur> entités = Game.Components.OfType<EntitéJoueur>().ToList();
+                                foreach (EntitéJoueur entité in entités)
+                                {
+                                    theEntité = entité;
+
+                                }
+                            }
+                            if (theEntité != null)
+                            {
+                                ProjectileAttaqueDeBase projectile = new ProjectileAttaqueDeBase(Game, "rocket", game.ÉCHELLE_PROJECTILE_ATTAQUE_DE_BASE, game.RotationInitialeProjectielADB, new Vector3(px, py, pz) + new Vector3(0, 5, 0), game.DirectionInitialeProjectileADB, force, précision, theEntité, dégat, game.INTERVALLEMAJ);
+                                Game.Components.Add(projectile);
+                            }
+                            break;
                         }
-                    }
-                    else if (typeEnemmie == 0)
-                    {
-                        List<EntitéJoueur> entités = Game.Components.OfType<EntitéJoueur>().ToList();
-                        foreach (EntitéJoueur entité in entités)
+                    case (Protocoles.ValidationDeadEnnemi):
                         {
-                            entité.PointDeVie = 0;
+                            int typeEnemmie = lecteur.ReadInt32();
+                            int numEnnemie = lecteur.ReadInt32();
+
+                            if (typeEnemmie == 1)
+                            {
+                                List<EntitéPéonAlliée> entités = Game.Components.OfType<EntitéPéonAlliée>().ToList();
+                                foreach (EntitéPéonAlliée entité in entités)
+                                {
+                                    if (entité.NumPéon == numEnnemie)
+                                    {
+                                        entité.PointDeVie = 0;
+                                    }
+                                }
+                            }
+                            else if (typeEnemmie == 2)
+                            {
+                                List<EntitéTourAlliée> entités = Game.Components.OfType<EntitéTourAlliée>().ToList();
+                                foreach (EntitéTourAlliée entité in entités)
+                                {
+                                    if (entité.NumTour == numEnnemie)
+                                    {
+                                        entité.PointDeVie = 0;
+                                    }
+                                }
+                            }
+                            else if (typeEnemmie == 0)
+                            {
+                                List<EntitéJoueur> entités = Game.Components.OfType<EntitéJoueur>().ToList();
+                                foreach (EntitéJoueur entité in entités)
+                                {
+                                    entité.PointDeVie = 0;
+                                }
+                            }
+                            break;
                         }
-                    }
+                    case (Protocoles.HealthChange):
+                        {
+                            int pdv = lecteur.ReadInt32();
+                            List<EntitéEnnemie> entitésEnnemies = Game.Components.OfType<EntitéEnnemie>().ToList();
+                            foreach (EntitéEnnemie entitéEnnemie in entitésEnnemies)
+                            {
+                                entitéEnnemie.PointDeVie = pdv;
+                            }
+                            break;
+                        }
+                    case (Protocoles.WAttack):
+                        {
+                            GestionnaireJeu game = Game.Components.First(x => x is GestionnaireJeu) as GestionnaireJeu;
+                            float px = lecteur.ReadSingle();
+                            float py = lecteur.ReadSingle();
+                            float pz = lecteur.ReadSingle();
+                            float dx = lecteur.ReadSingle();
+                            float dy = lecteur.ReadSingle();
+                            float dz = lecteur.ReadSingle();
+                            int force = lecteur.ReadInt32();
+                            int précision = lecteur.ReadInt32();
+                            int dégat = lecteur.ReadInt32();
+                            ProjectileAttaqueW projectile = new ProjectileAttaqueW(Game, "bomb", game.ÉCHELLE_PROJECTILE_W, game.RotationInitialeProjectielADB, new Vector3(px, py, pz), game.DirectionInitialeProjectileADB, new Vector3(dx, dy, dz), force, précision, dégat, game.INTERVALLEMAJ, 2);
+                            Game.Components.Add(projectile);
+                            break;
+                        }
 
                 }
-                else if (p == Protocoles.HealthChange)
-                {
-                    int pdv = Lecteur.ReadInt32();
-                    List<EntitéEnnemie> entitésEnnemies = Game.Components.OfType<EntitéEnnemie>().ToList();
-                    foreach (EntitéEnnemie entitéEnnemie in entitésEnnemies)
-                    {
-                        entitéEnnemie.PointDeVie = pdv;
-                    }
-                }
-                else if (p == Protocoles.WAttack)
-                {
-                    GestionnaireJeu game = Game.Components.First(x => x is GestionnaireJeu) as GestionnaireJeu;
-                    float px = Lecteur.ReadSingle();
-                    float py = Lecteur.ReadSingle();
-                    float pz = Lecteur.ReadSingle();
-                    float dx = Lecteur.ReadSingle();
-                    float dy = Lecteur.ReadSingle();
-                    float dz = Lecteur.ReadSingle();
-                    int force = Lecteur.ReadInt32();
-                    int précision = Lecteur.ReadInt32();
-                    int dégat = Lecteur.ReadInt32();
-                    ProjectileAttaqueW projectile = new ProjectileAttaqueW(Game, "bomb", game.ÉCHELLE_PROJECTILE_W, game.RotationInitialeProjectielADB, new Vector3(px, py, pz), game.DirectionInitialeProjectileADB, new Vector3(dx, dy, dz), force, précision,dégat,game.INTERVALLEMAJ, 2);
-                    Game.Components.Add(projectile);
-                }
-                
             }
-            catch (Exception ex)
-            {
-            }
+            catch (Exception) { }
+            //if (p == Protocoles.PlayerMovement)
+            //{
+            //    List<EntitéEnnemie> entitésEnnemies = Game.Components.OfType<EntitéEnnemie>().ToList();
+            //    foreach (EntitéEnnemie entitéEnnemie in entitésEnnemies)
+            //    {
+            //        float m11 = lecteur.ReadSingle();
+            //        float m12 = lecteur.ReadSingle();
+            //        float m13 = lecteur.ReadSingle();
+            //        float m14 = lecteur.ReadSingle();
+            //        float m21 = lecteur.ReadSingle();
+            //        float m22 = lecteur.ReadSingle();
+            //        float m23 = lecteur.ReadSingle();
+            //        float m24 = lecteur.ReadSingle();
+            //        float m31 = lecteur.ReadSingle();
+            //        float m32 = lecteur.ReadSingle();
+            //        float m33 = lecteur.ReadSingle();
+            //        float m34 = lecteur.ReadSingle();
+            //        float m41 = lecteur.ReadSingle();
+            //        float m42 = lecteur.ReadSingle();
+            //        float m43 = lecteur.ReadSingle();
+            //        float m44 = lecteur.ReadSingle();
+            //        entitéEnnemie.Monde = new Matrix(m11, m12, m13, m14, m21, m22, m23, m24, m31, m32, m33, m34, m41, m42, m43, m44);
+            //    }
+            //}
+
+            //else if (p == Protocoles.MinionMovement)
+            //{
+            //    int numPéon = lecteur.ReadInt32();
+            //    List<EntitéPéonEnnemie> péons = Game.Components.OfType<EntitéPéonEnnemie>().ToList();
+            //    foreach (EntitéPéonEnnemie péon in péons)
+            //    {
+            //        if (péon.NumPéon == numPéon)
+            //        {
+            //            float px = lecteur.ReadSingle();
+            //            float py = lecteur.ReadSingle();
+            //            float pz = lecteur.ReadSingle();
+            //            Vector3 positionEnnemie = new Vector3(px, py, pz);
+            //            péon.GérerDéplacement(positionEnnemie);
+            //        }
+            //    }
+            //}
+            //else if (p == Protocoles.StartGame)
+            //{
+            //    bool valeur = lecteur.ReadBoolean();
+            //    ((Game)Game).EnJeu = valeur;
+            //}
+
+            //else if (p == Protocoles.BasicAttaque)
+            //{
+            //    Entité theEntité = null;
+
+            //    GestionnaireJeu game = Game.Components.First(x => x is GestionnaireJeu) as GestionnaireJeu;
+
+            //    float px = lecteur.ReadSingle();
+            //    float py = lecteur.ReadSingle();
+            //    float pz = lecteur.ReadSingle();
+            //    int force = lecteur.ReadInt32();
+            //    int précision = lecteur.ReadInt32();
+            //    int typeEnemmie = lecteur.ReadInt32();
+            //    int numEnnemie = lecteur.ReadInt32();
+            //    int dégat = lecteur.ReadInt32();
+
+            //    if (typeEnemmie == 1)
+            //    {
+            //        List<EntitéPéonAlliée> entités = Game.Components.OfType<EntitéPéonAlliée>().ToList();
+            //        foreach (EntitéPéonAlliée entité in entités)
+            //        {
+            //            if (entité.NumPéon == numEnnemie)
+            //            {
+            //                theEntité = entité;
+            //            }
+            //        }
+            //    }
+            //    else if (typeEnemmie == 2)
+            //    {
+            //        List<EntitéTourAlliée> entités = Game.Components.OfType<EntitéTourAlliée>().ToList();
+            //        foreach (EntitéTourAlliée entité in entités)
+            //        {
+            //            if (entité.NumTour == numEnnemie)
+            //            {
+            //                theEntité = entité;
+            //            }
+            //        }
+            //    }
+            //    else
+            //    {
+            //        List<EntitéJoueur> entités = Game.Components.OfType<EntitéJoueur>().ToList();
+            //        foreach (EntitéJoueur entité in entités)
+            //        {
+            //            theEntité = entité;
+
+            //        }
+            //    }
+            //    if (theEntité != null)
+            //    {
+            //        ProjectileAttaqueDeBase projectile = new ProjectileAttaqueDeBase(Game, "rocket", game.ÉCHELLE_PROJECTILE_ATTAQUE_DE_BASE, game.RotationInitialeProjectielADB, new Vector3(px, py, pz) + new Vector3(0, 5, 0), game.DirectionInitialeProjectileADB, force, précision, theEntité, dégat, game.INTERVALLEMAJ);
+            //        Game.Components.Add(projectile);
+            //    }
+            //}
+
+
+
+            //else if (p == Protocoles.ValidationDeadEnnemi)
+            //{
+            //    int typeEnemmie = lecteur.ReadInt32();
+            //    int numEnnemie = lecteur.ReadInt32();
+
+            //    if (typeEnemmie == 1)
+            //    {
+            //        List<EntitéPéonAlliée> entités = Game.Components.OfType<EntitéPéonAlliée>().ToList();
+            //        foreach (EntitéPéonAlliée entité in entités)
+            //        {
+            //            if (entité.NumPéon == numEnnemie)
+            //            {
+            //                entité.PointDeVie = 0;
+            //            }
+            //        }
+            //    }
+            //    else if (typeEnemmie == 2)
+            //    {
+            //        List<EntitéTourAlliée> entités = Game.Components.OfType<EntitéTourAlliée>().ToList();
+            //        foreach (EntitéTourAlliée entité in entités)
+            //        {
+            //            if (entité.NumTour == numEnnemie)
+            //            {
+            //                entité.PointDeVie = 0;
+            //            }
+            //        }
+            //    }
+            //    else if (typeEnemmie == 0)
+            //    {
+            //        List<EntitéJoueur> entités = Game.Components.OfType<EntitéJoueur>().ToList();
+            //        foreach (EntitéJoueur entité in entités)
+            //        {
+            //            entité.PointDeVie = 0;
+            //        }
+            //    }
+
+            //}
+            //else if (p == Protocoles.HealthChange)
+            //{
+            //    int pdv = lecteur.ReadInt32();
+            //    List<EntitéEnnemie> entitésEnnemies = Game.Components.OfType<EntitéEnnemie>().ToList();
+            //    foreach (EntitéEnnemie entitéEnnemie in entitésEnnemies)
+            //    {
+            //        entitéEnnemie.PointDeVie = pdv;
+            //    }
+            //}
+            //    else if (p == Protocoles.WAttack)
+            //    {
+            //        GestionnaireJeu game = Game.Components.First(x => x is GestionnaireJeu) as GestionnaireJeu;
+            //        float px = lecteur.ReadSingle();
+            //        float py = lecteur.ReadSingle();
+            //        float pz = lecteur.ReadSingle();
+            //        float dx = lecteur.ReadSingle();
+            //        float dy = lecteur.ReadSingle();
+            //        float dz = lecteur.ReadSingle();
+            //        int force = lecteur.ReadInt32();
+            //        int précision = lecteur.ReadInt32();
+            //        int dégat = lecteur.ReadInt32();
+            //        ProjectileAttaqueW projectile = new ProjectileAttaqueW(Game, "bomb", game.ÉCHELLE_PROJECTILE_W, game.RotationInitialeProjectielADB, new Vector3(px, py, pz), game.DirectionInitialeProjectileADB, new Vector3(dx, dy, dz), force, précision,dégat,game.INTERVALLEMAJ, 2);
+            //        Game.Components.Add(projectile);
+            //    }
+
+            //}
+            //catch (Exception) { }
         }
 
 
-        private byte[] GetDataFromMemoryStream(MemoryStream ms)
+        private byte[] ObtentionDonnées(MemoryStream fluxMemoire)
         {
-            byte[] result;
+            byte[] resultat;
 
-            lock (ms)
+            lock (fluxMemoire)
             {
-                int bytesWritten = (int)ms.Position;
-                result = new byte[bytesWritten];
+                int bytesÉcrits = (int)fluxMemoire.Position;
+                resultat = new byte[bytesÉcrits];
 
-                ms.Position = 0;
-                ms.Read(result, 0, bytesWritten);
+                fluxMemoire.Position = 0;
+                fluxMemoire.Read(resultat, 0, bytesÉcrits);
             }
 
-            return result;
+            return resultat;
         }
 
-        /// <summary>
-        /// Code to actually send the data to the client
-        /// </summary>
-        /// <param name="b">Data to send</param>
-        public void SendData(byte[] b)
+        public void EnvoiDonnées(byte[] tableauByte)
         {
-
             try
             {
                 lock (Client.GetStream())
                 {
-                    Client.GetStream().BeginWrite(b, 0, b.Length, null, null);
+                    Client.GetStream().BeginWrite(tableauByte, 0, tableauByte.Length, null, null);
                 }
             }
-            catch (Exception)
-            {
-                //TODO
-            }
+            catch (Exception) { }
         }
         public void StartGame()
         {
-            ÉcritureFlux.Position = 0;
-            Rédacteur.Write((Byte)Protocoles.StartGame);
-            Rédacteur.Write(true);
-            SendData(GetDataFromMemoryStream(ÉcritureFlux));
+            écritureFlux.Position = 0;
+            rédacteur.Write((Byte)Protocoles.StartGame);
+            rédacteur.Write(true);
+            EnvoiDonnées(ObtentionDonnées(écritureFlux));
         }
-        //public void EnvoyerDestination(Vector3 destination)
-        //{
-        //    writeStream.Position = 0;
-        //    writer.Write((Byte)Protocoles.PlayerMovement);
-        //    //Envoi de la position
-        //    writer.Write(destination.X);
-        //    writer.Write(destination.Y);
-        //    writer.Write(destination.Z);
-        //    SendData(GetDataFromMemoryStream(writeStream));
-        //}
+
         public void EnvoyerPositionPéon(Vector3 position, int numPéon)
         {
-            ÉcritureFlux.Position = 0;
-            Rédacteur.Write((Byte)Protocoles.MinionMovement);
+            écritureFlux.Position = 0;
+            rédacteur.Write((Byte)Protocoles.MinionMovement);
             //Envoi du numéro de péon
-            Rédacteur.Write(numPéon);
+            rédacteur.Write(numPéon);
             //Envoi de la position du péon
-            Rédacteur.Write(position.X);
-            Rédacteur.Write(position.Y);
-            Rédacteur.Write(position.Z);
+            rédacteur.Write(position.X);
+            rédacteur.Write(position.Y);
+            rédacteur.Write(position.Z);
 
-            SendData(GetDataFromMemoryStream(ÉcritureFlux));
+            EnvoiDonnées(ObtentionDonnées(écritureFlux));
         }
         public void EnvoyerAttaque(Vector3 position, int force, int précision, int typeEnnemie, int numEnnemie, int dégat)
         {
-            ÉcritureFlux.Position = 0;
-            Rédacteur.Write((Byte)Protocoles.BasicAttaque);
+            écritureFlux.Position = 0;
+            rédacteur.Write((Byte)Protocoles.BasicAttaque);
             //Envoi position joueurA
-            Rédacteur.Write(position.X);
-            Rédacteur.Write(position.Y);
-            Rédacteur.Write(position.Z);
+            rédacteur.Write(position.X);
+            rédacteur.Write(position.Y);
+            rédacteur.Write(position.Z);
             //Envoi de la force 
-            Rédacteur.Write(force);
+            rédacteur.Write(force);
             //Envoi de la précision 
-            Rédacteur.Write(précision);
+            rédacteur.Write(précision);
             //Envoi du type de l'ennemie
-            Rédacteur.Write(typeEnnemie);
+            rédacteur.Write(typeEnnemie);
             //Envoi du numéro de l'ennemie
-            Rédacteur.Write(numEnnemie);
+            rédacteur.Write(numEnnemie);
             //Envoie du dégat
-            Rédacteur.Write(dégat);
+            rédacteur.Write(dégat);
 
-            SendData(GetDataFromMemoryStream(ÉcritureFlux));
+            EnvoiDonnées(ObtentionDonnées(écritureFlux));
         }
         public void EnvoyerEnnemiMort(int typeEnnemie, int numEnnemie)
         {
-            ÉcritureFlux.Position = 0;
-            Rédacteur.Write((Byte)Protocoles.ValidationDeadEnnemi);
+            écritureFlux.Position = 0;
+            rédacteur.Write((Byte)Protocoles.ValidationDeadEnnemi);
             //Envoi du type de l'ennemie
-            Rédacteur.Write(typeEnnemie);
+            rédacteur.Write(typeEnnemie);
             //Envoi du numéro de l'ennemie
-            Rédacteur.Write(numEnnemie);
-            SendData(GetDataFromMemoryStream(ÉcritureFlux));
+            rédacteur.Write(numEnnemie);
+            EnvoiDonnées(ObtentionDonnées(écritureFlux));
         }
         public void EnvoyerMatrice(Matrix matrice)
         {
@@ -401,53 +533,53 @@ namespace AtelierXNA
             float m42 = matrice.M42;
             float m43 = matrice.M43;
             float m44 = matrice.M44;
-            ÉcritureFlux.Position = 0;
-            Rédacteur.Write((Byte)Protocoles.PlayerMovement);
-            Rédacteur.Write(m11);
-            Rédacteur.Write(m12);
-            Rédacteur.Write(m13);
-            Rédacteur.Write(m14);
-            Rédacteur.Write(m21);
-            Rédacteur.Write(m22);
-            Rédacteur.Write(m23);
-            Rédacteur.Write(m24);
-            Rédacteur.Write(m31);
-            Rédacteur.Write(m32);
-            Rédacteur.Write(m33);
-            Rédacteur.Write(m34);
-            Rédacteur.Write(m41);
-            Rédacteur.Write(m42);
-            Rédacteur.Write(m43);
-            Rédacteur.Write(m44);
-            SendData(GetDataFromMemoryStream(ÉcritureFlux));
+            écritureFlux.Position = 0;
+            rédacteur.Write((Byte)Protocoles.PlayerMovement);
+            rédacteur.Write(m11);
+            rédacteur.Write(m12);
+            rédacteur.Write(m13);
+            rédacteur.Write(m14);
+            rédacteur.Write(m21);
+            rédacteur.Write(m22);
+            rédacteur.Write(m23);
+            rédacteur.Write(m24);
+            rédacteur.Write(m31);
+            rédacteur.Write(m32);
+            rédacteur.Write(m33);
+            rédacteur.Write(m34);
+            rédacteur.Write(m41);
+            rédacteur.Write(m42);
+            rédacteur.Write(m43);
+            rédacteur.Write(m44);
+            EnvoiDonnées(ObtentionDonnées(écritureFlux));
         }
         public void EnvoyerGainDeVie(int PointDeVie)
         {
-            ÉcritureFlux.Position = 0;
-            Rédacteur.Write((Byte)Protocoles.HealthChange);
-            Rédacteur.Write(PointDeVie);
-            SendData(GetDataFromMemoryStream(ÉcritureFlux));
+            écritureFlux.Position = 0;
+            rédacteur.Write((Byte)Protocoles.HealthChange);
+            rédacteur.Write(PointDeVie);
+            EnvoiDonnées(ObtentionDonnées(écritureFlux));
         }
         public void EnvoyerAttaqueW(Vector3 position, Vector3 direction, int force, int précision, int dégat)
         {
-            ÉcritureFlux.Position = 0;
-            Rédacteur.Write((Byte)Protocoles.WAttack);
+            écritureFlux.Position = 0;
+            rédacteur.Write((Byte)Protocoles.WAttack);
 
             //Envoi position joueurA
-            Rédacteur.Write(position.X);
-            Rédacteur.Write(position.Y);
-            Rédacteur.Write(position.Z);
+            rédacteur.Write(position.X);
+            rédacteur.Write(position.Y);
+            rédacteur.Write(position.Z);
             //Envoi direction attaque
-            Rédacteur.Write(direction.X);
-            Rédacteur.Write(direction.Y);
-            Rédacteur.Write(direction.Z);
+            rédacteur.Write(direction.X);
+            rédacteur.Write(direction.Y);
+            rédacteur.Write(direction.Z);
             //Envoi de la force 
-            Rédacteur.Write(force);
+            rédacteur.Write(force);
             //Envoi de la précision 
-            Rédacteur.Write(précision);
+            rédacteur.Write(précision);
             //Envoi du dégat
-            Rédacteur.Write(dégat);
-            SendData(GetDataFromMemoryStream(ÉcritureFlux));
+            rédacteur.Write(dégat);
+            EnvoiDonnées(ObtentionDonnées(écritureFlux));
         }
     }
 }
