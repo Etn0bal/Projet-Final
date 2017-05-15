@@ -276,12 +276,5 @@ namespace AtelierXNA
                 MondeÀRecalculer = true;
             }
         }
-
-        public bool EstEnCollision(object autreObjet)
-        {
-            return false;
-        }
-        public Vector3 AvoirDestination()
-        { return Destination; }
     }
 }
